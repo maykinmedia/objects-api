@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+{% load staticfiles %}
+
+{% block body-class %}demo{% endblock %}
+
+{% block content %}
+<article class="content">
+  <img class="demo__logo-img" src="{% static 'img/maykinmedia_logo.png' %}">
+
+  <h1 class="demo__title">It worked!</h1>
+
+  <h2>Congratulations on installing the Maykin Media default project for
+    <strong>objects</strong>.
+  </h2>
+
+  <section>
+    <p>
+      Of course, you haven't actually done any work yet. Next, start your first app by running <code>python
+      manage.py startapp [app_label]</code>.
+    </p>
+
+    <p>
+      You can also checkout the <a href="{% url 'admin:index' %}">admin</a>.
+    </p>
+  </section>
+
+  <p>
+    You're seeing this message because you have <code>DEBUG = True</code> in your Django settings file and you
+    haven't configured any URLs. Get to work!
+  </p>
+</article>
+{% endblock %}
