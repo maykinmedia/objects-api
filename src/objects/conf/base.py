@@ -230,11 +230,7 @@ LOGGING = {
         },
     },
     "loggers": {
-        "objects": {
-            "handlers": ["project"],
-            "level": "INFO",
-            "propagate": True,
-        },
+        "objects": {"handlers": ["project"], "level": "INFO", "propagate": True,},
         "django.request": {
             "handlers": ["django"],
             "level": "ERROR",

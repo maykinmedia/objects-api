@@ -1,7 +1,8 @@
 import uuid
+
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.postgres.fields import JSONField
 
 
 class Object(models.Model):
@@ -14,4 +15,6 @@ class Object(models.Model):
     version = models.SmallIntegerField(
         _("version"), help_text=_("Version of the OBJECTTYPE")
     )
-    data = JSONField(_("data"), help_text=_("Object data, based on OBJECTTYPE"), default={})
+    data = JSONField(
+        _("data"), help_text=_("Object data, based on OBJECTTYPE"), default={}
+    )

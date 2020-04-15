@@ -9,18 +9,50 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Object',
+            name="Object",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(default=uuid.uuid4, help_text='Unique identifier (UUID4)', unique=True)),
-                ('object_type', models.URLField(help_text='Url reference to OBJECTTYPE in Objecttypes API', verbose_name='object type')),
-                ('version', models.SmallIntegerField(help_text='Version of the OBJECTTYPE', verbose_name='version')),
-                ('data', django.contrib.postgres.fields.jsonb.JSONField(default={}, help_text='Object data, based on OBJECTTYPE', verbose_name='data')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        help_text="Unique identifier (UUID4)",
+                        unique=True,
+                    ),
+                ),
+                (
+                    "object_type",
+                    models.URLField(
+                        help_text="Url reference to OBJECTTYPE in Objecttypes API",
+                        verbose_name="object type",
+                    ),
+                ),
+                (
+                    "version",
+                    models.SmallIntegerField(
+                        help_text="Version of the OBJECTTYPE", verbose_name="version"
+                    ),
+                ),
+                (
+                    "data",
+                    django.contrib.postgres.fields.jsonb.JSONField(
+                        default={},
+                        help_text="Object data, based on OBJECTTYPE",
+                        verbose_name="data",
+                    ),
+                ),
             ],
         ),
     ]
