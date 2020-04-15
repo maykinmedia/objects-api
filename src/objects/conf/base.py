@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "rest_framework",
     # Project applications.
     "objects.accounts",
+    "objects.api",
     "objects.utils",
 ]
 
