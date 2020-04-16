@@ -345,3 +345,11 @@ ELASTIC_APM = {
     "SECRET_TOKEN": os.getenv("ELASTIC_APM_SECRET_TOKEN", "default"),
     "SERVER_URL": os.getenv("ELASTIC_APM_SERVER_URL", "http://example.com"),
 }
+
+# api settings
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
+    # test
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}

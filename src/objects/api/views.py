@@ -5,5 +5,6 @@ from .serializers import ObjectSerializer
 
 
 class ObjectViewSet(viewsets.ModelViewSet):
-    queryset = Object.objects.all()
+    queryset = Object.objects.order_by("-pk")
     serializer_class = ObjectSerializer
+    lookup_field = "uuid"

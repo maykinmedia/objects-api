@@ -16,5 +16,5 @@ class Object(models.Model):
         _("version"), help_text=_("Version of the OBJECTTYPE")
     )
     data = JSONField(
-        _("data"), help_text=_("Object data, based on OBJECTTYPE"), default={}
+        _("data"), help_text=_("Object data, based on OBJECTTYPE"), default=dict
     )
