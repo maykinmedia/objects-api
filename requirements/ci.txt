@@ -4,6 +4,7 @@
 #
 #    pip-compile --no-index --output-file=requirements/ci.txt requirements/base.txt requirements/test-tools.in
 #
+attrs==19.3.0             # via -r requirements/base.txt, jsonschema
 beautifulsoup4==4.9.0     # via webtest
 certifi==2020.4.5.1       # via -r requirements/base.txt, elastic-apm, requests, sentry-sdk
 chardet==3.0.4            # via -r requirements/base.txt, requests
@@ -30,11 +31,14 @@ factory-boy==2.12.0       # via -r requirements/test-tools.in
 faker==4.0.3              # via factory-boy
 freezegun==0.3.15         # via -r requirements/test-tools.in
 idna==2.9                 # via -r requirements/base.txt, requests
+importlib-metadata==1.6.0  # via -r requirements/base.txt, jsonschema
+jsonschema==3.2.0         # via -r requirements/base.txt
 lxml==4.5.0               # via pyquery
 pillow==7.1.1             # via -r requirements/base.txt
 polib==1.1.0              # via -r requirements/base.txt, django-rosetta
 psycopg2==2.8.5           # via -r requirements/base.txt
 pyquery==1.4.1            # via -r requirements/test-tools.in
+pyrsistent==0.16.0        # via -r requirements/base.txt, jsonschema
 python-dateutil==2.8.1    # via faker, freezegun
 python-decouple==3.3      # via -r requirements/base.txt
 python-dotenv==0.12.0     # via -r requirements/base.txt
@@ -43,7 +47,7 @@ redis==3.4.1              # via -r requirements/base.txt, django-redis
 requests-mock==1.7.0      # via -r requirements/test-tools.in
 requests==2.23.0          # via -r requirements/base.txt, django-rosetta, requests-mock
 sentry-sdk==0.14.3        # via -r requirements/base.txt
-six==1.14.0               # via -r requirements/base.txt, django-choices, django-compat, django-rosetta, freezegun, python-dateutil, requests-mock, webtest
+six==1.14.0               # via -r requirements/base.txt, django-choices, django-compat, django-rosetta, freezegun, jsonschema, pyrsistent, python-dateutil, requests-mock, webtest
 soupsieve==2.0            # via beautifulsoup4
 sqlparse==0.3.1           # via -r requirements/base.txt, django
 tblib==1.6.0              # via -r requirements/test-tools.in
@@ -53,3 +57,7 @@ uwsgi==2.0.18             # via -r requirements/base.txt
 waitress==1.4.3           # via webtest
 webob==1.8.6              # via webtest
 webtest==2.0.34           # via django-webtest
+zipp==3.1.0               # via -r requirements/base.txt, importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
