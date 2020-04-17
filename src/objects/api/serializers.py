@@ -18,11 +18,11 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
         validated_attrs = super().validate(attrs)
 
         # validate object data based on objecttype schema
-        type = validated_attrs["object_type"]
+        object_type = validated_attrs["object_type"]
         version = validated_attrs["version"]
         data = validated_attrs["data"]
 
-        response = requests.get(type)
+        response = requests.get(object_type)
         try:
             response.raise_for_status()
         except requests.exceptions.RequestException as exc:
@@ -35,7 +35,7 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
         try:
             version_data = versions[0]
         except IndexError:
-            msg = f"{type} doesn't include JSON schema for version {version}"
+            msg = f"{object_type} doesn't include JSON schema for version {version}"
             raise serializers.ValidationError(msg)
 
         schema = version_data["jsonSchema"]
