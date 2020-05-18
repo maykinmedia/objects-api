@@ -4,9 +4,12 @@
 #
 #    pip-compile --no-index --output-file=requirements/ci.txt requirements/base.txt requirements/test-tools.in
 #
+attrs==19.3.0             # via -r requirements/base.txt, jsonschema
 beautifulsoup4==4.9.0     # via webtest
 certifi==2020.4.5.1       # via -r requirements/base.txt, elastic-apm, requests, sentry-sdk
 chardet==3.0.4            # via -r requirements/base.txt, requests
+coreapi==2.3.3            # via -r requirements/base.txt, drf-yasg
+coreschema==0.0.4         # via -r requirements/base.txt, coreapi, drf-yasg
 coverage==4.5.4           # via -r requirements/test-tools.in
 cssselect==1.1.0          # via pyquery
 django-admin-index==1.3.0  # via -r requirements/base.txt
@@ -23,33 +26,50 @@ django-redis==4.11.0      # via -r requirements/base.txt
 django-rosetta==0.9.4     # via -r requirements/base.txt
 django-sniplates==0.7.0   # via -r requirements/base.txt
 django-webtest==1.9.7     # via -r requirements/test-tools.in
-django==2.2.12            # via -r requirements/base.txt, django-appconf, django-axes, django-choices, django-jenkins, django-redis, django-rosetta, django-sniplates, djangorestframework
-djangorestframework==3.11.0  # via -r requirements/base.txt
+django==2.2.12            # via -r requirements/base.txt, django-appconf, django-axes, django-choices, django-jenkins, django-redis, django-rosetta, django-sniplates, djangorestframework, drf-yasg
+djangorestframework==3.11.0  # via -r requirements/base.txt, drf-yasg
+drf-yasg==1.17.1          # via -r requirements/base.txt
 elastic-apm==5.5.2        # via -r requirements/base.txt
 factory-boy==2.12.0       # via -r requirements/test-tools.in
 faker==4.0.3              # via factory-boy
 freezegun==0.3.15         # via -r requirements/test-tools.in
 idna==2.9                 # via -r requirements/base.txt, requests
+importlib-metadata==1.6.0  # via -r requirements/base.txt, jsonschema
+inflection==0.4.0         # via -r requirements/base.txt, drf-yasg
+itypes==1.2.0             # via -r requirements/base.txt, coreapi
+jinja2==2.11.2            # via -r requirements/base.txt, coreschema
+jsonschema==3.2.0         # via -r requirements/base.txt
 lxml==4.5.0               # via pyquery
+markupsafe==1.1.1         # via -r requirements/base.txt, jinja2
+packaging==20.3           # via -r requirements/base.txt, drf-yasg
 pillow==7.1.1             # via -r requirements/base.txt
 polib==1.1.0              # via -r requirements/base.txt, django-rosetta
 psycopg2==2.8.5           # via -r requirements/base.txt
+pyparsing==2.4.7          # via -r requirements/base.txt, packaging
 pyquery==1.4.1            # via -r requirements/test-tools.in
+pyrsistent==0.16.0        # via -r requirements/base.txt, jsonschema
 python-dateutil==2.8.1    # via faker, freezegun
 python-decouple==3.3      # via -r requirements/base.txt
 python-dotenv==0.12.0     # via -r requirements/base.txt
 pytz==2019.3              # via -r requirements/base.txt, django
 redis==3.4.1              # via -r requirements/base.txt, django-redis
 requests-mock==1.7.0      # via -r requirements/test-tools.in
-requests==2.23.0          # via -r requirements/base.txt, django-rosetta, requests-mock
+requests==2.23.0          # via -r requirements/base.txt, coreapi, django-rosetta, requests-mock
+ruamel.yaml.clib==0.2.0   # via -r requirements/base.txt, ruamel.yaml
+ruamel.yaml==0.16.10      # via -r requirements/base.txt, drf-yasg
 sentry-sdk==0.14.3        # via -r requirements/base.txt
-six==1.14.0               # via -r requirements/base.txt, django-choices, django-compat, django-rosetta, freezegun, python-dateutil, requests-mock, webtest
+six==1.14.0               # via -r requirements/base.txt, django-choices, django-compat, django-rosetta, drf-yasg, freezegun, jsonschema, packaging, pyrsistent, python-dateutil, requests-mock, webtest
 soupsieve==2.0            # via beautifulsoup4
 sqlparse==0.3.1           # via -r requirements/base.txt, django
 tblib==1.6.0              # via -r requirements/test-tools.in
 text-unidecode==1.3       # via faker
+uritemplate==3.0.1        # via -r requirements/base.txt, coreapi, drf-yasg
 urllib3==1.25.8           # via -r requirements/base.txt, elastic-apm, requests, sentry-sdk
 uwsgi==2.0.18             # via -r requirements/base.txt
 waitress==1.4.3           # via webtest
 webob==1.8.6              # via webtest
 webtest==2.0.34           # via django-webtest
+zipp==3.1.0               # via -r requirements/base.txt, importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
+    "drf_yasg",
     "sniplates",
     "hijack",
     "compat",  # Part of hijack
@@ -68,6 +69,7 @@ INSTALLED_APPS = [
     "rest_framework",
     # Project applications.
     "objects.accounts",
+    "objects.api",
     "objects.utils",
 ]
 
@@ -229,11 +231,7 @@ LOGGING = {
         },
     },
     "loggers": {
-        "objects": {
-            "handlers": ["project"],
-            "level": "INFO",
-            "propagate": True,
-        },
+        "objects": {"handlers": ["project"], "level": "INFO", "propagate": True,},
         "django.request": {
             "handlers": ["django"],
             "level": "ERROR",
@@ -347,4 +345,16 @@ ELASTIC_APM = {
     "SERVICE_NAME": "objects",
     "SECRET_TOKEN": os.getenv("ELASTIC_APM_SECRET_TOKEN", "default"),
     "SERVER_URL": os.getenv("ELASTIC_APM_SERVER_URL", "http://example.com"),
+}
+
+# api settings
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
+    # test
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": None,
 }
