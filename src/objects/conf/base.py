@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
+    "drf_yasg",
     "sniplates",
     "hijack",
     "compat",  # Part of hijack
@@ -352,4 +353,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
     # test
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": None,
 }
