@@ -7,6 +7,8 @@
 attrs==19.3.0             # via jsonschema
 certifi==2020.4.5.1       # via elastic-apm, requests, sentry-sdk
 chardet==3.0.4            # via requests
+coreapi==2.3.3            # via drf-yasg
+coreschema==0.0.4         # via coreapi, drf-yasg
 django-admin-index==1.3.0  # via -r requirements/base.in
 django-appconf==1.0.4     # via django-axes
 django-axes==5.3.1        # via -r requirements/base.in
@@ -19,24 +21,34 @@ django-ordered-model==3.3.0  # via django-admin-index
 django-redis==4.11.0      # via -r requirements/base.in
 django-rosetta==0.9.4     # via -r requirements/base.in
 django-sniplates==0.7.0   # via -r requirements/base.in
-django==2.2.12            # via -r requirements/base.in, django-appconf, django-axes, django-choices, django-redis, django-rosetta, django-sniplates, djangorestframework
-djangorestframework==3.11.0  # via -r requirements/base.in
+django==2.2.12            # via -r requirements/base.in, django-appconf, django-axes, django-choices, django-redis, django-rosetta, django-sniplates, djangorestframework, drf-yasg
+djangorestframework==3.11.0  # via -r requirements/base.in, drf-yasg
+drf-yasg==1.17.1          # via -r requirements/base.in
 elastic-apm==5.5.2        # via -r requirements/base.in
 idna==2.9                 # via requests
 importlib-metadata==1.6.0  # via jsonschema
+inflection==0.4.0         # via drf-yasg
+itypes==1.2.0             # via coreapi
+jinja2==2.11.2            # via coreschema
 jsonschema==3.2.0         # via -r requirements/base.in
+markupsafe==1.1.1         # via jinja2
+packaging==20.3           # via drf-yasg
 pillow==7.1.1             # via -r requirements/base.in
 polib==1.1.0              # via django-rosetta
 psycopg2==2.8.5           # via -r requirements/base.in
+pyparsing==2.4.7          # via packaging
 pyrsistent==0.16.0        # via jsonschema
 python-decouple==3.3      # via -r requirements/base.in
 python-dotenv==0.12.0     # via -r requirements/base.in
 pytz==2019.3              # via -r requirements/base.in, django
 redis==3.4.1              # via django-redis
-requests==2.23.0          # via django-rosetta
+requests==2.23.0          # via coreapi, django-rosetta
+ruamel.yaml.clib==0.2.0   # via ruamel.yaml
+ruamel.yaml==0.16.10      # via drf-yasg
 sentry-sdk==0.14.3        # via -r requirements/base.in
-six==1.14.0               # via django-choices, django-compat, django-rosetta, jsonschema, pyrsistent
+six==1.14.0               # via django-choices, django-compat, django-rosetta, drf-yasg, jsonschema, packaging, pyrsistent
 sqlparse==0.3.1           # via django
+uritemplate==3.0.1        # via coreapi, drf-yasg
 urllib3==1.25.8           # via elastic-apm, requests, sentry-sdk
 uwsgi==2.0.18             # via -r requirements/base.in
 zipp==3.1.0               # via importlib-metadata

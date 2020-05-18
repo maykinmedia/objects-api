@@ -21,7 +21,7 @@ django-sniplates
 djangorestframework
 # django-extra-fields
 # django-filter
-# drf-yasg  # api documentation
+drf-yasg  # api documentation
 
 # WSGI servers & monitoring - production oriented
 uwsgi
