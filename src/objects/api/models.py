@@ -12,7 +12,7 @@ class Object(models.Model):
     object_type = models.URLField(
         _("object type"), help_text=_("Url reference to OBJECTTYPE in Objecttypes API")
     )
-    version = models.SmallIntegerField(
+    version = models.PositiveSmallIntegerField(
         _("version"), help_text=_("Version of the OBJECTTYPE")
     )
     data = JSONField(
