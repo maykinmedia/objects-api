@@ -2,7 +2,7 @@ import os
 import warnings
 
 os.environ.setdefault(
-    "SECRET_KEY", "1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg"
+    "SECRET_KEY", "2(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg"
 )
 
 # uses postgresql by default, see base.py
