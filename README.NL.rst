@@ -1,53 +1,55 @@
-===========
-Objects API
-===========
+============
+Objecten API
+============
 
 :Version: 0.1.0
-:Source: https://github.com/maykinmedia/objects-api
-:Keywords: objects, assets, zaakobjecten
+:Source: https://github.com/maykinmedia/objecttypes-api
+:Keywords: objecten, assets, zaakobjecten
 :PythonVersion: 3.7
 
 |build-status| |docs| |coverage| |black| |docker|
 
-API to manage objects belonging to a certain object type. 
-[`(Nederlandse versie)`_]
+API om objecten te beheren die behoren bij een bepaald objecttype. 
+[`(English version)`_]
 
-Developed by `Maykin Media B.V.`_ commissioned by the Municipality of Utrecht.
-
-
-Introduction
-============
-
-The Objects API aims to easily store various objects and make them available in
-standardized format. The Objects API can be used by any organization to manage
-relevant objects. An organization can also choose to use the Objects API to
-expose objects to the public, as Open Data.
-
-To define the format of objects, so called object types, organizations can use
-a national and/or local `Objecttypes API`_.
+Ontwikkeld door `Maykin Media B.V.`_ in opdracht van de gemeente Utrecht.
 
 
-References
-==========
+Introductie
+===========
+
+De Objecten API heeft als doel om uiteenlopende objecten eenvoudig te kunnen
+registreren en ontsluiten in een gestandaardiseerd formaat. De Objecten API kan
+door elke organisatie ingezet worden om de voor haar interessante objecten te
+beheren. Ook kan een organisatie er voor kiezen een Objecten API in te zetten 
+voor Open Data, waarbij de geregistreerde objecten publiekelijk toegankelijk
+zijn.
+
+Om het formaat van objecten, de zogenoemde objecttypen, vast te leggen wordt 
+gebruik gemaakt van de landelijke en/of een lokale `Objecttypen API`_.
+
+
+Links
+=====
 
 * `Issues <https://github.com/maykinmedia/objects-api/issues>`_
 * `Code <https://github.com/maykinmedia/objects-api>`_
 * `Community <https://commonground.nl/groups/view/54477963/objecten-en-objecttypen-api>`_
 
 
-License
-=======
+Licentie
+========
 
 Copyright © Maykin Media, 2020
 
 Licensed under the EUPL_
 
 
-.. _`(Nederlandse versie)`: README.NL.rst
+.. _`(English version)`: README.rst
 
 .. _`Maykin Media B.V.`: https://www.maykinmedia.nl
 
-.. _`Objecttypes API`: https://github.com/maykinmedia/objecttypes-api
+.. _`Objecttypen API`: https://github.com/maykinmedia/objecttypes-api
 
 .. _`EUPL`: LICENCE.md
 

@@ -44,13 +44,10 @@ development machine.
 
    .. code-block:: bash
 
-       $ git clone git@bitbucket.org:maykinmedia/objects.git
+       $ git clone git@github.com:maykinmedia/objects.git
        $ cd objects
 
 3. Install all required libraries.
-   **Tip:** You can use the ``bootstrap.py`` script to install the requiments
-   and set the proper settings in ``manage.py``. Or, perform the steps
-   manually:
 
    .. code-block:: bash
 
@@ -172,7 +169,7 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ git clone git@bitbucket.org:maykinmedia/objects.git
+       $ git clone git@github.com:maykinmedia/objects.git
        Cloning into 'objects'...
        ...
 
