@@ -37,6 +37,10 @@ class Object(models.Model):
             .first()
         )
 
+    @property
+    def status(self):
+        return self.record_material.record_type
+
 
 class ObjectRecord(models.Model):
     object = models.ForeignKey(Object, on_delete=models.CASCADE, related_name="records")
@@ -49,5 +53,5 @@ class ObjectRecord(models.Model):
         choices=RecordType.choices,
         default=RecordType.created,
     )
-    material_date = models.DateField(_("material date"), default=date.today)
-    registration_date = models.DateField(_("registration date"))
+    material_date = models.DateField(_("material date"))
+    registration_date = models.DateField(_("registration date"), default=date.today)
