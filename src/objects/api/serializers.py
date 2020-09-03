@@ -2,7 +2,7 @@ import jsonschema
 import requests
 from rest_framework import serializers
 
-from .models import Object
+from objects.core.models import Object
 
 
 class ObjectSerializer(serializers.HyperlinkedModelSerializer):
