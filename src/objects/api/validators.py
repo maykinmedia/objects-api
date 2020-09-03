@@ -1,6 +1,8 @@
-import jsonschema
-import requests
+from django.core.exceptions import ValidationError
+
 from rest_framework import serializers
+
+from objects.core.utils import check_objecttype
 
 
 class JsonSchemaValidator:
@@ -18,27 +20,7 @@ class JsonSchemaValidator:
         version = attrs.get("version", self.instance.version)
         data = attrs.get("data", {})
 
-        if not data:
-            return
-
-        response = requests.get(object_type)
         try:
-            response.raise_for_status()
-        except requests.exceptions.RequestException as exc:
-            raise serializers.ValidationError(exc.args[0]) from exc
-
-        type_data = response.json()
-        versions = list(
-            filter(lambda x: x.get("version") == version, type_data.get("versions", []))
-        )
-        try:
-            version_data = versions[0]
-        except IndexError:
-            msg = f"{object_type} doesn't include JSON schema for version {version}"
-            raise serializers.ValidationError(msg)
-
-        schema = version_data["jsonSchema"]
-        try:
-            jsonschema.validate(data, schema)
-        except jsonschema.exceptions.ValidationError as exc:
+            check_objecttype(object_type, version, data)
+        except ValidationError as exc:
             raise serializers.ValidationError(exc.args[0], code=self.code) from exc

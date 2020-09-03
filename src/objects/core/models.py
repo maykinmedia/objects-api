@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .constants import RecordType
+from .utils import check_objecttype
 
 
 class Object(models.Model):
@@ -20,6 +21,9 @@ class Object(models.Model):
     )
 
     @property
+    def status(self):
+        return self.record_material().record_type
+
     def record_material(self, material_date=None):
         material_date = material_date or date.today()
         return (
@@ -28,7 +32,6 @@ class Object(models.Model):
             .first()
         )
 
-    @property
     def record_registration(self, registration_date=None):
         registration_date = registration_date or date.today()
         return (
@@ -36,10 +39,6 @@ class Object(models.Model):
             .order_by("-registration_date", "-id")
             .first()
         )
-
-    @property
-    def status(self):
-        return self.record_material.record_type
 
 
 class ObjectRecord(models.Model):
@@ -55,3 +54,8 @@ class ObjectRecord(models.Model):
     )
     material_date = models.DateField(_("material date"))
     registration_date = models.DateField(_("registration date"), default=date.today)
+
+    def clean(self):
+        super().clean()
+
+        check_objecttype(self.object.object_type, self.object.version, self.data)
