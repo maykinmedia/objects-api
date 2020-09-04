@@ -19,9 +19,6 @@ class Object(models.Model):
         _("version"), help_text=_("Version of the OBJECTTYPE")
     )
 
-    # def __str__(self):
-    #     return f'{self.uuid}'
-
     @property
     def current_record(self):
         today = date.today()
@@ -33,7 +30,7 @@ class Object(models.Model):
 
     @property
     def last_record(self):
-        return self.records.order_by("start_date", "-id").first()
+        return self.records.order_by("-start_date", "-id").first()
 
 
 class ObjectRecord(models.Model):
@@ -70,7 +67,7 @@ class ObjectRecord(models.Model):
         check_objecttype(self.object.object_type, self.object.version, self.data)
 
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.id and self.object.last_record:
             #  add end_date to previous record
             previous_record = self.object.last_record
             previous_record.end_date = self.start_date

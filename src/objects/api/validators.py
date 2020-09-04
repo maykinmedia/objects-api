@@ -16,8 +16,8 @@ class JsonSchemaValidator:
         self.instance = getattr(serializer, "instance", None)
 
     def __call__(self, attrs):
-        object_type = attrs.get("object_type", self.instance.object_type)
-        version = attrs.get("version", self.instance.version)
+        object_type = attrs.get("object_type") or self.instance.object_type
+        version = attrs.get("version") or self.instance.version
         data = attrs.get("data", {})
 
         try:

@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from rest_framework import serializers
 
 from objects.core.models import Object, ObjectRecord
@@ -7,8 +9,12 @@ from .validators import JsonSchemaValidator
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ("data", "start_date", "end_date", "registration_date")
         model = ObjectRecord
+        fields = ("data", "start_date", "end_date", "registration_date", "correct")
+        extra_kwargs = {
+            "end_date": {"read_only": True},
+            "publication_date": {"read_only": True},
+        }
 
 
 class ObjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,3 +28,12 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             "type": {"source": "object_type"},
         }
         validators = [JsonSchemaValidator()]
+
+    @transaction.atomic
+    def create(self, validated_data):
+        record_data = validated_data.pop("current_record")
+        object = super().create(validated_data)
+
+        record_data["object"] = object
+        ObjectRecordSerializer().create(record_data)
+        return object
