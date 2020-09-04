@@ -19,6 +19,9 @@ class Object(models.Model):
         _("version"), help_text=_("Version of the OBJECTTYPE")
     )
 
+    # def __str__(self):
+    #     return f'{self.uuid}'
+
     @property
     def current_record(self):
         today = date.today()
@@ -49,6 +52,17 @@ class ObjectRecord(models.Model):
         default=date.today,
         help_text=_("The date when the record was registered in the system"),
     )
+    correct = models.OneToOneField(
+        "core.ObjectRecord",
+        on_delete=models.PROTECT,
+        related_name="corrected",
+        null=True,
+        blank=True,
+        help_text=_("Object record which corrects the current record"),
+    )
+
+    def __str__(self):
+        return f"{self.id}"
 
     def clean(self):
         super().clean()
