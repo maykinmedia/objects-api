@@ -4,7 +4,7 @@ import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.api.models import Object
+from objects.core.models import Object
 
 from .utils import mock_objecttype
 
@@ -24,6 +24,9 @@ class ObjectValidationTests(APITestCase):
         }
 
         response = self.client.post(url, data)
+
+        print(response)
+        print(response.data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Object.objects.count(), 1)

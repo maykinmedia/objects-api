@@ -5,7 +5,6 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .constants import RecordType
 from .utils import check_objecttype
 
 
@@ -21,24 +20,17 @@ class Object(models.Model):
     )
 
     @property
-    def status(self):
-        return self.record_material().record_type
-
-    def record_material(self, material_date=None):
-        material_date = material_date or date.today()
+    def current_record(self):
+        today = date.today()
         return (
-            self.records.filter(material_date__lte=material_date)
-            .order_by("-material_date", "-id")
+            self.records.filter(start_date__lte=today)
+            .filter(models.Q(end_date__gte=today) | models.Q(end_date__isnull=True))
             .first()
         )
 
-    def record_registration(self, registration_date=None):
-        registration_date = registration_date or date.today()
-        return (
-            self.records.filter(registration_date__lte=registration_date)
-            .order_by("-registration_date", "-id")
-            .first()
-        )
+    @property
+    def last_record(self):
+        return self.records.order_by("start_date", "-id").first()
 
 
 class ObjectRecord(models.Model):
@@ -46,16 +38,28 @@ class ObjectRecord(models.Model):
     data = JSONField(
         _("data"), help_text=_("Object data, based on OBJECTTYPE"), default=dict
     )
-    record_type = models.CharField(
-        _("record type"),
-        max_length=50,
-        choices=RecordType.choices,
-        default=RecordType.created,
+    start_date = models.DateField(
+        _("start date"), help_text=_("Legal start date of the object record")
     )
-    material_date = models.DateField(_("material date"))
-    registration_date = models.DateField(_("registration date"), default=date.today)
+    end_date = models.DateField(
+        _("end date"), null=True, help_text=_("Legal end date of the object record")
+    )
+    registration_date = models.DateField(
+        _("registration date"),
+        default=date.today,
+        help_text=_("The date when the record was registered in the system"),
+    )
 
     def clean(self):
         super().clean()
 
         check_objecttype(self.object.object_type, self.object.version, self.data)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            #  add end_date to previous record
+            previous_record = self.object.last_record
+            previous_record.end_date = self.start_date
+            previous_record.save()
+
+        super().save(*args, **kwargs)

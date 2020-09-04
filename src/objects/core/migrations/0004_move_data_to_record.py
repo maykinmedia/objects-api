@@ -1,6 +1,5 @@
 from django.db import migrations
 from datetime import date
-from ..constants import RecordType
 
 
 def move_data_to_record(apps, _):
@@ -16,7 +15,7 @@ def move_data_to_record(apps, _):
 def move_data_from_record(apps, _):
     ObjectRecord = apps.get_model("core", "ObjectRecord")
 
-    for record in ObjectRecord.objects.filter(record_type=RecordType.created):
+    for record in ObjectRecord.objects.filter(record_type="created"):
         object = record.object
         object.data = record.data
         object.save()
