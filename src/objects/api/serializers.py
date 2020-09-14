@@ -10,8 +10,16 @@ from .validators import CorrectionValidator, JsonSchemaValidator
 class ObjectRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectRecord
-        fields = ("data", "start_date", "end_date", "registration_date", "correct")
+        fields = (
+            "id",
+            "data",
+            "start_date",
+            "end_date",
+            "registration_date",
+            "correct",
+        )
         extra_kwargs = {
+            "id": {"read_only": True},
             "end_date": {"read_only": True},
             "publication_date": {"read_only": True},
             "correct": {"required": False},
