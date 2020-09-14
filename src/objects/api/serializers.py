@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from objects.core.models import Object, ObjectRecord
 
-from .validators import CorrectRecordValidator, JsonSchemaValidator
+from .validators import CorrectionValidator, JsonSchemaValidator
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "end_date": {"read_only": True},
             "publication_date": {"read_only": True},
-            "correct": {"validators": [CorrectRecordValidator()]},
+            "correct": {"required": False},
         }
 
 
@@ -28,12 +28,7 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             "url": {"lookup_field": "uuid"},
             "type": {"source": "object_type"},
         }
-        validators = [JsonSchemaValidator()]
-
-    def validate(self, attrs):
-        valid_attrs = super().validate(attrs)
-
-        return valid_attrs
+        validators = [JsonSchemaValidator(), CorrectionValidator()]
 
     @transaction.atomic
     def create(self, validated_data):
@@ -46,9 +41,10 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        record_data = validated_data.pop("current_record")
+        record_data = validated_data.pop("current_record", None)
         object = super().update(instance, validated_data)
 
-        record_data["object"] = object
-        ObjectRecordSerializer().create(record_data)
+        if record_data:
+            record_data["object"] = object
+            ObjectRecordSerializer().create(record_data)
         return object
