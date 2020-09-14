@@ -24,3 +24,20 @@ class JsonSchemaValidator:
             check_objecttype(object_type, version, data)
         except ValidationError as exc:
             raise serializers.ValidationError(exc.args[0], code=self.code) from exc
+
+
+class CorrectRecordValidator:
+    message = "Only records of the same objects can be corrected"
+
+    def set_context(self, field):
+        """
+        This hook is called by the serializer instance,
+        prior to the validation call being made.
+        """
+        self.instance = getattr(field.parent, "instance", None)
+
+    def __call__(self, value):
+        if value and value.object != getattr(self.instance, "object", None):
+            raise serializers.ValidationError(
+                "Only records of the same objects can be corrected"
+            )
