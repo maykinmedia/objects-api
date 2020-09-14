@@ -1,7 +1,4 @@
-import requests_mock
-
-
-def mock_objecttype(m: requests_mock.Mocker, url: str) -> dict:
+def mock_objecttype(url: str) -> dict:
     return {
         "url": url,
         "name": "boom",
