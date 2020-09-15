@@ -7,7 +7,6 @@ from ..models import Object, ObjectRecord
 
 class ObjectFactory(factory.django.DjangoModelFactory):
     object_type = factory.Faker("url")
-    version = factory.Sequence(lambda n: n)
 
     class Meta:
         model = Object
@@ -15,6 +14,7 @@ class ObjectFactory(factory.django.DjangoModelFactory):
 
 class ObjectRecordFactory(factory.django.DjangoModelFactory):
     object = factory.SubFactory(ObjectFactory)
+    version = factory.Sequence(lambda n: n)
     data = factory.Sequence(lambda n: {"some_field": n})
     start_date = date.today()
 

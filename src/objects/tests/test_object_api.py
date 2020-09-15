@@ -36,8 +36,8 @@ class ObjectApiTests(APITestCase):
             {
                 "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
                 "type": object.object_type,
-                "typeVersion": object.version,
                 "record": {
+                    "typeVersion": object_record.version,
                     "data": object_record.data,
                     "startDate": object_record.start_date.isoformat(),
                     "endDate": object_record.end_date,
@@ -53,8 +53,8 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
             "record": {
+                "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
             },
@@ -67,10 +67,10 @@ class ObjectApiTests(APITestCase):
         object = Object.objects.get()
 
         self.assertEqual(object.object_type, OBJECT_TYPE)
-        self.assertEqual(object.version, 1)
 
         record = object.records.get()
 
+        self.assertEqual(record.version, 1)
         self.assertEqual(record.data, {"plantDate": "2020-04-12", "diameter": 30})
         self.assertEqual(record.start_date, date(2020, 1, 1))
         self.assertEqual(record.registration_date, date(2020, 8, 8))
@@ -87,8 +87,8 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
             "record": {
+                "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
                 "correct": initial_record.id,
@@ -103,11 +103,11 @@ class ObjectApiTests(APITestCase):
         initial_record.refresh_from_db()
 
         self.assertEqual(object.object_type, OBJECT_TYPE)
-        self.assertEqual(object.version, 1)
         self.assertEqual(object.records.count(), 2)
 
         current_record = object.current_record
 
+        self.assertEqual(current_record.version, 1)
         self.assertEqual(
             current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
         )
@@ -124,14 +124,15 @@ class ObjectApiTests(APITestCase):
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
 
         initial_record = ObjectRecordFactory.create(
-            data={"plantDate": "2020-04-12", "diameter": 30}
+            data={"plantDate": "2020-04-12", "diameter": 30},
+            version=1,
+            start_date=date.today(),
         )
         object = initial_record.object
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
         }
 
         response = self.client.patch(url, data)
@@ -141,14 +142,15 @@ class ObjectApiTests(APITestCase):
         object.refresh_from_db()
 
         self.assertEqual(object.object_type, OBJECT_TYPE)
-        self.assertEqual(object.version, 1)
         self.assertEqual(object.records.count(), 1)
         self.assertEqual(object.last_record, initial_record)
 
     def test_patch_object_record(self, m):
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
 
-        initial_record = ObjectRecordFactory.create()
+        initial_record = ObjectRecordFactory.create(
+            version=1, object__object_type=OBJECT_TYPE, start_date=date.today()
+        )
         object = initial_record.object
 
         url = reverse("object-detail", args=[object.uuid])
@@ -170,6 +172,7 @@ class ObjectApiTests(APITestCase):
 
         current_record = object.current_record
 
+        self.assertEqual(current_record.version, initial_record.version)
         self.assertEqual(
             current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
         )
@@ -211,6 +214,7 @@ class ObjectApiTests(APITestCase):
             [
                 {
                     "id": record1.id,
+                    "typeVersion": record1.version,
                     "data": record1.data,
                     "startDate": record1.start_date.isoformat(),
                     "endDate": record2.start_date.isoformat(),
@@ -219,6 +223,7 @@ class ObjectApiTests(APITestCase):
                 },
                 {
                     "id": record2.id,
+                    "typeVersion": record2.version,
                     "data": record2.data,
                     "startDate": record2.start_date.isoformat(),
                     "endDate": None,

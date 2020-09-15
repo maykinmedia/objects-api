@@ -15,9 +15,6 @@ class Object(models.Model):
     object_type = models.URLField(
         _("object type"), help_text=_("Url reference to OBJECTTYPE in Objecttypes API")
     )
-    version = models.PositiveSmallIntegerField(
-        _("version"), help_text=_("Version of the OBJECTTYPE")
-    )
 
     @property
     def current_record(self):
@@ -35,6 +32,10 @@ class Object(models.Model):
 
 class ObjectRecord(models.Model):
     object = models.ForeignKey(Object, on_delete=models.CASCADE, related_name="records")
+    version = models.PositiveSmallIntegerField(
+        _("version"),
+        help_text=_("Version of the OBJECTTYPE for data in the object record"),
+    )
     data = JSONField(
         _("data"), help_text=_("Object data, based on OBJECTTYPE"), default=dict
     )
@@ -64,7 +65,7 @@ class ObjectRecord(models.Model):
     def clean(self):
         super().clean()
 
-        check_objecttype(self.object.object_type, self.object.version, self.data)
+        check_objecttype(self.object.object_type, self.version, self.data)
 
     def save(self, *args, **kwargs):
         if not self.id and self.object.last_record:

@@ -16,16 +16,15 @@ class JsonSchemaValidator:
         self.instance = getattr(serializer, "instance", None)
 
     def __call__(self, attrs):
-        #  don't check if type and version are not changed
-        if not attrs.get("object_type") and not attrs.get("version"):
-            return
-
         object_type = attrs.get("object_type") or self.instance.object_type
-        version = attrs.get("version") or self.instance.version
+        version = (
+            attrs.get("current_record", {}).get("version")
+            or self.instance.current_record.version
+        )
         if attrs.get("current_record"):
             data = attrs["current_record"].get("data", {})
         else:
-            data = self.instance.last_record.data
+            data = self.instance.current_record.data
 
         try:
             check_objecttype(object_type, version, data)

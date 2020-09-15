@@ -11,6 +11,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectRecord
         fields = (
+            "typeVersion",
             "data",
             "startDate",
             "endDate",
@@ -18,6 +19,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "correct",
         )
         extra_kwargs = {
+            "typeVersion": {"source": "version"},
             "startDate": {"source": "start_date"},
             "endDate": {"source": "end_date", "read_only": True},
             "registrationDate": {"source": "registration_date", "read_only": True},
@@ -30,6 +32,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
         model = ObjectRecord
         fields = (
             "id",
+            "typeVersion",
             "data",
             "startDate",
             "endDate",
@@ -38,6 +41,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "id": {"read_only": True},
+            "typeVersion": {"source": "version"},
             "startDate": {"source": "start_date"},
             "endDate": {"source": "end_date", "read_only": True},
             "registrationDate": {"source": "registration_date", "read_only": True},
@@ -50,11 +54,10 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Object
-        fields = ("url", "type", "typeVersion", "record")
+        fields = ("url", "type", "record")
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "type": {"source": "object_type"},
-            "typeVersion": {"source": "version"},
         }
         validators = [JsonSchemaValidator(), CorrectionValidator()]
 
@@ -74,5 +77,8 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
 
         if record_data:
             record_data["object"] = object
+            # in case of PATCH:
+            if not record_data.get("version"):
+                record_data["version"] = object.current_record.version
             ObjectRecordSerializer().create(record_data)
         return object

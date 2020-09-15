@@ -9,6 +9,7 @@ class ObjectRecordInline(admin.TabularInline):
     readonly_fields = ("id", "registration_date", "end_date", "get_after_correction")
     fields = (
         "id",
+        "version",
         "data",
         "start_date",
         "end_date",
@@ -42,6 +43,6 @@ class ObjectRecordInline(admin.TabularInline):
 
 @admin.register(Object)
 class ObjectAdmin(admin.ModelAdmin):
-    list_display = ("object_type", "version")
+    list_display = ("object_type",)
     search_fields = ("uuid",)
     inlines = (ObjectRecordInline,)

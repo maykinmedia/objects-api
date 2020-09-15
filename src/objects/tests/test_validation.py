@@ -21,8 +21,11 @@ class ObjectTypeValidationTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": object_type_invalid,
-            "typeVersion": 1,
-            "record": {"data": {"plantDate": "2020-04-12"}, "startDate": "2020-01-01",},
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12"},
+                "startDate": "2020-01-01",
+            },
         }
 
         response = self.client.post(url, data)
@@ -39,8 +42,8 @@ class ObjectTypeValidationTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
             "record": {
+                "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
             },
@@ -63,8 +66,11 @@ class ObjectTypeValidationTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
-            "record": {"data": {"plantDate": "2020-04-12"}, "startDate": "2020-01-01",},
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12"},
+                "startDate": "2020-01-01",
+            },
         }
 
         response = self.client.post(url, data)
@@ -81,7 +87,6 @@ class ObjectTypeValidationTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
         }
 
         response = self.client.post(url, data)
@@ -96,8 +101,8 @@ class ObjectTypeValidationTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
             "record": {
+                "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
                 "correct": record.id,
@@ -123,8 +128,8 @@ class ObjectTypeValidationTests(APITestCase):
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "typeVersion": 1,
             "record": {
+                "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
                 "correct": corrected_record.id,
