@@ -79,14 +79,14 @@ class ObjectApiTests(APITestCase):
     def test_update_object(self, m):
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
 
-        initial_record = ObjectRecordFactory.create()
+        initial_record = ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
         object = initial_record.object
 
         assert initial_record.end_date is None
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
-            "type": OBJECT_TYPE,
+            "type": object.object_type,
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -119,31 +119,6 @@ class ObjectApiTests(APITestCase):
         self.assertNotEqual(current_record, initial_record)
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_date, date(2020, 1, 1))
-
-    def test_patch_object_meta_info(self, m):
-        m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
-
-        initial_record = ObjectRecordFactory.create(
-            data={"plantDate": "2020-04-12", "diameter": 30},
-            version=1,
-            start_date=date.today(),
-        )
-        object = initial_record.object
-
-        url = reverse("object-detail", args=[object.uuid])
-        data = {
-            "type": OBJECT_TYPE,
-        }
-
-        response = self.client.patch(url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        object.refresh_from_db()
-
-        self.assertEqual(object.object_type, OBJECT_TYPE)
-        self.assertEqual(object.records.count(), 1)
-        self.assertEqual(object.last_record, initial_record)
 
     def test_patch_object_record(self, m):
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))

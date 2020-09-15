@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from objects.core.models import Object, ObjectRecord
 
-from .validators import CorrectionValidator, JsonSchemaValidator
+from .validators import CorrectionValidator, IsImmutableValidator, JsonSchemaValidator
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -57,7 +57,7 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("url", "type", "record")
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
-            "type": {"source": "object_type"},
+            "type": {"source": "object_type", "validators": [IsImmutableValidator()]},
         }
         validators = [JsonSchemaValidator(), CorrectionValidator()]
 

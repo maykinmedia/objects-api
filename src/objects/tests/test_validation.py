@@ -123,7 +123,9 @@ class ObjectTypeValidationTests(APITestCase):
     def test_update_object_with_correction_invalid(self, m):
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
 
-        corrected_record, initial_record = ObjectRecordFactory.create_batch(2)
+        corrected_record, initial_record = ObjectRecordFactory.create_batch(
+            2, object__object_type=OBJECT_TYPE
+        )
         object = initial_record.object
         url = reverse("object-detail", args=[object.uuid])
         data = {
@@ -144,4 +146,26 @@ class ObjectTypeValidationTests(APITestCase):
         self.assertEqual(
             data["non_field_errors"],
             ["Only records of the same objects can be corrected"],
+        )
+
+    def test_update_object_type_invalid(self, m):
+        m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
+
+        initial_record = ObjectRecordFactory.create(
+            data={"plantDate": "2020-04-12", "diameter": 30}, version=1,
+        )
+        object = initial_record.object
+
+        url = reverse("object-detail", args=[object.uuid])
+        data = {
+            "type": OBJECT_TYPE,
+        }
+
+        response = self.client.patch(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(
+            data["type"], ["This field can't be changed"],
         )
