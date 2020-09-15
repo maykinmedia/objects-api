@@ -36,7 +36,7 @@ class ObjectApiTests(APITestCase):
             {
                 "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
                 "type": object.object_type,
-                "version": object.version,
+                "type_version": object.version,
                 "record": {
                     "data": object_record.data,
                     "start_date": object_record.start_date.isoformat(),
@@ -53,7 +53,7 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "version": 1,
+            "type_version": 1,
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "start_date": "2020-01-01",
@@ -87,7 +87,7 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "version": 1,
+            "type_version": 1,
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "start_date": "2020-01-01",
@@ -131,7 +131,7 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "version": 1,
+            "type_version": 1,
         }
 
         response = self.client.patch(url, data)
