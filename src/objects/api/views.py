@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from objects.core.models import Object
 
-from .serializers import ObjectRecordSerializer, ObjectSerializer
+from .serializers import HistoryRecordSerializer, ObjectSerializer
 
 
 class ObjectViewSet(viewsets.ModelViewSet):
@@ -13,9 +13,9 @@ class ObjectViewSet(viewsets.ModelViewSet):
     serializer_class = ObjectSerializer
     lookup_field = "uuid"
 
-    @swagger_auto_schema(responses={200: ObjectRecordSerializer(many=True)})
-    @action(detail=True, methods=["get"], serializer_class=ObjectRecordSerializer)
-    def history(self):
+    @swagger_auto_schema(responses={200: HistoryRecordSerializer(many=True)})
+    @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
+    def history(self, request, uuid=None):
         records = self.get_object().records.order_by("id")
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)

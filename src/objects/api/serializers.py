@@ -11,7 +11,6 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectRecord
         fields = (
-            "id",
             "data",
             "start_date",
             "end_date",
@@ -19,9 +18,8 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "correct",
         )
         extra_kwargs = {
-            "id": {"read_only": True},
             "end_date": {"read_only": True},
-            "publication_date": {"read_only": True},
+            "registration_date": {"read_only": True},
             "correct": {"required": False},
         }
 
@@ -56,3 +54,22 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             record_data["object"] = object
             ObjectRecordSerializer().create(record_data)
         return object
+
+
+class HistoryRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ObjectRecord
+        fields = (
+            "id",
+            "data",
+            "start_date",
+            "end_date",
+            "registration_date",
+            "corrected",
+        )
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "end_date": {"read_only": True},
+            "registration_date": {"read_only": True},
+            "corrected": {"read_only": True},
+        }
