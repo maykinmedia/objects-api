@@ -105,7 +105,7 @@ class ObjectTypeValidationTests(APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
-                "correct": record.id,
+                "correct": record.uuid,
             },
         }
 
@@ -134,7 +134,7 @@ class ObjectTypeValidationTests(APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
-                "correct": corrected_record.id,
+                "correct": corrected_record.uuid,
             },
         }
 

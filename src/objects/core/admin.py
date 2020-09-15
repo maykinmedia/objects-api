@@ -6,9 +6,9 @@ from .models import Object, ObjectRecord
 class ObjectRecordInline(admin.TabularInline):
     model = ObjectRecord
     extra = 1
-    readonly_fields = ("id", "registration_date", "end_date", "get_after_correction")
+    readonly_fields = ("uuid", "registration_date", "end_date", "get_after_correction")
+    search_fields = ("uuid",)
     fields = (
-        "id",
         "version",
         "data",
         "start_date",

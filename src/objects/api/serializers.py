@@ -8,9 +8,14 @@ from .validators import CorrectionValidator, IsImmutableValidator, JsonSchemaVal
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
+    correct = serializers.SlugRelatedField(
+        slug_field="uuid", queryset=ObjectRecord.objects.all(), required=False
+    )
+
     class Meta:
         model = ObjectRecord
         fields = (
+            "uuid",
             "typeVersion",
             "data",
             "startDate",
@@ -19,19 +24,21 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "correct",
         )
         extra_kwargs = {
+            "uuid": {"read_only": True},
             "typeVersion": {"source": "version"},
             "startDate": {"source": "start_date"},
             "endDate": {"source": "end_date", "read_only": True},
             "registrationDate": {"source": "registration_date", "read_only": True},
-            "correct": {"required": False},
         }
 
 
 class HistoryRecordSerializer(serializers.ModelSerializer):
+    corrected = serializers.SlugRelatedField(slug_field="uuid", read_only=True)
+
     class Meta:
         model = ObjectRecord
         fields = (
-            "id",
+            "uuid",
             "typeVersion",
             "data",
             "startDate",
@@ -40,12 +47,11 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "corrected",
         )
         extra_kwargs = {
-            "id": {"read_only": True},
+            "uuid": {"read_only": True},
             "typeVersion": {"source": "version"},
             "startDate": {"source": "start_date"},
             "endDate": {"source": "end_date", "read_only": True},
             "registrationDate": {"source": "registration_date", "read_only": True},
-            "corrected": {"read_only": True},
         }
 
 

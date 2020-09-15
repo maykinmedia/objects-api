@@ -31,6 +31,9 @@ class Object(models.Model):
 
 
 class ObjectRecord(models.Model):
+    uuid = models.UUIDField(
+        default=uuid.uuid4, help_text="Unique identifier (UUID4)", unique=True
+    )
     object = models.ForeignKey(Object, on_delete=models.CASCADE, related_name="records")
     version = models.PositiveSmallIntegerField(
         _("version"),
@@ -60,7 +63,7 @@ class ObjectRecord(models.Model):
     )
 
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.uuid}"
 
     def clean(self):
         super().clean()

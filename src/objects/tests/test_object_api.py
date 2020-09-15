@@ -37,12 +37,13 @@ class ObjectApiTests(APITestCase):
                 "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
                 "type": object.object_type,
                 "record": {
+                    "uuid": str(object_record.uuid),
                     "typeVersion": object_record.version,
                     "data": object_record.data,
                     "startDate": object_record.start_date.isoformat(),
                     "endDate": object_record.end_date,
                     "registrationDate": object_record.registration_date.isoformat(),
-                    "correct": object_record.correct_id,
+                    "correct": None,
                 },
             },
         )
@@ -91,7 +92,7 @@ class ObjectApiTests(APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
-                "correct": initial_record.id,
+                "correct": initial_record.uuid,
             },
         }
 
@@ -133,7 +134,7 @@ class ObjectApiTests(APITestCase):
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
-                "correct": initial_record.id,
+                "correct": initial_record.uuid,
             },
         }
 
@@ -188,16 +189,16 @@ class ObjectApiTests(APITestCase):
             data,
             [
                 {
-                    "id": record1.id,
+                    "uuid": str(record1.uuid),
                     "typeVersion": record1.version,
                     "data": record1.data,
                     "startDate": record1.start_date.isoformat(),
                     "endDate": record2.start_date.isoformat(),
                     "registrationDate": record1.registration_date.isoformat(),
-                    "corrected": record2.id,
+                    "corrected": str(record2.uuid),
                 },
                 {
-                    "id": record2.id,
+                    "uuid": str(record2.uuid),
                     "typeVersion": record2.version,
                     "data": record2.data,
                     "startDate": record2.start_date.isoformat(),
