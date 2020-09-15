@@ -12,15 +12,36 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
         model = ObjectRecord
         fields = (
             "data",
-            "start_date",
-            "end_date",
-            "registration_date",
+            "startDate",
+            "endDate",
+            "registrationDate",
             "correct",
         )
         extra_kwargs = {
-            "end_date": {"read_only": True},
-            "registration_date": {"read_only": True},
+            "startDate": {"source": "start_date"},
+            "endDate": {"source": "end_date", "read_only": True},
+            "registrationDate": {"source": "registration_date", "read_only": True},
             "correct": {"required": False},
+        }
+
+
+class HistoryRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ObjectRecord
+        fields = (
+            "id",
+            "data",
+            "startDate",
+            "endDate",
+            "registrationDate",
+            "corrected",
+        )
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "startDate": {"source": "start_date"},
+            "endDate": {"source": "end_date", "read_only": True},
+            "registrationDate": {"source": "registration_date", "read_only": True},
+            "corrected": {"read_only": True},
         }
 
 
@@ -29,11 +50,11 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Object
-        fields = ("url", "type", "type_version", "record")
+        fields = ("url", "type", "typeVersion", "record")
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "type": {"source": "object_type"},
-            "type_version": {"source": "version"},
+            "typeVersion": {"source": "version"},
         }
         validators = [JsonSchemaValidator(), CorrectionValidator()]
 
@@ -55,22 +76,3 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             record_data["object"] = object
             ObjectRecordSerializer().create(record_data)
         return object
-
-
-class HistoryRecordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ObjectRecord
-        fields = (
-            "id",
-            "data",
-            "start_date",
-            "end_date",
-            "registration_date",
-            "corrected",
-        )
-        extra_kwargs = {
-            "id": {"read_only": True},
-            "end_date": {"read_only": True},
-            "registration_date": {"read_only": True},
-            "corrected": {"read_only": True},
-        }

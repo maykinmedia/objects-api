@@ -36,12 +36,12 @@ class ObjectApiTests(APITestCase):
             {
                 "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
                 "type": object.object_type,
-                "type_version": object.version,
+                "typeVersion": object.version,
                 "record": {
                     "data": object_record.data,
-                    "start_date": object_record.start_date.isoformat(),
-                    "end_date": object_record.end_date,
-                    "registration_date": object_record.registration_date.isoformat(),
+                    "startDate": object_record.start_date.isoformat(),
+                    "endDate": object_record.end_date,
+                    "registrationDate": object_record.registration_date.isoformat(),
                     "correct": object_record.correct_id,
                 },
             },
@@ -53,10 +53,10 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
-            "type_version": 1,
+            "typeVersion": 1,
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "start_date": "2020-01-01",
+                "startDate": "2020-01-01",
             },
         }
 
@@ -87,10 +87,10 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "type_version": 1,
+            "typeVersion": 1,
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "start_date": "2020-01-01",
+                "startDate": "2020-01-01",
                 "correct": initial_record.id,
             },
         }
@@ -131,7 +131,7 @@ class ObjectApiTests(APITestCase):
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
-            "type_version": 1,
+            "typeVersion": 1,
         }
 
         response = self.client.patch(url, data)
@@ -155,7 +155,7 @@ class ObjectApiTests(APITestCase):
         data = {
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "start_date": "2020-01-01",
+                "startDate": "2020-01-01",
                 "correct": initial_record.id,
             },
         }
@@ -212,17 +212,17 @@ class ObjectApiTests(APITestCase):
                 {
                     "id": record1.id,
                     "data": record1.data,
-                    "start_date": record1.start_date.isoformat(),
-                    "end_date": record2.start_date.isoformat(),
-                    "registration_date": record1.registration_date.isoformat(),
+                    "startDate": record1.start_date.isoformat(),
+                    "endDate": record2.start_date.isoformat(),
+                    "registrationDate": record1.registration_date.isoformat(),
                     "corrected": record2.id,
                 },
                 {
                     "id": record2.id,
                     "data": record2.data,
-                    "start_date": record2.start_date.isoformat(),
-                    "end_date": None,
-                    "registration_date": date.today().isoformat(),
+                    "startDate": record2.start_date.isoformat(),
+                    "endDate": None,
+                    "registrationDate": date.today().isoformat(),
                     "corrected": None,
                 },
             ],
