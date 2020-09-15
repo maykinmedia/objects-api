@@ -191,3 +191,39 @@ class ObjectApiTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Object.objects.count(), 0)
+
+    def test_history_object(self, m):
+        record1 = ObjectRecordFactory.create(start_date=date(2020, 1, 1))
+        object = record1.object
+        record2 = ObjectRecordFactory.create(
+            object=object, start_date=date.today(), correct=record1
+        )
+        url = reverse("object-history", args=[object.uuid])
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(
+            data,
+            [
+                {
+                    "id": record1.id,
+                    "data": record1.data,
+                    "start_date": record1.start_date.isoformat(),
+                    "end_date": record2.start_date.isoformat(),
+                    "registration_date": record1.registration_date.isoformat(),
+                    "corrected": record2.id,
+                },
+                {
+                    "id": record2.id,
+                    "data": record2.data,
+                    "start_date": record2.start_date.isoformat(),
+                    "end_date": None,
+                    "registration_date": date.today().isoformat(),
+                    "corrected": None,
+                },
+            ],
+        )
