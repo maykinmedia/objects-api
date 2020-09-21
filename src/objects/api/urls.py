@@ -12,7 +12,9 @@ router.register(r"objects", ObjectViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Objects API", default_version="v1", description="OAS for Objects API",
+        title="Objects API",
+        default_version="v1",
+        description="OAS for Objects API",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),

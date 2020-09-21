@@ -60,7 +60,11 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [
 # Production logging facility.
 LOGGING["loggers"].update(
     {
-        "django": {"handlers": ["django"], "level": "INFO", "propagate": True,},
+        "django": {
+            "handlers": ["django"],
+            "level": "INFO",
+            "propagate": True,
+        },
         "django.security.DisallowedHost": {
             "handlers": ["django"],
             "level": "CRITICAL",

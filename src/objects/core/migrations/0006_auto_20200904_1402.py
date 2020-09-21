@@ -14,7 +14,10 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name="objectrecord", old_name="material_date", new_name="start_date"
         ),
-        migrations.RemoveField(model_name="objectrecord", name="record_type",),
+        migrations.RemoveField(
+            model_name="objectrecord",
+            name="record_type",
+        ),
         migrations.AddField(
             model_name="objectrecord",
             name="end_date",

@@ -13,7 +13,10 @@ def mock_objecttype(url: str) -> dict:
                     "type": "object",
                     "required": ["diameter"],
                     "properties": {
-                        "diameter": {"description": "size in cm.", "type": "integer",},
+                        "diameter": {
+                            "description": "size in cm.",
+                            "type": "integer",
+                        },
                         "plantDate": {
                             "type": "string",
                             "description": "the date the tree was planted.",

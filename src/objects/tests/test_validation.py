@@ -36,7 +36,11 @@ class ObjectTypeValidationTests(APITestCase):
     def test_create_object_no_version(self, m):
         m.get(
             OBJECT_TYPE,
-            json={"url": OBJECT_TYPE, "name": "boom", "namePlural": "bomen",},
+            json={
+                "url": OBJECT_TYPE,
+                "name": "boom",
+                "namePlural": "bomen",
+            },
         )
 
         url = reverse("object-list")
@@ -152,7 +156,8 @@ class ObjectTypeValidationTests(APITestCase):
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
 
         initial_record = ObjectRecordFactory.create(
-            data={"plantDate": "2020-04-12", "diameter": 30}, version=1,
+            data={"plantDate": "2020-04-12", "diameter": 30},
+            version=1,
         )
         object = initial_record.object
 
@@ -167,5 +172,6 @@ class ObjectTypeValidationTests(APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["type"], ["This field can't be changed"],
+            data["type"],
+            ["This field can't be changed"],
         )
