@@ -54,7 +54,11 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [
 
 LOGGING["loggers"].update(
     {
-        "django": {"handlers": ["django"], "level": "INFO", "propagate": True,},
+        "django": {
+            "handlers": ["django"],
+            "level": "INFO",
+            "propagate": True,
+        },
         "django.security.DisallowedHost": {
             "handlers": ["django"],
             "level": "CRITICAL",

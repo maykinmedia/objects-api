@@ -35,9 +35,13 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = getenv("ALLOWED_HOSTS", "*", split=True)
 
 CACHES = {
-    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache",},
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    },
     # https://github.com/jazzband/django-axes/blob/master/docs/configuration.rst#cache-problems
-    "axes_cache": {"BACKEND": "django.core.cache.backends.dummy.DummyCache",},
+    "axes_cache": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    },
 }
 
 # Deal with being hosted on a subpath
