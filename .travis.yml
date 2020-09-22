@@ -21,6 +21,7 @@ env:
 
 install:
   - pip install -r requirements/ci.txt
+  - pip install codecov
   - npm ci
   - npm run build
 
@@ -46,3 +47,6 @@ jobs:
         - pip install black
       before_script: skip
       script: black --check src --diff
+
+after_success:
+  - codecov
