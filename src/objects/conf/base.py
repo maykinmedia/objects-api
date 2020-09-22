@@ -70,7 +70,11 @@ INSTALLED_APPS = [
     "compat",  # Part of hijack
     "hijack_admin",
     "rest_framework",
+<<<<<<< HEAD
     "vng_api_common",
+=======
+    "rest_framework_gis",
+>>>>>>> da0ef12... :heavy_plus_sign: add djangorestframework-gis
     # Project applications.
     "objects.accounts",
     "objects.api",
