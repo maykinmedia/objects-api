@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": os.getenv("DB_NAME", "objects"),
         "USER": os.getenv("DB_USER", "objects"),
         "PASSWORD": os.getenv("DB_PASSWORD", "objects"),
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "django_admin_index",
     # Optional applications.
     "django.contrib.admin",
+    "django.contrib.gis",
     # 'django.contrib.admindocs',
     # 'django.contrib.humanize',
     # 'django.contrib.sitemaps',

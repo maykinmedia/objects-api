@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.gis import forms
+from django.contrib.gis.db.models import GeometryField
 
 from .models import Object, ObjectRecord
 
@@ -11,12 +13,14 @@ class ObjectRecordInline(admin.TabularInline):
     fields = (
         "version",
         "data",
+        "geometry",
         "start_date",
         "end_date",
         "registration_date",
         "correct",
         "get_after_correction",
     )
+    formfield_overrides = {GeometryField: {"widget": forms.OSMWidget}}
 
     def has_delete_permission(self, request, obj=None):
         return False
