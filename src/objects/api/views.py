@@ -2,20 +2,41 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object
 
-from .serializers import HistoryRecordSerializer, ObjectSerializer
+from .serializers import (
+    HistoryRecordSerializer,
+    ObjectSearchSerializer,
+    ObjectSerializer,
+)
 
 
-class ObjectViewSet(viewsets.ModelViewSet):
+#  todo add GEO Mixin to restrict headers?
+class ObjectViewSet(SearchMixin, viewsets.ModelViewSet):
     queryset = Object.objects.order_by("-pk")
     serializer_class = ObjectSerializer
     lookup_field = "uuid"
+    search_input_serializer_class = ObjectSearchSerializer
 
-    @swagger_auto_schema(responses={200: HistoryRecordSerializer(many=True)})
+    @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
     def history(self, request, uuid=None):
         records = self.get_object().records.order_by("id")
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=["post"])
+    def search(self):
+        """Perform a (geo) search on Objects"""
+        search_input = self.get_search_input()
+
+        within = search_input["geometrie"]["within"]
+        queryset = self.filter_queryset(self.get_queryset()).filter(
+            geometrie__within=within
+        )
+
+        return self.get_search_output(queryset)
+
+    search.is_search_action = True
