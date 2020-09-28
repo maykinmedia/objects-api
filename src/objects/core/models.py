@@ -72,7 +72,7 @@ class ObjectRecord(models.Model):
     )
 
     def __str__(self):
-        return f"{self.uuid}"
+        return f"{self.version} ({self.start_date})"
 
     def clean(self):
         super().clean()
