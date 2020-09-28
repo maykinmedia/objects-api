@@ -17,5 +17,9 @@ SWAGGER_SETTINGS.update(
     {
         "DEFAULT_INFO": "objects.api.schema.info",
         "SECURITY_DEFINITIONS": None,
+        "DEFAULT_FIELD_INSPECTORS": (
+            "vng_api_common.inspectors.geojson.GeometryFieldInspector",
+        )
+        + BASE_SWAGGER_SETTINGS["DEFAULT_FIELD_INSPECTORS"],
     }
 )
