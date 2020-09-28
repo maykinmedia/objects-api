@@ -12,45 +12,56 @@ coreschema==0.0.4         # via coreapi, drf-yasg
 django-admin-index==1.3.0  # via -r requirements/base.in
 django-appconf==1.0.4     # via django-axes
 django-axes==5.3.1        # via -r requirements/base.in
-django-choices==1.7.1     # via -r requirements/base.in
+django-choices==1.7.1     # via -r requirements/base.in, vng-api-common
 django-compat==1.0.15     # via django-hijack, django-hijack-admin
+django-filter==2.4.0      # via vng-api-common
 django-hijack-admin==2.1.10  # via -r requirements/base.in
 django-hijack==2.1.10     # via -r requirements/base.in, django-hijack-admin
 django-ipware==2.1.0      # via django-axes
 django-ordered-model==3.3.0  # via django-admin-index
 django-redis==4.11.0      # via -r requirements/base.in
+django-rest-framework-condition==0.1.1  # via vng-api-common
 django-rosetta==0.9.4     # via -r requirements/base.in
 django-sniplates==0.7.0   # via -r requirements/base.in
-django==2.2.12            # via -r requirements/base.in, django-appconf, django-axes, django-choices, django-redis, django-rosetta, django-sniplates, djangorestframework, drf-yasg
-djangorestframework==3.11.0  # via -r requirements/base.in, drf-yasg
-drf-yasg==1.17.1          # via -r requirements/base.in
+django-solo==1.1.3        # via vng-api-common
+django==2.2.12            # via -r requirements/base.in, django-appconf, django-axes, django-choices, django-filter, django-redis, django-rest-framework-condition, django-rosetta, django-sniplates, drf-nested-routers, drf-yasg, vng-api-common
+djangorestframework-camel-case==1.2.0  # via vng-api-common
+djangorestframework==3.9.4  # via -r requirements/base.in, drf-nested-routers, drf-yasg, vng-api-common
+drf-nested-routers==0.91  # via vng-api-common
+drf-yasg==1.16.0          # via -r requirements/base.in, vng-api-common
 elastic-apm==5.5.2        # via -r requirements/base.in
+gemma-zds-client==0.13.3  # via vng-api-common
 idna==2.9                 # via requests
 importlib-metadata==1.6.0  # via jsonschema
 inflection==0.4.0         # via drf-yasg
+iso-639==0.4.5            # via vng-api-common
+isodate==0.6.0            # via vng-api-common
 itypes==1.2.0             # via coreapi
 jinja2==2.11.2            # via coreschema
 jsonschema==3.2.0         # via -r requirements/base.in
 markupsafe==1.1.1         # via jinja2
-packaging==20.3           # via drf-yasg
+oyaml==1.0                # via vng-api-common
 pillow==7.1.1             # via -r requirements/base.in
 polib==1.1.0              # via django-rosetta
 psycopg2==2.8.5           # via -r requirements/base.in
-pyparsing==2.4.7          # via packaging
+pyjwt==1.7.1              # via gemma-zds-client, vng-api-common
 pyrsistent==0.16.0        # via jsonschema
 python-decouple==3.3      # via -r requirements/base.in
 python-dotenv==0.12.0     # via -r requirements/base.in
 pytz==2019.3              # via -r requirements/base.in, django
+pyyaml==5.3.1             # via gemma-zds-client, oyaml, vng-api-common
 redis==3.4.1              # via django-redis
-requests==2.23.0          # via coreapi, django-rosetta
+requests==2.23.0          # via coreapi, django-rosetta, gemma-zds-client, vng-api-common
 ruamel.yaml.clib==0.2.0   # via ruamel.yaml
 ruamel.yaml==0.16.10      # via drf-yasg
 sentry-sdk==0.14.3        # via -r requirements/base.in
-six==1.14.0               # via django-choices, django-compat, django-rosetta, drf-yasg, jsonschema, packaging, pyrsistent
+six==1.14.0               # via django-choices, django-compat, django-rosetta, drf-yasg, isodate, jsonschema, pyrsistent
 sqlparse==0.3.1           # via django
+unidecode==1.1.1          # via vng-api-common
 uritemplate==3.0.1        # via coreapi, drf-yasg
 urllib3==1.25.8           # via elastic-apm, requests, sentry-sdk
 uwsgi==2.0.18             # via -r requirements/base.in
+vng-api-common==1.5.6     # via -r requirements/base.in
 zipp==3.1.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
