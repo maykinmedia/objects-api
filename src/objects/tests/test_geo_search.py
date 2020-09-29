@@ -43,3 +43,32 @@ class GeoSearchTests(APITestCase):
             data[0]["url"],
             f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
         )
+
+    def test_filter_objecttype(self):
+        record = ObjectRecordFactory.create(
+            geometry=Point(4.905289, 52.369918), object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(geometry=Point(4.905289, 52.369918))
+
+        response = self.client.post(
+            self.url,
+            {
+                "geometry": {
+                    "within": {
+                        "type": "Polygon",
+                        "coordinates": [POLYGON_AMSTERDAM_CENTRUM],
+                    }
+                },
+                "type": OBJECT_TYPE,
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
+        )
