@@ -9,6 +9,12 @@ paths:
       operationId: object_list
       description: ''
       parameters:
+      - name: type
+        in: query
+        description: Url reference to OBJECTTYPE in Objecttypes API
+        required: false
+        schema:
+          type: string
       - name: Accept-Crs
         in: header
         description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
@@ -52,6 +58,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Object'
+        '400':
+          description: Bad request
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: Unauthorized
           headers:
@@ -1573,6 +1591,11 @@ components:
       properties:
         geometry:
           $ref: '#/components/schemas/GeoWithin'
+        type:
+          title: Type
+          description: Url reference to OBJECTTYPE in Objecttypes API
+          type: string
+          minLength: 1
     HistoryRecord:
       required:
       - typeVersion

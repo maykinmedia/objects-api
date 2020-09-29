@@ -6,6 +6,7 @@ from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object
 
+from .filters import ObjectFilterSet
 from .serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,
@@ -17,6 +18,7 @@ from .serializers import (
 class ObjectViewSet(SearchMixin, viewsets.ModelViewSet):
     queryset = Object.objects.order_by("-pk")
     serializer_class = ObjectSerializer
+    filterset_class = ObjectFilterSet
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
 

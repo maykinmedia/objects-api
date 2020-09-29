@@ -23,6 +23,13 @@
                 "description": "",
                 "parameters": [
                     {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Url reference to OBJECTTYPE in Objecttypes API",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "Accept-Crs",
                         "in": "header",
                         "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
@@ -60,6 +67,20 @@
                                     "EPSG:4326"
                                 ]
                             },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
+                        },
+                        "headers": {
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -1930,6 +1951,12 @@
             "properties": {
                 "geometry": {
                     "$ref": "#/definitions/GeoWithin"
+                },
+                "type": {
+                    "title": "Type",
+                    "description": "Url reference to OBJECTTYPE in Objecttypes API",
+                    "type": "string",
+                    "minLength": 1
                 }
             }
         },
