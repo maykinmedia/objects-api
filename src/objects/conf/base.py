@@ -367,3 +367,5 @@ ELASTIC_APM = {
     "SECRET_TOKEN": os.getenv("ELASTIC_APM_SECRET_TOKEN", "default"),
     "SERVER_URL": os.getenv("ELASTIC_APM_SERVER_URL", "http://example.com"),
 }
+
+SITE_ID = os.getenv("SITE_ID", 1)
