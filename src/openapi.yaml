@@ -313,6 +313,179 @@ paths:
       tags:
       - objects
     parameters: []
+  /objects/search/:
+    post:
+      operationId: object_search
+      description: Perform a (geo) search on Objects
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectSearch'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Crs:
+              description: Het 'Coordinate Reference System' (CRS) van de antwoorddata.
+                Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde
+                als WGS84).
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Object'
+        '400':
+          description: Bad request
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
+        '401':
+          description: Unauthorized
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: Forbidden
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '406':
+          description: Not acceptable
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '409':
+          description: Conflict
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '410':
+          description: Gone
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '415':
+          description: Unsupported media type
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '429':
+          description: Too many requests
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: Internal server error
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+      tags:
+      - objects
+    parameters: []
   /objects/{uuid}/:
     get:
       operationId: object_read
@@ -1387,6 +1560,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FieldValidationError'
+    GeoWithin:
+      title: Geometry
+      type: object
+      properties:
+        within:
+          $ref: '#/components/schemas/GeoJSONGeometry'
+    ObjectSearch:
+      required:
+      - geometry
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeoWithin'
     HistoryRecord:
       required:
       - typeVersion

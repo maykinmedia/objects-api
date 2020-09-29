@@ -98,4 +98,4 @@ class GeoWithinSerializer(serializers.Serializer):
 
 
 class ObjectSearchSerializer(serializers.Serializer):
-    geometrie = GeoWithinSerializer(required=True)
+    geometry = GeoWithinSerializer(required=True)

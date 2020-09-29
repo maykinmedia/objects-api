@@ -28,13 +28,15 @@ class ObjectViewSet(SearchMixin, viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=False, methods=["post"])
-    def search(self):
+    def search(self, request):
         """Perform a (geo) search on Objects"""
         search_input = self.get_search_input()
 
-        within = search_input["geometrie"]["within"]
-        queryset = self.filter_queryset(self.get_queryset()).filter(
-            geometrie__within=within
+        within = search_input["geometry"]["within"]
+        queryset = (
+            self.filter_queryset(self.get_queryset())
+            .filter(records__geometry__within=within)
+            .distinct()
         )
 
         return self.get_search_output(queryset)
