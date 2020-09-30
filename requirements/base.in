@@ -27,3 +27,6 @@ drf-yasg  # api documentation
 uwsgi
 sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
+
+# Common ground libraries
+vng_api_common
