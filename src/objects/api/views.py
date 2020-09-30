@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from vng_api_common.search import SearchMixin
+from vng_api_common.geo import GeoMixin
 
 from objects.core.models import Object
 
@@ -14,8 +15,7 @@ from .serializers import (
 )
 
 
-#  todo add GEO Mixin to restrict headers?
-class ObjectViewSet(SearchMixin, viewsets.ModelViewSet):
+class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     queryset = Object.objects.order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet

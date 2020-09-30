@@ -76,7 +76,6 @@ class ObjectRecord(models.Model):
 
     def clean(self):
         super().clean()
-        print(self.geometry)
 
         check_objecttype(self.object.object_type, self.version, self.data)
 
