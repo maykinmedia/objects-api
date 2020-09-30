@@ -1,9 +1,11 @@
+from django.db import models
+
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from vng_api_common.search import SearchMixin
 from vng_api_common.geo import GeoMixin
+from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object
 
@@ -42,5 +44,14 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         )
 
         return self.get_search_output(queryset)
+
+    def get_search_output(self, queryset: models.QuerySet) -> Response:
+        """wrapper to make sure the result is a Response subclass"""
+        result = super().get_search_output(queryset)
+
+        if not isinstance(result, Response):
+            result = Response(result)
+
+        return result
 
     search.is_search_action = True
