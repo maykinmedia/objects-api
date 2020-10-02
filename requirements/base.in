@@ -19,6 +19,7 @@ django-sniplates
 
 # API libraries
 djangorestframework
+djangorestframework-gis
 # django-extra-fields
 # django-filter
 drf-yasg  # api documentation

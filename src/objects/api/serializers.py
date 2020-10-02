@@ -1,6 +1,7 @@
 from django.db import transaction
 
 from rest_framework import serializers
+from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord
 
@@ -18,6 +19,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "uuid",
             "typeVersion",
             "data",
+            "geometry",
             "startDate",
             "endDate",
             "registrationDate",
@@ -41,6 +43,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "uuid",
             "typeVersion",
             "data",
+            "geometry",
             "startDate",
             "endDate",
             "registrationDate",
@@ -88,3 +91,11 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
                 record_data["version"] = object.current_record.version
             ObjectRecordSerializer().create(record_data)
         return object
+
+
+class GeoWithinSerializer(serializers.Serializer):
+    within = GeometryField(required=False)
+
+
+class ObjectSearchSerializer(serializers.Serializer):
+    geometry = GeoWithinSerializer(required=True)

@@ -8,10 +8,45 @@ paths:
     get:
       operationId: object_list
       description: ''
+      parameters:
+      - name: type
+        in: query
+        description: Url reference to OBJECTTYPE in Objecttypes API
+        required: false
+        schema:
+          type: string
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
       responses:
         '200':
           description: OK
           headers:
+            Content-Crs:
+              description: Het 'Coordinate Reference System' (CRS) van de antwoorddata.
+                Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde
+                als WGS84).
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
             API-version:
               schema:
                 type: string
@@ -23,6 +58,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Object'
+        '400':
+          description: Bad request
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: Unauthorized
           headers:
@@ -133,6 +180,26 @@ paths:
           type: string
           enum:
           - application/json
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
       requestBody:
         $ref: '#/components/requestBodies/Object'
       responses:
@@ -264,11 +331,204 @@ paths:
       tags:
       - objects
     parameters: []
+  /objects/search/:
+    post:
+      operationId: object_search
+      description: Perform a (geo) search on Objects
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content type van de verzoekinhoud.
+        required: true
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectSearch'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Crs:
+              description: Het 'Coordinate Reference System' (CRS) van de antwoorddata.
+                Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde
+                als WGS84).
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Object'
+        '400':
+          description: Bad request
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
+        '401':
+          description: Unauthorized
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: Forbidden
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '406':
+          description: Not acceptable
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '409':
+          description: Conflict
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '410':
+          description: Gone
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '415':
+          description: Unsupported media type
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '429':
+          description: Too many requests
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: Internal server error
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+      tags:
+      - objects
+    parameters: []
   /objects/{uuid}/:
     get:
       operationId: object_read
       description: ''
       parameters:
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
       - name: If-None-Match
         in: header
         description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
@@ -291,6 +551,14 @@ paths:
         '200':
           description: OK
           headers:
+            Content-Crs:
+              description: Het 'Coordinate Reference System' (CRS) van de antwoorddata.
+                Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde
+                als WGS84).
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
             ETag:
               description: De ETag berekend op de response body JSON. Indien twee
                 resources exact dezelfde ETag hebben, dan zijn deze resources identiek
@@ -428,12 +696,40 @@ paths:
           type: string
           enum:
           - application/json
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
       requestBody:
         $ref: '#/components/requestBodies/Object'
       responses:
         '200':
           description: OK
           headers:
+            Content-Crs:
+              description: Het 'Coordinate Reference System' (CRS) van de antwoorddata.
+                Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde
+                als WGS84).
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
             API-version:
               schema:
                 type: string
@@ -577,12 +873,40 @@ paths:
           type: string
           enum:
           - application/json
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
       requestBody:
         $ref: '#/components/requestBodies/Object'
       responses:
         '200':
           description: OK
           headers:
+            Content-Crs:
+              description: Het 'Coordinate Reference System' (CRS) van de antwoorddata.
+                Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde
+                als WGS84).
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
             API-version:
               schema:
                 type: string
@@ -849,6 +1173,26 @@ paths:
       operationId: object_history
       description: ''
       parameters:
+      - name: Accept-Crs
+        in: header
+        description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
+          in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default
+          (EPSG:4326 is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+      - name: Content-Crs
+        in: header
+        description: Het 'Coordinate Reference System' (CRS) van de geometrie in de
+          vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326
+          is hetzelfde als WGS84).
+        required: true
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
       - name: If-None-Match
         in: header
         description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
@@ -906,6 +1250,161 @@ components:
             $ref: '#/components/schemas/Object'
       required: true
   schemas:
+    Geometry:
+      title: Geometry
+      description: GeoJSON geometry
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          description: The geometry type
+          type: string
+          enum:
+          - Point
+          - MultiPoint
+          - LineString
+          - MultiLineString
+          - Polygon
+          - MultiPolygon
+          - Feature
+          - FeatureCollection
+          - GeometryCollection
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1
+    Point2D:
+      title: Point2D
+      description: A 2D point
+      type: array
+      items:
+        type: number
+      maxItems: 2
+      minItems: 2
+    Point:
+      description: GeoJSON point geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - coordinates
+        type: object
+        properties:
+          coordinates:
+            $ref: '#/components/schemas/Point2D'
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.2
+    MultiPoint:
+      description: GeoJSON multi-point geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - coordinates
+        type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/components/schemas/Point2D'
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.3
+    LineString:
+      description: GeoJSON line-string geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - coordinates
+        type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/components/schemas/Point2D'
+            minItems: 2
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.4
+    MultiLineString:
+      description: GeoJSON multi-line-string geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - coordinates
+        type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Point2D'
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.5
+    Polygon:
+      description: GeoJSON polygon geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - coordinates
+        type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Point2D'
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.6
+    MultiPolygon:
+      description: GeoJSON multi-polygon geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - coordinates
+        type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Point2D'
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.7
+    GeometryCollection:
+      description: GeoJSON multi-polygon geometry
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - required:
+        - geometries
+        type: object
+        properties:
+          geometries:
+            type: array
+            items:
+              $ref: '#/components/schemas/Geometry'
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.1.8
+    GeoJSONGeometry:
+      title: GeoJSONGeometry
+      type: object
+      discriminator:
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/Point'
+      - $ref: '#/components/schemas/MultiPoint'
+      - $ref: '#/components/schemas/LineString'
+      - $ref: '#/components/schemas/MultiLineString'
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      - $ref: '#/components/schemas/GeometryCollection'
     ObjectRecord:
       title: Record
       required:
@@ -929,6 +1428,8 @@ components:
           title: Data
           description: Object data, based on OBJECTTYPE
           type: object
+        geometry:
+          $ref: '#/components/schemas/GeoJSONGeometry'
         startDate:
           title: Startdate
           description: Legal start date of the object record
@@ -1077,6 +1578,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FieldValidationError'
+    GeoWithin:
+      title: Geometry
+      type: object
+      properties:
+        within:
+          $ref: '#/components/schemas/GeoJSONGeometry'
+    ObjectSearch:
+      required:
+      - geometry
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeoWithin'
+        type:
+          title: Type
+          description: Url reference to OBJECTTYPE in Objecttypes API
+          type: string
+          minLength: 1
     HistoryRecord:
       required:
       - typeVersion
@@ -1099,6 +1618,8 @@ components:
           title: Data
           description: Object data, based on OBJECTTYPE
           type: object
+        geometry:
+          $ref: '#/components/schemas/GeoJSONGeometry'
         startDate:
           title: Startdate
           description: Legal start date of the object record

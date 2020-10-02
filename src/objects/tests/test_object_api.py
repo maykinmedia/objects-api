@@ -1,3 +1,4 @@
+import json
 from datetime import date
 
 from django.urls import reverse
@@ -10,7 +11,7 @@ from rest_framework.test import APITestCase
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
 
-from .utils import mock_objecttype
+from .utils import GEO_READ_KWARGS, GEO_WRITE_KWARGS, mock_objecttype
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
@@ -21,11 +22,13 @@ class ObjectApiTests(APITestCase):
     def test_retrieve_object(self, m):
         object = ObjectFactory.create()
         object_record = ObjectRecordFactory.create(
-            object=object, start_date=date.today()
+            object=object,
+            start_date=date.today(),
+            geometry="POINT (4.910649523925713 52.37240093589432)",
         )
         url = reverse("object-detail", args=[object.uuid])
 
-        response = self.client.get(url)
+        response = self.client.get(url, **GEO_READ_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -40,6 +43,7 @@ class ObjectApiTests(APITestCase):
                     "uuid": str(object_record.uuid),
                     "typeVersion": object_record.version,
                     "data": object_record.data,
+                    "geometry": json.loads(object_record.geometry.json),
                     "startDate": object_record.start_date.isoformat(),
                     "endDate": object_record.end_date,
                     "registrationDate": object_record.registration_date.isoformat(),
@@ -57,11 +61,15 @@ class ObjectApiTests(APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
                 "startDate": "2020-01-01",
             },
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -75,6 +83,7 @@ class ObjectApiTests(APITestCase):
         self.assertEqual(record.data, {"plantDate": "2020-04-12", "diameter": 30})
         self.assertEqual(record.start_date, date(2020, 1, 1))
         self.assertEqual(record.registration_date, date(2020, 8, 8))
+        self.assertEqual(record.geometry.coords, (4.910649523925713, 52.37240093589432))
         self.assertIsNone(record.end_date)
 
     def test_update_object(self, m):
@@ -91,12 +100,16 @@ class ObjectApiTests(APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
                 "startDate": "2020-01-01",
                 "correct": initial_record.uuid,
             },
         }
 
-        response = self.client.put(url, data)
+        response = self.client.put(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -111,6 +124,9 @@ class ObjectApiTests(APITestCase):
         self.assertEqual(current_record.version, 1)
         self.assertEqual(
             current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
+        )
+        self.assertEqual(
+            current_record.geometry.coords, (4.910649523925713, 52.37240093589432)
         )
         self.assertEqual(current_record.start_date, date(2020, 1, 1))
         self.assertEqual(current_record.registration_date, date(2020, 8, 8))
@@ -138,7 +154,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.patch(url, data)
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -172,14 +188,17 @@ class ObjectApiTests(APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
     def test_history_object(self, m):
-        record1 = ObjectRecordFactory.create(start_date=date(2020, 1, 1))
+        record1 = ObjectRecordFactory.create(
+            start_date=date(2020, 1, 1),
+            geometry="POINT (4.910649523925713 52.37240093589432)",
+        )
         object = record1.object
         record2 = ObjectRecordFactory.create(
             object=object, start_date=date.today(), correct=record1
         )
         url = reverse("object-history", args=[object.uuid])
 
-        response = self.client.get(url)
+        response = self.client.get(url, **GEO_READ_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -192,6 +211,7 @@ class ObjectApiTests(APITestCase):
                     "uuid": str(record1.uuid),
                     "typeVersion": record1.version,
                     "data": record1.data,
+                    "geometry": json.loads(record1.geometry.json),
                     "startDate": record1.start_date.isoformat(),
                     "endDate": record2.start_date.isoformat(),
                     "registrationDate": record1.registration_date.isoformat(),
@@ -201,6 +221,7 @@ class ObjectApiTests(APITestCase):
                     "uuid": str(record2.uuid),
                     "typeVersion": record2.version,
                     "data": record2.data,
+                    "geometry": None,
                     "startDate": record2.start_date.isoformat(),
                     "endDate": None,
                     "registrationDate": date.today().isoformat(),

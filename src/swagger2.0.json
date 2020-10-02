@@ -21,7 +21,35 @@
             "get": {
                 "operationId": "object_list",
                 "description": "",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Url reference to OBJECTTYPE in Objecttypes API",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -30,6 +58,27 @@
                             "items": {
                                 "$ref": "#/definitions/Object"
                             }
+                        },
+                        "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -178,6 +227,26 @@
                         "schema": {
                             "$ref": "#/definitions/Object"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -335,11 +404,233 @@
             },
             "parameters": []
         },
+        "/objects/search/": {
+            "post": {
+                "operationId": "object_search",
+                "description": "Perform a (geo) search on Objects",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ObjectSearch"
+                        }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Object"
+                            }
+                        },
+                        "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Not acceptable",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "410": {
+                        "description": "Gone",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Unsupported media type",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "objects"
+                ]
+            },
+            "parameters": []
+        },
         "/objects/{uuid}/": {
             "get": {
                 "operationId": "object_read",
                 "description": "",
                 "parameters": [
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
                     {
                         "name": "If-None-Match",
                         "in": "header",
@@ -365,6 +656,13 @@
                             "$ref": "#/definitions/Object"
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "ETag": {
                                 "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
                                 "type": "string"
@@ -529,6 +827,26 @@
                         "schema": {
                             "$ref": "#/definitions/Object"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -538,6 +856,13 @@
                             "$ref": "#/definitions/Object"
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -712,6 +1037,26 @@
                         "schema": {
                             "$ref": "#/definitions/Object"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -721,6 +1066,13 @@
                             "$ref": "#/definitions/Object"
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -1038,6 +1390,26 @@
                 "description": "",
                 "parameters": [
                     {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
                         "name": "If-None-Match",
                         "in": "header",
                         "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
@@ -1091,6 +1463,264 @@
         }
     },
     "definitions": {
+        "Geometry": {
+            "title": "Geometry",
+            "description": "GeoJSON geometry",
+            "required": [
+                "type"
+            ],
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The geometry type",
+                    "type": "string",
+                    "enum": [
+                        "Point",
+                        "MultiPoint",
+                        "LineString",
+                        "MultiLineString",
+                        "Polygon",
+                        "MultiPolygon",
+                        "Feature",
+                        "FeatureCollection",
+                        "GeometryCollection"
+                    ]
+                }
+            },
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1"
+            }
+        },
+        "Point2D": {
+            "title": "Point2D",
+            "description": "A 2D point",
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "maxItems": 2,
+            "minItems": 2
+        },
+        "Point": {
+            "description": "GeoJSON point geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "coordinates"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "coordinates": {
+                            "$ref": "#/definitions/Point2D"
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.2"
+            }
+        },
+        "MultiPoint": {
+            "description": "GeoJSON multi-point geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "coordinates"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Point2D"
+                            }
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.3"
+            }
+        },
+        "LineString": {
+            "description": "GeoJSON line-string geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "coordinates"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Point2D"
+                            },
+                            "minItems": 2
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.4"
+            }
+        },
+        "MultiLineString": {
+            "description": "GeoJSON multi-line-string geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "coordinates"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Point2D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.5"
+            }
+        },
+        "Polygon": {
+            "description": "GeoJSON polygon geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "coordinates"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Point2D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.6"
+            }
+        },
+        "MultiPolygon": {
+            "description": "GeoJSON multi-polygon geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "coordinates"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Point2D"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.7"
+            }
+        },
+        "GeometryCollection": {
+            "description": "GeoJSON multi-polygon geometry",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Geometry"
+                },
+                {
+                    "required": [
+                        "geometries"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "geometries": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Geometry"
+                            }
+                        }
+                    }
+                }
+            ],
+            "externalDocs": {
+                "url": "https://tools.ietf.org/html/rfc7946#section-3.1.8"
+            }
+        },
+        "GeoJSONGeometry": {
+            "title": "GeoJSONGeometry",
+            "type": "object",
+            "discriminator": "type",
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/Point"
+                },
+                {
+                    "$ref": "#/definitions/MultiPoint"
+                },
+                {
+                    "$ref": "#/definitions/LineString"
+                },
+                {
+                    "$ref": "#/definitions/MultiLineString"
+                },
+                {
+                    "$ref": "#/definitions/Polygon"
+                },
+                {
+                    "$ref": "#/definitions/MultiPolygon"
+                },
+                {
+                    "$ref": "#/definitions/GeometryCollection"
+                }
+            ]
+        },
         "ObjectRecord": {
             "title": "Record",
             "required": [
@@ -1117,6 +1747,9 @@
                     "title": "Data",
                     "description": "Object data, based on OBJECTTYPE",
                     "type": "object"
+                },
+                "geometry": {
+                    "$ref": "#/definitions/GeoJSONGeometry"
                 },
                 "startDate": {
                     "title": "Startdate",
@@ -1301,6 +1934,32 @@
                 }
             }
         },
+        "GeoWithin": {
+            "title": "Geometry",
+            "type": "object",
+            "properties": {
+                "within": {
+                    "$ref": "#/definitions/GeoJSONGeometry"
+                }
+            }
+        },
+        "ObjectSearch": {
+            "required": [
+                "geometry"
+            ],
+            "type": "object",
+            "properties": {
+                "geometry": {
+                    "$ref": "#/definitions/GeoWithin"
+                },
+                "type": {
+                    "title": "Type",
+                    "description": "Url reference to OBJECTTYPE in Objecttypes API",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
         "HistoryRecord": {
             "required": [
                 "typeVersion",
@@ -1326,6 +1985,9 @@
                     "title": "Data",
                     "description": "Object data, based on OBJECTTYPE",
                     "type": "object"
+                },
+                "geometry": {
+                    "$ref": "#/definitions/GeoJSONGeometry"
                 },
                 "startDate": {
                     "title": "Startdate",

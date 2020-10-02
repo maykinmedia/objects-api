@@ -1,6 +1,7 @@
 import uuid
 from datetime import date
 
+from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -61,9 +62,17 @@ class ObjectRecord(models.Model):
         blank=True,
         help_text=_("Object record which corrects the current record"),
     )
+    geometry = GeometryField(
+        _("geometry"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Point, linestring or polygon object which represents the coordinates of the object"
+        ),
+    )
 
     def __str__(self):
-        return f"{self.uuid}"
+        return f"{self.version} ({self.start_date})"
 
     def clean(self):
         super().clean()
