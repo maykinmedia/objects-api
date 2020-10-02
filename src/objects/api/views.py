@@ -17,7 +17,7 @@ from .serializers import (
 )
 
 
-class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
+class ObjectViewSet(SearchMixin, viewsets.ModelViewSet):
     queryset = Object.objects.order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet
