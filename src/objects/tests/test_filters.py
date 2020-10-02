@@ -5,8 +5,6 @@ from rest_framework.test import APITestCase
 
 from objects.core.tests.factores import ObjectFactory
 
-from .utils import GEO_READ_KWARGS
-
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 
@@ -17,7 +15,7 @@ class FilterTests(APITestCase):
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
         ObjectFactory.create()
 
-        response = self.client.get(self.url, {"type": OBJECT_TYPE}, **GEO_READ_KWARGS)
+        response = self.client.get(self.url, {"type": OBJECT_TYPE})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
