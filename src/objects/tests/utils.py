@@ -1,8 +1,3 @@
-GEO_READ_KWARGS = {"HTTP_ACCEPT_CRS": "EPSG:4326"}
-
-GEO_WRITE_KWARGS = {"HTTP_ACCEPT_CRS": "EPSG:4326", "HTTP_CONTENT_CRS": "EPSG:4326"}
-
-
 def mock_objecttype(url: str) -> dict:
     return {
         "url": url,

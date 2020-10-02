@@ -11,7 +11,7 @@ from rest_framework.test import APITestCase
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
 
-from .utils import GEO_READ_KWARGS, GEO_WRITE_KWARGS, mock_objecttype
+from .utils import mock_objecttype
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
@@ -28,7 +28,7 @@ class ObjectApiTests(APITestCase):
         )
         url = reverse("object-detail", args=[object.uuid])
 
-        response = self.client.get(url, **GEO_READ_KWARGS)
+        response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -69,7 +69,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+        response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -109,7 +109,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.put(url, data, **GEO_WRITE_KWARGS)
+        response = self.client.put(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -154,7 +154,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
+        response = self.client.patch(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -198,7 +198,7 @@ class ObjectApiTests(APITestCase):
         )
         url = reverse("object-history", args=[object.uuid])
 
-        response = self.client.get(url, **GEO_READ_KWARGS)
+        response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
