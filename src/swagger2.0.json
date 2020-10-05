@@ -28,6 +28,16 @@
                         "description": "Url reference to OBJECTTYPE in Objecttypes API",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -40,6 +50,13 @@
                             }
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -132,6 +149,20 @@
                             }
                         }
                     },
+                    "412": {
+                        "description": "Precondition failed",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
                     "415": {
                         "description": "Unsupported media type",
                         "schema": {
@@ -200,6 +231,26 @@
                         "schema": {
                             "$ref": "#/definitions/Object"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -308,6 +359,20 @@
                             }
                         }
                     },
+                    "412": {
+                        "description": "Precondition failed",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
                     "415": {
                         "description": "Unsupported media type",
                         "schema": {
@@ -379,6 +444,26 @@
                         "schema": {
                             "$ref": "#/definitions/ObjectSearch"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -391,6 +476,13 @@
                             }
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -483,6 +575,20 @@
                             }
                         }
                     },
+                    "412": {
+                        "description": "Precondition failed",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
                     "415": {
                         "description": "Unsupported media type",
                         "schema": {
@@ -538,6 +644,16 @@
                 "description": "",
                 "parameters": [
                     {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
                         "name": "If-None-Match",
                         "in": "header",
                         "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
@@ -562,6 +678,13 @@
                             "$ref": "#/definitions/Object"
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "ETag": {
                                 "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
                                 "type": "string"
@@ -658,6 +781,20 @@
                             }
                         }
                     },
+                    "412": {
+                        "description": "Precondition failed",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
                     "415": {
                         "description": "Unsupported media type",
                         "schema": {
@@ -726,6 +863,26 @@
                         "schema": {
                             "$ref": "#/definitions/Object"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -735,6 +892,13 @@
                             "$ref": "#/definitions/Object"
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -829,6 +993,20 @@
                     },
                     "410": {
                         "description": "Gone",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Precondition failed",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -909,6 +1087,26 @@
                         "schema": {
                             "$ref": "#/definitions/Object"
                         }
+                    },
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
+                    {
+                        "name": "Content-Crs",
+                        "in": "header",
+                        "description": "Het 'Coordinate Reference System' (CRS) van de geometrie in de vraag (request body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
                     }
                 ],
                 "responses": {
@@ -918,6 +1116,13 @@
                             "$ref": "#/definitions/Object"
                         },
                         "headers": {
+                            "Content-Crs": {
+                                "description": "Het 'Coordinate Reference System' (CRS) van de antwoorddata. Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                                "type": "string",
+                                "enum": [
+                                    "EPSG:4326"
+                                ]
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -1012,6 +1217,20 @@
                     },
                     "410": {
                         "description": "Gone",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Precondition failed",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1171,6 +1390,20 @@
                             }
                         }
                     },
+                    "412": {
+                        "description": "Precondition failed",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
                     "415": {
                         "description": "Unsupported media type",
                         "schema": {
@@ -1234,6 +1467,16 @@
                 "operationId": "object_history",
                 "description": "",
                 "parameters": [
+                    {
+                        "name": "Accept-Crs",
+                        "in": "header",
+                        "description": "Het gewenste 'Coordinate Reference System' (CRS) van de geometrie in het antwoord (response body). Volgens de GeoJSON spec is WGS84 de default (EPSG:4326 is hetzelfde als WGS84).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "EPSG:4326"
+                        ]
+                    },
                     {
                         "name": "If-None-Match",
                         "in": "header",

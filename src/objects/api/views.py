@@ -4,12 +4,12 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from vng_api_common.geo import GeoMixin
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object
 
 from .filters import ObjectFilterSet
+from .mixins import GeoMixin
 from .serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,
@@ -17,7 +17,7 @@ from .serializers import (
 )
 
 
-class ObjectViewSet(SearchMixin, viewsets.ModelViewSet):
+class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     queryset = Object.objects.order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet
