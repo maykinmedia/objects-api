@@ -10,7 +10,7 @@ Objecten API
 |build-status| |docs| |coverage| |black| |docker|
 
 API om objecten te beheren die behoren bij een bepaald objecttype. 
-[`(English version)`_]
+(`English version`_)
 
 Ontwikkeld door `Maykin Media B.V.`_ in opdracht van de gemeente Utrecht.
 
