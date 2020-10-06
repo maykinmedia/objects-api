@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 from objects.core.tests.factores import ObjectRecordFactory
 
-from .constants import POLYGON_AMSTERDAM_CENTRUM
+from .constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
@@ -32,6 +32,7 @@ class GeoSearchTests(APITestCase):
                     }
                 }
             },
+            **GEO_WRITE_KWARGS,
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -61,6 +62,7 @@ class GeoSearchTests(APITestCase):
                 },
                 "type": OBJECT_TYPE,
             },
+            **GEO_WRITE_KWARGS,
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

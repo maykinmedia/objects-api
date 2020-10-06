@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectRecordFactory
 
+from .constants import GEO_WRITE_KWARGS
 from .utils import mock_objecttype
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
@@ -28,7 +29,7 @@ class ObjectTypeValidationTests(APITestCase):
             },
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Object.objects.count(), 0)
@@ -53,7 +54,7 @@ class ObjectTypeValidationTests(APITestCase):
             },
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Object.objects.count(), 0)
@@ -77,7 +78,7 @@ class ObjectTypeValidationTests(APITestCase):
             },
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Object.objects.count(), 0)
@@ -93,7 +94,7 @@ class ObjectTypeValidationTests(APITestCase):
             "type": OBJECT_TYPE,
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Object.objects.count(), 0)
@@ -113,7 +114,7 @@ class ObjectTypeValidationTests(APITestCase):
             },
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Object.objects.exclude(id=record.object.id).count(), 0)
@@ -142,7 +143,7 @@ class ObjectTypeValidationTests(APITestCase):
             },
         }
 
-        response = self.client.put(url, data)
+        response = self.client.put(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -166,7 +167,7 @@ class ObjectTypeValidationTests(APITestCase):
             "type": OBJECT_TYPE,
         }
 
-        response = self.client.patch(url, data)
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

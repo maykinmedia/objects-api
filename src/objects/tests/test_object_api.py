@@ -11,6 +11,7 @@ from rest_framework.test import APITestCase
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
 
+from .constants import GEO_WRITE_KWARGS
 from .utils import mock_objecttype
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
@@ -69,7 +70,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -109,7 +110,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.put(url, data)
+        response = self.client.put(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -154,7 +155,7 @@ class ObjectApiTests(APITestCase):
             },
         }
 
-        response = self.client.patch(url, data)
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
