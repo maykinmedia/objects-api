@@ -9,8 +9,8 @@ Objects API
 
 |build-status| |docs| |coverage| |black| |docker|
 
-API to manage objects belonging to a certain object type. 
-[`(Nederlandse versie)`_]
+API to manage objects belonging to a certain object type.
+(`Nederlandse versie`_)
 
 Developed by `Maykin Media B.V.`_ commissioned by the Municipality of Utrecht.
 
@@ -43,7 +43,7 @@ Copyright © Maykin Media, 2020
 Licensed under the EUPL_
 
 
-.. _`(Nederlandse versie)`: README.NL.rst
+.. _`Nederlandse versie`: README.NL.rst
 
 .. _`Maykin Media B.V.`: https://www.maykinmedia.nl
 

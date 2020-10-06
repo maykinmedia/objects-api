@@ -14,10 +14,15 @@ sys.path.insert(0, os.path.abspath("../src"))
 
 import objects  # noqa isort:skip
 
-from objects.setup import setup_env  # noqa isort:skip
+# from objects.setup import setup_env  # noqa isort:skip
 
-setup_env()
-django.setup()
+# TODO: This needs to be enabled when we want to use autodoc to grab
+# documentation from classes and functions. However, enabling django.setup()
+# causes RTD to fail because GDAL is not present in the RTD environment.
+# See: https://github.com/readthedocs/readthedocs-docker-images/issues/114#issuecomment-570566599
+#
+# setup_env()
+# django.setup()
 
 # -- Project information -----------------------------------------------------
 
