@@ -9,7 +9,7 @@ Objecten API
 
 |build-status| |docs| |coverage| |black| |docker|
 
-API om objecten te beheren die behoren bij een bepaald objecttype. 
+API om objecten te beheren die behoren bij een bepaald objecttype.
 (`English version`_)
 
 Ontwikkeld door `Maykin Media B.V.`_ in opdracht van de gemeente Utrecht.
@@ -21,11 +21,11 @@ Introductie
 De Objecten API heeft als doel om uiteenlopende objecten eenvoudig te kunnen
 registreren en ontsluiten in een gestandaardiseerd formaat. De Objecten API kan
 door elke organisatie ingezet worden om de voor haar interessante objecten te
-beheren. Ook kan een organisatie er voor kiezen een Objecten API in te zetten 
+beheren. Ook kan een organisatie er voor kiezen een Objecten API in te zetten
 voor Open Data, waarbij de geregistreerde objecten publiekelijk toegankelijk
 zijn.
 
-Om het formaat van objecten, de zogenoemde objecttypen, vast te leggen wordt 
+Om het formaat van objecten, de zogenoemde objecttypen, vast te leggen wordt
 gebruik gemaakt van de landelijke en/of een lokale `Objecttypen API`_.
 
 
@@ -45,7 +45,7 @@ Copyright © Maykin Media, 2020
 Licensed under the EUPL_
 
 
-.. _`(English version)`: README.rst
+.. _`English version`: README.rst
 
 .. _`Maykin Media B.V.`: https://www.maykinmedia.nl
 
