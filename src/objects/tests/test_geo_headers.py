@@ -4,13 +4,14 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from objects.core.tests.factores import ObjectFactory
+from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_READ_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 
-class GeoHeaderTests(APITestCase):
+class GeoHeaderTests(TokenAuthMixin, APITestCase):
     def assertResponseHasGeoHeaders(self, response):
         self.assertTrue("Content-Crs" in response)
         self.assertEqual(response["Content-Crs"], "EPSG:4326")

@@ -10,6 +10,7 @@ from rest_framework.test import APITestCase
 
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
+from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
 from .utils import mock_objecttype
@@ -19,7 +20,7 @@ OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 @freeze_time("2020-08-08")
 @requests_mock.Mocker()
-class ObjectApiTests(APITestCase):
+class ObjectApiTests(TokenAuthMixin, APITestCase):
     def test_retrieve_object(self, m):
         object = ObjectFactory.create()
         object_record = ObjectRecordFactory.create(

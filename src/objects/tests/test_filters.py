@@ -4,11 +4,12 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from objects.core.tests.factores import ObjectFactory
+from objects.utils.test import TokenAuthMixin
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 
-class FilterTests(APITestCase):
+class FilterTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
 
     def test_filter_object_type(self):
