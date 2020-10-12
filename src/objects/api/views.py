@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from vng_api_common.search import SearchMixin
 
+from objects.accounts.permissions import ObjectBasedPermission
 from objects.core.models import Object
 
 from .filters import ObjectFilterSet
@@ -23,6 +24,15 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     filterset_class = ObjectFilterSet
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
+    permission_classes = [ObjectBasedPermission]
+
+    def get_queryset(self):
+        base = super().get_queryset()
+
+        if self.action not in ("list", "search"):
+            return base
+
+        return base.filter_for_user(self.request.user)
 
     @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
