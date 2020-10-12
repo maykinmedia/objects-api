@@ -70,8 +70,9 @@ INSTALLED_APPS = [
     "compat",  # Part of hijack
     "hijack_admin",
     "rest_framework",
-    "vng_api_common",
+    "rest_framework.authtoken",
     "rest_framework_gis",
+    "vng_api_common",
     # Project applications.
     "objects.accounts",
     "objects.api",
