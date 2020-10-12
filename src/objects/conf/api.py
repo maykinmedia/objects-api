@@ -21,7 +21,10 @@ SWAGGER_SETTINGS = BASE_SWAGGER_SETTINGS.copy()
 SWAGGER_SETTINGS.update(
     {
         "DEFAULT_INFO": "objects.api.schema.info",
-        "SECURITY_DEFINITIONS": None,
+        # Use apiKey type since OAS2 doesn't support Bearer authentication
+        "SECURITY_DEFINITIONS": {
+            "Token": {"type": "apiKey", "name": "Authorization", "in": "header"}
+        },
         "DEFAULT_FIELD_INSPECTORS": ("objects.utils.inspectors.GeometryFieldInspector",)
         + BASE_SWAGGER_SETTINGS["DEFAULT_FIELD_INSPECTORS"],
     }

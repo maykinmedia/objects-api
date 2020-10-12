@@ -3,6 +3,8 @@ info:
   title: objects API
   description: An API to access Objects
   version: 0.1.0
+security:
+- Token: []
 paths:
   /objects/:
     get:
@@ -1303,6 +1305,11 @@ components:
           schema:
             $ref: '#/components/schemas/Object'
       required: true
+  securitySchemes:
+    Token:
+      type: apiKey
+      name: Authorization
+      in: header
   schemas:
     Geometry:
       title: Geometry
