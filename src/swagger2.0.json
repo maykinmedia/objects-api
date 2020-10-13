@@ -16,6 +16,18 @@
     "produces": [
         "application/json"
     ],
+    "securityDefinitions": {
+        "Token": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "security": [
+        {
+            "Token": []
+        }
+    ],
     "paths": {
         "/objects/": {
             "get": {

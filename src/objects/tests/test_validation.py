@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectRecordFactory
+from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
 from .utils import mock_objecttype
@@ -14,7 +15,7 @@ OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 
 @requests_mock.Mocker()
-class ObjectTypeValidationTests(APITestCase):
+class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
     def test_create_object_invalid_objecttype_url(self, m):
         object_type_invalid = "https://example.com/objecttypes/v1/types/invalid"
         m.get(object_type_invalid, status_code=404)

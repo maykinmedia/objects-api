@@ -5,13 +5,14 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from objects.core.tests.factores import ObjectRecordFactory
+from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 
-class GeoSearchTests(APITestCase):
+class GeoSearchTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-search")
 
     def test_filter_within(self):
