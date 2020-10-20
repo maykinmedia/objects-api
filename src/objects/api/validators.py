@@ -5,6 +5,9 @@ from rest_framework import serializers
 
 from objects.core.utils import check_objecttype
 
+from .constants import Operators
+from .utils import is_number
+
 
 class JsonSchemaValidator:
     code = "invalid-json-schema"
@@ -78,3 +81,23 @@ class IsImmutableValidator:
 
         if new_value != current_value:
             raise serializers.ValidationError(self.message, code=self.code)
+
+
+def validate_data_attrs(value: str):
+    code = "invalid-data-attrs-query"
+    parts = value.split(",")
+
+    for value_part in parts:
+        variable, operator, val = value_part.rsplit("__", 2)
+
+        if operator not in Operators.values:
+            message = _("Comparison operator %(operator)s is unknown") % {
+                "operator": operator
+            }
+            raise serializers.ValidationError(message, code=code)
+
+        if operator != Operators.exact and not is_number(val):
+            message = _("Operator %(operator)s supports only numeric values") % {
+                "operator": operator
+            }
+            raise serializers.ValidationError(message, code=code)
