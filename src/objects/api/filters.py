@@ -43,19 +43,25 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         fields = ("type", "data_attrs")
 
     def filter_data_attrs(self, queryset, name, value):
-        variable, operator, val = value.rsplit("__", 2)
-        val_numeric = float(val) if is_number(val) else None
+        parts = value.split(",")
 
-        if operator != "exact":
-            # only numeric
-            return queryset.filter(
-                **{f"records__data__{variable}__{operator}": val_numeric}
-            ).distinct()
+        for value_part in parts:
+            variable, operator, val = value_part.rsplit("__", 2)
+            val_numeric = float(val) if is_number(val) else None
 
-        #  for exact operator try to filter on string value first
-        result = queryset.filter(**{f"records__data__{variable}": val}).distinct()
-        if result.count() == 0 and is_number(val):
-            result = queryset.filter(
-                **{f"records__data__{variable}": val_numeric}
-            ).distinct()
-        return result
+            if operator == "exact":
+                #  for exact operator try to filter on string and numeric values
+                in_vals = [val]
+                if is_number(val):
+                    in_vals.append(val_numeric)
+                queryset = queryset.filter(
+                    **{f"records__data__{variable}__in": in_vals}
+                )
+
+            else:
+                # only numeric
+                queryset = queryset.filter(
+                    **{f"records__data__{variable}__{operator}": val_numeric}
+                )
+
+        return queryset
