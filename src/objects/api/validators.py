@@ -91,13 +91,13 @@ def validate_data_attrs(value: str):
         variable, operator, val = value_part.rsplit("__", 2)
 
         if operator not in Operators.values:
-            message = _("Comparison operator %(operator)s is unknown") % {
+            message = _("Comparison operator `%(operator)s` is unknown") % {
                 "operator": operator
             }
             raise serializers.ValidationError(message, code=code)
 
         if operator != Operators.exact and not is_number(val):
-            message = _("Operator %(operator)s supports only numeric values") % {
+            message = _("Operator `%(operator)s` supports only numeric values") % {
                 "operator": operator
             }
             raise serializers.ValidationError(message, code=code)

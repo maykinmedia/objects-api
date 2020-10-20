@@ -5,14 +5,14 @@ from rest_framework.test import APITestCase
 
 from objects.accounts.constants import PermissionModes
 from objects.accounts.tests.factories import ObjectPermissionFactory
-from objects.core.tests.factores import ObjectFactory
+from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/abc109"
 OTHER_OBJECT_TYPE = "https://example.com/objecttypes/v1/types/qwe109"
 
 
-class FilterTests(TokenAuthMixin, APITestCase):
+class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
 
     @classmethod
@@ -42,4 +42,140 @@ class FilterTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             data[0]["url"],
             f"http://testserver{reverse('object-detail', args=[object.uuid])}",
+        )
+
+
+class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("object-list")
+
+    def test_filter_exact_string(self):
+        record = ObjectRecordFactory.create(data={"name": "demo"})
+        ObjectRecordFactory.create(data={"name": "demo2"})
+        ObjectRecordFactory.create(data={})
+
+        response = self.client.get(self.url, {"data_attrs": "name__exact__demo"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_exact_number(self):
+        record = ObjectRecordFactory.create(data={"diameter": 4})
+        ObjectRecordFactory.create(data={"diameter": 6})
+        ObjectRecordFactory.create(data={})
+
+        response = self.client.get(self.url, {"data_attrs": "diameter__exact__4"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_lte(self):
+        record1 = ObjectRecordFactory.create(data={"diameter": 4})
+        record2 = ObjectRecordFactory.create(data={"diameter": 5})
+        ObjectRecordFactory.create(data={"diameter": 6})
+        ObjectRecordFactory.create(data={})
+
+        response = self.client.get(self.url, {"data_attrs": "diameter__lte__5"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+        data = sorted(data, key=lambda x: x["record"]["data"]["diameter"])
+
+        self.assertEqual(len(data), 2)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record1.object.uuid])}",
+        )
+        self.assertEqual(
+            data[1]["url"],
+            f"http://testserver{reverse('object-detail', args=[record2.object.uuid])}",
+        )
+
+    def test_filter_lt(self):
+        record = ObjectRecordFactory.create(data={"diameter": 4})
+        ObjectRecordFactory.create(data={"diameter": 5})
+        ObjectRecordFactory.create(data={"diameter": 6})
+        ObjectRecordFactory.create(data={})
+
+        response = self.client.get(self.url, {"data_attrs": "diameter__lt__5"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_lte_not_numerical(self):
+        response = self.client.get(self.url, {"data_attrs": "diameter__lt__value"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(), ["Operator `lt` supports only numeric values"]
+        )
+
+    def test_filter_invalid_operator(self):
+        response = self.client.get(self.url, {"data_attrs": "diameter__not__value"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
+
+    def test_filter_nester_attr(self):
+        record = ObjectRecordFactory.create(data={"dimensions": {"diameter": 4}})
+        ObjectRecordFactory.create(data={"dimensions": {"diameter": 5}})
+        ObjectRecordFactory.create(data={"diameter": 4})
+        ObjectRecordFactory.create(data={})
+
+        response = self.client.get(
+            self.url, {"data_attrs": "dimensions__diameter__exact__4"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_comma_separated(self):
+        record = ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 4}, "name": "demo"}
+        )
+        ObjectRecordFactory.create(data={"dimensions": {"diameter": 5}, "name": "demo"})
+        ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 4}, "name": "other"}
+        )
+
+        response = self.client.get(
+            self.url, {"data_attrs": "dimensions__diameter__exact__4,name__exact__demo"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
