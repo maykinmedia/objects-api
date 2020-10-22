@@ -1,0 +1,778 @@
+[
+{
+  "model": "core.object",
+  "pk": 1,
+  "fields": {
+    "uuid": "bea734f3-456b-4049-87b1-58d895daab8b",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 2,
+  "fields": {
+    "uuid": "d4643987-7f5f-4d41-8083-046eb8fbad61",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 3,
+  "fields": {
+    "uuid": "59765348-ee72-4d30-b21f-dcc2ba2dffac",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 4,
+  "fields": {
+    "uuid": "47454f68-1884-438c-8f69-398f437d59c3",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 8,
+  "fields": {
+    "uuid": "6cb099c1-acb2-4ff1-989e-c752e6d44540",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 9,
+  "fields": {
+    "uuid": "601b20a6-bd09-41ff-b4ea-25c38ed5c424",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 10,
+  "fields": {
+    "uuid": "d89bcbcb-51bb-4bc4-9523-2891ed9994d7",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 11,
+  "fields": {
+    "uuid": "8e155233-f06e-49ea-97fb-3c9eef31dc35",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 12,
+  "fields": {
+    "uuid": "f710ad49-8c90-4b4d-bf94-83555212dd5c",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 15,
+  "fields": {
+    "uuid": "4e04fedb-e8a5-47a2-beea-4963eafbf4b9",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 16,
+  "fields": {
+    "uuid": "1017c4c4-24c1-47b4-8f61-3b45a56f3054",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 27,
+  "fields": {
+    "uuid": "6ce48e78-dc54-4164-8670-4b139d98f761",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 28,
+  "fields": {
+    "uuid": "69feca90-6c3d-4628-ace8-19e4b0ae4065",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 29,
+  "fields": {
+    "uuid": "2ffa8464-00be-473d-be78-c2d4a6283dea",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 30,
+  "fields": {
+    "uuid": "f86dc47e-9613-4eb3-aca7-f727cba3bea0",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d/"
+  }
+},
+{
+  "model": "core.object",
+  "pk": 31,
+  "fields": {
+    "uuid": "57001413-c035-434e-9d46-090ba24fca8e",
+    "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d/"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 4,
+  "fields": {
+    "uuid": "af9e628f-7168-437d-a2ee-5dda8b389267",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 30,
+      "plantDate": "2020-04-12"
+    },
+    "start_date": "2020-09-03",
+    "end_date": null,
+    "registration_date": "2020-09-03",
+    "correct": null,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 7,
+  "fields": {
+    "uuid": "b9103e57-2ccf-4361-b615-eacdbb338d35",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 5,
+      "plantDate": "2020-04-12"
+    },
+    "start_date": "2020-09-03",
+    "end_date": "2020-09-04",
+    "registration_date": "2020-09-03",
+    "correct": null,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 8,
+  "fields": {
+    "uuid": "05ae387e-7bb5-450e-accf-81215280766d",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 5,
+      "plantDate": "2020-04-12"
+    },
+    "start_date": "2020-09-04",
+    "end_date": null,
+    "registration_date": "2020-09-04",
+    "correct": null,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 9,
+  "fields": {
+    "uuid": "8ef4b6f7-3e44-4555-ba1c-9d1ceb0d1953",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 15
+    },
+    "start_date": "2020-09-04",
+    "end_date": null,
+    "registration_date": "2020-09-04",
+    "correct": null,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 10,
+  "fields": {
+    "uuid": "1275819a-99e8-4e49-9170-79e8954f1047",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 25
+    },
+    "start_date": "2020-09-04",
+    "end_date": "2020-09-04",
+    "registration_date": "2020-09-04",
+    "correct": null,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 11,
+  "fields": {
+    "uuid": "3066d3d8-c11c-40a2-a405-96e31e0c67bd",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 25
+    },
+    "start_date": "2020-09-04",
+    "end_date": "2020-09-04",
+    "registration_date": "2020-09-04",
+    "correct": null,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 12,
+  "fields": {
+    "uuid": "abd4d408-1db9-4028-955e-05502b61c4eb",
+    "object": 4,
+    "version": 1,
+    "data": {
+      "diameter": 25
+    },
+    "start_date": "2020-09-04",
+    "end_date": null,
+    "registration_date": "2020-09-04",
+    "correct": 11,
+    "geometry": null
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 13,
+  "fields": {
+    "uuid": "7d1c09cb-422c-4641-861f-9cc56d7f812a",
+    "object": 1,
+    "version": 2,
+    "data": {
+      "type": "Standaard",
+      "kiemjaar": 26099906,
+      "leeftijd": 10305955,
+      "typeplus": "Rodeo stier",
+      "verplant": false,
+      "boombeeld": "Aanvaard boombeeld",
+      "boomgroep": "Laanboom",
+      "groeifase": "Eindfase",
+      "snoeifase": "Begeleidingssnoeifase",
+      "boomspiegel": "id ut est sit",
+      "kroonvolume": 20002093,
+      "meerstammig": false,
+      "transponder": "adipisicing",
+      "stamdiameter": 54492381,
+      "takvrijestam": "2 m.",
+      "verplantbaar": false,
+      "beleidsstatus": "Geen specifieke status-functionele laan- en parkbomen",
+      "boombeschermer": "Ut enim labore occaecat magna",
+      "herplantplicht": false,
+      "feestverlichting": "fugiat laboris in ad eiusmod",
+      "beoogdeomlooptijd": "50-75 jaar",
+      "boomhoogteactueel": 36041386,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": 57683332.93245277,
+      "takvrijezoneprimair": 31910366,
+      "boomveiligheidsklasse": "Boom zonder gebreken",
+      "groeiplaatsinrichting": "eu",
+      "takvrijezonesecundair": -42898474,
+      "typebeschermingsstatus": "Monumentale boom",
+      "typevermeerderingsvorm": "Eigen wortel",
+      "boomhoogteklasseactueel": "TODO",
+      "takvrijeruimtetotgebouw": -83544453,
+      "boomhoogteklasseeindbeeld": "TODO",
+      "typeomgevingsrisicoklasse": "Laag",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-22",
+    "end_date": null,
+    "registration_date": "2020-09-22",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.905289 52.369918)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 14,
+  "fields": {
+    "uuid": "3de37766-33fd-4666-876a-aa1dbf10f5d8",
+    "object": 2,
+    "version": 2,
+    "data": {
+      "boombeeld": "Boombeeld regulier (HB)",
+      "boomgroep": "Solitaire boom",
+      "boomspiegel": "dolor sed dolore laboris",
+      "beleidsstatus": "Geen specifieke status-functionele laan- en parkbomen",
+      "boombeschermer": "anim incididunt velit Lorem non",
+      "beoogdeomlooptijd": "10-20 jaar",
+      "boomhoogteactueel": 259791,
+      "boomboomvoorziening": "TODO",
+      "boomhoogteklasseactueel": "TODO",
+      "boomhoogteklasseeindbeeld": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.897787 52.37659492959213)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 15,
+  "fields": {
+    "uuid": "12995204-df33-41bc-846b-74c6e566dab8",
+    "object": 3,
+    "version": 2,
+    "data": {
+      "kiemjaar": 85674463,
+      "leeftijd": 66859448,
+      "boombeeld": "Aanvaard boombeeld",
+      "boomgroep": "Solitaire boom",
+      "groeifase": "Volwassen fase",
+      "snoeifase": "Niet van toepassing",
+      "boomspiegel": "occaecat sint Lorem",
+      "kroonvolume": -94688960,
+      "meerstammig": true,
+      "stamdiameter": 257551,
+      "takvrijestam": "Niet te beoordelen",
+      "beleidsstatus": "Structuurbepalend/hoofd(groen/bomen)structuur",
+      "boombeschermer": "magna Excepteur anim",
+      "herplantplicht": false,
+      "feestverlichting": "non id eu est proident",
+      "beoogdeomlooptijd": "Onbekend",
+      "boomhoogteactueel": -42577886,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": -34831998.8124679,
+      "takvrijezoneprimair": -55485849,
+      "boomveiligheidsklasse": "Risicoboom",
+      "groeiplaatsinrichting": "id nulla",
+      "takvrijezonesecundair": -56030012,
+      "boomhoogteklasseactueel": "TODO",
+      "takvrijeruimtetotgebouw": -84303815,
+      "boomhoogteklasseeindbeeld": "TODO",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.901166811673011 52.37626808920047)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 19,
+  "fields": {
+    "uuid": "559bcd8f-4e75-475b-888c-95c4bd5ad437",
+    "object": 8,
+    "version": 2,
+    "data": {
+      "kiemjaar": -79718450,
+      "leeftijd": -49449207,
+      "boombeeld": "Aanvaard boombeeld",
+      "boomgroep": "Solitaire boom",
+      "groeifase": "Eindfase",
+      "snoeifase": "Begeleidingssnoeifase",
+      "boomspiegel": "esse culpa nisi nostrud sit",
+      "kroonvolume": -46925015,
+      "meerstammig": true,
+      "stamdiameter": 65355930,
+      "beleidsstatus": "Beschermwaardig/monumentaal",
+      "boombeschermer": "consequat",
+      "herplantplicht": false,
+      "feestverlichting": "commodo est aliqua ad",
+      "beoogdeomlooptijd": "< 10 jaar",
+      "boomhoogteactueel": -5941471,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": 3686406.3338632584,
+      "boomveiligheidsklasse": "Onbekend",
+      "groeiplaatsinrichting": "commodo irure aliquip nisi",
+      "boomhoogteklasseactueel": "TODO",
+      "boomhoogteklasseeindbeeld": "TODO",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.90663497584874 52.37384227041968)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 20,
+  "fields": {
+    "uuid": "d67a1b06-8e53-4174-b5b7-2c21baf43443",
+    "object": 9,
+    "version": 2,
+    "data": {
+      "type": "Familiegraf",
+      "kiemjaar": -49103223,
+      "leeftijd": -82106417,
+      "boombeeld": "Boombeeld regulier (HB)",
+      "boomgroep": "Boomweide",
+      "groeifase": "Niet te beoordelen",
+      "snoeifase": "Begeleidingssnoeifase",
+      "boomspiegel": "anim eiusmod officia Ut",
+      "kroonvolume": 31252315,
+      "meerstammig": true,
+      "transponder": "ut aliquip",
+      "stamdiameter": 22894267,
+      "takvrijestam": "0 m.",
+      "beleidsstatus": "Beschermwaardig/monumentaal",
+      "boombeschermer": "magna aliqua",
+      "herplantplicht": false,
+      "feestverlichting": "ad sunt",
+      "beoogdeomlooptijd": "150-200 jaar",
+      "boomhoogteactueel": 70373140,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": 22443804.538503543,
+      "takvrijezoneprimair": -27670922,
+      "boomveiligheidsklasse": "Boom zonder gebreken",
+      "groeiplaatsinrichting": "do enim",
+      "takvrijezonesecundair": 6229824,
+      "boomhoogteklasseactueel": "TODO",
+      "takvrijeruimtetotgebouw": -68242641,
+      "boomhoogteklasseeindbeeld": "TODO",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.908187981083221 52.3719808282391)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 21,
+  "fields": {
+    "uuid": "f4e1d86e-1737-4abd-b76d-884cd0a630e8",
+    "object": 10,
+    "version": 2,
+    "data": {
+      "type": "Laagspanningskabel",
+      "kiemjaar": -83821856,
+      "leeftijd": 91175381,
+      "typeplus": "Klimmuur/ladder combi",
+      "verplant": true,
+      "boombeeld": "Achterstallig boombeeld",
+      "boomgroep": "Boomweide",
+      "groeifase": "Eindfase",
+      "snoeifase": "Onbekend",
+      "boomspiegel": "ipsum mollit velit",
+      "kroonvolume": -87396228,
+      "meerstammig": true,
+      "transponder": "laboris in velit",
+      "stamdiameter": 49937159,
+      "takvrijestam": "8 m.",
+      "beleidsstatus": "Structuurbepalend/hoofd(groen/bomen)structuur",
+      "boombeschermer": "enim officia eu ut",
+      "herplantplicht": false,
+      "feestverlichting": "eiusmod ullamco exercitation do Duis",
+      "beoogdeomlooptijd": "20-30 jaar",
+      "boomhoogteactueel": -23201727,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": 82765642.88322538,
+      "takvrijezoneprimair": -3541595,
+      "boomveiligheidsklasse": "Niet te beoordelen",
+      "groeiplaatsinrichting": "tempor id esse ex",
+      "takvrijezonesecundair": 73023085,
+      "typebeschermingsstatus": "Geen beschermingsstatus",
+      "typevermeerderingsvorm": "Eigen wortel",
+      "boomhoogteklasseactueel": "TODO",
+      "takvrijeruimtetotgebouw": -54286318,
+      "boomhoogteklasseeindbeeld": "TODO",
+      "typeomgevingsrisicoklasse": "Laag",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.908722727852763 52.36991749536178)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 22,
+  "fields": {
+    "uuid": "c72f5dbd-cdd1-41ba-bd3f-f6b1c6872134",
+    "object": 11,
+    "version": 2,
+    "data": {
+      "type": "Staafmathek",
+      "kiemjaar": -81328471,
+      "leeftijd": -54513892,
+      "boombeeld": "Aanvaard boombeeld",
+      "boomgroep": "Solitaire boom",
+      "groeifase": "Onbekend",
+      "snoeifase": "Niet van toepassing",
+      "boomspiegel": "velit nulla esse veniam",
+      "kroonvolume": 60112855,
+      "meerstammig": true,
+      "transponder": "occaecat consequat",
+      "stamdiameter": 7107528,
+      "takvrijestam": "2 m.",
+      "beleidsstatus": "Structuurbepalend/hoofd(groen/bomen)structuur",
+      "boombeschermer": "ea Duis",
+      "herplantplicht": true,
+      "feestverlichting": "ullamco nisi proident",
+      "beoogdeomlooptijd": "30-50 jaar",
+      "boomhoogteactueel": 35348905,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": -28640875.756262705,
+      "takvrijezoneprimair": -82820445,
+      "boomveiligheidsklasse": "Risicoboom",
+      "groeiplaatsinrichting": "dolor",
+      "takvrijezonesecundair": 73713677,
+      "typebeschermingsstatus": "Geen beschermingsstatus",
+      "boomhoogteklasseactueel": "TODO",
+      "takvrijeruimtetotgebouw": 30753299,
+      "boomhoogteklasseeindbeeld": "TODO",
+      "typeomgevingsrisicoklasse": "Gemiddeld",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.908187009455887 52.36785425886177)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 23,
+  "fields": {
+    "uuid": "61ab211b-b219-4aca-a944-fd076f57e09b",
+    "object": 12,
+    "version": 2,
+    "data": {
+      "kiemjaar": -6323347,
+      "leeftijd": 2694554,
+      "boombeeld": "Niet van toepassing",
+      "boomgroep": "Boomweide",
+      "groeifase": "Onbekend",
+      "snoeifase": "Onderhoudssnoeifase",
+      "boomspiegel": "in laborum adipisicing",
+      "kroonvolume": 40896012,
+      "meerstammig": true,
+      "stamdiameter": 30859267,
+      "beleidsstatus": "Geen specifieke status-verkorte omloop (tot ca. 20 jaar) en bomen 3e grootte",
+      "boombeschermer": "culpa",
+      "herplantplicht": false,
+      "feestverlichting": "tempor cillum veniam",
+      "beoogdeomlooptijd": "150-200 jaar",
+      "boomhoogteactueel": 3407334,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": -55129074.23592956,
+      "boomveiligheidsklasse": "Onbekend",
+      "groeiplaatsinrichting": "sit culpa occaecat laborum eu",
+      "boomhoogteklasseactueel": "TODO",
+      "boomhoogteklasseeindbeeld": "TODO",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.906633403722665 52.3659930690003)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 26,
+  "fields": {
+    "uuid": "09ce5aec-e105-4345-8362-6f20f3d1a3fb",
+    "object": 15,
+    "version": 2,
+    "data": {
+      "boombeeld": "Boombeeld regulier (HB)",
+      "boomgroep": "Solitaire boom",
+      "boomspiegel": "dolor sed dolore laboris",
+      "beleidsstatus": "Geen specifieke status-functionele laan- en parkbomen",
+      "boombeschermer": "anim incididunt velit Lorem non",
+      "beoogdeomlooptijd": "10-20 jaar",
+      "boomhoogteactueel": 259791,
+      "boomboomvoorziening": "TODO",
+      "boomhoogteklasseactueel": "TODO",
+      "boomhoogteklasseeindbeeld": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.897787 52.38340911858636)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 27,
+  "fields": {
+    "uuid": "0c95876e-45b2-4497-a4e7-553eae4b32c5",
+    "object": 16,
+    "version": 2,
+    "data": {
+      "kiemjaar": 85674463,
+      "leeftijd": 66859448,
+      "boombeeld": "Aanvaard boombeeld",
+      "boomgroep": "Solitaire boom",
+      "groeifase": "Volwassen fase",
+      "snoeifase": "Niet van toepassing",
+      "boomspiegel": "occaecat sint Lorem",
+      "kroonvolume": -94688960,
+      "meerstammig": true,
+      "stamdiameter": 257551,
+      "takvrijestam": "Niet te beoordelen",
+      "beleidsstatus": "Structuurbepalend/hoofd(groen/bomen)structuur",
+      "boombeschermer": "magna Excepteur anim",
+      "herplantplicht": false,
+      "feestverlichting": "non id eu est proident",
+      "beoogdeomlooptijd": "Onbekend",
+      "boomhoogteactueel": -42577886,
+      "controlefrequentie": "TODO",
+      "stamdiameterklasse": "TODO",
+      "boomboomvoorziening": "TODO",
+      "monetaireboomwaarde": -34831998.8124679,
+      "takvrijezoneprimair": -55485849,
+      "boomveiligheidsklasse": "Risicoboom",
+      "groeiplaatsinrichting": "id nulla",
+      "takvrijezonesecundair": -56030012,
+      "boomhoogteklasseactueel": "TODO",
+      "takvrijeruimtetotgebouw": -84303815,
+      "boomhoogteklasseeindbeeld": "TODO",
+      "kroondiameterklasseactueel": "TODO",
+      "kroondiameterklasseeindbeeld": "TODO",
+      "boomtypebeschermingsstatusplus": "TODO"
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.90461710532547 52.38274861943765)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 38,
+  "fields": {
+    "uuid": "be988038-d4ed-497c-bc4c-4ea9f0b04ca4",
+    "object": 27,
+    "version": 1,
+    "data": {
+      "id_nummer": 7
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.886851272147237 52.36991749536178)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 39,
+  "fields": {
+    "uuid": "b87a9515-64e9-4b24-864e-16eeb2be5c33",
+    "object": 28,
+    "version": 1,
+    "data": {
+      "id_nummer": 4
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.88738601891678 52.3719808282391)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 40,
+  "fields": {
+    "uuid": "616f7e25-d0d0-4007-aa7d-37805d99cbe3",
+    "object": 29,
+    "version": 1,
+    "data": {
+      "id_nummer": 8
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.88893902415126 52.37384227041968)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 41,
+  "fields": {
+    "uuid": "606c4a06-2181-42b8-90c7-9e6cce326579",
+    "object": 30,
+    "version": 1,
+    "data": {
+      "id_nummer": 4
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.891358354234796 52.3753195751365)"
+  }
+},
+{
+  "model": "core.objectrecord",
+  "pk": 42,
+  "fields": {
+    "uuid": "2845003d-aaa8-4eb8-a0da-590b7f967d93",
+    "object": 31,
+    "version": 1,
+    "data": {
+      "id_nummer": 3
+    },
+    "start_date": "2020-09-30",
+    "end_date": null,
+    "registration_date": "2020-09-30",
+    "correct": null,
+    "geometry": "SRID=4326;POINT (4.894407188326989 52.37626808920047)"
+  }
+}
+]
