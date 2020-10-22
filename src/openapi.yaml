@@ -6,7 +6,7 @@ info:
 security:
 - Token: []
 paths:
-  /objects/:
+  /objects:
     get:
       operationId: object_list
       description: ''
@@ -347,7 +347,7 @@ paths:
       tags:
       - objects
     parameters: []
-  /objects/search/:
+  /objects/search:
     post:
       operationId: object_search
       description: Perform a (geo) search on Objects
@@ -532,7 +532,7 @@ paths:
       tags:
       - objects
     parameters: []
-  /objects/{uuid}/:
+  /objects/{uuid}:
     get:
       operationId: object_read
       description: ''
@@ -557,12 +557,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          oneValue:
-            summary: "E\xE9n ETag-waarde"
-            value: '"79054025255fb1a26e4bc422aef54eb4"'
           multipleValues:
             summary: Meerdere ETag-waardes
             value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+          oneValue:
+            summary: "E\xE9n ETag-waarde"
+            value: '"79054025255fb1a26e4bc422aef54eb4"'
         schema:
           type: string
       responses:
@@ -1234,7 +1234,7 @@ paths:
       schema:
         type: string
         format: uuid
-  /objects/{uuid}/history/:
+  /objects/{uuid}/history:
     get:
       operationId: object_history
       description: ''
@@ -1259,12 +1259,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          oneValue:
-            summary: "E\xE9n ETag-waarde"
-            value: '"79054025255fb1a26e4bc422aef54eb4"'
           multipleValues:
             summary: Meerdere ETag-waardes
             value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+          oneValue:
+            summary: "E\xE9n ETag-waarde"
+            value: '"79054025255fb1a26e4bc422aef54eb4"'
         schema:
           type: string
       responses:
@@ -1293,7 +1293,9 @@ paths:
         type: string
         format: uuid
 tags:
-- name: ''
+- name: objects
+  description: ''
+- name: search
   description: ''
 servers:
 - url: https://example.com/api/v1
@@ -1307,9 +1309,9 @@ components:
       required: true
   securitySchemes:
     Token:
-      type: apiKey
-      name: Authorization
       in: header
+      name: Authorization
+      type: apiKey
   schemas:
     Geometry:
       title: Geometry
