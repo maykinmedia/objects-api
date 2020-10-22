@@ -1,3 +1,0 @@
-CREATE USER objects;
-CREATE DATABASE objects;
-GRANT ALL PRIVILEGES ON DATABASE objects TO objects;

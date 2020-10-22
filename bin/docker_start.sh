@@ -10,8 +10,10 @@ export PGPORT=${DB_PORT:-5432}
 fixtures_dir=${FIXTURES_DIR:-/app/fixtures}
 
 uwsgi_port=${UWSGI_PORT:-8000}
-uwsgi_processes=${UWSGI_PROCESSES:-4}
-uwsgi_threads=${UWSGI_THREADS:-1}
+uwsgi_processes=${UWSGI_PROCESSES:-2}
+uwsgi_threads=${UWSGI_THREADS:-2}
+
+mountpoint=${SUBPATH:-/}
 
 until pg_isready; do
   >&2 echo "Waiting for database connection..."
@@ -24,18 +26,28 @@ done
 >&2 echo "Apply database migrations"
 python src/manage.py migrate
 
+# Load any JSON fixtures present
+if [ -d $fixtures_dir ]; then
+    echo "Loading fixtures from $fixtures_dir"
+
+    for fixture in $(ls "$fixtures_dir/"*.json)
+    do
+        echo "Loading fixture $fixture"
+        python src/manage.py loaddata $fixture
+    done
+fi
+
 # Start server
 >&2 echo "Starting server"
 uwsgi \
     --http :$uwsgi_port \
     --http-keepalive \
-    --module objects.wsgi \
+    --manage-script-name \
+    --mount $mountpoint=objects.wsgi:application \
     --static-map /static=/app/static \
     --static-map /media=/app/media  \
     --chdir src \
     --enable-threads \
     --processes $uwsgi_processes \
     --threads $uwsgi_threads \
-    --post-buffering=8192 \
     --buffer-size=65535
-    # processes & threads are needed for concurrency without nginx sitting inbetween

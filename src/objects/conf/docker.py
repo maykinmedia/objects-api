@@ -2,10 +2,10 @@ import os
 
 from django.core.exceptions import ImproperlyConfigured
 
-os.environ.setdefault("DB_USER", os.getenv("DATABASE_USER", "postgres"))
-os.environ.setdefault("DB_NAME", os.getenv("DATABASE_NAME", "postgres"))
-os.environ.setdefault("DB_PASSWORD", os.getenv("DATABASE_PASSWORD", ""))
-os.environ.setdefault("DB_HOST", os.getenv("DATABASE_HOST", "db"))
+os.environ.setdefault("DB_USER", os.getenv("DB_USER", "objects"))
+os.environ.setdefault("DB_NAME", os.getenv("DB_NAME", "objects"))
+os.environ.setdefault("DB_PASSWORD", os.getenv("DB_PASSWORD", "objects"))
+os.environ.setdefault("DB_HOST", os.getenv("DB_HOST", "db"))
 
 from .base import *  # noqa isort:skip
 

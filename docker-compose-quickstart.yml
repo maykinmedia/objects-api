@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: mdillon/postgis
+    environment:
+      - POSTGRES_USER=${DB_USER:-objects}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-objects}
+
+  web:
+    build: .
+    image: maykinmedia/objects-api:latest
+    environment:
+      - DJANGO_SETTINGS_MODULE=objects.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
