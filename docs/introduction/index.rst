@@ -27,6 +27,7 @@ configuration or development needed.
    vision
    definitions
    visualization
+   features
    team
    open-source/index
 
