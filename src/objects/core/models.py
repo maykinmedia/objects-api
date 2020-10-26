@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from .query import ObjectQuerySet
 from .utils import check_objecttype
 
 
@@ -16,6 +17,8 @@ class Object(models.Model):
     object_type = models.URLField(
         _("object type"), help_text=_("Url reference to OBJECTTYPE in Objecttypes API")
     )
+
+    objects = ObjectQuerySet.as_manager()
 
     @property
     def current_record(self):

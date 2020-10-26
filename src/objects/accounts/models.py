@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from .constants import PermissionModes
 from .managers import UserManager
 
 
@@ -37,6 +38,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    object_permissions = models.ManyToManyField(
+        "accounts.ObjectPermission", related_name="users", blank=True
+    )
 
     objects = UserManager()
 
@@ -57,3 +61,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         "Returns the short name for the user."
         return self.first_name
+
+    def get_permission_for_object_type(self, object_type):
+        if not self.object_permissions.filter(object_type=object_type).exists():
+            return None
+        return self.object_permissions.get(object_type=object_type)
+
+
+class ObjectPermission(models.Model):
+    object_type = models.URLField(
+        _("object type"), help_text=_("Url reference to OBJECTTYPE in Objecttypes API")
+    )
+    mode = models.CharField(
+        _("mode"),
+        max_length=20,
+        choices=PermissionModes.choices,
+        help_text=_("Permission mode"),
+    )
+
+    class Meta:
+        verbose_name = _("object permission")
+        verbose_name_plural = _("object permissions")

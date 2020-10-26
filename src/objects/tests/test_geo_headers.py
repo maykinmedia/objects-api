@@ -3,6 +3,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from objects.accounts.constants import PermissionModes
+from objects.accounts.tests.factories import ObjectPermissionFactory
 from objects.core.tests.factores import ObjectFactory
 from objects.utils.test import TokenAuthMixin
 
@@ -12,12 +14,22 @@ OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 
 class GeoHeaderTests(TokenAuthMixin, APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        ObjectPermissionFactory(
+            object_type=OBJECT_TYPE,
+            mode=PermissionModes.read_and_write,
+            users=[cls.user],
+        )
+
     def assertResponseHasGeoHeaders(self, response):
         self.assertTrue("Content-Crs" in response)
         self.assertEqual(response["Content-Crs"], "EPSG:4326")
 
     def test_get_without_geo_headers(self):
-        object = ObjectFactory.create()
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url)
@@ -26,7 +38,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
         self.assertResponseHasGeoHeaders(response)
 
     def test_get_with_geo_headers(self):
-        object = ObjectFactory.create()
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url, **GEO_READ_KWARGS)
@@ -35,7 +47,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
         self.assertResponseHasGeoHeaders(response)
 
     def test_get_with_incorrect_get_headers(self):
-        object = ObjectFactory.create()
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url, HTTP_ACCEPT_CRS="EPSG:3857")
@@ -58,7 +70,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_412_PRECONDITION_FAILED)
 
     def test_update_without_geo_headers(self):
-        object = ObjectFactory.create()
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "type": OBJECT_TYPE,
@@ -80,7 +92,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
                 )
 
     def test_delete_without_geo_headers(self):
-        object = ObjectFactory.create()
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.delete(url)

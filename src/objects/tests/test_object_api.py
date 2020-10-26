@@ -8,6 +8,8 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from objects.accounts.constants import PermissionModes
+from objects.accounts.tests.factories import ObjectPermissionFactory
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
@@ -21,8 +23,18 @@ OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 @freeze_time("2020-08-08")
 @requests_mock.Mocker()
 class ObjectApiTests(TokenAuthMixin, APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        ObjectPermissionFactory(
+            object_type=OBJECT_TYPE,
+            mode=PermissionModes.read_and_write,
+            users=[cls.user],
+        )
+
     def test_retrieve_object(self, m):
-        object = ObjectFactory.create()
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
         object_record = ObjectRecordFactory.create(
             object=object,
             start_date=date.today(),
@@ -180,7 +192,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.end_date, date(2020, 1, 1))
 
     def test_delete_object(self, m):
-        record = ObjectRecordFactory.create()
+        record = ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
         object = record.object
         url = reverse("object-detail", args=[object.uuid])
 
@@ -191,6 +203,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
     def test_history_object(self, m):
         record1 = ObjectRecordFactory.create(
+            object__object_type=OBJECT_TYPE,
             start_date=date(2020, 1, 1),
             geometry="POINT (4.910649523925713 52.37240093589432)",
         )

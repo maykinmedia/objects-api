@@ -8,8 +8,8 @@ class TokenAuthMixin:
     def setUpTestData(cls):
         super().setUpTestData()
 
-        test_user = User.objects.create(username="testsuite", password="letmein")
-        cls.token = Token.objects.create(user=test_user)
+        cls.user = User.objects.create(username="testsuite", password="letmein")
+        cls.token = Token.objects.create(user=cls.user)
 
     def setUp(self):
         super().setUp()

@@ -4,6 +4,8 @@ import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from objects.accounts.constants import PermissionModes
+from objects.accounts.tests.factories import ObjectPermissionFactory
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
@@ -16,8 +18,23 @@ OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
 @requests_mock.Mocker()
 class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        ObjectPermissionFactory(
+            object_type=OBJECT_TYPE,
+            mode=PermissionModes.read_and_write,
+            users=[cls.user],
+        )
+
     def test_create_object_invalid_objecttype_url(self, m):
         object_type_invalid = "https://example.com/objecttypes/v1/types/invalid"
+        ObjectPermissionFactory(
+            object_type=object_type_invalid,
+            mode=PermissionModes.read_and_write,
+            users=[self.user],
+        )
         m.get(object_type_invalid, status_code=404)
 
         url = reverse("object-list")
@@ -155,9 +172,16 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         )
 
     def test_update_object_type_invalid(self, m):
+        old_object_type = "https://example.com/objecttypes/v1/types/qwe109"
+        ObjectPermissionFactory(
+            object_type=old_object_type,
+            mode=PermissionModes.read_and_write,
+            users=[self.user],
+        )
         m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
 
         initial_record = ObjectRecordFactory.create(
+            object__object_type=old_object_type,
             data={"plantDate": "2020-04-12", "diameter": 30},
             version=1,
         )
