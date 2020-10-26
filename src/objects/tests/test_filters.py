@@ -48,10 +48,22 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
 class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
 
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        ObjectPermissionFactory(
+            object_type=OBJECT_TYPE, mode=PermissionModes.read_only, users=[cls.user]
+        )
+
     def test_filter_exact_string(self):
-        record = ObjectRecordFactory.create(data={"name": "demo"})
-        ObjectRecordFactory.create(data={"name": "demo2"})
-        ObjectRecordFactory.create(data={})
+        record = ObjectRecordFactory.create(
+            data={"name": "demo"}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"name": "demo2"}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
 
         response = self.client.get(self.url, {"data_attrs": "name__exact__demo"})
 
@@ -66,9 +78,13 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         )
 
     def test_filter_exact_number(self):
-        record = ObjectRecordFactory.create(data={"diameter": 4})
-        ObjectRecordFactory.create(data={"diameter": 6})
-        ObjectRecordFactory.create(data={})
+        record = ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
 
         response = self.client.get(self.url, {"data_attrs": "diameter__exact__4"})
 
@@ -83,10 +99,16 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         )
 
     def test_filter_lte(self):
-        record1 = ObjectRecordFactory.create(data={"diameter": 4})
-        record2 = ObjectRecordFactory.create(data={"diameter": 5})
-        ObjectRecordFactory.create(data={"diameter": 6})
-        ObjectRecordFactory.create(data={})
+        record1 = ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+        )
+        record2 = ObjectRecordFactory.create(
+            data={"diameter": 5}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
 
         response = self.client.get(self.url, {"data_attrs": "diameter__lte__5"})
 
@@ -106,10 +128,16 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         )
 
     def test_filter_lt(self):
-        record = ObjectRecordFactory.create(data={"diameter": 4})
-        ObjectRecordFactory.create(data={"diameter": 5})
-        ObjectRecordFactory.create(data={"diameter": 6})
-        ObjectRecordFactory.create(data={})
+        record = ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 5}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
 
         response = self.client.get(self.url, {"data_attrs": "diameter__lt__5"})
 
@@ -138,10 +166,16 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
 
     def test_filter_nested_attr(self):
-        record = ObjectRecordFactory.create(data={"dimensions": {"diameter": 4}})
-        ObjectRecordFactory.create(data={"dimensions": {"diameter": 5}})
-        ObjectRecordFactory.create(data={"diameter": 4})
-        ObjectRecordFactory.create(data={})
+        record = ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 4}}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 5}}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
 
         response = self.client.get(
             self.url, {"data_attrs": "dimensions__diameter__exact__4"}
@@ -159,11 +193,16 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_comma_separated(self):
         record = ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 4}, "name": "demo"}
+            data={"dimensions": {"diameter": 4}, "name": "demo"},
+            object__object_type=OBJECT_TYPE,
         )
-        ObjectRecordFactory.create(data={"dimensions": {"diameter": 5}, "name": "demo"})
         ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 4}, "name": "other"}
+            data={"dimensions": {"diameter": 5}, "name": "demo"},
+            object__object_type=OBJECT_TYPE,
+        )
+        ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 4}, "name": "other"},
+            object__object_type=OBJECT_TYPE,
         )
 
         response = self.client.get(
