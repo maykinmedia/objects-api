@@ -137,7 +137,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
 
-    def test_filter_nester_attr(self):
+    def test_filter_nested_attr(self):
         record = ObjectRecordFactory.create(data={"dimensions": {"diameter": 4}})
         ObjectRecordFactory.create(data={"dimensions": {"diameter": 5}})
         ObjectRecordFactory.create(data={"diameter": 4})
