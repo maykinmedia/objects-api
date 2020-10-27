@@ -6,7 +6,7 @@ Objects API
 :Source: https://github.com/maykinmedia/objects-api
 :Keywords: objects, assets, zaakobjecten
 
-|build-status| |docs| |coverage| |black| |docker|
+|docs|
 
 API to manage objects belonging to a certain object type.
 (`Nederlandse versie`_)
