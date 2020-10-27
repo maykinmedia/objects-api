@@ -59,5 +59,11 @@ jobs:
       before_script: skip
       script: black --check src --diff
 
+    - name: "Docker image build"
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: docker build .
+
 after_success:
   - codecov
