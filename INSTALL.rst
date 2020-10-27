@@ -18,9 +18,9 @@ Prerequisites
 
 You need the following libraries and/or programs:
 
-* `Python`_ 3.6 or above
+* `Python`_ 3.7 or above
 * Python `Virtualenv`_ and `Pip`_
-* `PostgreSQL`_ 10 or above
+* `PostgreSQL`_ 10 or above with PostGIS extension
 * `Node.js`_
 * `npm`_
 
@@ -44,8 +44,8 @@ development machine.
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/objects.git
-       $ cd objects
+       $ git clone git@github.com:maykinmedia/objects-api.git
+       $ cd objects-api
 
 3. Install all required libraries.
 
@@ -169,7 +169,7 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/objects.git
+       $ git clone git@github.com:maykinmedia/objects-api.git
        Cloning into 'objects'...
        ...
 
@@ -180,8 +180,8 @@ The easiest way to get the project started is by using `Docker Compose`_.
    .. code-block:: bash
 
        $ docker-compose up -d
-       Starting objects_db_1 ... done
-       Starting objects_web_1 ... done
+       Starting objects-api_db_1 ... done
+       Starting objects-api_web_1 ... done
 
    It can take a while before everything is done. Even after starting the web
    container, the database might still be migrating. You can always check the
@@ -189,19 +189,19 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ docker logs -f objects_web_1
+       $ docker logs -f objects-api_web_1
 
 3. Create an admin user and load initial data. If different container names
    are shown above, use the container name ending with ``_web_1``:
 
    .. code-block:: bash
 
-       $ docker exec -it objects_web_1 /app/src/manage.py createsuperuser
+       $ docker exec -it objects-api_web_1 /app/src/manage.py createsuperuser
        Username: admin
        ...
        Superuser created successfully.
 
-       $ docker exec -it objects_web_1 /app/src/manage.py loaddata admin_index groups
+       $ docker exec -it objects-api_web_1 /app/src/manage.py loaddata admin_index groups
        Installed 5 object(s) from 2 fixture(s)
 
 4. Point your browser to ``http://localhost:8000/`` to access the project's
@@ -246,59 +246,6 @@ all settings.
         objects
 
     $ docker exec -it objects /app/src/manage.py createsuperuser
-
-Building and publishing the image
----------------------------------
-
-Using ``bin/release-docker-image``, you can easily build and tag the image.
-
-The script is based on git branches and tags - if you're on the ``master``
-branch and the current ``HEAD`` is tagged, the tag will be used as
-``RELEASE_TAG`` and the image will be pushed. If you want to push the image
-without a git tag, you can use the ``RELEASE_TAG`` envvar.
-
-The image will only be pushed if the ``JOB_NAME`` envvar is set. The image
-will always be built, even if no envvar is set. The default release tag is
-``latest``.
-
-Example usage:
-
-.. code-block:: bash
-
-    JOB_NAME=publish RELEASE_TAG=dev ./bin/release-docker-image.sh
-
-
-Staging and production
-======================
-
-Ansible is used to deploy test, staging and production servers. It is assumed
-the target machine has a clean `Debian`_ installation.
-
-1. Make sure you have `Ansible`_ installed (globally or in the virtual
-   environment):
-
-   .. code-block:: bash
-
-       $ pip install ansible
-
-2. Navigate to the project directory, and install the Maykin deployment
-   submodule if you haven't already:
-
-   .. code-block:: bash
-
-       $ git submodule update --init
-
-3. Run the Ansible playbook to provision a clean Debian machine:
-
-   .. code-block:: bash
-
-       $ cd deployment
-       $ ansible-playbook <test/staging/production>.yml
-
-For more information, see the ``README`` file in the deployment directory.
-
-.. _Debian: https://www.debian.org/
-.. _Ansible: https://pypi.org/project/ansible/
 
 
 Settings

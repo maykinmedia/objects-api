@@ -6,7 +6,7 @@ from vng_api_common.schema import SchemaView
 
 from .views import ObjectViewSet
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter(trailing_slash=False)
 router.register(r"objects", ObjectViewSet)
 
 

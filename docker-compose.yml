@@ -1,15 +1,13 @@
-# Inspired by https://docs.docker.com/compose/django/
 version: '3'
 
 services:
   db:
     # NOTE: No persistance storage configured.
     # See: https://hub.docker.com/_/postgres/
-    image: postgres
-    # NOTE: this works for bitnami, not sure if this works for regular
-    # postgres image
-    volumes:
-      - ./docker-init-db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    image: mdillon/postgis
+    environment:
+      - POSTGRES_USER=${DB_USER:-objects}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-objects}
 
   web:
     build: .

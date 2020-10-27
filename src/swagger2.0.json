@@ -18,9 +18,9 @@
     ],
     "securityDefinitions": {
         "Token": {
-            "type": "apiKey",
+            "in": "header",
             "name": "Authorization",
-            "in": "header"
+            "type": "apiKey"
         }
     },
     "security": [
@@ -29,7 +29,7 @@
         }
     ],
     "paths": {
-        "/objects/": {
+        "/objects": {
             "get": {
                 "operationId": "object_list",
                 "description": "",
@@ -434,7 +434,7 @@
             },
             "parameters": []
         },
-        "/objects/search/": {
+        "/objects/search": {
             "post": {
                 "operationId": "object_search",
                 "description": "Perform a (geo) search on Objects",
@@ -650,7 +650,7 @@
             },
             "parameters": []
         },
-        "/objects/{uuid}/": {
+        "/objects/{uuid}": {
             "get": {
                 "operationId": "object_read",
                 "description": "",
@@ -672,13 +672,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -1474,7 +1474,7 @@
                 }
             ]
         },
-        "/objects/{uuid}/history/": {
+        "/objects/{uuid}/history": {
             "get": {
                 "operationId": "object_history",
                 "description": "",
@@ -1496,13 +1496,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -2099,7 +2099,11 @@
     },
     "tags": [
         {
-            "name": "",
+            "name": "objects",
+            "description": ""
+        },
+        {
+            "name": "search",
             "description": ""
         }
     ]
