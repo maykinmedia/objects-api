@@ -33,7 +33,7 @@ resources for other applications.
 Objects API
 -----------
 
-An API to retrieve, filter, search, write or update *objects*.
+An API to retrieve, filter, search, write, update or delete *objects*.
 
 The Objects API aims to easily store and expose various objects according to 
 the related **objecttype resource** in the *Objecttypes API*.

@@ -13,7 +13,7 @@ Objecttypes API
 
 * **Versioning**
 
-  Objecttypes are versioned. This means you can create an objecttype but it the
+  Objecttypes are versioned. This means you can create an objecttype but if the
   objecttype evolves, you can create a new version.
 
 * **Admin interface**

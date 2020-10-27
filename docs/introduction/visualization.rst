@@ -1,7 +1,7 @@
 Visualization
 =============
 
-The Objectypes API works together with the Objects API, objects of a certain
+The Objectypes API works together with the Objects API: Objects are of a certain
 objecttype. In the examples below, there is an *objecttype tree* that is 
 considered the national definition. The objecttype is therefore present in the
 national Objecttypes API, hosted by a public national organization, such as the 
@@ -27,7 +27,7 @@ according to this definition.
     :alt: More organizations store their trees according to the national definition.
 
 Every organization is free to decide which objecttypes to use but also, which 
-Objecttypes API to use. It's fully supported to run your own Objecttypes API '
+Objecttypes API to use. It's fully supported to run your own Objecttypes API 
 with your own objecttypes. This is usefull if you want to deviate from national
 standards or simply want to use other objecttypes that are not available in the
 national Objecttypes API.
@@ -46,5 +46,4 @@ that can come from many different Objecttypes API.
 .. image:: _assets/using_multiple_objecttypes_apis.png
     :width: 100%
     :alt: Mixing Objecttypes API in your Objects API
-
 

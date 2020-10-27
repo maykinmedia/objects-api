@@ -1,6 +1,6 @@
 # Environment configuration reference
 
-Open Personen can be ran both as a Docker container or directly on a VPS or
+The Objects and Objecttypes API can be ran both as a Docker container or directly on a VPS or
 dedicated server. It relies on other services, such as database and cache
 backends, which can be configured through environment variables.
 
