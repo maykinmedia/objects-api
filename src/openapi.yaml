@@ -17,6 +17,50 @@ paths:
         required: false
         schema:
           type: string
+      - name: dataAttrs
+        in: query
+        description: 'Only include objects that have attributes with certain values.
+
+          Data filtering expressions are comma-separated and are structured as follows:
+
+          A valid parameter value has the form `key__operator__value`.
+
+          `key` is the attribute name, `operator` is the comparison operator to be
+          used and `value` is the attribute value.
+
+          Note: Values can be string or numeric. Dates are not supported.
+
+
+          Valid operator values are:
+
+          * `exact` - equal to
+
+          * `gt` - greater than
+
+          * `gte` - greater than or equal to
+
+          * `lt` - lower than
+
+          * `lte` - lower than or equal to
+
+          `value` may not contain double underscore or comma characters.
+
+          `key` may not contain comma characters and includes double underscore only
+          if it indicates nested attributes.
+
+
+          Example: in order to display only objects with `height` equal to 100, query
+          `data_attrs=height__exact__100`
+
+          should be used. If `height` is nested inside `dimensions` attribute, query
+          should look like
+
+          `data_attrs=dimensions__height__exact__100`
+
+          '
+        required: false
+        schema:
+          type: string
       - name: Accept-Crs
         in: header
         description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
@@ -1657,6 +1701,49 @@ components:
         type:
           title: Type
           description: Url reference to OBJECTTYPE in Objecttypes API
+          type: string
+          minLength: 1
+        dataAttrs:
+          title: Dataattrs
+          description: 'Only include objects that have attributes with certain values.
+
+            Data filtering expressions are comma-separated and are structured as follows:
+
+            A valid parameter value has the form `key__operator__value`.
+
+            `key` is the attribute name, `operator` is the comparison operator to
+            be used and `value` is the attribute value.
+
+            Note: Values can be string or numeric. Dates are not supported.
+
+
+            Valid operator values are:
+
+            * `exact` - equal to
+
+            * `gt` - greater than
+
+            * `gte` - greater than or equal to
+
+            * `lt` - lower than
+
+            * `lte` - lower than or equal to
+
+            `value` may not contain double underscore or comma characters.
+
+            `key` may not contain comma characters and includes double underscore
+            only if it indicates nested attributes.
+
+
+            Example: in order to display only objects with `height` equal to 100,
+            query `data_attrs=height__exact__100`
+
+            should be used. If `height` is nested inside `dimensions` attribute, query
+            should look like
+
+            `data_attrs=dimensions__height__exact__100`
+
+            '
           type: string
           minLength: 1
     HistoryRecord:
