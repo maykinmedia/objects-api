@@ -41,7 +41,8 @@ release = objects.__version__
 # ones.
 extensions = [
     "sphinx.ext.todo",
-#    "recommonmark",
+    "sphinx_tabs.tabs",
+    "recommonmark",
 #    "sphinx_markdown_tables",
 ]
 
