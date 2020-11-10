@@ -9,7 +9,7 @@ defined in `API Designrules`_, which is a part of `Nederlandse API Strategie`_.
 
 .. csv-table:: Adherence to API principles
    :header: "#", "Principle", "Objects API", "Objecttypes API"
-   :widths: 10, 30, 30, 30
+   :widths: 10, 40, 25, 25
 
    API-01,Operations are Safe and/or Idempotent,"Yes, with exception of PUT",Yes
    API-02,Do not maintain state information at the server,Yes,Yes
