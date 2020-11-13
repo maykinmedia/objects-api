@@ -1,0 +1,11 @@
+name: quick-start
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run quick_start.sh
+        run: ./bin/quick_start.sh
