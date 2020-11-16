@@ -41,7 +41,6 @@ faker==4.0.3              # via factory-boy
 freezegun==0.3.15         # via -r requirements/test-tools.in
 gemma-zds-client==0.13.3  # via -r requirements/base.txt, vng-api-common
 idna==2.9                 # via -r requirements/base.txt, requests
-importlib-metadata==1.6.0  # via -r requirements/base.txt, jsonschema
 inflection==0.4.0         # via -r requirements/base.txt, drf-yasg
 iso-639==0.4.5            # via -r requirements/base.txt, vng-api-common
 isodate==0.6.0            # via -r requirements/base.txt, vng-api-common
@@ -81,7 +80,6 @@ vng-api-common==1.5.6     # via -r requirements/base.txt
 waitress==1.4.3           # via webtest
 webob==1.8.6              # via webtest
 webtest==2.0.34           # via django-webtest
-zipp==3.1.0               # via -r requirements/base.txt, importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
