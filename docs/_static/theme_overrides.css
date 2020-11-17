@@ -7,6 +7,9 @@
       white-space: normal !important;
    }
 
+  .wy-table-responsive table {
+      background-color: white;
+   }
    .wy-table-responsive {
       overflow: visible !important;
    }
