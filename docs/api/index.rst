@@ -23,3 +23,10 @@ API                     Specification version(s)
 .. _`Objecttypes API`: https://github.com/maykinmedia/objecttypes-api
 
 .. _`Objects API`: https://github.com/maykinmedia/objects-api
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Further reading
+
+   principles
