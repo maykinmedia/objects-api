@@ -31,6 +31,6 @@ There are many existing data sources that could potentially be converted to an
 objecttype definition.
 
 * The Dutch government has many open data sources including meta data 
-  (`link <https://data.overheid.nl/`__)
+  (`link <https://data.overheid.nl/>`__)
 * For Dutch geographical objects, there are information models defined 
   (`link <https://imgeo.geostandaarden.nl/>`__)

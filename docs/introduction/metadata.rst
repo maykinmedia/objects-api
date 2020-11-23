@@ -12,16 +12,16 @@ Objecttypes attribute      Metadatabeheer              Datacatalogus
 name                       A - Naam                    Titel
 namePlural
 description                                            Beschrijving
-maintainerDepartment                                   Dienst
 labels                     A - Trefwoorden             Tags
-source                     B - Bronsysteem             Bron
-versions/publicationDate   A - Wijzigingsdatum         Bijgewerkt
-updateFrequency            A - Wijzigingsfrequentie    Updatefrequentie
 maintainerOrganization     A - Eigenaar (Organisatie)  Eigenaar
+maintainerDepartment                                   Dienst
 contactPerson              A - Contactpersoon          Contactpersoon
 contactEmail                                           E-mail contactpersoon
 providerOrganization       A - Verstrekker             Verstrekker
+source                     B - Bronsysteem             Bron
 status                     B - Huidige status          Status
 dataClassification                                     Dataclassificatie
+versions/publicationDate   A - Wijzigingsdatum         Bijgewerkt
+updateFrequency            A - Wijzigingsfrequentie    Updatefrequentie
 documentationUrl           C - Documentatie
 ========================   ==========================  =====================
