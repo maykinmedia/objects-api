@@ -25,6 +25,7 @@ configuration or development needed.
    :caption: Further reading
 
    vision
+   background
    definitions
    metadata
    visualization

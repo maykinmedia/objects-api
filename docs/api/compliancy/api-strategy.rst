@@ -1,8 +1,8 @@
-.. _api_principles:
+.. _compliancy_api-strategy:
 
-==============
-API principles
-==============
+=======================
+API strategy compliancy
+=======================
 
 The Objects API and Objecttypes API are designed to adhere to API principles
 defined in `API Designrules`_, which is a part of `Nederlandse API Strategie`_.
@@ -38,4 +38,4 @@ For example, the results of testing APIs deployed for Utrecht you can find here:
 .. _`Nederlandse API Strategie`: https://docs.geostandaarden.nl/api/API-Strategie/
 .. _`API Test Platform`: https://api-test.nl/
 .. _`Objecttypes API`: https://api-test.nl/design_rules/a7cc7393-f34f-44e6-b430-4cd494f1e7a9/
-.. _`objects API`: https://api-test.nl/design_rules/3afb790b-c0aa-41ff-bca6-295a909cab7e/
+.. _`Objects API`: https://api-test.nl/design_rules/3afb790b-c0aa-41ff-bca6-295a909cab7e/

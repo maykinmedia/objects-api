@@ -1,0 +1,156 @@
+{
+    "default": {},
+    "description": "The root schema comprises the entire JSON document.",
+    "examples": [
+        {
+            "hoofdcategorie": "groen",
+            "subcategorie": "snoeien",
+            "fotos": [
+                "www.example.com/path/to/foto1",
+                "www.example.com/path/to/foto2"
+            ],
+            "toelichting": "struiken belemmereren de doorgang",
+            "locatie": "lat-long, 52°16'10.1\"N 6°46'10.6\"E",
+            "adres": "Bonairestraat 24 Hengelo",
+            "servicegebied": "Weidehoek (afgeleid van locatie)",
+            "BAG-object": "www.example.com/path/to/BAG-object",
+            "toelichtingLocatie": "toelichting op de locatie, niet verplicht",
+            "klant": "www.example.com/path/to/klant"
+        }
+    ],
+    "required": [
+        "hoofdcategorie",
+        "toelichting",
+        "locatie"
+    ],
+    "title": "Het objecttype Melding Openbare Ruimte",
+    "properties": {
+        "hoofdcategorie": {
+            "default": "",
+            "description": "Categorie van de melding",
+            "enum": [
+                "groen",
+                "grijs",
+                "water",
+                "overig",
+                null
+            ],
+            "examples": [
+                "groen"
+            ],
+            "title": "The hoofdcategorie schema"
+        },
+        "subcategorie": {
+            "default": "",
+            "description": "Per hoofdcategorie zijn er bepaalde subcategorieen toegestaan",
+            "examples": [
+                "snoeien"
+            ],
+            "title": "The subcategorie schema",
+            "enum": [
+                "snoeien",
+                "kappen",
+                null
+            ]
+        },
+        "fotos": {
+            "default": [],
+            "description": "An explanation about the purpose of this instance.",
+            "examples": [
+                [
+                    "www.example.com/path/to/foto1",
+                    "www.example.com/path/to/foto2"
+                ]
+            ],
+            "title": "Een lijst van nul of meer URI's naar foto's",
+            "additionalItems": true,
+            "items": {
+                "type": "string",
+                "anyOf": [
+                    {
+                        "$id": "#/properties/fotos/items/anyOf/0",
+                        "type": "string",
+                        "title": "The first anyOf schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "URI1",
+                            "URI2"
+                        ]
+                    }
+                ]
+            }
+        },
+        "toelichting": {
+            "$id": "#/properties/toelichting",
+            "type": "string",
+            "title": "The toelichting schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "struiken belemmereren de doorgang"
+            ]
+        },
+        "locatie": {
+            "$id": "#/properties/locatie",
+            "type": "string",
+            "title": "The locatie schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "lat-long, 52°16'10.1\"N 6°46'10.6\"E"
+            ]
+        },
+        "adres": {
+            "$id": "#/properties/adres",
+            "type": "string",
+            "title": "The adres schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Bonairestraat 24 Hengelo"
+            ]
+        },
+        "servicegebied": {
+            "$id": "#/properties/servicegebied",
+            "type": "string",
+            "title": "The servicegebied schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Weidehoek (afgeleid van locatie)"
+            ]
+        },
+        "BAG-object": {
+            "$id": "#/properties/BAG-object",
+            "type": "string",
+            "title": "The BAG-object schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "www.example.com/path/to/BAG-object"
+            ]
+        },
+        "toelichtingLocatie": {
+            "$id": "#/properties/toelichtingLocatie",
+            "type": "string",
+            "title": "The toelichtingLocatie schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "toelichting op de locatie, niet verplicht"
+            ]
+        },
+        "contactgegevens": {
+            "default": {},
+            "description": "A URI to a Klant resource",
+            "examples": [
+                "/path/to/klant"
+            ],
+            "required": [],
+            "title": "URI naar een Klant zoals in ZGW API's gespecificeerd",
+            "additionalProperties": true
+        }
+    },
+    "additionalProperties": true
+}

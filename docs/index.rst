@@ -59,3 +59,4 @@ a national and/or local :ref:`Objecttypes API`.
    introduction/index
    api/index
    installation/index
+   examples/index

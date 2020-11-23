@@ -1,0 +1,603 @@
+﻿{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"definitions": {
+		"Vordering": {
+			"properties": {
+				"Id": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"Status": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Subcategorie": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Categorie": {
+					"type": "string",
+					"enum": [
+						"Onbekend",
+						"Ongehuwd en geen geregistreerd partner en nooit gehuwd of geregistreerd partner geweest",
+						"Gehuwd",
+						"Gescheiden",
+						"Weduwe/weduwnaar",
+						"Geregistreerd partner",
+						"Gescheiden geregistreerd partner",
+						"Achtergebleven geregistreerd partner",
+						"Ongehuwd en geen geregistreerd partner, eventueel wel gehuwd of geregistreerd partner geweest"
+					],
+					"description": "n.t.b."
+				},
+				"VaststeldatumTerugvordering": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Priotype": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Vorderingtype": {
+					"type": "string",
+					"enum": [
+						"Algemeen",
+						"Verrekening"
+					],
+					"description": "n.t.b."
+				},
+				"Regeling": {
+					"type": "string",
+					"enum": [
+						"Participatiewet"
+					],
+					"description": "n.t.b."
+				},
+				"Fiscaal": {
+					"type": "string",
+					"enum": [
+						"Ja",
+						"Nee"
+					],
+					"description": "n.t.b."
+				},
+				"PeriodeStartdatum": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"PeriodeEinddatum": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Debiteuren": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Debiteur"
+					},
+					"minItems": 1,
+					"maxItems": 2,
+					"UniqueItems": true
+				},
+				"Deelvorderingen": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Vordering"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				},
+				"Aflossingen": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Aflossing"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				},
+				"Correcties": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Correctie"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				},
+				"Rechtmaanden": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Rechtmaand"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				},
+				"Restituties": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Restitutie"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				},
+				"Verminderingen_terugvordering": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/VerminderingTerugvordering"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				},
+				"Indienende_organisatie": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/OrganisatorischeEenheid"
+					},
+					"minItems": 1,
+					"maxItems": 1,
+					"UniqueItems": true
+				},
+				"Behandelende_organisatie": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/OrganisatorischeEenheid"
+					},
+					"minItems": 1,
+					"maxItems": 1,
+					"UniqueItems": true
+				},
+				"Gerelateerd_vorderingsverzoek": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Vorderingsverzoek"
+					},
+					"minItems": 1,
+					"maxItems": 1,
+					"UniqueItems": true
+				},
+				"Gerelateerde_aflossingsafspraken": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Aflossingsafspraak"
+					},
+					"minItems": 0,
+					"UniqueItems": true
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"Id",
+				"Status",
+				"Subcategorie",
+				"Categorie",
+				"VaststeldatumTerugvordering",
+				"Priotype",
+				"Vorderingtype",
+				"Regeling",
+				"Fiscaal",
+				"PeriodeStartdatum",
+				"PeriodeEinddatum"
+			]
+		},
+		"Debiteur": {
+			"properties": {
+				"Id": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"Persoon": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Persoon"
+					},
+					"minItems": 1,
+					"maxItems": 1,
+					"UniqueItems": true
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"Id"
+			]
+		},
+		"Persoon": {
+			"properties": {
+				"PersoonsId": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"VoorlettersAanschrijving": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Voorvoegsel": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Geslachtsnaamstam": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"AanhefAanschrijving": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"BurgerlijkeStaat": {
+					"type": "string",
+					"enum": [
+						"Onbekend",
+						"Ongehuwd en geen geregistreerd partner en nooit gehuwd of geregistreerd partner geweest",
+						"Gehuwd",
+						"Gescheiden",
+						"Weduwe/weduwnaar",
+						"Geregistreerd partner",
+						"Gescheiden geregistreerd partner",
+						"Achtergebleven geregistreerd partner",
+						"Ongehuwd en geen geregistreerd partner, eventueel wel gehuwd of geregistreerd partner geweest"
+					],
+					"description": "n.t.b."
+				},
+				"Burgerservicenummer": {
+					"type": "string",
+					"pattern": "^[0-9]{9}$",
+					"description": "n.t.b."
+				},
+				"Geboortedatum": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Geslachtsaanduiding": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"CodeBrpGegevensGeheim": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Naamgebruik": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"DatumOverlijden": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Voornamen": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Scheidingsteken": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Predicaat": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"AdellijkeTitel": {
+					"type": "string",
+					"enum": [
+						"A",
+						"B"
+					],
+					"description": "n.t.b."
+				},
+				"Namenreeks": {
+					"type": "boolean",
+					"description": "n.t.b."
+				},
+				"ANummer": {
+					"type": "integer",
+					"pattern": "^-?[0-9]{1,}$",
+					"description": "n.t.b."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"PersoonsId",
+				"VoorlettersAanschrijving",
+				"Voorvoegsel",
+				"Geslachtsnaamstam",
+				"AanhefAanschrijving",
+				"BurgerlijkeStaat",
+				"Burgerservicenummer",
+				"Geboortedatum",
+				"Geslachtsaanduiding",
+				"CodeBrpGegevensGeheim",
+				"Naamgebruik",
+				"DatumOverlijden",
+				"Voornamen",
+				"Scheidingsteken",
+				"Predicaat",
+				"AdellijkeTitel",
+				"Namenreeks",
+				"ANummer"
+			]
+		},
+		"Vorderingscomponent": {
+			"properties": {
+				"Id": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"Boekingsdatum": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Bedrag": {
+					"type": "number",
+					"pattern": "^-?[0-9]((;|,|\\.)[0-9]{2}|)$",
+					"description": "n.t.b."
+				},
+				"Vorderingscomponenttype": {
+					"type": "string",
+					"enum": [
+						"Aflossing",
+						"Rechtmaand",
+						"Restitutie",
+						"Vermindering terugvordering",
+						"Correctie"
+					],
+					"description": "n.t.b."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"Id",
+				"Boekingsdatum",
+				"Bedrag",
+				"Vorderingscomponenttype"
+			]
+		},
+		"Aflossing": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Vorderingscomponent"
+				},
+				{
+					"properties": {
+						"Id": {
+							"type": "string",
+							"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+							"description": "n.t.b."
+						},
+						"Ontvangstdatum": {
+							"type": "string",
+							"description": "n.t.b."
+						},
+						"Aflossingskenmerk": {
+							"type": "string",
+							"description": "n.t.b."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"Id",
+						"Ontvangstdatum",
+						"Aflossingskenmerk"
+					]
+				}
+			]
+		},
+		"Correctie": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Vorderingscomponent"
+				},
+				{
+					"properties": {},
+					"additionalProperties": false,
+					"required": []
+				}
+			]
+		},
+		"Rechtmaand": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Vorderingscomponent"
+				},
+				{
+					"properties": {
+						"Id": {
+							"type": "string",
+							"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+							"description": "n.t.b."
+						},
+						"Jaar": {
+							"type": "integer",
+							"pattern": "^[1-2]{1}[0-9]{3}$",
+							"description": "n.t.b."
+						},
+						"Maand": {
+							"type": "integer",
+							"pattern": "^([1-9]{1}|1[0-2]{1})$",
+							"description": "n.t.b."
+						},
+						"Boekjaar": {
+							"type": "integer",
+							"pattern": "^[1-2]{1}[0-9]{3}$",
+							"description": "n.t.b."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"Id",
+						"Jaar",
+						"Maand",
+						"Boekjaar"
+					]
+				}
+			]
+		},
+		"Restitutie": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Vorderingscomponent"
+				},
+				{
+					"properties": {
+						"Id": {
+							"type": "string",
+							"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+							"description": "n.t.b."
+						},
+						"Betaaldatum": {
+							"type": "string",
+							"description": "n.t.b."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"Id",
+						"Betaaldatum"
+					]
+				}
+			]
+		},
+		"VerminderingTerugvordering": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Vorderingscomponent"
+				},
+				{
+					"properties": {
+						"Id": {
+							"type": "string",
+							"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+							"description": "n.t.b."
+						},
+						"Vaststeldatum": {
+							"type": "string",
+							"description": "n.t.b."
+						},
+						"Verminderingtype": {
+							"type": "string",
+							"description": "n.t.b."
+						},
+						"MotivatieVermindering": {
+							"type": "string",
+							"description": "n.t.b."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"Id",
+						"Vaststeldatum",
+						"Verminderingtype",
+						"MotivatieVermindering"
+					]
+				}
+			]
+		},
+		"OrganisatorischeEenheid": {
+			"properties": {
+				"OrganisatieEenheidId": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"OrganisatieIdentificatie": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"DatumOpheffing": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"EMailadres": {
+					"type": "string",
+					"pattern": "^[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*@[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*[.][A-Za-z0-9]+$",
+					"description": "n.t.b."
+				},
+				"Naam": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"NaamVerkort": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Omschrijving": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Telefoonnummer": {
+					"type": "string",
+					"pattern": "^0[1-9][0-9]{8}$",
+					"description": "n.t.b."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"OrganisatieEenheidId",
+				"OrganisatieIdentificatie",
+				"DatumOpheffing",
+				"EMailadres",
+				"Naam",
+				"NaamVerkort",
+				"Omschrijving",
+				"Telefoonnummer"
+			]
+		},
+		"Vorderingsverzoek": {
+			"properties": {
+				"Id": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"Status": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Regeling": {
+					"type": "string",
+					"description": "n.t.b."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"Id",
+				"Status",
+				"Regeling"
+			]
+		},
+		"Aflossingsafspraak": {
+			"properties": {
+				"Id": {
+					"type": "string",
+					"pattern": "^(\\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\\}{0,1})$",
+					"description": "n.t.b."
+				},
+				"Startdatum": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Einddatum": {
+					"type": "string",
+					"description": "n.t.b."
+				},
+				"Bedrag": {
+					"type": "number",
+					"pattern": "^-?[0-9]((;|,|\\.)[0-9]{2}|)$",
+					"description": "n.t.b."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"Id",
+				"Startdatum",
+				"Einddatum",
+				"Bedrag"
+			]
+		}
+	},
+	"type": "object",
+	"properties": {
+		"Vordering": {
+			"$ref": "#/definitions/Vordering"
+		}
+	}
+}
