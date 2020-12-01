@@ -91,7 +91,7 @@ Licensed under the EUPL_
 
 .. _`Objecttypen API`: https://github.com/maykinmedia/objecttypes-api
 
-.. _`EUPL`: LICENCE.md
+.. _`EUPL`: LICENSE.md
 
 .. |build-status| image:: https://travis-ci.org/maykinmedia/objects-api.svg?branch=master
     :alt: Build status
