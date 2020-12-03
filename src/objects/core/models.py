@@ -26,7 +26,9 @@ class Object(models.Model):
         return (
             self.records.filter(start_date__lte=today)
             .filter(models.Q(end_date__gte=today) | models.Q(end_date__isnull=True))
+            .order_by("-pk")
             .first()
+            # TODO: pk should prolly be index once added.
         )
 
     @property
