@@ -11,7 +11,7 @@ from objects.core.tests.factores import ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
-from .utils import mock_objecttype
+from .utils import mock_objecttype, mock_objecttype_version
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109"
 
@@ -35,7 +35,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_and_write,
             users=[self.user],
         )
-        m.get(object_type_invalid, status_code=404)
+        m.get(f"{object_type_invalid}/versions/1", status_code=404)
 
         url = reverse("object-list")
         data = {
@@ -53,20 +53,13 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
     def test_create_object_no_version(self, m):
-        m.get(
-            OBJECT_TYPE,
-            json={
-                "url": OBJECT_TYPE,
-                "name": "boom",
-                "namePlural": "bomen",
-            },
-        )
+        m.get(f"{OBJECT_TYPE}/versions/10", status_code=404)
 
         url = reverse("object-list")
         data = {
             "type": OBJECT_TYPE,
             "record": {
-                "typeVersion": 1,
+                "typeVersion": 10,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
             },
@@ -80,11 +73,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         data = response.json()
         self.assertEqual(
             data["non_field_errors"],
-            [f"{OBJECT_TYPE} doesn't include JSON schema for version 1"],
+            [f"{OBJECT_TYPE} or version 10 doesn't exist."],
         )
 
     def test_create_object_schema_invalid(self, m):
-        m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
+        m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         url = reverse("object-list")
         data = {
@@ -118,7 +111,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
     def test_create_object_correction_invalid(self, m):
-        m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
+        m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         record = ObjectRecordFactory.create()
         url = reverse("object-list")
@@ -128,7 +121,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
-                "correct": record.uuid,
+                "correctionFor": record.uuid,
             },
         }
 
@@ -144,7 +137,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         )
 
     def test_update_object_with_correction_invalid(self, m):
-        m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
+        m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         corrected_record, initial_record = ObjectRecordFactory.create_batch(
             2, object__object_type=OBJECT_TYPE
@@ -157,7 +150,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startDate": "2020-01-01",
-                "correct": corrected_record.uuid,
+                "correctionFor": corrected_record.uuid,
             },
         }
 

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: objects API
+  title: Objects API
   description: An API to access Objects
   version: 0.1.0
 security:
@@ -222,7 +222,7 @@ paths:
       parameters:
       - name: Content-Type
         in: header
-        description: Content type van de verzoekinhoud.
+        description: Content type of the request body.
         required: true
         schema:
           type: string
@@ -398,7 +398,7 @@ paths:
       parameters:
       - name: Content-Type
         in: header
-        description: Content type van de verzoekinhoud.
+        description: Content type of the request body.
         required: true
         schema:
           type: string
@@ -593,20 +593,19 @@ paths:
           - EPSG:4326
       - name: If-None-Match
         in: header
-        description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
-          n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
-          \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
-          \ deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie\
-          \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
-          \ voor meer informatie."
+        description: Perform conditional requests. This header should contain one
+          or multiple ETag values of resources the client has cached. If the current
+          resource ETag value is in this set, then an HTTP 304 empty body will be
+          returned. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)
+          for details.
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
-            summary: "E\xE9n ETag-waarde"
+            summary: One ETag value
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Multiple ETag values
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -764,7 +763,7 @@ paths:
       parameters:
       - name: Content-Type
         in: header
-        description: Content type van de verzoekinhoud.
+        description: Content type of the request body.
         required: true
         schema:
           type: string
@@ -953,7 +952,7 @@ paths:
       parameters:
       - name: Content-Type
         in: header
-        description: Content type van de verzoekinhoud.
+        description: Content type of the request body.
         required: true
         schema:
           type: string
@@ -1295,20 +1294,19 @@ paths:
           - EPSG:4326
       - name: If-None-Match
         in: header
-        description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
-          n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
-          \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
-          \ deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie\
-          \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
-          \ voor meer informatie."
+        description: Perform conditional requests. This header should contain one
+          or multiple ETag values of resources the client has cached. If the current
+          resource ETag value is in this set, then an HTTP 304 empty body will be
+          returned. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)
+          for details.
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
-            summary: "E\xE9n ETag-waarde"
+            summary: One ETag value
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Multiple ETag values
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1353,9 +1351,9 @@ components:
       required: true
   securitySchemes:
     Token:
-      in: header
-      name: Authorization
       type: apiKey
+      name: Authorization
+      in: header
   schemas:
     Geometry:
       title: Geometry
@@ -1526,7 +1524,7 @@ components:
           format: uuid
           readOnly: true
         typeVersion:
-          title: Versie
+          title: Typeversion
           description: Version of the OBJECTTYPE for data in the object record
           type: integer
           maximum: 32767
@@ -1554,10 +1552,14 @@ components:
           type: string
           format: date
           readOnly: true
-        correct:
-          title: Correct
+        correctionFor:
+          title: Correctionfor
           type: string
           format: uuid
+        correctedBy:
+          title: Correctedby
+          type: string
+          readOnly: true
     Object:
       required:
       - type
@@ -1759,7 +1761,7 @@ components:
           format: uuid
           readOnly: true
         typeVersion:
-          title: Versie
+          title: Typeversion
           description: Version of the OBJECTTYPE for data in the object record
           type: integer
           maximum: 32767
@@ -1787,7 +1789,12 @@ components:
           type: string
           format: date
           readOnly: true
-        corrected:
-          title: Corrected
+        correctionFor:
+          title: Correctionfor
+          type: string
+          format: uuid
+          readOnly: true
+        correctedBy:
+          title: Correctedby
           type: string
           readOnly: true
