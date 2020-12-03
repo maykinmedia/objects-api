@@ -135,14 +135,14 @@
         "object": 4,
         "version": 1,
         "data": {
-            "diameter": 30,
-            "plantDate": "2020-04-12"
+            "diameter": 10,
+            "plantDate": "2000-11-01"
         },
-        "start_date": "2020-09-03",
-        "end_date": null,
-        "registration_date": "2020-09-03",
+        "start_date": "2000-11-01",
+        "end_date": "2006-11-01",
+        "registration_date": "2000-11-12",
         "correct": null,
-        "geometry": null
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
 },
 {
@@ -153,14 +153,14 @@
         "object": 4,
         "version": 1,
         "data": {
-            "diameter": 5,
-            "plantDate": "2020-04-12"
+            "diameter": 16,
+            "plantDate": "2000-11-01"
         },
-        "start_date": "2020-09-03",
-        "end_date": "2020-09-04",
-        "registration_date": "2020-09-03",
+        "start_date": "2006-07-12",
+        "end_date": "2010-09-04",
+        "registration_date": "2006-07-14",
         "correct": null,
-        "geometry": null
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
 },
 {
@@ -171,48 +171,14 @@
         "object": 4,
         "version": 1,
         "data": {
-            "diameter": 5,
-            "plantDate": "2020-04-12"
+            "diameter": 19,
+            "plantDate": "2000-11-01"
         },
-        "start_date": "2020-09-04",
-        "end_date": null,
-        "registration_date": "2020-09-04",
+        "start_date": "2010-09-04",
+        "end_date": "2016-10-24",
+        "registration_date": "2010-09-04",
         "correct": null,
-        "geometry": null
-    }
-},
-{
-    "model": "core.objectrecord",
-    "pk": 9,
-    "fields": {
-        "uuid": "8ef4b6f7-3e44-4555-ba1c-9d1ceb0d1953",
-        "object": 4,
-        "version": 1,
-        "data": {
-            "diameter": 15
-        },
-        "start_date": "2020-09-04",
-        "end_date": null,
-        "registration_date": "2020-09-04",
-        "correct": null,
-        "geometry": null
-    }
-},
-{
-    "model": "core.objectrecord",
-    "pk": 10,
-    "fields": {
-        "uuid": "1275819a-99e8-4e49-9170-79e8954f1047",
-        "object": 4,
-        "version": 1,
-        "data": {
-            "diameter": 25
-        },
-        "start_date": "2020-09-04",
-        "end_date": "2020-09-04",
-        "registration_date": "2020-09-04",
-        "correct": null,
-        "geometry": null
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
 },
 {
@@ -223,13 +189,14 @@
         "object": 4,
         "version": 1,
         "data": {
-            "diameter": 25
+            "diameter": 56,
+            "plantDate": "2000-11-01"
         },
-        "start_date": "2020-09-04",
-        "end_date": "2020-09-04",
-        "registration_date": "2020-09-04",
+        "start_date": "2016-10-24",
+        "end_date": null,
+        "registration_date": "2016-10-24",
         "correct": null,
-        "geometry": null
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
 },
 {
@@ -240,13 +207,14 @@
         "object": 4,
         "version": 1,
         "data": {
-            "diameter": 25
+            "diameter": 26,
+            "plantDate": "2000-11-01"
         },
-        "start_date": "2020-09-04",
+        "start_date": "2016-10-24",
         "end_date": null,
-        "registration_date": "2020-09-04",
+        "registration_date": "2016-10-29",
         "correct": 11,
-        "geometry": null
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
 },
 {
