@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_gis",
     "vng_api_common",
+    "zgw_consumers",
     # Project applications.
     "objects.accounts",
     "objects.api",
