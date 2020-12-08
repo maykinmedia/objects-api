@@ -7,6 +7,8 @@ import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
+from zgw_consumers.constants import APITypes
+from zgw_consumers.models import Service
 
 from objects.accounts.constants import PermissionModes
 from objects.accounts.tests.factories import ObjectPermissionFactory
@@ -15,9 +17,10 @@ from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
-from .utils import mock_objecttype, mock_objecttype_version
+from .utils import mock_objecttype_version, mock_service_oas_get
 
-OBJECT_TYPE = "https://example.com/objecttypes/v1/types/a6c109/versions/1"
+OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
+OBJECT_TYPE = f"{OBJECT_TYPES_API}types/a6c109"
 
 
 @freeze_time("2020-08-08")
@@ -29,6 +32,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
+        Service.objects.create(api_type=APITypes.orc, api_root=OBJECT_TYPES_API)
         ObjectPermissionFactory(
             object_type=OBJECT_TYPE,
             mode=PermissionModes.read_and_write,
@@ -70,6 +74,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         )
 
     def test_create_object(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         url = reverse("object-list")
@@ -104,6 +109,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertIsNone(record.end_date)
 
     def test_update_object(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         initial_record = ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
@@ -155,6 +161,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.end_date, date(2020, 1, 1))
 
     def test_patch_object_record(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         initial_record = ObjectRecordFactory.create(
