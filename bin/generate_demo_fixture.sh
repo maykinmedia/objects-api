@@ -4,8 +4,8 @@
 # overwrites the existing one.
 #
 # You can load this fixture with:
-# $ src/manage.py loaddata default_admin_index
+# $ src/manage.py loaddata demodata
 #
 # Run this script from the root of the repository
 
-src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary admin_index.AppGroup admin_index.AppLink > src/objects/fixtures/default_admin_index.json
+src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary core accounts.objectpermission zgw_consumers.service > src/objects/fixtures/demodata.json

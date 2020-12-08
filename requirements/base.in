@@ -31,3 +31,4 @@ elastic-apm  # Elastic APM integration
 
 # Common ground libraries
 vng_api_common
+zgw-consumers
