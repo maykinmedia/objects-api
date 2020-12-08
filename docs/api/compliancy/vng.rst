@@ -30,10 +30,10 @@ for both APIs. This checklist is only available in Dutch.
    :widths: 5, 55, 15, 25
    :delim: ;
 
-   1;Indien gemeentelijke bron dan opleveren informatiemodel (semantisch informatiemodel);No;TODO
-   2;Altijd een uitwisselingsgegevensmodel;No;TODO
-   3;Modellering van het semantisch informatiemodel conform laatst vastgestelde versie Metamodel Informatiemodellen (MIM);No;TODO
-   4;Informatiemodel gemodelleerd in Enterprise Architect conform de daarvoor geldende best practices;No;TODO
+   1;Indien gemeentelijke bron dan opleveren informatiemodel (semantisch informatiemodel);`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/introduction/information-model.html>`__;
+   2;Altijd een uitwisselingsgegevensmodel;No;
+   3;Modellering van het semantisch informatiemodel conform laatst vastgestelde versie Metamodel Informatiemodellen (MIM);Yes;See 2.1.
+   4;Informatiemodel gemodelleerd in Enterprise Architect conform de daarvoor geldende best practices;Yes;See 2.1.
    5;Informatiemodel is opgeslagen in SVN;No [1]_;
 
 .. csv-table:: 3. Architectuur

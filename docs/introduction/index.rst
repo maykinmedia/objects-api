@@ -27,6 +27,7 @@ configuration or development needed.
    vision
    background
    definitions
+   information-model
    metadata
    visualization
    features
