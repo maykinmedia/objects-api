@@ -88,7 +88,10 @@ def validate_data_attrs(value: str):
     parts = value.split(",")
 
     for value_part in parts:
-        variable, operator, val = value_part.rsplit("__", 2)
+        try:
+            variable, operator, val = value_part.rsplit("__", 2)
+        except ValueError as exc:
+            raise serializers.ValidationError(exc.args[0], code=code) from exc
 
         if operator not in Operators.values:
             message = _("Comparison operator `%(operator)s` is unknown") % {
