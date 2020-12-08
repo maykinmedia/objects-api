@@ -1,28 +1,85 @@
-{% load staticfiles hijack_tags %}<!DOCTYPE html>
+{% load static vng_api_common %}<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>{% block title %}Objects{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link href="{% static 'css/screen.css' %}" media="screen" rel="stylesheet" type="text/css" />
-        <link href="{% static 'hijack/hijack-styles.css' %}" rel="stylesheet" type="text/css" />
-        {% block extra_css %}{% endblock %}
-        <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
-    </head>
+    <link rel="stylesheet" href="{% static 'vng_api_common/libs/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vng_api_common/libs/fontawesome/css/all.min.css' %}">
 
-    <body class="{% block body-class %}{% endblock %}">
-        {% hijack_notification %}
-        <main>
-            {% block content %}
-                Override <code>{% verbatim %}{% block content %}{% endverbatim %}</code>
-                to get some actual content.
-            {% endblock %}
-        </main>
+    <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
 
-        
-        <script src="{% static 'js/main.js' %}"></script>
-    </body>
+    {% block extra_style %}{% endblock %}
+
+    <title>{% block title %}{% if title %}{{ title }}{% else %}{{ settings.SITE_TITLE }}{% endif %} | {{ settings.PROJECT_NAME }}{% endblock %}</title>
+  </head>
+  <body>
+
+    {% if not settings.SITE_TITLE or not settings.PROJECT_NAME %}
+      <div class="container">
+        <div class="alert alert-danger">
+          Please add the variables <em>SITE_TITLE</em> and <em>PROJECT_NAME</em> to your <em>settings.py</em> and make
+          sure they are available via <em>context processors</em>.
+        </div>
+      </div>
+    {% endif %}
+
+    {% block content %}
+      Override <code>{% verbatim %}{% block content %}{% endverbatim %}</code>
+      to get some actual content.
+    {% endblock %}
+
+    <div class="container">
+      <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+          <div class="col-4 col-md">
+            <img class="mb-2" src="{% static 'img/utrecht_logo.png' %}" alt="Gemeente Utrecht logo" height="48">
+            <img class="mb-2" src="{% static 'img/maykin_logo.png' %}" alt="Maykin Media logo" height="48">
+            <img class="mb-2" src="{% static 'img/opengem_logo.png' %}" alt="Open Gemeente Initiatief logo" height="48">
+            <small class="d-block mb-3 text-muted">
+              Developed by <a class="text-info" href="https://www.maykinmedia.nl">Maykin Media</a><br>
+              within the <a class="text-info" href="https://opengem.nl">Open Gemeente Initiatief</a> &copy; {% now "Y" %}<br>
+              commissioned by the <a class="text-info" href="https://www.utrecht.nl">Municipality of Utrecht</a>
+            </small>
+          </div>
+          <div class="col-4 col-md">
+            <h5>Objects API</h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="text-muted" href="https://objects-and-objecttypes-api.readthedocs.io/">Documentation</a></li>
+              <li><a class="text-muted" href="https://commonground.nl/groups/view/54477963/objecten-en-objecttypen-api">Community on CommonGround.nl</a></li>
+              <li><a class="text-muted" href="https://hub.docker.com/r/maykinmedia/objects-api">Docker images</a></li>
+              <li><a class="text-muted" href="https://github.com/maykinmedia/objects-api">Code on Github</a></li>
+            </ul>
+          </div>
+          <div class="col-4 col-md">
+            <h5>Other</h5>
+            <ul class="list-unstyled text-small">
+              <li>Report <a class="text-muted" href="https://github.com/maykinmedia/objects-api/issues">issues</a> for questions, bugs or wishes</li>
+              <li>Read more on <a class="text-muted" href="https://commonground.nl/">Common Ground</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-muted">
+            <code>{{ settings.RELEASE }}</code>
+          </div>
+          <div class="col-6 text-muted text-right">
+            <code>{{ settings.GIT_SHA|default:"" }}</code>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="{% static 'vng_api_common/libs/jquery/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'vng_api_common/libs/popper/popper.min.js' %}"></script>
+    <script src="{% static 'vng_api_common/libs/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+  </body>
 </html>

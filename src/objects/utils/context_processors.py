@@ -6,6 +6,7 @@ def settings(request):
         "GOOGLE_ANALYTICS_ID",
         "ENVIRONMENT",
         "SHOW_ALERT",
+        "SITE_TITLE",
         "PROJECT_NAME",
     )
 

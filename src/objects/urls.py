@@ -36,7 +36,7 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     # Simply show the master template.
-    path("", TemplateView.as_view(template_name="demo.html")),
+    path("", TemplateView.as_view(template_name="index.html")),
     path("api/", include("objects.api.urls")),
 ]
 

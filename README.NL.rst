@@ -91,11 +91,11 @@ Licensed under the EUPL_
 
 .. _`Objecttypen API`: https://github.com/maykinmedia/objecttypes-api
 
-.. _`EUPL`: LICENCE.md
+.. _`EUPL`: LICENSE.md
 
-.. |build-status| image:: https://travis-ci.org/maykinmedia/objects-api.svg?branch=master
+.. |build-status| image:: https://travis-ci.com/maykinmedia/objects-api.svg?branch=master
     :alt: Build status
-    :target: https://travis-ci.org/maykinmedia/objects-api
+    :target: https://travis-ci.com/maykinmedia/objects-api
 
 .. |docs| image:: https://readthedocs.org/projects/objects-and-objecttypes-api/badge/?version=latest
     :target: https://objects-and-objecttypes-api.readthedocs.io/en/latest/?badge=latest
