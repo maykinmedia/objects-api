@@ -22,7 +22,7 @@ for both APIs. This checklist is only available in Dutch.
    2;Er is een beschrijving die ontwikkelaars op weg helpt om te starten met implementatie van de API-standaard.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/>`__;
    3;Er is uitleg en installatie-instructies van de referentieimplementaties;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/quickstart.html>`__;
    4;Er is uitleg over hoe mee ontwikkeld kan worden aan de referentieimplementatie(s), inclusief gebruik van relevante tooling.;`Yes <https://github.com/maykinmedia/objects-api/blob/master/CONTRIBUTING.md>`__;
-   5;Er zijn Postman-scripts met voorbeelden zodat consumers snel kunnen leren hoe ze de API moeten aanroepen.;No;TODO
+   5;Er zijn Postman-scripts met voorbeelden zodat consumers snel kunnen leren hoe ze de API moeten aanroepen.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/postman.html>`__;
    6;VNG-site, API-ontwikkelagenda;Yes;No link available.
 
 .. csv-table:: 2. Informatiemodel

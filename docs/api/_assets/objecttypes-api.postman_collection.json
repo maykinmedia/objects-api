@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "347b5d35-8b3e-46a8-8224-f9b80ff4e80d",
+		"name": "Objecttypes API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Retrieve objecttypes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttypes_host}}api/v1/objecttypes",
+					"host": [
+						"{{objecttypes_host}}api"
+					],
+					"path": [
+						"v1",
+						"objecttypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve objecttype \"boom\"",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttypes_host}}api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702",
+					"host": [
+						"{{objecttypes_host}}api"
+					],
+					"path": [
+						"v1",
+						"objecttypes",
+						"feeaa795-d212-4fa2-bb38-2c34996e5702"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve objecttype versions \"boom\"",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttypes_host}}api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/versions",
+					"host": [
+						"{{objecttypes_host}}api"
+					],
+					"path": [
+						"v1",
+						"objecttypes",
+						"feeaa795-d212-4fa2-bb38-2c34996e5702",
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve objecttype latest version \"boom\"",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttypes_host}}api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702/versions/2",
+					"host": [
+						"{{objecttypes_host}}api"
+					],
+					"path": [
+						"v1",
+						"objecttypes",
+						"feeaa795-d212-4fa2-bb38-2c34996e5702",
+						"versions",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create objecttype \"monument\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0dcbc6f2-698e-49e3-bf65-c293b1cd7eaa",
+						"exec": [
+							"if (pm.response.code === 201) {\r",
+							"    pm.environment.set(\"objecttype_new\", pm.response.json().url);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Monument\",\n    \"namePlural\": \"Monumenten\",\n    \"description\": \"Monumenten in de publieke ruimte.\",\n    \"dataClassification\": \"open\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttypes_host}}api/v1/objecttypes",
+					"host": [
+						"{{objecttypes_host}}api"
+					],
+					"path": [
+						"v1",
+						"objecttypes"
+					]
+				},
+				"description": "Stores the URL of the newly created objecttype \"monument\" (objecttype_new) so it can be used to create a version of it, and to publish it."
+			},
+			"response": []
+		},
+		{
+			"name": "Create object \"monument\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5f5dd3d2-b117-427f-ba6d-85f2c23b5f80",
+						"exec": [
+							"if (pm.response.code === 201) {\r",
+							"    pm.environment.set(\"object_new\", pm.response.json().url);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Crs",
+						"type": "text",
+						"value": "EPSG:4326"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"{{objecttype_new}}\",\n    \"record\": {\n        \"typeVersion\": 1,\n        \"startDate\": \"2020-01-01\",\n        \"data\": {\n            \"naam\": \"Rembrandtmonument\",\n            \"kunstenaarsNaam\": \"Louis Royer\",\n            \"description\": \"Het Rembrandtmonument is een 19e-eeuws gedenkteken ter nagedachtenis aan de schilder Rembrandt van Rijn op het Rembrandtplein in Amsterdam.\"\n        },\n        \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                4.896476469311928,\n                52.36651498984676\n            ]\n        }\n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create objecttype (invalid)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"monument\",\n    \"namePlural\": \"monumenten\",\n    \"description\": \"Monumenten in de publieke ruimte.\",\n    \"dataClassification\": \"incorrect\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttypes_host}}api/v1/objecttypes",
+					"host": [
+						"{{objecttypes_host}}api"
+					],
+					"path": [
+						"v1",
+						"objecttypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create objecttype version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1803b6fb-d94e-4120-9504-955483f3993c",
+						"exec": [
+							"if (pm.response.code === 201) {\r",
+							"    pm.environment.set(\"objecttype_new_version\", pm.response.json().url);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"draft\",\n    \"jsonSchema\": {\n        \"title\": \"Monument\",\n        \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n        \"type\": \"object\",\n        \"required\": [\"naam\", \"kunstenaarsNaam\"],\n        \"properties\": {\n            \"naam\": {\n                \"type\": \"string\",\n                \"description\": \"Naam van het monument die de kunstenaar er aan heeft gegeven.\"\n            },\n            \"bijschrift\": {\n                \"type\": \"string\",\n                \"description\": \"Bijschrift die de context van het monument verduidelijkt.\"\n            },\n            \"kunstenaarsNaam\": {\n                \"type\": \"string\",\n                \"description\": \"Voor en achternaam van de kunstenaar.\"\n            },\n            \"kunstenaar\": {\n                \"type\": \"string\",\n                \"format\": \"url\",\n                \"description\": \"URL naar de Natuurlijk Persoon in de BRP.\"\n            },\n            \"opleverdatum\": {\n                \"type\": \"string\",\n                \"format\": \"date\",\n                \"description\": \"Datum waarop het monument is onthuld.\"\n            }\n        }\n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttype_new}}/versions",
+					"host": [
+						"{{objecttype_new}}"
+					],
+					"path": [
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create objecttype version (invalid)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5be7d70e-cdf7-4c89-b4cc-e11d8821a61d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"draft\",\n    \"jsonSchema\": {\n        \"title\": \"Monument\",\n        \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n        \"type\": \"object\",\n        \"required\": [\"naam\", \"kunstenaarsNaam\"],\n        \"properties\": {\n            \"bijschrift\": {\n                \"type\": \"string\",\n                \"description\": \"Bijschrift die de context van het monument verduidelijkt.\"\n            },\n            \"kunstenaarsNaam\": {\n                \"type\": \"string\",\n                \"description\": \"Voor en achternaam van de kunstenaar.\"\n            },\n            \"kunstenaar\": {\n                \"type\": \"string\",\n                \"format\": \"url\",\n                \"description\": \"URL naar de Natuurlijk Persoon in de BRP.\"\n            },\n            \"opleverdatum\": {\n                \"type\": \"string\",\n                \"format\": \"date\",\n                \"description\": \"Datum waarop het monument is onthuld.\"\n            }\n        }\n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttype_new}}/versions",
+					"host": [
+						"{{objecttype_new}}"
+					],
+					"path": [
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publish objecttype version publish",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"published\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttype_new_version}}",
+					"host": [
+						"{{objecttype_new_version}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete objecttype version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2bd03d17-3723-491e-a236-5c23cad6be77",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttype_new_version}}",
+					"host": [
+						"{{objecttype_new_version}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete objecttype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1ad9adb7-9f5d-472e-902e-1c3814520e1b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objecttype_new}}",
+					"host": [
+						"{{objecttype_new}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Token {{objecttypes_token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "abaed0ef-f36a-4228-8f33-7aec036cd01e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "aa4b5aef-2420-4b41-8b26-cdd9572c07f3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

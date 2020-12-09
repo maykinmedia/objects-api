@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "f8d9deb4-3e94-4be6-9321-61dfb4bdacf0",
+		"name": "Objects API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create object \"melding\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6754be53-71c7-4431-a628-2ecf914dea7a",
+						"exec": [
+							"if (pm.response.code === 201) {\r",
+							"    pm.environment.set(\"object_new\", pm.response.json().url);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Crs",
+						"value": "EPSG:4326",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"{{objecttypes_host}}api/v1/objecttypes/{{objecttype_melding_uuid}}\",\n    \"record\": {\n        \"typeVersion\": 1,\n        \"startDate\": \"2020-01-01\",\n        \"data\": {\n            \"description\": \"Hier is iets ergs aan de hand.\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					]
+				},
+				"description": "This will create a new object of objecttype \"melding\". The URL of the new object will be stored (object_new) to be used by the \"Delete object\" call."
+			},
+			"response": []
+		},
+		{
+			"name": "Create object (invalid)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Crs",
+						"value": "EPSG:4326",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"{{objecttypes_host}}api/v1/objecttypes/{{objecttype_melding_uuid}}\",\n    \"record\": {\n        \"typeVersion\": 1,\n        \"startDate\": \"2020-01-01\",\n        \"data\": {\n    \t    \"tekst\": \"Hier is iets ergs aan de hand.\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create object (no permission)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Crs",
+						"value": "EPSG:4326",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"{{objecttypes_host}}api/v1/objecttypes/{{objecttype_boom_uuid}}\",\n    \"record\": {\n        \"typeVersion\": 1,\n        \"startDate\": \"2020-01-01\",\n        \"data\": {\n            \"diameter\": 50,\n            \"plantDate\": \"2020-04-12\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve objects",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve objects by objecttype \"boom\"",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects?type={{objecttypes_host}}api/v1/objecttypes/{{objecttype_boom_uuid}}",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "{{objecttypes_host}}api/v1/objecttypes/{{objecttype_boom_uuid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve object \"boom X\"",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects/{{object_boom_uuid}}",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects",
+						"{{object_boom_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve object \"boom X\" on registration date",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects/{{object_boom_uuid}}?registrationDate=2006-07-12",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects",
+						"{{object_boom_uuid}}"
+					],
+					"query": [
+						{
+							"key": "registrationDate",
+							"value": "2006-07-12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve object \"boom X\" on date",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects/{{object_boom_uuid}}?date=2006-07-12",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects",
+						"{{object_boom_uuid}}"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2006-07-12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve object history \"boom X\"",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects/{{object_boom_uuid}}/history",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects",
+						"{{object_boom_uuid}}",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve objects by attribute",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{objects_host}}api/v1/objects?data_attrs=diameter__exact__26",
+					"host": [
+						"{{objects_host}}api"
+					],
+					"path": [
+						"v1",
+						"objects"
+					],
+					"query": [
+						{
+							"key": "data_attrs",
+							"value": "diameter__exact__26"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete object",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{object_new}}",
+					"host": [
+						"{{object_new}}"
+					]
+				},
+				"description": "Uses the URL of the newly created object from \"Create object melding\" to delete this object again."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Token {{objects_token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ed2fe741-f204-4336-9fb8-80d0f036dfbd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ea528420-f025-42ac-82c2-cfc28c9ad602",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
