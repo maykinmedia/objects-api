@@ -9,8 +9,16 @@ from .validators import CorrectionValidator, IsImmutableValidator, JsonSchemaVal
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
-    correct = serializers.SlugRelatedField(
-        slug_field="uuid", queryset=ObjectRecord.objects.all(), required=False
+    correctionFor = serializers.SlugRelatedField(
+        source="correct",
+        slug_field="uuid",
+        queryset=ObjectRecord.objects.all(),
+        required=False,
+    )
+    correctedBy = serializers.SlugRelatedField(
+        source="corrected",
+        slug_field="uuid",
+        read_only=True,
     )
 
     class Meta:
@@ -23,7 +31,8 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "startDate",
             "endDate",
             "registrationDate",
-            "correct",
+            "correctionFor",
+            "correctedBy",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
@@ -35,7 +44,16 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
 
 
 class HistoryRecordSerializer(serializers.ModelSerializer):
-    corrected = serializers.SlugRelatedField(slug_field="uuid", read_only=True)
+    correctionFor = serializers.SlugRelatedField(
+        source="correct",
+        slug_field="uuid",
+        read_only=True,
+    )
+    correctedBy = serializers.SlugRelatedField(
+        source="corrected",
+        slug_field="uuid",
+        read_only=True,
+    )
 
     class Meta:
         model = ObjectRecord
@@ -47,7 +65,8 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "startDate",
             "endDate",
             "registrationDate",
-            "corrected",
+            "correctionFor",
+            "correctedBy",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},

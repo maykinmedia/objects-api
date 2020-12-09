@@ -1,30 +1,30 @@
 from django.core.exceptions import ValidationError
 
 import jsonschema
-import requests
+from zds_client.client import ClientError
+from zgw_consumers.models import Service
 
 
 def check_objecttype(object_type, version, data):
     if not data:
         return
 
-    response = requests.get(object_type)
+    client = Service.get_client(object_type)
+    objecttype_version_url = f"{object_type}/versions/{version}"
+
     try:
-        response.raise_for_status()
-    except requests.exceptions.RequestException as exc:
+        response = client.retrieve("objectversion", url=objecttype_version_url)
+    except ClientError as exc:
         raise ValidationError(exc.args[0]) from exc
 
-    type_data = response.json()
-    versions = list(
-        filter(lambda x: x.get("version") == version, type_data.get("versions", []))
-    )
     try:
-        version_data = versions[0]
-    except IndexError:
-        msg = f"{object_type} doesn't include JSON schema for version {version}"
+        schema = response["jsonSchema"]
+    except KeyError:
+        msg = f"{objecttype_version_url} does not appear to be a valid objecttype."
         raise ValidationError(msg)
 
-    schema = version_data["jsonSchema"]
+    # TODO: Set warning header if objecttype is not published.
+
     try:
         jsonschema.validate(data, schema)
     except jsonschema.exceptions.ValidationError as exc:

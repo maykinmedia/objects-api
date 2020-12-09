@@ -8,7 +8,7 @@ from .models import Object, ObjectRecord
 class ObjectRecordInline(admin.TabularInline):
     model = ObjectRecord
     extra = 1
-    readonly_fields = ("uuid", "registration_date", "end_date", "get_after_correction")
+    readonly_fields = ("uuid", "registration_date", "end_date", "get_corrected_by")
     search_fields = ("uuid",)
     fields = (
         "version",
@@ -17,8 +17,8 @@ class ObjectRecordInline(admin.TabularInline):
         "start_date",
         "end_date",
         "registration_date",
+        "get_corrected_by",
         "correct",
-        "get_after_correction",
     )
     formfield_overrides = {GeometryField: {"widget": forms.OSMWidget}}
 
@@ -39,10 +39,10 @@ class ObjectRecordInline(admin.TabularInline):
                 )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def get_after_correction(self, obj):
+    def get_corrected_by(self, obj):
         return obj.corrected
 
-    get_after_correction.short_description = "after correction"
+    get_corrected_by.short_description = "corrected by"
 
 
 @admin.register(Object)

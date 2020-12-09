@@ -26,7 +26,9 @@ class Object(models.Model):
         return (
             self.records.filter(start_date__lte=today)
             .filter(models.Q(end_date__gte=today) | models.Q(end_date__isnull=True))
+            .order_by("-pk")
             .first()
+            # TODO: pk should prolly be index once added.
         )
 
     @property
@@ -35,6 +37,7 @@ class Object(models.Model):
 
 
 class ObjectRecord(models.Model):
+    # index = models.PositiveIntegerField(help_text="Incremental index number of the object record.", default=1)
     uuid = models.UUIDField(
         default=uuid.uuid4, help_text="Unique identifier (UUID4)", unique=True
     )
@@ -59,7 +62,8 @@ class ObjectRecord(models.Model):
     )
     correct = models.OneToOneField(
         "core.ObjectRecord",
-        on_delete=models.PROTECT,
+        verbose_name="correction for",
+        on_delete=models.CASCADE,
         related_name="corrected",
         null=True,
         blank=True,
@@ -84,6 +88,8 @@ class ObjectRecord(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and self.object.last_record:
+            # self.index = self.object.last_record.index + 1
+
             #  add end_date to previous record
             previous_record = self.object.last_record
             previous_record.end_date = self.start_date

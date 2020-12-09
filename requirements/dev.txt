@@ -71,7 +71,7 @@ oyaml==1.0                # via -r requirements/ci.txt, vng-api-common
 packaging==20.3           # via sphinx
 pathspec==0.8.0           # via black
 pillow==7.1.1             # via -r requirements/ci.txt
-pip-tools==4.5.1          # via -r requirements/dev.in
+pip-tools==5.4.0          # via -r requirements/dev.in
 polib==1.1.0              # via -r requirements/ci.txt, django-rosetta
 psycopg2==2.8.5           # via -r requirements/ci.txt
 pycodestyle==2.5.0        # via flake8
