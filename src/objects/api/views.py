@@ -19,7 +19,7 @@ from .serializers import (
 
 
 class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
-    queryset = Object.objects.order_by("-pk")
+    queryset = Object.objects.prefetch_related("records").order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet
     lookup_field = "uuid"
@@ -32,7 +32,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         if self.action not in ("list", "search"):
             return base
 
-        return base.filter_for_user(self.request.user)
+        return base.filter_for_date().filter_for_user(self.request.user)
 
     @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
