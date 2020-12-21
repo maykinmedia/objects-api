@@ -1,7 +1,37 @@
 openapi: 3.0.0
 info:
   title: Objects API
-  description: An API to access Objects
+  description: "An API to manage Objects.\n\n# Introduction\n\nAn OBJECT is of a certain\
+    \ OBJECTTYPE (defined in the Objecttypes API). An \nOBJECT has a few core attributes\
+    \ that every OBJECT (technically a RECORD,\nsee below) has, although these attribtutes\
+    \ can sometimes be empty. They are\nattributes like `geometry` and some administrative\
+    \ attributes. The data that\ndescribes the actual object is stored in the `data`\
+    \ attribute and follows \nthe JSON schema as given by the OBJECTTYPE.\n\n## History\n\
+    \nEach OBJECT has 1 or more RECORDs. A RECORD contains the data of an OBJECT \n\
+    at a certain time. An OBJECT can have multiple RECORDS that decribe the \nhistory\
+    \ of that OBJECT. Changes to an OBJECT actually create a new RECORD \nunder the\
+    \ OBJECT and leaves the old RECORD as is.\n\nOver time, an OBJECTTYPE can also\
+    \ change. This is reflected with \nOBJECTTYPE-VERSIONs. Therefore, a RECORD always\
+    \ indicates which \nOBJECTTYPE-VERSION it uses described by the `OBJECT.type`\
+    \ and \n`RECORD.typeVersion` attributes.\n\n### Material and formal history\n\n\
+    History can be seen from 2 perspectives: formal and material history. The \nformal\
+    \ history describes the history as it should be (stored in the \n`startAt` and\
+    \ `endAt` attributes). The material history describes the \nhistory as it was\
+    \ administratively processed (stored in the `registeredAt`\nattribute).\n\nThe\
+    \ difference is that an object could be created or updated in the real \nworld\
+    \ at a certain point in time but the administrative change (ie. save or\nupdate\
+    \ the object in the Objects API) can be done at a later time. The\nquery parameters\
+    \ `?date=2021-01-01` (formal history) and \n`?registrationDate=2021-01-01` (material\
+    \ history) allow for querying the \nRECORDS as seen from both perspectives, and\
+    \ can yield different results.\n\n### Corrections\n\nRECORDs cannot be deleted\
+    \ or changed once saved. If an error was made to\na RECORD, the RECORD can be\
+    \ \"corrected\" by saving a new RECORD and indicate\nthat it corrects a previous\
+    \ RECORD. This is done via the attribute \n`correctionFor`.\n\n### Deletion\n\n\
+    Although OBJECTs can be deleted, it is sometimes better to set the \n`endDate`\
+    \ of an OBJECT. Deleting an OBJECT also deletes all RECORDs in \naccordance with\
+    \ privacy laws.\n\n# Authorizations\n\nThe API uses API-tokens that grant certain\
+    \ permissions. The API-token is\npassed via a header, like this: `Authorization:\
+    \ Token <token>`\n"
   version: 0.1.0
 security:
 - Token: []
@@ -9,7 +39,8 @@ paths:
   /objects:
     get:
       operationId: object_list
-      description: ''
+      description: Retrieve a list of OBJECTs and their actual RECORD. The actual
+        record is defined as if the query parameter `date=<today>` was given.
       parameters:
       - name: type
         in: query
@@ -218,7 +249,7 @@ paths:
       - objects
     post:
       operationId: object_create
-      description: ''
+      description: Create an OBJECT and its initial RECORD.
       parameters:
       - name: Content-Type
         in: header
@@ -394,7 +425,7 @@ paths:
   /objects/search:
     post:
       operationId: object_search
-      description: Perform a (geo) search on Objects
+      description: Perform a (geo) search on OBJECTs
       parameters:
       - name: Content-Type
         in: header
@@ -579,7 +610,8 @@ paths:
   /objects/{uuid}:
     get:
       operationId: object_read
-      description: ''
+      description: Retrieve a single OBJECT and its actual RECORD. The actual record
+        is defined as if the query parameter `date=<today>` was given.
       parameters:
       - name: Accept-Crs
         in: header
@@ -759,7 +791,7 @@ paths:
       - objects
     put:
       operationId: object_update
-      description: ''
+      description: Update the OBJECT by creating a new RECORD with the updates values.
       parameters:
       - name: Content-Type
         in: header
@@ -948,7 +980,7 @@ paths:
       - objects
     patch:
       operationId: object_partial_update
-      description: ''
+      description: Update the OBJECT by creating a new RECORD with the updates values.
       parameters:
       - name: Content-Type
         in: header
@@ -1137,7 +1169,7 @@ paths:
       - objects
     delete:
       operationId: object_delete
-      description: ''
+      description: Delete an OBJECT and all RECORDs belonging to it.
       responses:
         '204':
           description: No content
@@ -1280,7 +1312,7 @@ paths:
   /objects/{uuid}/history:
     get:
       operationId: object_history
-      description: ''
+      description: Retrieve all RECORDs of an OBJECT.
       parameters:
       - name: Accept-Crs
         in: header

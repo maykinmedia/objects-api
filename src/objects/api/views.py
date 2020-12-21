@@ -19,6 +19,29 @@ from .serializers import (
 
 
 class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
+    """
+    Manage OBJECTs and their RECORDs.
+
+    list:
+    Retrieve a list of OBJECTs and their actual RECORD. The actual record is defined as if the query parameter `date=<today>` was given.
+
+    retrieve:
+    Retrieve a single OBJECT and its actual RECORD. The actual record is defined as if the query parameter `date=<today>` was given.
+
+    create:
+    Create an OBJECT and its initial RECORD.
+
+    update:
+    Update the OBJECT by creating a new RECORD with the updates values.
+
+    partial_update:
+    Update the OBJECT by creating a new RECORD with the updates values.
+
+    destroy:
+    Delete an OBJECT and all RECORDs belonging to it.
+
+    """
+
     queryset = Object.objects.prefetch_related("records").order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet
@@ -37,13 +60,15 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
     def history(self, request, uuid=None):
+        """Retrieve all RECORDs of an OBJECT."""
+
         records = self.get_object().records.order_by("id")
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=["post"])
     def search(self, request):
-        """Perform a (geo) search on Objects"""
+        """Perform a (geo) search on OBJECTs"""
         search_input = self.get_search_input()
 
         within = search_input["geometry"]["within"]
