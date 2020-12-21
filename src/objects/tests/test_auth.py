@@ -113,6 +113,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
             object_type=OBJECT_TYPE, mode=PermissionModes.read_only, users=[self.user]
         )
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(object=object)
         ObjectFactory.create()
         url = reverse_lazy("object-list")
 

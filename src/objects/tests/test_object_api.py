@@ -1,5 +1,5 @@
 import json
-from datetime import date
+from datetime import date, timedelta
 
 from django.urls import reverse
 
@@ -37,6 +37,30 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             object_type=OBJECT_TYPE,
             mode=PermissionModes.read_and_write,
             users=[cls.user],
+        )
+
+    def test_list_actual_objects(self, m):
+        object_record1 = ObjectRecordFactory.create(
+            object__object_type=OBJECT_TYPE,
+            start_date=date.today(),
+        )
+        object_record2 = ObjectRecordFactory.create(
+            object__object_type=OBJECT_TYPE,
+            start_date=date.today() - timedelta(days=10),
+            end_date=date.today() - timedelta(days=1),
+        )
+        url = reverse("object-list")
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[object_record1.object.uuid])}",
         )
 
     def test_retrieve_object(self, m):

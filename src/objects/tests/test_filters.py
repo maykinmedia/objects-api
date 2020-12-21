@@ -30,6 +30,7 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
 
     def test_filter_object_type(self):
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(object=object)
         ObjectFactory.create(object_type=OTHER_OBJECT_TYPE)
 
         response = self.client.get(self.url, {"type": OBJECT_TYPE})
