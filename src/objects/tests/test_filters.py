@@ -165,6 +165,14 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
 
+    def test_filter_invalid_param(self):
+        response = self.client.get(self.url, {"data_attrs": "diameter__exact"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(), ["not enough values to unpack (expected 3, got 2)"]
+        )
+
     def test_filter_nested_attr(self):
         record = ObjectRecordFactory.create(
             data={"dimensions": {"diameter": 4}}, object__object_type=OBJECT_TYPE
