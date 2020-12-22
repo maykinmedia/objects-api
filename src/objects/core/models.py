@@ -6,16 +6,51 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from zgw_consumers.models import Service
+
 from .query import ObjectQuerySet
 from .utils import check_objecttype
+
+
+class ObjectType(models.Model):
+    service = models.ForeignKey(
+        Service, on_delete=models.PROTECT, related_name="object_types"
+    )
+    uuid = models.UUIDField(
+        help_text=_("Unique identifier (UUID4) of the OBJECTTYPE in Objecttypes API")
+    )
+    _name = models.CharField(
+        max_length=100,
+        help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
+    )  #
+
+    class Meta:
+        unique_together = ("service", "uuid")
+
+    def __str__(self):
+        return f"{self.service.label}: {self._name}"
+
+    @property
+    def url(self):
+        # zds_client.get_operation_url() can be used here but it increases HTTP overhead
+        return f"{self.service.api_root}objecttypes/{self.uuid}"
+
+    def save(self, *args, **kwargs):
+        if not self._name:
+            client = self.service.build_client()
+            object_type_data = client.retrieve("objecttype", url=self.url)
+            self._name = object_type_data["name"]
+
+        super().save(*args, **kwargs)
 
 
 class Object(models.Model):
     uuid = models.UUIDField(
         unique=True, default=uuid.uuid4, help_text="Unique identifier (UUID4)"
     )
-    object_type = models.URLField(
-        _("object type"), help_text=_("Url reference to OBJECTTYPE in Objecttypes API")
+    object_type = models.ForeignKey(
+        ObjectType,
+        on_delete=models.PROTECT,
     )
 
     objects = ObjectQuerySet.as_manager()
