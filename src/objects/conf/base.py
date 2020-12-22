@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     "compat",  # Part of hijack
     "hijack_admin",
     "rest_framework",
-    "rest_framework.authtoken",
     "rest_framework_gis",
     "vng_api_common",
     "zgw_consumers",
@@ -78,6 +77,7 @@ INSTALLED_APPS = [
     "objects.accounts",
     "objects.api",
     "objects.core",
+    "objects.token",
     "objects.utils",
 ]
 
