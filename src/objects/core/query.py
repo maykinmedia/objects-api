@@ -2,6 +2,16 @@ import datetime
 
 from django.db import models
 
+from vng_api_common.utils import get_uuid_from_path
+from zgw_consumers.models import Service
+
+
+class ObjectTypeQuerySet(models.QuerySet):
+    def get_by_url(self, url):
+        service = Service.get_service(url)
+        uuid = get_uuid_from_path(url)
+        return self.get(service=service, uuid=uuid)
+
 
 class ObjectQuerySet(models.QuerySet):
     def filter_for_user(self, user):

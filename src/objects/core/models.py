@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from zgw_consumers.models import Service
 
-from .query import ObjectQuerySet
+from .query import ObjectQuerySet, ObjectTypeQuerySet
 from .utils import check_objecttype
 
 
@@ -22,7 +22,9 @@ class ObjectType(models.Model):
     _name = models.CharField(
         max_length=100,
         help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
-    )  #
+    )
+
+    objects = ObjectTypeQuerySet.as_manager()
 
     class Meta:
         unique_together = ("service", "uuid")
