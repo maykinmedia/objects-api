@@ -4,6 +4,8 @@ import os
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from objects.core.models import ObjectType
+
 from .constants import PermissionModes
 
 
@@ -49,6 +51,11 @@ class TokenAuth(models.Model):
 
     def generate_token(self):
         return binascii.hexlify(os.urandom(20)).decode()
+
+    def get_permission_for_object_type(self, object_type: ObjectType):
+        if not self.permissions.filter(object_type=object_type).exists():
+            return None
+        return self.permissions.get(object_type=object_type)
 
 
 class Permission(models.Model):
