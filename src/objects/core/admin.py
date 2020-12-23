@@ -2,12 +2,13 @@ from django.contrib import admin
 from django.contrib.gis import forms
 from django.contrib.gis.db.models import GeometryField
 
+from .forms import ObjectTypeForm
 from .models import Object, ObjectRecord, ObjectType
 
 
 @admin.register(ObjectType)
 class ObjectTypeAdmin(admin.ModelAdmin):
-    readonly_fields = ("_name",)
+    form = ObjectTypeForm
 
 
 class ObjectRecordInline(admin.TabularInline):
