@@ -75,8 +75,8 @@
         "slug": "api-authorizations",
         "models": [
             [
-                "authtoken",
-                "token"
+                "token",
+                "tokenauth"
             ]
         ]
     }

@@ -3,13 +3,16 @@ from django.urls import reverse, reverse_lazy
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.accounts.constants import PermissionModes
-from objects.accounts.tests.factories import ObjectPermissionFactory
-from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
+from objects.core.tests.factores import (
+    ObjectFactory,
+    ObjectRecordFactory,
+    ObjectTypeFactory,
+)
+from objects.token.constants import PermissionModes
+from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
-OBJECT_TYPE = "https://example.com/objecttypes/v1/types/abc109"
-OTHER_OBJECT_TYPE = "https://example.com/objecttypes/v1/types/qwe109"
+OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
@@ -19,21 +22,26 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        ObjectPermissionFactory(
-            object_type=OBJECT_TYPE, mode=PermissionModes.read_only, users=[cls.user]
-        )
-        ObjectPermissionFactory(
-            object_type=OTHER_OBJECT_TYPE,
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.another_object_type = ObjectTypeFactory(service=cls.object_type.service)
+
+        PermissionFactory.create(
+            object_type=cls.object_type,
             mode=PermissionModes.read_only,
-            users=[cls.user],
+            token_auth=cls.token_auth,
+        )
+        PermissionFactory.create(
+            object_type=cls.another_object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
         )
 
     def test_filter_object_type(self):
-        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object = ObjectFactory.create(object_type=self.object_type)
         ObjectRecordFactory.create(object=object)
-        ObjectFactory.create(object_type=OTHER_OBJECT_TYPE)
+        ObjectFactory.create(object_type=self.another_object_type)
 
-        response = self.client.get(self.url, {"type": OBJECT_TYPE})
+        response = self.client.get(self.url, {"type": self.object_type.url})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -53,18 +61,21 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        ObjectPermissionFactory(
-            object_type=OBJECT_TYPE, mode=PermissionModes.read_only, users=[cls.user]
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
         )
 
     def test_filter_exact_string(self):
         record = ObjectRecordFactory.create(
-            data={"name": "demo"}, object__object_type=OBJECT_TYPE
+            data={"name": "demo"}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"name": "demo2"}, object__object_type=OBJECT_TYPE
+            data={"name": "demo2"}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(self.url, {"data_attrs": "name__exact__demo"})
 
@@ -80,12 +91,12 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_exact_number(self):
         record = ObjectRecordFactory.create(
-            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+            data={"diameter": 4}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"diameter": 6}, object__object_type=OBJECT_TYPE
+            data={"diameter": 6}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(self.url, {"data_attrs": "diameter__exact__4"})
 
@@ -101,15 +112,15 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_lte(self):
         record1 = ObjectRecordFactory.create(
-            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+            data={"diameter": 4}, object__object_type=self.object_type
         )
         record2 = ObjectRecordFactory.create(
-            data={"diameter": 5}, object__object_type=OBJECT_TYPE
+            data={"diameter": 5}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"diameter": 6}, object__object_type=OBJECT_TYPE
+            data={"diameter": 6}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(self.url, {"data_attrs": "diameter__lte__5"})
 
@@ -130,15 +141,15 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_lt(self):
         record = ObjectRecordFactory.create(
-            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+            data={"diameter": 4}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"diameter": 5}, object__object_type=OBJECT_TYPE
+            data={"diameter": 5}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"diameter": 6}, object__object_type=OBJECT_TYPE
+            data={"diameter": 6}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(self.url, {"data_attrs": "diameter__lt__5"})
 
@@ -176,15 +187,15 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_nested_attr(self):
         record = ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 4}}, object__object_type=OBJECT_TYPE
+            data={"dimensions": {"diameter": 4}}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 5}}, object__object_type=OBJECT_TYPE
+            data={"dimensions": {"diameter": 5}}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"diameter": 4}, object__object_type=OBJECT_TYPE
+            data={"diameter": 4}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(data={}, object__object_type=OBJECT_TYPE)
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(
             self.url, {"data_attrs": "dimensions__diameter__exact__4"}
@@ -203,15 +214,15 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     def test_filter_comma_separated(self):
         record = ObjectRecordFactory.create(
             data={"dimensions": {"diameter": 4}, "name": "demo"},
-            object__object_type=OBJECT_TYPE,
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
             data={"dimensions": {"diameter": 5}, "name": "demo"},
-            object__object_type=OBJECT_TYPE,
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
             data={"dimensions": {"diameter": 4}, "name": "other"},
-            object__object_type=OBJECT_TYPE,
+            object__object_type=self.object_type,
         )
 
         response = self.client.get(

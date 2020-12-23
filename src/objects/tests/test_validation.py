@@ -6,17 +6,16 @@ from rest_framework.test import APITestCase
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
-from objects.accounts.constants import PermissionModes
-from objects.accounts.tests.factories import ObjectPermissionFactory
 from objects.core.models import Object
-from objects.core.tests.factores import ObjectRecordFactory
+from objects.core.tests.factores import ObjectRecordFactory, ObjectTypeFactory
+from objects.token.constants import PermissionModes
+from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
 from .utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-OBJECT_TYPE = f"{OBJECT_TYPES_API}types/a6c109"
 
 
 @requests_mock.Mocker()
@@ -25,26 +24,26 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        Service.objects.create(api_type=APITypes.orc, api_root=OBJECT_TYPES_API)
-        ObjectPermissionFactory(
-            object_type=OBJECT_TYPE,
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
-            users=[cls.user],
+            token_auth=cls.token_auth,
         )
 
-    def test_create_object_invalid_objecttype_url(self, m):
-        object_type_invalid = "https://example.com/objecttypes/v1/types/invalid"
-        ObjectPermissionFactory(
+    def test_create_object_with_not_found_objecttype_url(self, m):
+        object_type_invalid = ObjectTypeFactory(service=self.object_type.service)
+        PermissionFactory.create(
             object_type=object_type_invalid,
             mode=PermissionModes.read_and_write,
-            users=[self.user],
+            token_auth=self.token_auth,
         )
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(f"{object_type_invalid}/versions/1", status_code=404)
+        m.get(f"{object_type_invalid.url}/versions/1", status_code=404)
 
         url = reverse("object-list")
         data = {
-            "type": object_type_invalid,
+            "type": object_type_invalid.url,
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12"},
@@ -59,11 +58,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
     def test_create_object_no_version(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(f"{OBJECT_TYPE}/versions/10", status_code=404)
+        m.get(f"{self.object_type.url}/versions/10", status_code=404)
 
         url = reverse("object-list")
         data = {
-            "type": OBJECT_TYPE,
+            "type": self.object_type.url,
             "record": {
                 "typeVersion": 10,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -81,11 +80,14 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
     def test_create_object_schema_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
 
         url = reverse("object-list")
         data = {
-            "type": OBJECT_TYPE,
+            "type": self.object_type.url,
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12"},
@@ -108,7 +110,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         url = reverse("object-list")
         data = {
-            "type": OBJECT_TYPE,
+            "type": self.object_type.url,
         }
 
         response = self.client.post(url, data, **GEO_WRITE_KWARGS)
@@ -118,12 +120,15 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
     def test_create_object_correction_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
 
         record = ObjectRecordFactory.create()
         url = reverse("object-list")
         data = {
-            "type": OBJECT_TYPE,
+            "type": self.object_type.url,
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -145,15 +150,18 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
     def test_update_object_with_correction_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
 
         corrected_record, initial_record = ObjectRecordFactory.create_batch(
-            2, object__object_type=OBJECT_TYPE
+            2, object__object_type=self.object_type
         )
         object = initial_record.object
         url = reverse("object-detail", args=[object.uuid])
         data = {
-            "type": OBJECT_TYPE,
+            "type": self.object_type.url,
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -173,14 +181,14 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         )
 
     def test_update_object_type_invalid(self, m):
-        old_object_type = "https://example.com/objecttypes/v1/types/qwe109"
-        ObjectPermissionFactory(
+        old_object_type = ObjectTypeFactory(service=self.object_type.service)
+        PermissionFactory.create(
             object_type=old_object_type,
             mode=PermissionModes.read_and_write,
-            users=[self.user],
+            token_auth=self.token_auth,
         )
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(OBJECT_TYPE, json=mock_objecttype(OBJECT_TYPE))
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         initial_record = ObjectRecordFactory.create(
             object__object_type=old_object_type,
@@ -191,7 +199,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
-            "type": OBJECT_TYPE,
+            "type": self.object_type.url,
         }
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
