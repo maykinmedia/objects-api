@@ -24,7 +24,10 @@ SWAGGER_SETTINGS.update(
         "SECURITY_DEFINITIONS": {
             "Token": {"type": "apiKey", "name": "Authorization", "in": "header"}
         },
-        "DEFAULT_FIELD_INSPECTORS": ("objects.utils.inspectors.GeometryFieldInspector",)
+        "DEFAULT_FIELD_INSPECTORS": (
+            "objects.utils.inspectors.GeometryFieldInspector",
+            "objects.utils.inspectors.ObjectTypeFieldInspector",
+        )
         + BASE_SWAGGER_SETTINGS["DEFAULT_FIELD_INSPECTORS"],
     }
 )
