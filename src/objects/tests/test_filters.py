@@ -53,6 +53,26 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
             f"http://testserver{reverse('object-detail', args=[object.uuid])}",
         )
 
+    def test_filter_invalid_objecttype(self):
+        response = self.client.get(self.url, {"type": "invalid-objecttype-url"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json()["type"], ["Invalid value."])
+
+    def test_filter_unknown_objecttype(self):
+        objecttype_url = (
+            f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2"
+        )
+        response = self.client.get(self.url, {"type": objecttype_url})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["type"],
+            [
+                f"Select a valid object type. {objecttype_url} is not one of the available choices."
+            ],
+        )
+
 
 class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")

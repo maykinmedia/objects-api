@@ -3,8 +3,6 @@ from django.urls import reverse
 import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
-from zgw_consumers.constants import APITypes
-from zgw_consumers.models import Service
 
 from objects.core.models import Object
 from objects.core.tests.factores import ObjectRecordFactory, ObjectTypeFactory

@@ -128,6 +128,51 @@ class PermissionTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+    def test_create_with_invalid_objecttype(self):
+        url = reverse("object-list")
+        data = {
+            "type": "invalid-objecttype-url",
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12"},
+                "startDate": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_with_unknown_objecttype_service(self):
+        url = reverse("object-list")
+        data = {
+            "type": "https://other-api.nl/v1/objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12"},
+                "startDate": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_with_unknown_objecttype_uuid(self):
+        url = reverse("object-list")
+        data = {
+            "type": f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12"},
+                "startDate": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
 
 class FilterAuthTests(TokenAuthMixin, APITestCase):
     @classmethod

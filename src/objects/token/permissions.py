@@ -19,7 +19,11 @@ class ObjectTypeBasedPermission(BasePermission):
             return True
 
         object_type_url = request.data["type"]
-        object_type = ObjectType.objects.get_by_url(object_type_url)
+        try:
+            object_type = ObjectType.objects.get_by_url(object_type_url)
+        except (ObjectType.DoesNotExist, ValueError, TypeError):
+            return False
+
         object_type_permission = request.auth.get_permission_for_object_type(
             object_type
         )
