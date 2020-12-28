@@ -1,10 +1,37 @@
 [
 {
+    "model": "core.objecttype",
+    "pk": 1,
+    "fields": {
+        "service": 1,
+        "uuid": "feeaa795-d212-4fa2-bb38-2c34996e5702",
+        "_name": "Boom"
+    }
+},
+{
+    "model": "core.objecttype",
+    "pk": 2,
+    "fields": {
+        "service": 1,
+        "uuid": "3a82fb7f-fc9b-4104-9804-993f639d6d0d",
+        "_name": "Straatverlichting"
+    }
+},
+{
+    "model": "core.objecttype",
+    "pk": 3,
+    "fields": {
+        "service": 1,
+        "uuid": "ca754b52-3f37-4c49-837c-130e8149e337",
+        "_name": "Melding"
+    }
+},
+{
     "model": "core.object",
     "pk": 1,
     "fields": {
         "uuid": "bea734f3-456b-4049-87b1-58d895daab8b",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -12,7 +39,7 @@
     "pk": 2,
     "fields": {
         "uuid": "d4643987-7f5f-4d41-8083-046eb8fbad61",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -20,7 +47,7 @@
     "pk": 3,
     "fields": {
         "uuid": "59765348-ee72-4d30-b21f-dcc2ba2dffac",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -28,7 +55,7 @@
     "pk": 4,
     "fields": {
         "uuid": "47454f68-1884-438c-8f69-398f437d59c3",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -36,7 +63,7 @@
     "pk": 8,
     "fields": {
         "uuid": "6cb099c1-acb2-4ff1-989e-c752e6d44540",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -44,7 +71,7 @@
     "pk": 9,
     "fields": {
         "uuid": "601b20a6-bd09-41ff-b4ea-25c38ed5c424",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -52,7 +79,7 @@
     "pk": 10,
     "fields": {
         "uuid": "d89bcbcb-51bb-4bc4-9523-2891ed9994d7",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -60,7 +87,7 @@
     "pk": 11,
     "fields": {
         "uuid": "8e155233-f06e-49ea-97fb-3c9eef31dc35",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -68,7 +95,7 @@
     "pk": 12,
     "fields": {
         "uuid": "f710ad49-8c90-4b4d-bf94-83555212dd5c",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -76,7 +103,7 @@
     "pk": 15,
     "fields": {
         "uuid": "4e04fedb-e8a5-47a2-beea-4963eafbf4b9",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -84,7 +111,7 @@
     "pk": 16,
     "fields": {
         "uuid": "1017c4c4-24c1-47b4-8f61-3b45a56f3054",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702"
+        "object_type": 1
     }
 },
 {
@@ -92,7 +119,7 @@
     "pk": 27,
     "fields": {
         "uuid": "6ce48e78-dc54-4164-8670-4b139d98f761",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d"
+        "object_type": 2
     }
 },
 {
@@ -100,7 +127,7 @@
     "pk": 28,
     "fields": {
         "uuid": "69feca90-6c3d-4628-ace8-19e4b0ae4065",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d"
+        "object_type": 2
     }
 },
 {
@@ -108,7 +135,7 @@
     "pk": 29,
     "fields": {
         "uuid": "2ffa8464-00be-473d-be78-c2d4a6283dea",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d"
+        "object_type": 2
     }
 },
 {
@@ -116,7 +143,7 @@
     "pk": 30,
     "fields": {
         "uuid": "f86dc47e-9613-4eb3-aca7-f727cba3bea0",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d"
+        "object_type": 2
     }
 },
 {
@@ -124,7 +151,7 @@
     "pk": 31,
     "fields": {
         "uuid": "57001413-c035-434e-9d46-090ba24fca8e",
-        "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d"
+        "object_type": 2
     }
 },
 {
@@ -744,26 +771,31 @@
     }
 },
 {
-    "model": "accounts.objectpermission",
-    "pk": 6,
+    "model": "token.tokenauth",
+    "pk": "cd63e158f3aca276ef284e3033d020a22899c728",
     "fields": {
-        "object_type": "http://localhost:8001/api/v1/objecttypes/feeaa795-d212-4fa2-bb38-2c34996e5702",
-        "mode": "read_only"
+        "contact_person": "test",
+        "email": "let@me.test",
+        "organization": "",
+        "last_modified": "2020-12-23T11:43:16.820Z",
+        "created": "2020-12-22T16:27:00.751Z"
     }
 },
 {
-    "model": "accounts.objectpermission",
-    "pk": 7,
+    "model": "token.permission",
+    "pk": 1,
     "fields": {
-        "object_type": "http://localhost:8001/api/v1/objecttypes/3a82fb7f-fc9b-4104-9804-993f639d6d0d",
-        "mode": "read_only"
+        "token_auth": "cd63e158f3aca276ef284e3033d020a22899c728",
+        "object_type": 2,
+        "mode": "read_and_write"
     }
 },
 {
-    "model": "accounts.objectpermission",
-    "pk": 8,
+    "model": "token.permission",
+    "pk": 2,
     "fields": {
-        "object_type": "http://localhost:8001/api/v1/objecttypes/ca754b52-3f37-4c49-837c-130e8149e337",
+        "token_auth": "cd63e158f3aca276ef284e3033d020a22899c728",
+        "object_type": 1,
         "mode": "read_and_write"
     }
 },
@@ -778,7 +810,7 @@
         "secret": "",
         "auth_type": "api_key",
         "header_key": "Authorization",
-        "header_value": "Token 11b2e52852a4b0b853d560d5aa13da32f975db96",
+        "header_value": "Token 4271c4a3bb0726c55d44b1e2e68de29b19dfc643",
         "oas": "http://localhost:8001/api/v1/schema/openapi.yaml",
         "nlx": "",
         "user_id": "",
