@@ -4,7 +4,7 @@ Quickstart
 ==========
 
 A simple ``docker-compose-quickstart.yml`` file is available to get the API's
-up and running in minutes. This file has some convenience settings to get 
+up and running in minutes. This file has some convenience settings to get
 started quickly and these should never be used for anything besides testing:
 
 * A default secret is set in the ``SECRET_KEY`` environment variable
@@ -31,25 +31,25 @@ Objecttypes API
 
          .. code:: shell
 
-            $ wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose-quickstart.yml -O docker-compose.yml
+            $  wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
 
       .. tab:: Windows Powershell 3
 
          .. code:: shell
 
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose-quickstart.yml -Odocker-compose.yml
+            PS> wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
 
 3. Start the Docker containers:
 
    .. code:: shell
 
-      $ docker-compose up -d
+      $ docker-compose -f docker-compose-qs.yml up -d
 
 4. Import a demo set of objecttypes:
 
    .. code:: shell
 
-      $ docker-compose -f docker-compose-quickstart.yml exec web src/manage.py loaddata demodata
+      $ docker-compose exec web src/manage.py loaddata demodata
 
 Objects API
 -----------
@@ -69,19 +69,19 @@ Objects API
 
          .. code:: shell
 
-            $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose.yml
+            $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
 
       .. tab:: Windows Powershell 3
 
          .. code:: shell
 
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -Odocker-compose-quickstart.yml
+            PS> wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
 
 3. Start the Docker containers:
 
    .. code:: shell
 
-      $ docker-compose up -d
+      $ docker-compose -f docker-compose-qs.yml up -d
 
 4. Import a demo set of objects (linking to the demo objecttypes):
 
@@ -91,7 +91,7 @@ Objects API
 
 5. Retrieve an object via the Objects API in your webbrowser:
 
-   .. code:: 
+   .. code::
 
       http://localhost:8000/api/v1/objects/
 

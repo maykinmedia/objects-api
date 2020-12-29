@@ -60,9 +60,6 @@ ENV DJANGO_SETTINGS_MODULE=objects.conf.docker
 
 ARG SECRET_KEY=dummy
 
-# copy fixtures
-COPY src/objects/fixtures /app/src/fixtures
-
 # Run collectstatic, so the result is already included in the image
 RUN python src/manage.py collectstatic --noinput
 

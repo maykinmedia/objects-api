@@ -46,7 +46,7 @@ Reference implementation
 
 |build-status| |coverage| |black| |docker| |python-versions|
 
-The reference implementation is used to demonstrate the API in action and can 
+The reference implementation is used to demonstrate the API in action and can
 be used for test and demo purposes. The reference implementation is open source,
 well tested and available as Docker image.
 
@@ -57,11 +57,12 @@ Quickstart
 
    .. code:: bash
 
-      $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose.yml
-      $ docker-compose up -d
+      $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
+      $ docker-compose -f docker-compose-qs.yml up -d
+      $ docker-compose exec web src/manage.py loaddata demodata
       $ docker-compose exec web src/manage.py createsuperuser
 
-2. In the browser, navigate to ``http://localhost:8000/`` to access the admin 
+2. In the browser, navigate to ``http://localhost:8000/`` to access the admin
    and the API.
 
 
