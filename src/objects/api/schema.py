@@ -8,16 +8,16 @@ description = """An API to manage Objects.
 
 An OBJECT is of a certain OBJECTTYPE (defined in the Objecttypes API). An 
 OBJECT has a few core attributes that every OBJECT (technically a RECORD,
-see below) has, although these attribtutes can sometimes be empty. They are
+see below) has, although these attributes can sometimes be empty. They are
 attributes like `geometry` and some administrative attributes. The data that
 describes the actual object is stored in the `data` attribute and follows 
 the JSON schema as given by the OBJECTTYPE.
 
 ## History
 
-Each OBJECT has 1 or more RECORDs. A RECORD contains the data of an OBJECT 
-at a certain time. An OBJECT can have multiple RECORDS that decribe the 
-history of that OBJECT. Changes to an OBJECT actually create a new RECORD 
+Each OBJECT has 1 or more RECORDs. A RECORD contains the data of an OBJECT
+at a certain time. An OBJECT can have multiple RECORDS that describe the
+history of that OBJECT. Changes to an OBJECT actually create a new RECORD
 under the OBJECT and leaves the old RECORD as is.
 
 Over time, an OBJECTTYPE can also change. This is reflected with 
