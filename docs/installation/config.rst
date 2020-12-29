@@ -16,13 +16,14 @@ Required settings
 -----------------
 
 * ``DJANGO_SETTINGS_MODULE``: which environment settings to use. Available options:
+
   - ``objects.conf.docker`` or ``objecttypes.conf.docker``
   - ``objects.conf.dev`` or ``objecttypes.conf.dev``
   - ``objects.conf.ci`` or ``objecttypes.conf.ci``
 
 * ``SECRET_KEY``: secret key that's used for certain cryptographic utilities. You
   should generate one via
-  [miniwebtool](https://www.miniwebtool.com/django-secret-key-generator/)
+  `miniwebtool <https://www.miniwebtool.com/django-secret-key-generator/>`_
 
 * ``ALLOWED_HOSTS``: A comma separated (without spaces!) list of domains that
   serve the installation. Used to protect against ``Host`` header attacks.
