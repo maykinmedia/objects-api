@@ -14,3 +14,10 @@ jobs:
         run: sleep 10
       - name: Load fixtures
         run: docker-compose -f docker-compose-qs.yml exec -T web src/manage.py loaddata demodata
+      - name: Check main page
+        run: |
+          curl_status=$(curl -w '%{http_code}' -o /dev/null  -s http://localhost:8000/)
+          if [[ $curl_status != 200 ]]; then
+            printf "index page responds with %curl_status status" >&2
+            exit 1
+          fi
