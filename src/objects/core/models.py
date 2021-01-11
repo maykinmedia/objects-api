@@ -24,8 +24,8 @@ class Object(models.Model):
     def current_record(self):
         today = date.today()
         return (
-            self.records.filter(start_date__lte=today)
-            .filter(models.Q(end_date__gte=today) | models.Q(end_date__isnull=True))
+            self.records.filter(start_at__lte=today)
+            .filter(models.Q(end_at__gte=today) | models.Q(end_at__isnull=True))
             .order_by("-pk")
             .first()
             # TODO: pk should prolly be index once added.
@@ -33,7 +33,7 @@ class Object(models.Model):
 
     @property
     def last_record(self):
-        return self.records.order_by("-start_date", "-id").first()
+        return self.records.order_by("-start_at", "-id").first()
 
 
 class ObjectRecord(models.Model):
@@ -49,14 +49,14 @@ class ObjectRecord(models.Model):
     data = JSONField(
         _("data"), help_text=_("Object data, based on OBJECTTYPE"), default=dict
     )
-    start_date = models.DateField(
-        _("start date"), help_text=_("Legal start date of the object record")
+    start_at = models.DateField(
+        _("start at"), help_text=_("Legal start date of the object record")
     )
-    end_date = models.DateField(
-        _("end date"), null=True, help_text=_("Legal end date of the object record")
+    end_at = models.DateField(
+        _("end at"), null=True, help_text=_("Legal end date of the object record")
     )
-    registration_date = models.DateField(
-        _("registration date"),
+    registration_at = models.DateField(
+        _("registration at"),
         default=date.today,
         help_text=_("The date when the record was registered in the system"),
     )
@@ -79,7 +79,7 @@ class ObjectRecord(models.Model):
     )
 
     def __str__(self):
-        return f"{self.version} ({self.start_date})"
+        return f"{self.version} ({self.start_at})"
 
     def clean(self):
         super().clean()
@@ -90,9 +90,9 @@ class ObjectRecord(models.Model):
         if not self.id and self.object.last_record:
             # self.index = self.object.last_record.index + 1
 
-            #  add end_date to previous record
+            #  add end_at to previous record
             previous_record = self.object.last_record
-            previous_record.end_date = self.start_date
+            previous_record.end_at = self.start_at
             previous_record.save()
 
         super().save(*args, **kwargs)

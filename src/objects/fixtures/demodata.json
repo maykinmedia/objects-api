@@ -138,9 +138,9 @@
             "diameter": 10,
             "plantDate": "2000-11-01"
         },
-        "start_date": "2000-11-01",
-        "end_date": "2006-11-01",
-        "registration_date": "2000-11-12",
+        "start_at": "2000-11-01",
+        "end_at": "2006-11-01",
+        "registration_at": "2000-11-12",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
@@ -156,9 +156,9 @@
             "diameter": 16,
             "plantDate": "2000-11-01"
         },
-        "start_date": "2006-07-12",
-        "end_date": "2010-09-04",
-        "registration_date": "2006-07-14",
+        "start_at": "2006-07-12",
+        "end_at": "2010-09-04",
+        "registration_at": "2006-07-14",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
@@ -174,9 +174,9 @@
             "diameter": 19,
             "plantDate": "2000-11-01"
         },
-        "start_date": "2010-09-04",
-        "end_date": "2016-10-24",
-        "registration_date": "2010-09-04",
+        "start_at": "2010-09-04",
+        "end_at": "2016-10-24",
+        "registration_at": "2010-09-04",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
@@ -192,9 +192,9 @@
             "diameter": 56,
             "plantDate": "2000-11-01"
         },
-        "start_date": "2016-10-24",
-        "end_date": null,
-        "registration_date": "2016-10-24",
+        "start_at": "2016-10-24",
+        "end_at": null,
+        "registration_at": "2016-10-24",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
@@ -210,9 +210,9 @@
             "diameter": 26,
             "plantDate": "2000-11-01"
         },
-        "start_date": "2016-10-24",
-        "end_date": null,
-        "registration_date": "2016-10-29",
+        "start_at": "2016-10-24",
+        "end_at": null,
+        "registration_at": "2016-10-29",
         "correct": 11,
         "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
     }
@@ -265,9 +265,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-22",
-        "end_date": null,
-        "registration_date": "2020-09-22",
+        "start_at": "2020-09-22",
+        "end_at": null,
+        "registration_at": "2020-09-22",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.905289 52.369918)"
     }
@@ -291,9 +291,9 @@
             "boomhoogteklasseactueel": "TODO",
             "boomhoogteklasseeindbeeld": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.897787 52.37659492959213)"
     }
@@ -338,9 +338,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.901166811673011 52.37626808920047)"
     }
@@ -381,9 +381,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.90663497584874 52.37384227041968)"
     }
@@ -430,9 +430,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.908187981083221 52.3719808282391)"
     }
@@ -484,9 +484,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.908722727852763 52.36991749536178)"
     }
@@ -535,9 +535,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.908187009455887 52.36785425886177)"
     }
@@ -578,9 +578,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.906633403722665 52.3659930690003)"
     }
@@ -604,9 +604,9 @@
             "boomhoogteklasseactueel": "TODO",
             "boomhoogteklasseeindbeeld": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.897787 52.38340911858636)"
     }
@@ -651,9 +651,9 @@
             "kroondiameterklasseeindbeeld": "TODO",
             "boomtypebeschermingsstatusplus": "TODO"
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.90461710532547 52.38274861943765)"
     }
@@ -668,9 +668,9 @@
         "data": {
             "id_nummer": 7
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.886851272147237 52.36991749536178)"
     }
@@ -685,9 +685,9 @@
         "data": {
             "id_nummer": 4
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.88738601891678 52.3719808282391)"
     }
@@ -702,9 +702,9 @@
         "data": {
             "id_nummer": 8
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.88893902415126 52.37384227041968)"
     }
@@ -719,9 +719,9 @@
         "data": {
             "id_nummer": 4
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.891358354234796 52.3753195751365)"
     }
@@ -736,9 +736,9 @@
         "data": {
             "id_nummer": 3
         },
-        "start_date": "2020-09-30",
-        "end_date": null,
-        "registration_date": "2020-09-30",
+        "start_at": "2020-09-30",
+        "end_at": null,
+        "registration_at": "2020-09-30",
         "correct": null,
         "geometry": "SRID=4326;POINT (4.894407188326989 52.37626808920047)"
     }

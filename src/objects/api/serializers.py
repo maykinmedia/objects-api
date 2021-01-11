@@ -28,18 +28,18 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "typeVersion",
             "data",
             "geometry",
-            "startDate",
-            "endDate",
-            "registrationDate",
+            "startAt",
+            "endAt",
+            "registrationAt",
             "correctionFor",
             "correctedBy",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
             "typeVersion": {"source": "version"},
-            "startDate": {"source": "start_date"},
-            "endDate": {"source": "end_date", "read_only": True},
-            "registrationDate": {"source": "registration_date", "read_only": True},
+            "startAt": {"source": "start_at"},
+            "endAt": {"source": "end_at", "read_only": True},
+            "registrationAt": {"source": "registration_at", "read_only": True},
         }
 
 
@@ -62,18 +62,18 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "typeVersion",
             "data",
             "geometry",
-            "startDate",
-            "endDate",
-            "registrationDate",
+            "startAt",
+            "endAt",
+            "registrationAt",
             "correctionFor",
             "correctedBy",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
             "typeVersion": {"source": "version"},
-            "startDate": {"source": "start_date"},
-            "endDate": {"source": "end_date", "read_only": True},
-            "registrationDate": {"source": "registration_date", "read_only": True},
+            "startAt": {"source": "start_at"},
+            "endAt": {"source": "end_at", "read_only": True},
+            "registrationAt": {"source": "registration_at", "read_only": True},
         }
 
 

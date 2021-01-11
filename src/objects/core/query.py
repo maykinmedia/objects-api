@@ -13,10 +13,10 @@ class ObjectQuerySet(models.QuerySet):
     def filter_for_date(self, date=None):
         actual_date = date or datetime.date.today()
         return (
-            self.filter(records__start_date__lte=actual_date)
+            self.filter(records__start_at__lte=actual_date)
             .filter(
-                models.Q(records__end_date__gte=actual_date)
-                | models.Q(records__end_date__isnull=True)
+                models.Q(records__end_at__gte=actual_date)
+                | models.Q(records__end_at__isnull=True)
             )
             .distinct()
         )

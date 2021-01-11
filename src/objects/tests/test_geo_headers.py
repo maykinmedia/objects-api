@@ -60,7 +60,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"diameter": 30},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
             },
         }
         url = reverse("object-list")
@@ -77,7 +77,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"diameter": 30},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
             },
         }
 

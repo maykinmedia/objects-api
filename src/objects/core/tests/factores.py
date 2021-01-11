@@ -16,7 +16,7 @@ class ObjectRecordFactory(factory.django.DjangoModelFactory):
     object = factory.SubFactory(ObjectFactory)
     version = factory.Sequence(lambda n: n)
     data = factory.Sequence(lambda n: {"some_field": n})
-    start_date = date.today()
+    start_at = date.today()
 
     class Meta:
         model = ObjectRecord
