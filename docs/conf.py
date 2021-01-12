@@ -43,7 +43,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx_tabs.tabs",
     "recommonmark",
-#    "sphinx_markdown_tables",
+    #    "sphinx_markdown_tables",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -76,7 +76,7 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 html_css_files = [
-    'theme_overrides.css',  # override wide tables with word wrap
+    "theme_overrides.css",  # override wide tables with word wrap
 ]
 
 todo_include_todos = True
