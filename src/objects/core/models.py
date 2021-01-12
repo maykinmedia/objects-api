@@ -1,5 +1,5 @@
+import datetime
 import uuid
-from datetime import date
 
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.fields import JSONField
@@ -20,16 +20,19 @@ class Object(models.Model):
 
     objects = ObjectQuerySet.as_manager()
 
-    @property
-    def current_record(self):
-        today = date.today()
+    def get_record(self, date=None):
+        actual_date = date or datetime.date.today()
         return (
-            self.records.filter(start_at__lte=today)
-            .filter(models.Q(end_at__gte=today) | models.Q(end_at__isnull=True))
+            self.records.filter(start_at__lte=actual_date)
+            .filter(models.Q(end_at__gte=actual_date) | models.Q(end_at__isnull=True))
             .order_by("-pk")
             .first()
             # TODO: pk should prolly be index once added.
         )
+
+    @property
+    def current_record(self):
+        return self.get_record()
 
     @property
     def last_record(self):
@@ -57,7 +60,7 @@ class ObjectRecord(models.Model):
     )
     registration_at = models.DateField(
         _("registration at"),
-        default=date.today,
+        default=datetime.date.today,
         help_text=_("The date when the record was registered in the system"),
     )
     correct = models.OneToOneField(

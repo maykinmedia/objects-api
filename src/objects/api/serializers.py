@@ -89,6 +89,18 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
         }
         validators = [JsonSchemaValidator(), CorrectionValidator()]
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+
+        actual_date = self.context["request"].query_params.get("date", None)
+
+        if not actual_date:
+            return ret
+
+        actual_record = instance.get_record(actual_date)
+        ret["record"] = self.fields["record"].to_representation(actual_record)
+        return ret
+
     @transaction.atomic
     def create(self, validated_data):
         record_data = validated_data.pop("current_record")

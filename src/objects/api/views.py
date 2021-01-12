@@ -55,7 +55,12 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         if self.action not in ("list", "search"):
             return base
 
-        return base.filter_for_date().filter_for_user(self.request.user)
+        date = self.request.query_params.get("date", None)
+        # default filtering on current day
+        if not date:
+            base = base.filter_for_date()
+
+        return base.filter_for_user(self.request.user)
 
     @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)

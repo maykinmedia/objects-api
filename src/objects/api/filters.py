@@ -15,6 +15,13 @@ class ObjectFilterSet(FilterSet):
     type = filters.CharFilter(
         field_name="object_type", help_text=get_help_text("core.Object", "object_type")
     )
+    date = filters.DateFilter(
+        method="filter_date",
+        help_text=_(
+            "Display actual data for the specified date, i.e. the specified "
+            "date would be between `startAt` and `endAt` attributes. The default value is today."
+        ),
+    )
     data_attrs = filters.CharFilter(
         method="filter_data_attrs",
         validators=[validate_data_attrs],
@@ -65,3 +72,6 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
                 )
 
         return queryset
+
+    def filter_date(self, queryset, name, value):
+        return queryset.filter_for_date(value)
