@@ -92,6 +92,22 @@ paths:
         required: false
         schema:
           type: string
+      - name: date
+        in: query
+        description: Display record data for the specified formal date, i.e. the specified
+          date would be between `startAt` and `endAt` attributes. The default value
+          is today
+        required: false
+        schema:
+          type: string
+      - name: registrationDate
+        in: query
+        description: Display record data for the specified registration date, i.e.
+          the specified date would be between `registrationAt` attributes of different
+          records
+        required: false
+        schema:
+          type: string
       - name: Accept-Crs
         in: header
         description: Het gewenste 'Coordinate Reference System' (CRS) van de geometrie
@@ -1778,6 +1794,20 @@ components:
             `data_attrs=dimensions__height__exact__100`
 
             '
+          type: string
+          minLength: 1
+        date:
+          title: Date
+          description: Display record data for the specified formal date, i.e. the
+            specified date would be between `startAt` and `endAt` attributes. The
+            default value is today
+          type: string
+          minLength: 1
+        registrationDate:
+          title: Registrationdate
+          description: Display record data for the specified registration date, i.e.
+            the specified date would be between `registrationAt` attributes of different
+            records
           type: string
           minLength: 1
     HistoryRecord:
