@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from drf_yasg.utils import swagger_auto_schema
@@ -58,7 +60,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         date = self.request.query_params.get("date", None)
         # default filtering on current day
         if not date:
-            base = base.filter_for_date()
+            base = base.filter_for_date(datetime.date.today())
 
         return base.filter_for_user(self.request.user)
 

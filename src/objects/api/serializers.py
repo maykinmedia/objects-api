@@ -93,12 +93,19 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
         ret = super().to_representation(instance)
 
         actual_date = self.context["request"].query_params.get("date", None)
+        registration_date = self.context["request"].query_params.get(
+            "registrationDate", None
+        )
 
-        if not actual_date:
+        if not actual_date and not registration_date:
             return ret
 
-        actual_record = instance.get_record(actual_date)
-        ret["record"] = self.fields["record"].to_representation(actual_record)
+        record = (
+            instance.get_actual_record(actual_date)
+            if actual_date
+            else instance.get_registration_record(registration_date)
+        )
+        ret["record"] = self.fields["record"].to_representation(record)
         return ret
 
     @transaction.atomic

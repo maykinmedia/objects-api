@@ -1,6 +1,8 @@
+from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from django_filters import filters
+from rest_framework.serializers import ValidationError
 from vng_api_common.filtersets import FilterSet
 from vng_api_common.utils import get_help_text
 
@@ -11,6 +13,23 @@ from .utils import display_choice_values_for_help_text, is_number
 from .validators import validate_data_attrs
 
 
+class ObjectFilterForm(forms.Form):
+    def clean(self):
+        cleaned_data = super().clean()
+        date = cleaned_data.get("date")
+        registration_date = cleaned_data.get("registrationDate")
+
+        if date and registration_date:
+            raise ValidationError(
+                _(
+                    "'date' and 'registrationDate' parameters can't be used in the same request"
+                ),
+                code="invalid-date-query-params",
+            )
+
+        return cleaned_data
+
+
 class ObjectFilterSet(FilterSet):
     type = filters.CharFilter(
         field_name="object_type", help_text=get_help_text("core.Object", "object_type")
@@ -18,8 +37,15 @@ class ObjectFilterSet(FilterSet):
     date = filters.DateFilter(
         method="filter_date",
         help_text=_(
-            "Display actual data for the specified date, i.e. the specified "
-            "date would be between `startAt` and `endAt` attributes. The default value is today."
+            "Display record data for the specified formal date, i.e. the specified "
+            "date would be between `startAt` and `endAt` attributes. The default value is today"
+        ),
+    )
+    registrationDate = filters.DateFilter(
+        method="filter_registration_date",
+        help_text=_(
+            "Display record data for the specified registration date, i.e. the specified "
+            "date would be between `registrationAt` attributes of different records"
         ),
     )
     data_attrs = filters.CharFilter(
@@ -47,7 +73,8 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
     class Meta:
         model = Object
-        fields = ("type", "data_attrs")
+        fields = ("type", "data_attrs", "date", "registrationDate")
+        form = ObjectFilterForm
 
     def filter_data_attrs(self, queryset, name, value):
         parts = value.split(",")
@@ -75,3 +102,6 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
     def filter_date(self, queryset, name, value):
         return queryset.filter_for_date(value)
+
+    def filter_registration_date(self, queryset, name, value):
+        return queryset.filter_for_registration_date(value)

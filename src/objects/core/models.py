@@ -20,19 +20,25 @@ class Object(models.Model):
 
     objects = ObjectQuerySet.as_manager()
 
-    def get_record(self, date=None):
-        actual_date = date or datetime.date.today()
+    def get_actual_record(self, date):
         return (
-            self.records.filter(start_at__lte=actual_date)
-            .filter(models.Q(end_at__gte=actual_date) | models.Q(end_at__isnull=True))
+            self.records.filter(start_at__lte=date)
+            .filter(models.Q(end_at__gte=date) | models.Q(end_at__isnull=True))
             .order_by("-pk")
             .first()
             # TODO: pk should prolly be index once added.
         )
 
+    def get_registration_record(self, date):
+        return (
+            self.records.filter(registration_at__lte=date)
+            .order_by("-registration_at")
+            .first()
+        )
+
     @property
     def current_record(self):
-        return self.get_record()
+        return self.get_actual_record(datetime.date.today())
 
     @property
     def last_record(self):

@@ -255,6 +255,16 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(data["record"]["uuid"], str(record1.uuid))
 
+    def test_filter_date_detail_no_actual_record(self):
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        record = ObjectRecordFactory.create(object=object, start_at="2021-01-01")
+
+        url = reverse_lazy("object-detail", args=[object.uuid])
+
+        response = self.client.get(url, {"date": "2020-07-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_filter_date_list(self):
         # object 1 - show
         object1 = ObjectFactory.create(object_type=OBJECT_TYPE)
@@ -279,3 +289,75 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
             f"http://testserver{reverse('object-detail', args=[object1.uuid])}",
         )
         self.assertEqual(data[0]["record"]["uuid"], str(record11.uuid))
+
+    def test_filter_registration_date_detail(self):
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        record1 = ObjectRecordFactory.create(
+            object=object,
+            registration_at="2020-01-01",
+        )
+        record2 = ObjectRecordFactory.create(
+            object=object, registration_at="2021-01-01"
+        )
+
+        url = reverse_lazy("object-detail", args=[object.uuid])
+
+        response = self.client.get(url, {"registrationDate": "2020-07-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(data["record"]["uuid"], str(record1.uuid))
+
+    def test_filter_registration_date_detail_no_record(self):
+        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        record = ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
+
+        url = reverse_lazy("object-detail", args=[object.uuid])
+
+        response = self.client.get(url, {"registrationDate": "2020-07-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_filter_registration_date_list(self):
+        # object 1 - show
+        object1 = ObjectFactory.create(object_type=OBJECT_TYPE)
+        record11 = ObjectRecordFactory.create(
+            object=object1, registration_at="2020-01-01"
+        )
+        record12 = ObjectRecordFactory.create(
+            object=object1, registration_at="2021-01-01"
+        )
+        # object 2 - don't show
+        record21 = ObjectRecordFactory.create(
+            object__object_type=OBJECT_TYPE, registration_at="2021-01-01"
+        )
+
+        url = reverse_lazy("object-list")
+
+        response = self.client.get(url, {"registrationDate": "2020-07-01"})
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[object1.uuid])}",
+        )
+        self.assertEqual(data[0]["record"]["uuid"], str(record11.uuid))
+
+    def test_filter_on_both_date_and_registration_date(self):
+        url = reverse_lazy("object-list")
+
+        response = self.client.get(
+            url, {"date": "2020-07-01", "registrationDate": "2020-08-01"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            [
+                "'date' and 'registrationDate' parameters can't be used in the same request"
+            ],
+        )
