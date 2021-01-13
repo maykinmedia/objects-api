@@ -131,7 +131,7 @@
     "model": "core.objectrecord",
     "pk": 4,
     "fields": {
-        "uuid": "af9e628f-7168-437d-a2ee-5dda8b389267",
+        "index": 1,
         "object": 4,
         "version": 1,
         "data": {
@@ -149,7 +149,7 @@
     "model": "core.objectrecord",
     "pk": 7,
     "fields": {
-        "uuid": "b9103e57-2ccf-4361-b615-eacdbb338d35",
+        "index": 2,
         "object": 4,
         "version": 1,
         "data": {
@@ -167,7 +167,7 @@
     "model": "core.objectrecord",
     "pk": 8,
     "fields": {
-        "uuid": "05ae387e-7bb5-450e-accf-81215280766d",
+        "index": 3,
         "object": 4,
         "version": 1,
         "data": {
@@ -185,7 +185,7 @@
     "model": "core.objectrecord",
     "pk": 11,
     "fields": {
-        "uuid": "3066d3d8-c11c-40a2-a405-96e31e0c67bd",
+        "index": 4,
         "object": 4,
         "version": 1,
         "data": {
@@ -203,7 +203,7 @@
     "model": "core.objectrecord",
     "pk": 12,
     "fields": {
-        "uuid": "abd4d408-1db9-4028-955e-05502b61c4eb",
+        "index": 5,
         "object": 4,
         "version": 1,
         "data": {
@@ -221,7 +221,7 @@
     "model": "core.objectrecord",
     "pk": 13,
     "fields": {
-        "uuid": "7d1c09cb-422c-4641-861f-9cc56d7f812a",
+        "index": 1,
         "object": 1,
         "version": 2,
         "data": {
@@ -276,7 +276,7 @@
     "model": "core.objectrecord",
     "pk": 14,
     "fields": {
-        "uuid": "3de37766-33fd-4666-876a-aa1dbf10f5d8",
+        "index": 1,
         "object": 2,
         "version": 2,
         "data": {
@@ -302,7 +302,7 @@
     "model": "core.objectrecord",
     "pk": 15,
     "fields": {
-        "uuid": "12995204-df33-41bc-846b-74c6e566dab8",
+        "index": 1,
         "object": 3,
         "version": 2,
         "data": {
@@ -349,7 +349,7 @@
     "model": "core.objectrecord",
     "pk": 19,
     "fields": {
-        "uuid": "559bcd8f-4e75-475b-888c-95c4bd5ad437",
+        "index": 1,
         "object": 8,
         "version": 2,
         "data": {
@@ -392,7 +392,7 @@
     "model": "core.objectrecord",
     "pk": 20,
     "fields": {
-        "uuid": "d67a1b06-8e53-4174-b5b7-2c21baf43443",
+        "index": 1,
         "object": 9,
         "version": 2,
         "data": {
@@ -441,7 +441,7 @@
     "model": "core.objectrecord",
     "pk": 21,
     "fields": {
-        "uuid": "f4e1d86e-1737-4abd-b76d-884cd0a630e8",
+        "index": 1,
         "object": 10,
         "version": 2,
         "data": {
@@ -495,7 +495,7 @@
     "model": "core.objectrecord",
     "pk": 22,
     "fields": {
-        "uuid": "c72f5dbd-cdd1-41ba-bd3f-f6b1c6872134",
+        "index": 1,
         "object": 11,
         "version": 2,
         "data": {
@@ -546,7 +546,7 @@
     "model": "core.objectrecord",
     "pk": 23,
     "fields": {
-        "uuid": "61ab211b-b219-4aca-a944-fd076f57e09b",
+        "index": 1,
         "object": 12,
         "version": 2,
         "data": {
@@ -589,7 +589,7 @@
     "model": "core.objectrecord",
     "pk": 26,
     "fields": {
-        "uuid": "09ce5aec-e105-4345-8362-6f20f3d1a3fb",
+        "index": 1,
         "object": 15,
         "version": 2,
         "data": {
@@ -615,7 +615,7 @@
     "model": "core.objectrecord",
     "pk": 27,
     "fields": {
-        "uuid": "0c95876e-45b2-4497-a4e7-553eae4b32c5",
+        "index": 1,
         "object": 16,
         "version": 2,
         "data": {
@@ -662,7 +662,7 @@
     "model": "core.objectrecord",
     "pk": 38,
     "fields": {
-        "uuid": "be988038-d4ed-497c-bc4c-4ea9f0b04ca4",
+        "index": 1,
         "object": 27,
         "version": 1,
         "data": {
@@ -679,7 +679,7 @@
     "model": "core.objectrecord",
     "pk": 39,
     "fields": {
-        "uuid": "b87a9515-64e9-4b24-864e-16eeb2be5c33",
+        "index": 1,
         "object": 28,
         "version": 1,
         "data": {
@@ -696,7 +696,7 @@
     "model": "core.objectrecord",
     "pk": 40,
     "fields": {
-        "uuid": "616f7e25-d0d0-4007-aa7d-37805d99cbe3",
+        "index": 1,
         "object": 29,
         "version": 1,
         "data": {
@@ -713,7 +713,7 @@
     "model": "core.objectrecord",
     "pk": 41,
     "fields": {
-        "uuid": "606c4a06-2181-42b8-90c7-9e6cce326579",
+        "index": 1,
         "object": 30,
         "version": 1,
         "data": {
@@ -730,7 +730,7 @@
     "model": "core.objectrecord",
     "pk": 42,
     "fields": {
-        "uuid": "2845003d-aaa8-4eb8-a0da-590b7f967d93",
+        "index": 1,
         "object": 31,
         "version": 1,
         "data": {
