@@ -32,7 +32,7 @@ info:
     \ privacy laws.\n\n# Authorizations\n\nThe API uses API-tokens that grant certain\
     \ permissions. The API-token is\npassed via a header, like this: `Authorization:\
     \ Token <token>`\n"
-  version: 0.1.0
+  version: 1.0.0
 security:
 - Token: []
 paths:
