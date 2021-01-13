@@ -46,9 +46,9 @@ class Object(models.Model):
 
 
 class ObjectRecord(models.Model):
-    # index = models.PositiveIntegerField(help_text="Incremental index number of the object record.", default=1)
-    uuid = models.UUIDField(
-        default=uuid.uuid4, help_text="Unique identifier (UUID4)", unique=True
+    index = models.PositiveIntegerField(
+        default=1,
+        help_text=_("Incremental index number of the object record."),
     )
     object = models.ForeignKey(Object, on_delete=models.CASCADE, related_name="records")
     version = models.PositiveSmallIntegerField(
@@ -87,6 +87,9 @@ class ObjectRecord(models.Model):
         ),
     )
 
+    class Meta:
+        unique_together = ("object", "index")
+
     def __str__(self):
         return f"{self.version} ({self.start_at})"
 
@@ -97,7 +100,7 @@ class ObjectRecord(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and self.object.last_record:
-            # self.index = self.object.last_record.index + 1
+            self.index = self.object.last_record.index + 1
 
             #  add end_at to previous record
             previous_record = self.object.last_record

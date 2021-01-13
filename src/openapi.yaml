@@ -1565,11 +1565,10 @@ components:
       - startAt
       type: object
       properties:
-        uuid:
-          title: Uuid
-          description: Unique identifier (UUID4)
-          type: string
-          format: uuid
+        index:
+          title: Index
+          description: Incremental index number of the object record.
+          type: integer
           readOnly: true
         typeVersion:
           title: Typeversion
@@ -1602,10 +1601,11 @@ components:
           readOnly: true
         correctionFor:
           title: Correctionfor
-          type: string
-          format: uuid
+          description: Index of the record corrected by the current record
+          type: integer
         correctedBy:
           title: Correctedby
+          description: Index of the record, which corrects the current record
           type: string
           readOnly: true
     Object:
@@ -1816,11 +1816,10 @@ components:
       - startAt
       type: object
       properties:
-        uuid:
-          title: Uuid
-          description: Unique identifier (UUID4)
-          type: string
-          format: uuid
+        index:
+          title: Index
+          description: Incremental index number of the object record.
+          type: integer
           readOnly: true
         typeVersion:
           title: Typeversion
@@ -1853,10 +1852,11 @@ components:
           readOnly: true
         correctionFor:
           title: Correctionfor
-          type: string
-          format: uuid
+          description: Index of the record corrected by the current record
+          type: integer
           readOnly: true
         correctedBy:
           title: Correctedby
+          description: Index of the record, which corrects the current record
           type: string
           readOnly: true

@@ -8,15 +8,15 @@ from .models import Object, ObjectRecord
 class ObjectRecordInline(admin.TabularInline):
     model = ObjectRecord
     extra = 1
-    readonly_fields = ("uuid", "registration_at", "end_at", "get_corrected_by")
-    search_fields = ("uuid",)
+    readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
     fields = (
+        "index",
         "version",
         "data",
         "geometry",
         "start_at",
         "end_at",
-        "registration_date",
+        "registration_at",
         "get_corrected_by",
         "correct",
     )

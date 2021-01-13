@@ -36,25 +36,6 @@ class JsonSchemaValidator:
             raise serializers.ValidationError(exc.args[0], code=self.code) from exc
 
 
-class CorrectionValidator:
-    message = _("Only records of the same objects can be corrected")
-    code = "invalid-correction"
-
-    def set_context(self, serializer):
-        """
-        This hook is called by the serializer instance,
-        prior to the validation call being made.
-        """
-        self.instance = getattr(serializer, "instance", None)
-
-    def __call__(self, attrs):
-        record = attrs.get("current_record", {})
-        correct = record.get("correct")
-
-        if correct and correct.object != self.instance:
-            raise serializers.ValidationError(self.message, code=self.code)
-
-
 class IsImmutableValidator:
     """
     Validate that the field should not be changed in update action

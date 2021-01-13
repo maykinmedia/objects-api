@@ -253,7 +253,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["record"]["uuid"], str(record1.uuid))
+        self.assertEqual(data["record"]["index"], record1.index)
 
     def test_filter_date_detail_no_actual_record(self):
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
@@ -288,7 +288,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
             data[0]["url"],
             f"http://testserver{reverse('object-detail', args=[object1.uuid])}",
         )
-        self.assertEqual(data[0]["record"]["uuid"], str(record11.uuid))
+        self.assertEqual(data[0]["record"]["index"], record11.index)
 
     def test_filter_registration_date_detail(self):
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
@@ -308,7 +308,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["record"]["uuid"], str(record1.uuid))
+        self.assertEqual(data["record"]["index"], record1.index)
 
     def test_filter_registration_date_detail_no_record(self):
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
@@ -345,7 +345,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
             data[0]["url"],
             f"http://testserver{reverse('object-detail', args=[object1.uuid])}",
         )
-        self.assertEqual(data[0]["record"]["uuid"], str(record11.uuid))
+        self.assertEqual(data[0]["record"]["index"], record11.index)
 
     def test_filter_on_both_date_and_registration_date(self):
         url = reverse_lazy("object-list")

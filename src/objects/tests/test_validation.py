@@ -128,7 +128,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startAt": "2020-01-01",
-                "correctionFor": record.uuid,
+                "correctionFor": record.index,
             },
         }
 
@@ -139,8 +139,8 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["non_field_errors"],
-            ["Only records of the same objects can be corrected"],
+            data["record"]["correctionFor"],
+            [f"Object with index={record.index} does not exist."],
         )
 
     def test_update_object_with_correction_invalid(self, m):
@@ -158,7 +158,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startAt": "2020-01-01",
-                "correctionFor": corrected_record.uuid,
+                "correctionFor": 5,
             },
         }
 
@@ -168,8 +168,8 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["non_field_errors"],
-            ["Only records of the same objects can be corrected"],
+            data["record"]["correctionFor"],
+            ["Object with index=5 does not exist."],
         )
 
     def test_update_object_type_invalid(self, m):

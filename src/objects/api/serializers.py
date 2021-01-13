@@ -1,30 +1,43 @@
 from django.db import transaction
+from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord
 
-from .validators import CorrectionValidator, IsImmutableValidator, JsonSchemaValidator
+from .validators import IsImmutableValidator, JsonSchemaValidator
+
+
+class ObjectSlugRelatedField(serializers.SlugRelatedField):
+    def get_queryset(self):
+        queryset = ObjectRecord.objects.all()
+
+        object_instance = self.parent.parent.instance
+        if not object_instance:
+            return queryset.none()
+
+        return queryset.filter(object=object_instance)
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
-    correctionFor = serializers.SlugRelatedField(
+    correctionFor = ObjectSlugRelatedField(
         source="correct",
-        slug_field="uuid",
-        queryset=ObjectRecord.objects.all(),
+        slug_field="index",
         required=False,
+        help_text=_("Index of the record corrected by the current record"),
     )
     correctedBy = serializers.SlugRelatedField(
         source="corrected",
-        slug_field="uuid",
+        slug_field="index",
         read_only=True,
+        help_text=_("Index of the record, which corrects the current record"),
     )
 
     class Meta:
         model = ObjectRecord
         fields = (
-            "uuid",
+            "index",
             "typeVersion",
             "data",
             "geometry",
@@ -35,7 +48,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "correctedBy",
         )
         extra_kwargs = {
-            "uuid": {"read_only": True},
+            "index": {"read_only": True},
             "typeVersion": {"source": "version"},
             "startAt": {"source": "start_at"},
             "endAt": {"source": "end_at", "read_only": True},
@@ -46,19 +59,21 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
 class HistoryRecordSerializer(serializers.ModelSerializer):
     correctionFor = serializers.SlugRelatedField(
         source="correct",
-        slug_field="uuid",
+        slug_field="index",
         read_only=True,
+        help_text=_("Index of the record corrected by the current record"),
     )
     correctedBy = serializers.SlugRelatedField(
         source="corrected",
-        slug_field="uuid",
+        slug_field="index",
         read_only=True,
+        help_text=_("Index of the record, which corrects the current record"),
     )
 
     class Meta:
         model = ObjectRecord
         fields = (
-            "uuid",
+            "index",
             "typeVersion",
             "data",
             "geometry",
@@ -69,7 +84,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "correctedBy",
         )
         extra_kwargs = {
-            "uuid": {"read_only": True},
+            "index": {"read_only": True},
             "typeVersion": {"source": "version"},
             "startAt": {"source": "start_at"},
             "endAt": {"source": "end_at", "read_only": True},
@@ -87,7 +102,7 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             "url": {"lookup_field": "uuid"},
             "type": {"source": "object_type", "validators": [IsImmutableValidator()]},
         }
-        validators = [JsonSchemaValidator(), CorrectionValidator()]
+        validators = [JsonSchemaValidator()]
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
