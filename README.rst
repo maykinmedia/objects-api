@@ -34,8 +34,8 @@ API specification
 ==============  ==============  =============================
 Version         Release date    API specification
 ==============  ==============  =============================
-1.0.0-alpha     n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/openapi.yaml>`_
+1.0.0           2021-01-13      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/1.0.0/src/openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/1.0.0/src/openapi.yaml>`_
 ==============  ==============  =============================
 
 See: `All versions and changes <https://github.com/maykinmedia/objects-api/blob/master/CHANGELOG.rst>`_
