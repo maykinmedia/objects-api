@@ -28,18 +28,18 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "typeVersion",
             "data",
             "geometry",
-            "startDate",
-            "endDate",
-            "registrationDate",
+            "startAt",
+            "endAt",
+            "registrationAt",
             "correctionFor",
             "correctedBy",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
             "typeVersion": {"source": "version"},
-            "startDate": {"source": "start_date"},
-            "endDate": {"source": "end_date", "read_only": True},
-            "registrationDate": {"source": "registration_date", "read_only": True},
+            "startAt": {"source": "start_at"},
+            "endAt": {"source": "end_at", "read_only": True},
+            "registrationAt": {"source": "registration_at", "read_only": True},
         }
 
 
@@ -62,18 +62,18 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "typeVersion",
             "data",
             "geometry",
-            "startDate",
-            "endDate",
-            "registrationDate",
+            "startAt",
+            "endAt",
+            "registrationAt",
             "correctionFor",
             "correctedBy",
         )
         extra_kwargs = {
             "uuid": {"read_only": True},
             "typeVersion": {"source": "version"},
-            "startDate": {"source": "start_date"},
-            "endDate": {"source": "end_date", "read_only": True},
-            "registrationDate": {"source": "registration_date", "read_only": True},
+            "startAt": {"source": "start_at"},
+            "endAt": {"source": "end_at", "read_only": True},
+            "registrationAt": {"source": "registration_at", "read_only": True},
         }
 
 
@@ -88,6 +88,25 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             "type": {"source": "object_type", "validators": [IsImmutableValidator()]},
         }
         validators = [JsonSchemaValidator(), CorrectionValidator()]
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+
+        actual_date = self.context["request"].query_params.get("date", None)
+        registration_date = self.context["request"].query_params.get(
+            "registrationDate", None
+        )
+
+        if not actual_date and not registration_date:
+            return ret
+
+        record = (
+            instance.get_actual_record(actual_date)
+            if actual_date
+            else instance.get_registration_record(registration_date)
+        )
+        ret["record"] = self.fields["record"].to_representation(record)
+        return ret
 
     @transaction.atomic
     def create(self, validated_data):

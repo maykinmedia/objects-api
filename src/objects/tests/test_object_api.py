@@ -42,12 +42,12 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
     def test_list_actual_objects(self, m):
         object_record1 = ObjectRecordFactory.create(
             object__object_type=OBJECT_TYPE,
-            start_date=date.today(),
+            start_at=date.today(),
         )
         object_record2 = ObjectRecordFactory.create(
             object__object_type=OBJECT_TYPE,
-            start_date=date.today() - timedelta(days=10),
-            end_date=date.today() - timedelta(days=1),
+            start_at=date.today() - timedelta(days=10),
+            end_at=date.today() - timedelta(days=1),
         )
         url = reverse("object-list")
 
@@ -67,7 +67,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         object = ObjectFactory.create(object_type=OBJECT_TYPE)
         object_record = ObjectRecordFactory.create(
             object=object,
-            start_date=date.today(),
+            start_at=date.today(),
             geometry="POINT (4.910649523925713 52.37240093589432)",
         )
         url = reverse("object-detail", args=[object.uuid])
@@ -88,9 +88,9 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "typeVersion": object_record.version,
                     "data": object_record.data,
                     "geometry": json.loads(object_record.geometry.json),
-                    "startDate": object_record.start_date.isoformat(),
-                    "endDate": object_record.end_date,
-                    "registrationDate": object_record.registration_date.isoformat(),
+                    "startAt": object_record.start_at.isoformat(),
+                    "endAt": object_record.end_at,
+                    "registrationAt": object_record.registration_at.isoformat(),
                     "correctionFor": None,
                     "correctedBy": None,
                 },
@@ -111,7 +111,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "type": "Point",
                     "coordinates": [4.910649523925713, 52.37240093589432],
                 },
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
             },
         }
 
@@ -127,10 +127,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(record.version, 1)
         self.assertEqual(record.data, {"plantDate": "2020-04-12", "diameter": 30})
-        self.assertEqual(record.start_date, date(2020, 1, 1))
-        self.assertEqual(record.registration_date, date(2020, 8, 8))
+        self.assertEqual(record.start_at, date(2020, 1, 1))
+        self.assertEqual(record.registration_at, date(2020, 8, 8))
         self.assertEqual(record.geometry.coords, (4.910649523925713, 52.37240093589432))
-        self.assertIsNone(record.end_date)
+        self.assertIsNone(record.end_at)
 
     def test_update_object(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -139,7 +139,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         initial_record = ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
         object = initial_record.object
 
-        assert initial_record.end_date is None
+        assert initial_record.end_at is None
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
@@ -151,7 +151,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "type": "Point",
                     "coordinates": [4.910649523925713, 52.37240093589432],
                 },
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
                 "correctionFor": initial_record.uuid,
             },
         }
@@ -175,21 +175,21 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             current_record.geometry.coords, (4.910649523925713, 52.37240093589432)
         )
-        self.assertEqual(current_record.start_date, date(2020, 1, 1))
-        self.assertEqual(current_record.registration_date, date(2020, 8, 8))
-        self.assertIsNone(current_record.end_date)
+        self.assertEqual(current_record.start_at, date(2020, 1, 1))
+        self.assertEqual(current_record.registration_at, date(2020, 8, 8))
+        self.assertIsNone(current_record.end_at)
         self.assertEqual(current_record.correct, initial_record)
         # assert changes to initial record
         self.assertNotEqual(current_record, initial_record)
         self.assertEqual(initial_record.corrected, current_record)
-        self.assertEqual(initial_record.end_date, date(2020, 1, 1))
+        self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
     def test_patch_object_record(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
         initial_record = ObjectRecordFactory.create(
-            version=1, object__object_type=OBJECT_TYPE, start_date=date.today()
+            version=1, object__object_type=OBJECT_TYPE, start_at=date.today()
         )
         object = initial_record.object
 
@@ -197,7 +197,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         data = {
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
                 "correctionFor": initial_record.uuid,
             },
         }
@@ -216,14 +216,14 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
         )
-        self.assertEqual(current_record.start_date, date(2020, 1, 1))
-        self.assertEqual(current_record.registration_date, date(2020, 8, 8))
-        self.assertIsNone(current_record.end_date)
+        self.assertEqual(current_record.start_at, date(2020, 1, 1))
+        self.assertEqual(current_record.registration_at, date(2020, 8, 8))
+        self.assertIsNone(current_record.end_at)
         self.assertEqual(current_record.correct, initial_record)
         # assert changes to initial record
         self.assertNotEqual(current_record, initial_record)
         self.assertEqual(initial_record.corrected, current_record)
-        self.assertEqual(initial_record.end_date, date(2020, 1, 1))
+        self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
     def test_delete_object(self, m):
         record = ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
@@ -238,12 +238,12 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
     def test_history_object(self, m):
         record1 = ObjectRecordFactory.create(
             object__object_type=OBJECT_TYPE,
-            start_date=date(2020, 1, 1),
+            start_at=date(2020, 1, 1),
             geometry="POINT (4.910649523925713 52.37240093589432)",
         )
         object = record1.object
         record2 = ObjectRecordFactory.create(
-            object=object, start_date=date.today(), correct=record1
+            object=object, start_at=date.today(), correct=record1
         )
         url = reverse("object-history", args=[object.uuid])
 
@@ -261,9 +261,9 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "typeVersion": record1.version,
                     "data": record1.data,
                     "geometry": json.loads(record1.geometry.json),
-                    "startDate": record1.start_date.isoformat(),
-                    "endDate": record2.start_date.isoformat(),
-                    "registrationDate": record1.registration_date.isoformat(),
+                    "startAt": record1.start_at.isoformat(),
+                    "endAt": record2.start_at.isoformat(),
+                    "registrationAt": record1.registration_at.isoformat(),
                     "correctionFor": None,
                     "correctedBy": str(record2.uuid),
                 },
@@ -272,9 +272,9 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "typeVersion": record2.version,
                     "data": record2.data,
                     "geometry": None,
-                    "startDate": record2.start_date.isoformat(),
-                    "endDate": None,
-                    "registrationDate": date.today().isoformat(),
+                    "startAt": record2.start_at.isoformat(),
+                    "endAt": None,
+                    "registrationAt": date.today().isoformat(),
                     "correctionFor": str(record1.uuid),
                     "correctedBy": None,
                 },

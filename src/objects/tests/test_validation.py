@@ -48,7 +48,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12"},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
             },
         }
 
@@ -67,7 +67,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 10,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
             },
         }
 
@@ -89,7 +89,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12"},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
             },
         }
 
@@ -127,7 +127,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
                 "correctionFor": record.uuid,
             },
         }
@@ -157,7 +157,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "startDate": "2020-01-01",
+                "startAt": "2020-01-01",
                 "correctionFor": corrected_record.uuid,
             },
         }
