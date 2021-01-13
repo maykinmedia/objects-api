@@ -1,4 +1,4 @@
-name: Code quality checks
+name: code-quality
 
 on: [push]
 
