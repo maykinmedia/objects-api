@@ -6,14 +6,24 @@ from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord
 
-from .validators import CorrectionValidator, IsImmutableValidator, JsonSchemaValidator
+from .validators import IsImmutableValidator, JsonSchemaValidator
+
+
+class ObjectSlugRelatedField(serializers.SlugRelatedField):
+    def get_queryset(self):
+        queryset = ObjectRecord.objects.all()
+
+        object_instance = self.parent.parent.instance
+        if not object_instance:
+            return queryset.none()
+
+        return queryset.filter(object=object_instance)
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
-    correctionFor = serializers.SlugRelatedField(
+    correctionFor = ObjectSlugRelatedField(
         source="correct",
         slug_field="index",
-        queryset=ObjectRecord.objects.all(),
         required=False,
         help_text=_("Index of the record corrected by the current record"),
     )
@@ -92,7 +102,7 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             "url": {"lookup_field": "uuid"},
             "type": {"source": "object_type", "validators": [IsImmutableValidator()]},
         }
-        validators = [JsonSchemaValidator(), CorrectionValidator()]
+        validators = [JsonSchemaValidator()]
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
