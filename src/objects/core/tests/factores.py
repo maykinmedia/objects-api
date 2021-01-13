@@ -14,7 +14,6 @@ class ObjectFactory(factory.django.DjangoModelFactory):
 
 class ObjectRecordFactory(factory.django.DjangoModelFactory):
     object = factory.SubFactory(ObjectFactory)
-    index = factory.Sequence(lambda n: n + 1)
     version = factory.Sequence(lambda n: n)
     data = factory.Sequence(lambda n: {"some_field": n})
     start_at = date.today()

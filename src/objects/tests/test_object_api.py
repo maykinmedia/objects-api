@@ -84,7 +84,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                 "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
                 "type": object.object_type,
                 "record": {
-                    "uuid": str(object_record.uuid),
+                    "index": object_record.index,
                     "typeVersion": object_record.version,
                     "data": object_record.data,
                     "geometry": json.loads(object_record.geometry.json),
@@ -136,6 +136,8 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(f"{OBJECT_TYPE}/versions/1", json=mock_objecttype_version(OBJECT_TYPE))
 
+        # other object - to check that correction works when there is another record with the same index
+        ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
         initial_record = ObjectRecordFactory.create(object__object_type=OBJECT_TYPE)
         object = initial_record.object
 
@@ -152,7 +154,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "coordinates": [4.910649523925713, 52.37240093589432],
                 },
                 "startAt": "2020-01-01",
-                "correctionFor": initial_record.uuid,
+                "correctionFor": initial_record.index,
             },
         }
 
@@ -198,7 +200,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             "record": {
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startAt": "2020-01-01",
-                "correctionFor": initial_record.uuid,
+                "correctionFor": initial_record.index,
             },
         }
 
@@ -257,7 +259,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             data,
             [
                 {
-                    "uuid": str(record1.uuid),
+                    "index": 1,
                     "typeVersion": record1.version,
                     "data": record1.data,
                     "geometry": json.loads(record1.geometry.json),
@@ -265,17 +267,17 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "endAt": record2.start_at.isoformat(),
                     "registrationAt": record1.registration_at.isoformat(),
                     "correctionFor": None,
-                    "correctedBy": str(record2.uuid),
+                    "correctedBy": 2,
                 },
                 {
-                    "uuid": str(record2.uuid),
+                    "index": 2,
                     "typeVersion": record2.version,
                     "data": record2.data,
                     "geometry": None,
                     "startAt": record2.start_at.isoformat(),
                     "endAt": None,
                     "registrationAt": date.today().isoformat(),
-                    "correctionFor": str(record1.uuid),
+                    "correctionFor": 1,
                     "correctedBy": None,
                 },
             ],
