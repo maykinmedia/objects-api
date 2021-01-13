@@ -69,7 +69,7 @@ Quickstart
 References
 ==========
 
-* `Documentation <https://readthedocs.org/projects/objects-and-objects-api/badge/?version=latest>`_
+* `Documentation <https://objects-and-objecttypes-api.readthedocs.io/>`_
 * `Docker image <https://hub.docker.com/r/maykinmedia/objects-api>`_
 * `Issues <https://github.com/maykinmedia/objects-api/issues>`_
 * `Code <https://github.com/maykinmedia/objects-api>`_
@@ -97,7 +97,7 @@ Licensed under the EUPL_
     :target: https://travis-ci.com/maykinmedia/objects-api
 
 .. |docs| image:: https://readthedocs.org/projects/objects-and-objecttypes-api/badge/?version=latest
-    :target: https://objects-and-objecttypes-api.readthedocs.io/en/latest/?badge=latest
+    :target: https://objects-and-objecttypes-api.readthedocs.io/
     :alt: Documentation Status
 
 .. |coverage| image:: https://codecov.io/github/maykinmedia/objects-api/branch/master/graphs/badge.svg?branch=master
