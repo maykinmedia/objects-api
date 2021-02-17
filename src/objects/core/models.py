@@ -3,9 +3,12 @@ import uuid
 
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.fields import JSONField
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from requests.exceptions import ConnectionError
+from zds_client.client import ClientError
 from zgw_consumers.models import Service
 
 from .query import ObjectQuerySet, ObjectTypeQuerySet
@@ -37,13 +40,15 @@ class ObjectType(models.Model):
         # zds_client.get_operation_url() can be used here but it increases HTTP overhead
         return f"{self.service.api_root}objecttypes/{self.uuid}"
 
-    def save(self, *args, **kwargs):
-        if not self._name:
-            client = self.service.build_client()
+    def clean(self):
+        client = self.service.build_client()
+        try:
             object_type_data = client.retrieve("objecttype", url=self.url)
-            self._name = object_type_data["name"]
+        except (ClientError, ConnectionError, ValueError) as exc:
+            raise ValidationError(f"Objecttype can't be requested: {exc}")
 
-        super().save(*args, **kwargs)
+        if not self._name:
+            self._name = object_type_data["name"]
 
 
 class Object(models.Model):

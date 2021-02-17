@@ -11,4 +11,5 @@ class PermissionInline(admin.TabularInline):
 @admin.register(TokenAuth)
 class TokenAuthAdmin(admin.ModelAdmin):
     list_display = ("token", "contact_person", "created")
+    readonly_fields = ("token",)
     inlines = [PermissionInline]
