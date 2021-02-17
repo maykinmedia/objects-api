@@ -11,6 +11,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication"
     ],
+    "DEFAULT_PAGINATION_CLASS": "objects.api.pagination.DynamicPageSizePagination",
     # test
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
