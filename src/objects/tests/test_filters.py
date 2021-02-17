@@ -265,12 +265,15 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        ObjectPermissionFactory(
-            object_type=OBJECT_TYPE, mode=PermissionModes.read_only, users=[cls.user]
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
         )
 
     def test_filter_date_detail(self):
-        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object = ObjectFactory.create(object_type=self.object_type)
         record1 = ObjectRecordFactory.create(
             object=object, start_at="2020-01-01", end_at="2020-12-31"
         )
@@ -287,7 +290,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         self.assertEqual(data["record"]["index"], record1.index)
 
     def test_filter_date_detail_no_actual_record(self):
-        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object = ObjectFactory.create(object_type=self.object_type)
         record = ObjectRecordFactory.create(object=object, start_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
@@ -298,14 +301,14 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
     def test_filter_date_list(self):
         # object 1 - show
-        object1 = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object1 = ObjectFactory.create(object_type=self.object_type)
         record11 = ObjectRecordFactory.create(
             object=object1, start_at="2020-01-01", end_at="2020-12-31"
         )
         record12 = ObjectRecordFactory.create(object=object1, start_at="2021-01-01")
         # object 2 - don't show
         record21 = ObjectRecordFactory.create(
-            object__object_type=OBJECT_TYPE, start_at="2021-01-01"
+            object__object_type=self.object_type, start_at="2021-01-01"
         )
 
         url = reverse_lazy("object-list")
@@ -322,7 +325,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         self.assertEqual(data[0]["record"]["index"], record11.index)
 
     def test_filter_registration_date_detail(self):
-        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object = ObjectFactory.create(object_type=self.object_type)
         record1 = ObjectRecordFactory.create(
             object=object,
             registration_at="2020-01-01",
@@ -342,7 +345,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         self.assertEqual(data["record"]["index"], record1.index)
 
     def test_filter_registration_date_detail_no_record(self):
-        object = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object = ObjectFactory.create(object_type=self.object_type)
         record = ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
@@ -353,7 +356,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
     def test_filter_registration_date_list(self):
         # object 1 - show
-        object1 = ObjectFactory.create(object_type=OBJECT_TYPE)
+        object1 = ObjectFactory.create(object_type=self.object_type)
         record11 = ObjectRecordFactory.create(
             object=object1, registration_at="2020-01-01"
         )
@@ -362,7 +365,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         )
         # object 2 - don't show
         record21 = ObjectRecordFactory.create(
-            object__object_type=OBJECT_TYPE, registration_at="2021-01-01"
+            object__object_type=self.object_type, registration_at="2021-01-01"
         )
 
         url = reverse_lazy("object-list")

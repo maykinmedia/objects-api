@@ -43,6 +43,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     Delete an OBJECT and all RECORDs belonging to it.
 
     """
+
     queryset = (
         Object.objects.select_related("object_type", "object_type__service")
         .prefetch_related("records")

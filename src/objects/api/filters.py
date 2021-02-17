@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 from django_filters import filters
-from rest_framework.serializers import ValidationError
+from rest_framework import serializers
 from vng_api_common.filters import URLModelChoiceFilter
 from vng_api_common.filtersets import FilterSet
 
@@ -21,7 +21,7 @@ class ObjectFilterForm(forms.Form):
         registration_date = cleaned_data.get("registrationDate")
 
         if date and registration_date:
-            raise ValidationError(
+            raise serializers.ValidationError(
                 _(
                     "'date' and 'registrationDate' parameters can't be used in the same request"
                 ),
