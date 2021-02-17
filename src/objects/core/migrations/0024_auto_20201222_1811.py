@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("core", "0018_remove_object_object_type"),
+        ("core", "0023_remove_object_object_type"),
     ]
 
     operations = [

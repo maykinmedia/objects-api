@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("zgw_consumers", "0011_remove_service_extra"),
-        ("core", "0015_objectrecord_geometry"),
+        ("core", "0020_auto_20210118_1117"),
     ]
 
     operations = [
