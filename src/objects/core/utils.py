@@ -2,15 +2,14 @@ from django.core.exceptions import ValidationError
 
 import jsonschema
 from zds_client.client import ClientError
-from zgw_consumers.models import Service
 
 
 def check_objecttype(object_type, version, data):
     if not data:
         return
 
-    client = Service.get_client(object_type)
-    objecttype_version_url = f"{object_type}/versions/{version}"
+    client = object_type.service.build_client()
+    objecttype_version_url = f"{object_type.url}/versions/{version}"
 
     try:
         response = client.retrieve("objectversion", url=objecttype_version_url)

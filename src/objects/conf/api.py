@@ -9,7 +9,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
     "DEFAULT_FILTER_BACKENDS": ["vng_api_common.filters.Backend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication"
+        "objects.token.authentication.TokenAuthentication"
     ],
     # test
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -24,7 +24,10 @@ SWAGGER_SETTINGS.update(
         "SECURITY_DEFINITIONS": {
             "Token": {"type": "apiKey", "name": "Authorization", "in": "header"}
         },
-        "DEFAULT_FIELD_INSPECTORS": ("objects.utils.inspectors.GeometryFieldInspector",)
+        "DEFAULT_FIELD_INSPECTORS": (
+            "objects.utils.inspectors.GeometryFieldInspector",
+            "objects.utils.inspectors.ObjectTypeFieldInspector",
+        )
         + BASE_SWAGGER_SETTINGS["DEFAULT_FIELD_INSPECTORS"],
     }
 )

@@ -1,4 +1,6 @@
 from drf_yasg import openapi
+from drf_yasg.inspectors.base import NotHandled
+from drf_yasg.inspectors.field import FieldInspector
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.inspectors.geojson import (
     GeometryFieldInspector as _GeometryFieldInspector,
@@ -45,3 +47,23 @@ class GeometryFieldInspector(_GeometryFieldInspector):
             )
 
         return headers
+
+
+class ObjectTypeFieldInspector(FieldInspector):
+    # separate inspector to specify "format: uri" for this field in OAS
+    def field_to_swagger_object(
+        self, field, swagger_object_type, use_references, **kwargs
+    ):
+        SwaggerType, ChildSwaggerType = self._get_partial_types(
+            field, swagger_object_type, use_references, **kwargs
+        )
+        from objects.api.serializers import ObjectTypeField
+
+        if isinstance(field, ObjectTypeField) and swagger_object_type == openapi.Schema:
+            return SwaggerType(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_URI,
+                description=field.help_text,
+            )
+
+        return NotHandled

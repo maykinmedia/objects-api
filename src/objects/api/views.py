@@ -8,8 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from vng_api_common.search import SearchMixin
 
-from objects.accounts.permissions import ObjectBasedPermission
 from objects.core.models import Object
+from objects.token.permissions import ObjectTypeBasedPermission
 
 from .filters import ObjectFilterSet
 from .mixins import GeoMixin
@@ -44,12 +44,16 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
     """
 
-    queryset = Object.objects.prefetch_related("records").order_by("-pk")
+    queryset = (
+        Object.objects.select_related("object_type", "object_type__service")
+        .prefetch_related("records")
+        .order_by("-pk")
+    )
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
-    permission_classes = [ObjectBasedPermission]
+    permission_classes = [ObjectTypeBasedPermission]
 
     def get_queryset(self):
         base = super().get_queryset()
@@ -62,7 +66,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         if not date:
             base = base.filter_for_date(datetime.date.today())
 
-        return base.filter_for_user(self.request.user)
+        return base.filter_for_token(self.request.auth)
 
     @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
