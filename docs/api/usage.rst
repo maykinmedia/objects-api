@@ -295,10 +295,12 @@ https://jsonschema.dev can be used to validate JSON data against JSON schema.
 
 Using the url of the created object type we can create a tree object. If we have
 GEO coordinates for our object we can also include them into the request body.
+Don't forget the required "Content-Crs" header.
 
 .. code-block:: http
 
     POST /api/v1/objects HTTP/1.1
+    Content-Crs: EPSG:4326
 
     {
         "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
