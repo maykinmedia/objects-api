@@ -55,3 +55,4 @@ class ObjectAdmin(admin.ModelAdmin):
     list_display = ("id", "object_type", "current_record")
     search_fields = ("uuid",)
     inlines = (ObjectRecordInline,)
+    list_filter = ("object_type",)
