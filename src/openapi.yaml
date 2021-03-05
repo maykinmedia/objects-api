@@ -1563,6 +1563,7 @@ components:
       - $ref: '#/components/schemas/GeometryCollection'
     ObjectRecord:
       title: Record
+      description: State of the OBJECT at a certain time
       required:
       - typeVersion
       - startAt
