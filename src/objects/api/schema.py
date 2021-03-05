@@ -13,17 +13,21 @@ attributes like `geometry` and some administrative attributes. The data that
 describes the actual object is stored in the `data` attribute and follows 
 the JSON schema as given by the OBJECTTYPE.
 
+## Validation
+
+When an OBJECT is created or changed the `OBJECT.type` attribute refers to the
+matching OBJECTTYPE in the Objecttypes API. The RECORD always indicates which 
+OBJECTTYPE-VERSION is used, shown in the `RECORD.typeVersion` attribute.
+
+Using these 2 attributes, the appropriate JSON schema is retrieved from the 
+Objecttypes API and the OBJECT data is validated against this JSON schema.
+
 ## History
 
 Each OBJECT has 1 or more RECORDs. A RECORD contains the data of an OBJECT
 at a certain time. An OBJECT can have multiple RECORDS that describe the
 history of that OBJECT. Changes to an OBJECT actually create a new RECORD
 under the OBJECT and leaves the old RECORD as is.
-
-Over time, an OBJECTTYPE can also change. This is reflected with 
-OBJECTTYPE-VERSIONs. Therefore, a RECORD always indicates which 
-OBJECTTYPE-VERSION it uses described by the `OBJECT.type` and 
-`RECORD.typeVersion` attributes.
 
 ### Material and formal history
 

@@ -6,19 +6,21 @@ info:
     \ that every OBJECT (technically a RECORD,\nsee below) has, although these attributes\
     \ can sometimes be empty. They are\nattributes like `geometry` and some administrative\
     \ attributes. The data that\ndescribes the actual object is stored in the `data`\
-    \ attribute and follows \nthe JSON schema as given by the OBJECTTYPE.\n\n## History\n\
-    \nEach OBJECT has 1 or more RECORDs. A RECORD contains the data of an OBJECT\n\
-    at a certain time. An OBJECT can have multiple RECORDS that describe the\nhistory\
-    \ of that OBJECT. Changes to an OBJECT actually create a new RECORD\nunder the\
-    \ OBJECT and leaves the old RECORD as is.\n\nOver time, an OBJECTTYPE can also\
-    \ change. This is reflected with \nOBJECTTYPE-VERSIONs. Therefore, a RECORD always\
-    \ indicates which \nOBJECTTYPE-VERSION it uses described by the `OBJECT.type`\
-    \ and \n`RECORD.typeVersion` attributes.\n\n### Material and formal history\n\n\
-    History can be seen from 2 perspectives: formal and material history. The \nformal\
-    \ history describes the history as it should be (stored in the \n`startAt` and\
-    \ `endAt` attributes). The material history describes the \nhistory as it was\
-    \ administratively processed (stored in the `registeredAt`\nattribute).\n\nThe\
-    \ difference is that an object could be created or updated in the real \nworld\
+    \ attribute and follows \nthe JSON schema as given by the OBJECTTYPE.\n\n## Validation\n\
+    \nWhen an OBJECT is created or changed the `OBJECT.type` attribute refers to the\n\
+    matching OBJECTTYPE in the Objecttypes API. The RECORD always indicates which\
+    \ \nOBJECTTYPE-VERSION is used, shown in the `RECORD.typeVersion` attribute.\n\
+    \nUsing these 2 attributes, the appropriate JSON schema is retrieved from the\
+    \ \nObjecttypes API and the OBJECT data is validated against this JSON schema.\n\
+    \n## History\n\nEach OBJECT has 1 or more RECORDs. A RECORD contains the data\
+    \ of an OBJECT\nat a certain time. An OBJECT can have multiple RECORDS that describe\
+    \ the\nhistory of that OBJECT. Changes to an OBJECT actually create a new RECORD\n\
+    under the OBJECT and leaves the old RECORD as is.\n\n### Material and formal history\n\
+    \nHistory can be seen from 2 perspectives: formal and material history. The \n\
+    formal history describes the history as it should be (stored in the \n`startAt`\
+    \ and `endAt` attributes). The material history describes the \nhistory as it\
+    \ was administratively processed (stored in the `registeredAt`\nattribute).\n\n\
+    The difference is that an object could be created or updated in the real \nworld\
     \ at a certain point in time but the administrative change (ie. save or\nupdate\
     \ the object in the Objects API) can be done at a later time. The\nquery parameters\
     \ `?date=2021-01-01` (formal history) and \n`?registrationDate=2021-01-01` (material\
