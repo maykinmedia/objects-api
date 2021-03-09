@@ -1,6 +1,9 @@
+from django.utils.translation import ugettext_lazy as _
+
 from drf_yasg import openapi
 from drf_yasg.inspectors.base import NotHandled
 from drf_yasg.inspectors.field import FieldInspector
+from rest_framework import serializers
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.inspectors.geojson import (
     GeometryFieldInspector as _GeometryFieldInspector,
@@ -23,10 +26,11 @@ class GeometryFieldInspector(_GeometryFieldInspector):
                 type=openapi.TYPE_STRING,
                 in_=openapi.IN_HEADER,
                 required=False,
-                description="Het gewenste 'Coordinate Reference System' (CRS) van de "
-                "geometrie in het antwoord (response body). Volgens de "
-                "GeoJSON spec is WGS84 de default (EPSG:4326 is "
-                "hetzelfde als WGS84).",
+                description=_(
+                    "The desired 'Coordinate Reference System' (CRS) of the response data. "
+                    "According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 "
+                    "is the same as WGS84)."
+                ),
                 enum=[DEFAULT_CRS],
             ),
         ]
@@ -38,10 +42,11 @@ class GeometryFieldInspector(_GeometryFieldInspector):
                     type=openapi.TYPE_STRING,
                     in_=openapi.IN_HEADER,
                     required=True,
-                    description="Het 'Coordinate Reference System' (CRS) van de "
-                    "geometrie in de vraag (request body). Volgens de "
-                    "GeoJSON spec is WGS84 de default (EPSG:4326 is "
-                    "hetzelfde als WGS84).",
+                    description=_(
+                        "The 'Coordinate Reference System' (CRS) of the request data. "
+                        "According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 "
+                        "is the same as WGS84)."
+                    ),
                     enum=[DEFAULT_CRS],
                 ),
             )
@@ -64,6 +69,34 @@ class ObjectTypeFieldInspector(FieldInspector):
                 type=openapi.TYPE_STRING,
                 format=openapi.FORMAT_URI,
                 description=field.help_text,
+            )
+
+        return NotHandled
+
+
+class HyperlinkedIdentityFieldInspector(FieldInspector):
+    # copied from vng_api_common.inspectors.HyperlinkedIdentityFieldInspector
+    # with the change of description
+    def field_to_swagger_object(
+        self, field, swagger_object_type, use_references, **kwargs
+    ):
+        SwaggerType, ChildSwaggerType = self._get_partial_types(
+            field, swagger_object_type, use_references, **kwargs
+        )
+
+        if (
+            isinstance(field, serializers.HyperlinkedIdentityField)
+            and swagger_object_type == openapi.Schema
+        ):
+            return SwaggerType(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_URI,
+                min_length=1,
+                max_length=1000,
+                description=_(
+                    "URL reference to this object. This is the unique identification "
+                    "and location of this object."
+                ),
             )
 
         return NotHandled

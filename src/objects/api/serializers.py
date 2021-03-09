@@ -119,7 +119,9 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
         validators=[IsImmutableValidator()],
     )
-    record = ObjectRecordSerializer(source="current_record")
+    record = ObjectRecordSerializer(
+        source="current_record", help_text=_("State of the OBJECT at a certain time")
+    )
 
     class Meta:
         model = Object
