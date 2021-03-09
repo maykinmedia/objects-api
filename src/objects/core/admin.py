@@ -10,9 +10,19 @@ class ObjectTypeAdmin(admin.ModelAdmin):
     readonly_fields = ("_name",)
 
 
+class OSMWidget(forms.OSMWidget):
+    map_width = 400
+    map_height = 300
+    default_lon = 5.1214201
+    default_lat = 52.0907374
+    default_zoom = 7
+    display_raw = True
+
+
 class ObjectRecordInline(admin.TabularInline):
     model = ObjectRecord
-    extra = 1
+    extra = 0
+    min_num = 1
     readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
     fields = (
         "index",
@@ -25,7 +35,7 @@ class ObjectRecordInline(admin.TabularInline):
         "get_corrected_by",
         "correct",
     )
-    formfield_overrides = {GeometryField: {"widget": forms.OSMWidget}}
+    formfield_overrides = {GeometryField: {"widget": OSMWidget}}
 
     def has_delete_permission(self, request, obj=None):
         return False
