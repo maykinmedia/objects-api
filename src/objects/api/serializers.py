@@ -125,9 +125,10 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Object
-        fields = ("url", "type", "record")
+        fields = ("url", "uuid", "type", "record")
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
+            "uuid": {"validators": [IsImmutableValidator()]},
         }
         validators = [JsonSchemaValidator()]
 
