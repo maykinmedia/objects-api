@@ -61,6 +61,6 @@ class ObjectAdmin(admin.ModelAdmin):
         readonly_fields = super().get_readonly_fields(request, obj)
 
         if obj:
-            readonly_fields = ("uuid",) + readonly_fields
+            readonly_fields = ("uuid", "object_type") + readonly_fields
 
         return readonly_fields
