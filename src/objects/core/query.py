@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 
 from vng_api_common.utils import get_uuid_from_path
@@ -32,3 +30,17 @@ class ObjectQuerySet(models.QuerySet):
 
     def filter_for_registration_date(self, date):
         return self.filter(records__registration_at__lte=date).distinct()
+
+
+class ObjectRecordQuerySet(models.QuerySet):
+    def filter_for_date(self, date):
+        return (
+            self.filter(start_at__lte=date)
+            .filter(models.Q(end_at__gte=date) | models.Q(end_at__isnull=True))
+            .order_by("-index")
+        )
+
+    def filter_for_registration_date(self, date):
+        return self.filter(registration_at__lte=date).order_by(
+            "-registration_at", "-index"
+        )

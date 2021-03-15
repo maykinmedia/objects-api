@@ -11,7 +11,7 @@ from requests.exceptions import ConnectionError
 from zds_client.client import ClientError
 from zgw_consumers.models import Service
 
-from .query import ObjectQuerySet, ObjectTypeQuerySet
+from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
 from .utils import check_objecttype
 
 
@@ -62,25 +62,9 @@ class Object(models.Model):
 
     objects = ObjectQuerySet.as_manager()
 
-    def get_actual_record(self, date):
-        return (
-            self.records.filter(start_at__lte=date)
-            .filter(models.Q(end_at__gte=date) | models.Q(end_at__isnull=True))
-            .order_by("-pk")
-            .first()
-            # TODO: pk should prolly be index once added.
-        )
-
-    def get_registration_record(self, date):
-        return (
-            self.records.filter(registration_at__lte=date)
-            .order_by("-registration_at")
-            .first()
-        )
-
     @property
     def current_record(self):
-        return self.get_actual_record(datetime.date.today())
+        return self.records.filter_for_date(datetime.date.today()).first()
 
     @property
     def last_record(self):
@@ -128,6 +112,8 @@ class ObjectRecord(models.Model):
             "Point, linestring or polygon object which represents the coordinates of the object"
         ),
     )
+
+    objects = ObjectRecordQuerySet.as_manager()
 
     class Meta:
         unique_together = ("object", "index")
