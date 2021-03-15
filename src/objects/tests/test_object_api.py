@@ -83,6 +83,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             data,
             {
                 "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
+                "uuid": str(object.uuid),
                 "type": object.object_type.url,
                 "record": {
                     "index": object_record.index,

@@ -1627,6 +1627,11 @@ components:
           readOnly: true
           maxLength: 1000
           minLength: 1
+        uuid:
+          title: Uuid
+          description: Unique identifier (UUID4)
+          type: string
+          format: uuid
         type:
           title: Type
           description: Url reference to OBJECTTYPE in Objecttypes API

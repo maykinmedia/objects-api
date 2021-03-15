@@ -56,3 +56,11 @@ class ObjectAdmin(admin.ModelAdmin):
     search_fields = ("uuid",)
     inlines = (ObjectRecordInline,)
     list_filter = ("object_type",)
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+
+        if obj:
+            readonly_fields = ("uuid", "object_type") + readonly_fields
+
+        return readonly_fields

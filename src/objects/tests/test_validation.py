@@ -1,3 +1,5 @@
+import uuid
+
 from django.urls import reverse
 
 import requests_mock
@@ -209,3 +211,22 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             data["type"],
             ["This field can't be changed"],
         )
+
+    def test_update_uuid_invalid(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        initial_record = ObjectRecordFactory.create(
+            object__object_type=self.object_type
+        )
+        object = initial_record.object
+
+        url = reverse("object-detail", args=[object.uuid])
+        data = {"uuid": uuid.uuid4()}
+
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(data["uuid"], ["This field can't be changed"])
