@@ -57,6 +57,22 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "registrationAt": {"source": "registration_at", "read_only": True},
         }
 
+    def get_attribute(self, instance: Object) -> ObjectRecord:
+        query_params = self.parent.context["request"].query_params
+        actual_date = query_params.get("date", None)
+        registration_date = query_params.get("registrationDate", None)
+
+        if not actual_date and not registration_date:
+            return instance.current_record
+
+        record = (
+            instance.get_actual_record(actual_date)
+            if actual_date
+            else instance.get_registration_record(registration_date)
+        )
+
+        return record
+
 
 class HistoryRecordSerializer(serializers.ModelSerializer):
     correctionFor = serializers.SlugRelatedField(
@@ -131,25 +147,6 @@ class ObjectSerializer(serializers.HyperlinkedModelSerializer):
             "uuid": {"validators": [IsImmutableValidator()]},
         }
         validators = [JsonSchemaValidator()]
-
-    def to_representation(self, instance):
-        ret = super().to_representation(instance)
-
-        actual_date = self.context["request"].query_params.get("date", None)
-        registration_date = self.context["request"].query_params.get(
-            "registrationDate", None
-        )
-
-        if not actual_date and not registration_date:
-            return ret
-
-        record = (
-            instance.get_actual_record(actual_date)
-            if actual_date
-            else instance.get_registration_record(registration_date)
-        )
-        ret["record"] = self.fields["record"].to_representation(record)
-        return ret
 
     @transaction.atomic
     def create(self, validated_data):
