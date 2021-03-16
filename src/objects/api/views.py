@@ -47,7 +47,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     queryset = (
         Object.objects.select_related("object_type", "object_type__service")
         .prefetch_related("records")
-        .order_by("-pk")
+        .order_by("-index")
     )
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet

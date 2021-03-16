@@ -63,15 +63,28 @@ class Object(models.Model):
     objects = ObjectQuerySet.as_manager()
 
     def get_actual_record(self, date):
+        """
+        The record as seen on `date` from a formal historical perspective.
+
+        The record that has its `start_at` date and `end_at` date between the
+        given `date`. If there is no `end_at` date, it means the record is
+        still actual. If there are multiple actual records, the last added
+        record is the final actual record.
+        """
         return (
             self.records.filter(start_at__lte=date)
             .filter(models.Q(end_at__gte=date) | models.Q(end_at__isnull=True))
-            .order_by("-pk")
+            .order_by("-index")
             .first()
-            # TODO: pk should prolly be index once added.
         )
 
     def get_registration_record(self, date):
+        """
+        The record as seen on `date` from a material historical perspective.
+
+        The first (in time) record that has its `registration_at` on or before
+        the given `date`.
+        """
         return (
             self.records.filter(registration_at__lte=date)
             .order_by("-registration_at")
@@ -80,11 +93,21 @@ class Object(models.Model):
 
     @property
     def current_record(self):
+        """
+        The record as seen today from a formal historical perspective.
+
+        The record that is "actual" today and (in case there are multiple
+        "actual" records) with the highest index.
+        """
         return self.get_actual_record(datetime.date.today())
 
     @property
     def last_record(self):
-        return self.records.order_by("-start_at", "-id").first()
+        """
+        The latest record saved in the database, indicated by the highest
+        index.
+        """
+        return self.records.order_by("-index").first()
 
 
 class ObjectRecord(models.Model):
