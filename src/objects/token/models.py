@@ -23,7 +23,7 @@ class TokenAuth(models.Model):
         _("organization"),
         max_length=200,
         blank=True,
-        help_text=_("Organizations which has an access to the API"),
+        help_text=_("Organization which has access to the API"),
     )
     last_modified = models.DateTimeField(
         _("last modified"),
@@ -32,6 +32,18 @@ class TokenAuth(models.Model):
     )
     created = models.DateTimeField(
         _("created"), auto_now_add=True, help_text=_("Date when the token was created")
+    )
+    application = models.CharField(
+        _("application"),
+        max_length=200,
+        blank=True,
+        help_text=_("Application which has access to the API"),
+    )
+    administration = models.CharField(
+        _("administration"),
+        max_length=200,
+        blank=True,
+        help_text=_("Administration which has access to the API"),
     )
 
     object_types = models.ManyToManyField(
