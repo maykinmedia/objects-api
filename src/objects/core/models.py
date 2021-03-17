@@ -68,7 +68,7 @@ class Object(models.Model):
 
     @property
     def last_record(self):
-        return self.records.order_by("-start_at", "-id").first()
+        return self.records.order_by("-start_at", "-index").first()
 
 
 class ObjectRecord(models.Model):
