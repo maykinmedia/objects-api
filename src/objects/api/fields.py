@@ -20,11 +20,25 @@ class ObjectSlugRelatedField(serializers.SlugRelatedField):
 
 class ObjectTypeField(serializers.RelatedField):
     default_error_messages = {
+        "max_length": _("The value has too many characters"),
+        "min_length": _("The value has too few characters"),
         "does_not_exist": _("ObjectType with url={value} is not configured."),
         "invalid": _("Invalid value."),
     }
 
+    def __init__(self, **kwargs):
+        self.max_length = kwargs.pop("max_length", None)
+        self.min_length = kwargs.pop("min_length", None)
+
+        super().__init__(**kwargs)
+
     def to_internal_value(self, data):
+        if self.max_length and len(data) > self.max_length:
+            self.fail("max_length")
+
+        if self.min_length and len(data) < self.min_length:
+            self.fail("min_length")
+
         try:
             return self.get_queryset().get_by_url(data)
         except ObjectDoesNotExist:

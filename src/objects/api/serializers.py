@@ -92,6 +92,8 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
 
 class ObjectSerializer(serializers.HyperlinkedModelSerializer):
     type = ObjectTypeField(
+        min_length=1,
+        max_length=1000,
         source="object_type",
         queryset=ObjectType.objects.all(),
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
