@@ -56,6 +56,31 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Object.objects.count(), 0)
 
+    def test_create_object_with_invalid_length(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        object_type_long = f"{OBJECT_TYPES_API}{'a'*1000}/{self.object_type.uuid}"
+        data = {
+            "type": object_type_long,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+        url = reverse("object-list")
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Object.objects.count(), 0)
+
+        data = response.json()
+        self.assertEqual(data["type"], ["The value has too many characters"])
+
     def test_create_object_no_version(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(f"{self.object_type.url}/versions/10", status_code=404)
