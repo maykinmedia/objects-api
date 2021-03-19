@@ -51,6 +51,8 @@ paths:
         schema:
           type: string
           format: uri
+          minLength: 1
+          maxLength: 1000
       - name: dataAttrs
         in: query
         description: 'Only include objects that have attributes with certain values.
@@ -1637,6 +1639,8 @@ components:
           description: Url reference to OBJECTTYPE in Objecttypes API
           type: string
           format: uri
+          maxLength: 1000
+          minLength: 1
         record:
           $ref: '#/components/schemas/ObjectRecord'
     Fout:
