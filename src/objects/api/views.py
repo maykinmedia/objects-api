@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from vng_api_common.search import SearchMixin
 
-from objects.core.models import Object
+from objects.core.models import Object, ObjectRecord
 from objects.token.permissions import ObjectTypeBasedPermission
 
 from .filters import ObjectFilterSet
@@ -44,11 +44,9 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
     """
 
-    queryset = (
-        Object.objects.select_related("object_type", "object_type__service")
-        .prefetch_related("records")
-        .order_by("-pk")
-    )
+    queryset = Object.objects.select_related(
+        "object_type", "object_type__service"
+    ).order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectFilterSet
     lookup_field = "uuid"
@@ -58,10 +56,26 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     def get_queryset(self):
         base = super().get_queryset()
 
+        date = self.request.query_params.get("date", None)
+        registration_date = self.request.query_params.get("registrationDate", None)
+
+        # prefetch filtered records as actual ones for DB optimization
+        record_queryset = (
+            ObjectRecord.objects.filter_for_registration_date(registration_date)
+            if registration_date and not date
+            else ObjectRecord.objects.filter_for_date(date or datetime.date.today())
+        )
+        base = base.prefetch_related(
+            models.Prefetch(
+                "records",
+                queryset=record_queryset.select_related("correct", "corrected"),
+                to_attr="actual_records",
+            )
+        )
+
         if self.action not in ("list", "search"):
             return base
 
-        date = self.request.query_params.get("date", None)
         # default filtering on current day
         if not date:
             base = base.filter_for_date(datetime.date.today())
