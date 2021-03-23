@@ -48,7 +48,7 @@ isodate==0.6.0            # via -r requirements/base.txt, vng-api-common
 itypes==1.2.0             # via -r requirements/base.txt, coreapi
 jinja2==2.11.3            # via -r requirements/base.txt, coreschema
 jsonschema==3.2.0         # via -r requirements/base.txt
-lxml==4.6.2               # via pyquery
+lxml==4.6.3               # via pyquery
 markupsafe==1.1.1         # via -r requirements/base.txt, jinja2
 oyaml==1.0                # via -r requirements/base.txt, vng-api-common
 pillow==7.1.1             # via -r requirements/base.txt
