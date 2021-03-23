@@ -69,6 +69,8 @@ class ObjectTypeFieldInspector(FieldInspector):
                 type=openapi.TYPE_STRING,
                 format=openapi.FORMAT_URI,
                 description=field.help_text,
+                min_length=field.min_length,
+                max_length=field.max_length,
             )
 
         return NotHandled

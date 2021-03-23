@@ -33,6 +33,8 @@ class ObjectFilterForm(forms.Form):
 
 class ObjectTypeField(filters.ModelChoiceField):
     default_error_messages = {
+        "max_length": _("The value has too many characters"),
+        "min_length": _("The value has too few characters"),
         "invalid_choice": _(
             "Select a valid object type. %(value)s is not one of the"
             " available choices."
@@ -40,9 +42,22 @@ class ObjectTypeField(filters.ModelChoiceField):
         "invalid": _("Invalid value."),
     }
 
+    def __init__(self, *args, **kwargs):
+        self.max_length = kwargs.pop("max_length", None)
+        self.min_length = kwargs.pop("min_length", None)
+
+        super().__init__(*args, **kwargs)
+
     def to_python(self, value):
         if value in self.empty_values:
             return None
+
+        if self.max_length and len(value) > self.max_length:
+            raise ValidationError(self.error_messages["max_length"], code="max_length")
+
+        if self.min_length and len(value) < self.min_length:
+            raise ValidationError(self.error_messages["min_length"], code="min_length")
+
         try:
             result = self.queryset.get_by_url(value)
         except self.queryset.model.DoesNotExist:
@@ -66,6 +81,8 @@ class ObjectFilterSet(FilterSet):
         field_name="object_type",
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
         queryset=ObjectType.objects.all(),
+        min_length=1,
+        max_length=1000,
     )
     date = filters.DateFilter(
         method="filter_date",
