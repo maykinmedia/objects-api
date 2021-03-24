@@ -29,7 +29,8 @@ class AutoSchema(_AutoSchema):
                     required=False,
                     description=_(
                         "Comma-separated fields, which should be displayed in the response. "
-                        "For example: 'url, uuid, record__geometry'"
+                        "For example: 'url, uuid, record__geometry'. Attributes inside `record.data` "
+                        "field are not supported for this parameter. "
                     ),
                 )
             ]
