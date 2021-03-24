@@ -24,6 +24,7 @@ SWAGGER_SETTINGS.update(
         "SECURITY_DEFINITIONS": {
             "Token": {"type": "apiKey", "name": "Authorization", "in": "header"}
         },
+        "DEFAULT_AUTO_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
         "DEFAULT_FIELD_INSPECTORS": (
             "objects.utils.inspectors.GeometryFieldInspector",
             "objects.utils.inspectors.ObjectTypeFieldInspector",
