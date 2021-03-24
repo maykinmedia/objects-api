@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord, ObjectType
+from objects.utils.serializers import DynamicFieldsMixin
 
 from .fields import ObjectSlugRelatedField, ObjectTypeField
 from .validators import IsImmutableValidator, JsonSchemaValidator
@@ -90,7 +91,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
         }
 
 
-class ObjectSerializer(serializers.HyperlinkedModelSerializer):
+class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerializer):
     type = ObjectTypeField(
         min_length=1,
         max_length=1000,
