@@ -61,7 +61,7 @@ python-dateutil==2.8.1    # via -r requirements/base.txt, django-relativedelta, 
 python-decouple==3.3      # via -r requirements/base.txt
 python-dotenv==0.12.0     # via -r requirements/base.txt
 pytz==2019.3              # via -r requirements/base.txt, django
-pyyaml==5.3.1             # via -r requirements/base.txt, gemma-zds-client, oyaml, vng-api-common
+pyyaml==5.4             # via -r requirements/base.txt, gemma-zds-client, oyaml, vng-api-common
 redis==3.4.1              # via -r requirements/base.txt, django-redis
 requests-mock==1.7.0      # via -r requirements/test-tools.in
 requests==2.23.0          # via -r requirements/base.txt, coreapi, django-rosetta, gemma-zds-client, requests-mock, vng-api-common, zgw-consumers
