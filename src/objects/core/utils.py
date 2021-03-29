@@ -5,16 +5,15 @@ from zds_client.client import ClientError
 
 
 def check_objecttype(object_type, version, data):
-    if not data:
-        return
-
     client = object_type.service.build_client()
     objecttype_version_url = f"{object_type.url}/versions/{version}"
 
     try:
         response = client.retrieve("objectversion", url=objecttype_version_url)
     except ClientError as exc:
-        raise ValidationError(exc.args[0]) from exc
+
+        msg = f"Object type version can not be retrieved: {exc.args[0]}"
+        raise ValidationError(msg)
 
     try:
         schema = response["jsonSchema"]
