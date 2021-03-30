@@ -21,11 +21,11 @@ defined in `API Designrules`_, which is a part of `Nederlandse API Strategie`_.
    API-10,Implement operations that do not fit the CRUD model as sub-resources,Yes,Yes
    API-16,Use OAS 3.0 for documentation,Yes,Yes
    API-17,Publish documentation in Dutch unless there is existing documentation in English or there is an official English glossary available,"No, Objects API has English documentation","No, Objecttypes API has English documentation"
-   API-18,Include a deprecation schedule when publishing API changes,No,No
-   API-19,Allow for a maximum 1 year transition period to a new API version,"N/a, new API version is not expected","N/a, new API version is not expected"
+   API-18,Include a deprecation schedule when publishing API changes,Yes,Yes
+   API-19,Allow for a maximum 1 year transition period to a new API version,Yes (6 month),Yes (6 month)
    API-20,API-20: Include the major version number only in ihe URI,Yes,Yes
    API-48,Leave off trailing slashes from API endpoints,Yes,Yes
-   API-51,Publish OAS at the base-URI in JSON-format,No,No
+   API-51,Publish OAS at the base-URI in JSON-format,Yes,Yes
 
 
 The deployed APIs can be tested against API Designrules via `API Test Platform`_.
