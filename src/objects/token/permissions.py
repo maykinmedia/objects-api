@@ -18,7 +18,10 @@ class ObjectTypeBasedPermission(BasePermission):
         if view.action != "create":
             return True
 
-        object_type_url = request.data["type"]
+        object_type_url = request.data.get("type")
+        if not object_type_url:
+            return False
+
         try:
             object_type = ObjectType.objects.get_by_url(object_type_url)
         except (ObjectType.DoesNotExist, ValueError, TypeError):

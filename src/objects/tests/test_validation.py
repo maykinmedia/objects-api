@@ -101,7 +101,9 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(data["non_field_errors"], ["Invalid input."])
+        self.assertEqual(
+            data["non_field_errors"], ["Object type version can not be retrieved: None"]
+        )
 
     def test_create_object_schema_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")

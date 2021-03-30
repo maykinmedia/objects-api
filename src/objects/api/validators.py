@@ -25,10 +25,14 @@ class JsonSchemaValidator:
             attrs.get("current_record", {}).get("version")
             or self.instance.current_record.version
         )
+
         if attrs.get("current_record"):
             data = attrs["current_record"].get("data", {})
         else:
             data = self.instance.current_record.data
+
+        if not object_type or not version or not data:
+            return
 
         try:
             check_objecttype(object_type, version, data)
