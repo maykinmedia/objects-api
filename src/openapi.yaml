@@ -123,6 +123,14 @@ paths:
           type: string
           enum:
           - EPSG:4326
+      - name: fields
+        in: query
+        description: 'Comma-separated fields, which should be displayed in the response.
+          For example: ''url, uuid, record__geometry''. Attributes inside `record.data`
+          field are not supported for this parameter. '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: OK
@@ -659,6 +667,14 @@ paths:
           multipleValues:
             summary: Multiple ETag values
             value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: 'Comma-separated fields, which should be displayed in the response.
+          For example: ''url, uuid, record__geometry''. Attributes inside `record.data`
+          field are not supported for this parameter. '
+        required: false
         schema:
           type: string
       responses:

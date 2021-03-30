@@ -17,7 +17,7 @@ defined in `API Designrules`_, which is a part of `Nederlandse API Strategie`_.
    API-04,Define interfaces in Dutch unless there is an official English glossary,"No, Objects API has English interface","No, Objecttypes API has English interface"
    API-05,Use plural nouns to indicate resources,Yes,Yes
    API-06,Create relations of nested resources within the endpoint,"N/a, there are no nested resources",Yes
-   API-09,Implement custom representation if supported,No,No
+   API-09,Implement custom representation if supported,Yes,No
    API-10,Implement operations that do not fit the CRUD model as sub-resources,Yes,Yes
    API-16,Use OAS 3.0 for documentation,Yes,Yes
    API-17,Publish documentation in Dutch unless there is existing documentation in English or there is an official English glossary available,"No, Objects API has English documentation","No, Objecttypes API has English documentation"
