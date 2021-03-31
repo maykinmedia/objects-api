@@ -204,7 +204,7 @@ itypes==1.2.0
     # via
     #   -r requirements/ci.txt
     #   coreapi
-jinja2==2.11.2
+jinja2==2.11.3
     # via
     #   -r requirements/ci.txt
     #   coreschema
