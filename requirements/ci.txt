@@ -212,7 +212,7 @@ pytz==2019.3
     # via
     #   -r requirements/base.txt
     #   django
-pyyaml==5.3.1
+pyyaml==5.4.1
     # via
     #   -r requirements/base.txt
     #   gemma-zds-client
