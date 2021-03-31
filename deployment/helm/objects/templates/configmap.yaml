@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "objects.fullname" . }}
+  labels:
+    {{- include "objects.labels" . | nindent 4 }}
+data:
+  DJANGO_SETTINGS_MODULE: "objects.conf.docker"
+  ALLOWED_HOSTS: {{ .Values.settings.allowedHosts | quote }}
+  DB_HOST: {{ .Values.settings.database.host | toString | quote }}
+  DB_PORT: {{ .Values.settings.database.port | toString | quote }}
+  DB_USER: {{ .Values.settings.database.username | toString | quote }}
+  DB_NAME: {{ .Values.settings.database.name | toString | quote }}
