@@ -179,7 +179,7 @@ oyaml==1.0
     # via
     #   -r requirements/base.txt
     #   vng-api-common
-pillow==8.1.1
+pillow==8.1.2
     # via -r requirements/base.txt
 polib==1.1.0
     # via
