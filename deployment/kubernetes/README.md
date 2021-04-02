@@ -12,7 +12,7 @@ Configure proper secrets, enable persistence, add certificates before using in p
 Install the Helm chart with following commands:
 
 ```bash
-cd deployment/helm/objects
+cd deployment/kubernetes/objects
 helm dependency build .
 helm install objects .
 ```
