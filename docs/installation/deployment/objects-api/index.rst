@@ -8,3 +8,4 @@ Objects API deployment
    :maxdepth: 1
 
    single-server
+   kubernetes
