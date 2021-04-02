@@ -3,11 +3,11 @@
 Installation
 ============
 
-In addition to making its source code available publicly, the reference 
+In addition to making its source code available publicly, the reference
 implementation for the Objects API and Objecttypes API are also maintained and
-work out-of-the-box for most use cases. 
+work out-of-the-box for most use cases.
 
-For the sake of simplicity, we have chosen to use Docker and Docker Compose for 
+For the sake of simplicity, we have chosen to use Docker and Docker Compose for
 this.
 
 .. toctree::
@@ -16,3 +16,4 @@ this.
 
    quickstart
    config
+   deployment/index
