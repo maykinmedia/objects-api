@@ -15,6 +15,7 @@ The documentation includes installation process and the reference configuration.
    :caption: Deployment
 
    objects-api/index
+   objecttypes-api/index
 
 
 .. _`Ansible`: https://www.ansible.com/

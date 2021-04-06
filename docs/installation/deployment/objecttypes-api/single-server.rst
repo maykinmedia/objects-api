@@ -1,4 +1,4 @@
-.. _deployment_objects_single-server:
+.. _deployment_objecttypes_single-server:
 
 =============
 Single server
@@ -18,6 +18,7 @@ Server preparation
 You can configure the Ansible playbook to install relevant services, do it
 manually, or have these pre-installed. You will need:
 
+    * PostgreSQL
     * Nginx
     * Docker
     * Python3
@@ -27,17 +28,10 @@ Apart from Docker, you can install all these with something like:
 
 .. code:: shell
 
-   $ sudo apt-get install nginx python3 python3-pip
+   $ sudo apt-get install postgresql nginx python3 python3-pip
 
 
 For Docker, follow the instructions here: https://docs.docker.com/engine/install/
-
-Database
-========
-
-Objects API uses PostgreSQL DB with PostGIS extension.
-You can enable ``geerlingguy.postgresql`` role in the Ansible playbook to install it
-or do it manually following the instructions here: https://postgis.net/install/
 
 You will also need access to, or create, a database. You can create a database
 with something like:
@@ -57,7 +51,7 @@ Installation
 
    .. code:: shell
 
-      $ git clone git@github.com:maykinmedia/objects-api.git
+      $ git clone git@github.com:maykinmedia/objecttypes-api.git
 
 2. Setup virtual environment:
 
@@ -96,4 +90,4 @@ Installation
 
 
 .. _`Ansible`: https://www.ansible.com/
-.. _`deployment files`: https://github.com/maykinmedia/objects-api/tree/master/deployment/single-server
+.. _`deployment files`: https://github.com/maykinmedia/objecttypes-api/tree/master/deployment/single-server
