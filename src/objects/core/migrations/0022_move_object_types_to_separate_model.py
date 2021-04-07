@@ -30,7 +30,12 @@ def move_objecttypes_to_model(apps, _):
 
     for object in Object.objects.all():
         service = get_service(Service, object.object_type)
-        uuid = get_uuid_from_path(object.object_type)
+        if not service:
+            continue
+        try:
+            uuid = get_uuid_from_path(object.object_type)
+        except ValueError:
+            continue
 
         object_type, created = ObjectType.objects.get_or_create(
             service=service, uuid=uuid
