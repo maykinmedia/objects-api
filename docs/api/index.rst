@@ -29,6 +29,7 @@ API                     Specification version(s)
    :maxdepth: 1
    :caption: Further reading
 
+   authentication
    authorization
    usage
    postman

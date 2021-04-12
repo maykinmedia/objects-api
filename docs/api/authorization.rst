@@ -1,50 +1,78 @@
 .. _api_authorization:
 
-==============
-Authentication
-==============
+=============
+Authorization
+=============
 
-Both Objecttypes API and Objects API support token authentication (or bearer authentication),
-which means that everyone who has the security token can access the API. Tokens are
-configured in the admin page.
+While :ref:`api_authentication` is a process of verifying who a client is, authorization
+is the process of verifying what they have access to. Authorization is usually
+done after successful authentication.
 
 Objecttypes API
 ===============
 
-In this section we will create a security token for Objecttypes API and use it in
-the HTTP request.
-
-.. image:: _assets/img/authentication_objecttypes_main.png
-    :alt: Click on the "add" button for "Token authorizations"
-
-In the admin page of Objecttypes API click on the "add" button for "Token authorizations"
-resource.
-
-.. image:: _assets/img/authentication_objecttypes_add.png
-    :alt: Fill in the form and click on "save" button
-
-After the form is filled in and submitted the token would be created. The token
-itself is a sequence of 40 letters and digits. It's value is generated automatically
-when the form is submitted. In this example we will use ``1234`` as a token value.
-
-Now we can use the created token to request Objecttypes API. The token should be
-included into "Authorization" header: ``Authorization: Token 1234``
-
-.. code-block:: http
-
-    GET /api/v1/objecttypes HTTP/1.1
-    Authorization: Token 1234
-
-    HTTP/1.1 200 OK
-
-    []
-
-If you want to know how to use Objecttypes API you can follow :ref:`api_usage`
+The Objecttypes API doesn't have a particular authorization model, i.e. every
+authenticated client has access to all object types.
 
 Objects API
 ===========
 
-The creation of authentication token for Objects API is the same as for Objecttypes API.
-In the admin page of Objects API click on the "add" button for "Token authorizations"
+In the Objects API clients should have explicit access for objects based on their
+object types. Permissions for particular object types can be configured in the
+admin page. In the example below we will create a permission to modify tree objects, i.e.
+objects of "Boom" object type.
+
+Access to Objecttypes API
+-------------------------
+Since the access to objects is based on their object types, the Objects API should have
+credentials to communicate with the Objecttypes API.
+
+.. image:: _assets/img/authorization_objects_main_service.png
+    :alt: Click on the "add" button for "Services"
+
+In the admin page of the Objects API click on the "add" button for "Services"
 resource.
 
+.. image:: _assets/img/authorization_objects_service.png
+    :alt: Fill in the form and click on "save" button
+
+Fill in the form with the information about the Objecttypes API and put the Objecttypes API
+created in the :ref:`api_authentication` section of this document into "Header value" field.
+If you use NLX you can configure it in the "NLX url" field. After the form is submitted
+the Objects API can access the Objecttypes API since it now has a security token for it.
+
+Create a proxy object type
+--------------------------
+
+Now we can create a proxy object type, which is used to define permissions.
+
+.. image:: _assets/img/authorization_objects_main_objecttype.png
+    :alt: Click on the "add" button for "Object type"
+
+In the admin page of the Objects API click on the "add" button for "Object types"
+resource.
+
+.. image:: _assets/img/authorization_objects_objecttype.png
+    :alt: Fill in the form and click on "save" button
+
+Choose the service created in the previous step and fill in the uuid of the "Boom" object type.
+After the form is submitted the object type name will be retrieved automatically from
+the Objecttypes API.
+
+
+Add a permission
+----------------
+
+Finally it's time to create a permission to access objects with "boom" object types.
+Go to the token which should be granted this permission (it was probably created in the
+:ref:`api_authentication` section of this document).
+
+.. image:: _assets/img/authorization_objects_permissions.png
+    :alt: Fill in the form and click on "save" button
+
+In the "Permissions" section choose the object type created in the previous step and
+choose the rights this token will have and submit the form.
+
+Now the client who has this token can access the objects with the "Boom" object type.
+
+If you want to know how to use Objects API you can follow :ref:`api_usage`
