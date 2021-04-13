@@ -4,11 +4,13 @@
 Kubernetes
 ==========
 
-Here you can find a reference implementation of Objecttypes deployment in the
-Kubernetes cluster via `Helm`_.
-This Helm chart installs Objecttypes API and is dependent on `PostgreSQL subchart`_.
+Here you can find a reference implementation of the Objecttypes API deployment for
+a Kubernetes cluster using `Helm`_.
 
-.. warning:: The default settings are unsafe and should be used only for
+This Helm chart installs the Objecttypes API and is dependent on a PostgreSQL
+database, installed using a `subchart`_.
+
+.. warning:: The default settings are unsafe and should only be used for
    development purposes. Configure proper secrets, enable persistence, add
    certificates before using in production.
 
@@ -32,7 +34,8 @@ Use Kubernetes CLI to monitor the status of deployment:
    kubectl get pods
 
 
-If ingress is not configured you can use `port-forward` to check the status of application:
+If the Ingress is not configured you can use `port-forward` to check the status
+of the application:
 
 .. code:: shell
 
@@ -42,4 +45,4 @@ If ingress is not configured you can use `port-forward` to check the status of a
    kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 
 .. _`Helm`: https://helm.sh/
-.. _`PostgreSQL subchart`: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+.. _`subchart`: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
