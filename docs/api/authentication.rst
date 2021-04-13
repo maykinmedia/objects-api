@@ -6,7 +6,7 @@ Authentication
 
 Both the Objecttypes API and the Objects API support token authentication (or bearer
 authentication), which means that everyone who has the security token can access the API.
-Tokens are configured in the admin page.
+Tokens are configured in the admin.
 
 Objecttypes API
 ===============
@@ -17,7 +17,7 @@ the HTTP request.
 .. image:: _assets/img/authentication_objecttypes_main.png
     :alt: Click on the "add" button for "Token authorizations"
 
-In the admin page of the Objecttypes API click on the "add" button for "Token authorizations"
+In the admin of the Objecttypes API click on the "add" button for "Token authorizations"
 resource.
 
 .. image:: _assets/img/authentication_objecttypes_add.png
@@ -44,20 +44,20 @@ If you want to know how to use the Objecttypes API you can follow :ref:`api_usag
 Objects API
 ===========
 
-The creation of authentication token for the Objects API is the same as for the
+The creation of an authentication token for the Objects API is similar as for the
 Objecttypes API.
 
 .. image:: _assets/img/authentication_objects_main.png
     :alt: Click on the "add" button for "Token authorizations"
 
-In the admin page of the Objects API click on the "add" button for "Token authorizations"
+In the admin of the Objects API click on the "add" button for "Token authorizations"
 resource.
 
 .. image:: _assets/img/authentication_objects_add.png
     :alt: Fill in the form and click on "save" button
 
-"Permissions" section is used for authorizations and can be leaved empty for now.
-It's described in the "Authorization" section of this document.
+The "Permissions" section is used for authorizations and can be left empty for now.
+It's described in the :ref:`api_authorization` section of this document.
 
 After the form is filled in and submitted the token would be created. The token
 itself is a sequence of 40 letters and digits. It's value is generated automatically

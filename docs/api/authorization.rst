@@ -17,9 +17,9 @@ authenticated client has access to all object types.
 Objects API
 ===========
 
-In the Objects API clients should have explicit access for objects based on their
+In the Objects API, clients have explicit access to objects based on their
 object types. Permissions for particular object types can be configured in the
-admin page. In the example below we will create a permission to modify tree objects, i.e.
+admin. In the example below we will create a permission to modify tree objects, i.e.
 objects of "Boom" object type.
 
 Access to Objecttypes API
@@ -41,10 +41,10 @@ created in the :ref:`api_authentication` section of this document into "Header v
 If you use NLX you can configure it in the "NLX url" field. After the form is submitted
 the Objects API can access the Objecttypes API since it now has a security token for it.
 
-Create a proxy object type
+Add object type permissions
 --------------------------
 
-Now we can create a proxy object type, which is used to define permissions.
+Now we can add an object type to the Objects API, to define permissions.
 
 .. image:: _assets/img/authorization_objects_main_objecttype.png
     :alt: Click on the "add" button for "Object type"
