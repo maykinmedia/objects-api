@@ -1,1 +1,1 @@
-[Reference](doc/installation/deployment/objects-api/kubernetes.rst)
+[Reference](docs/installation/deployment/objects-api/kubernetes.rst)
