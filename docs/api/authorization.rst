@@ -41,8 +41,8 @@ created in the :ref:`api_authentication` section of this document into "Header v
 If you use NLX you can configure it in the "NLX url" field. After the form is submitted
 the Objects API can access the Objecttypes API since it now has a security token for it.
 
-Add object type permissions
---------------------------
+Add an object type
+------------------
 
 Now we can add an object type to the Objects API, to define permissions.
 
