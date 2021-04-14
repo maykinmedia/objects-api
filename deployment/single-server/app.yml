@@ -32,16 +32,6 @@
     django_app_docker_replicas: 1
     django_app_docker_port_start: 12000
 
-    django_app_docker_volumes:
-      - name: "{{ django_app_docker_name_prefix }}-media"
-        mount: "/app/media"
-        mode: "rw"
-        owner: 1000
-      - name: "{{ django_app_docker_name_prefix }}-private-media"
-        mount: "/app/private-media"
-        mode: "rw"
-        owner: 1000
-
     # Uncomment if you enable the PostgreSQL role.
     #
     # postgresql_version: "12"
