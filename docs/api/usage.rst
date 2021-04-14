@@ -9,8 +9,8 @@ for this object type.
 
 Objecttypes API
 ===============
-Before continuing, make sure you have an API token to access the Objecttypes API. You
-can configure this in the Objecttypes API admin.
+Before continuing, make sure you have an API token to access the Objecttypes API.
+:ref:`api_authentication` document describes how to do it in details.
 In the examples below we use the API token for the Objecttypes API with the value ``1234``.
 
 Let's start with creating an object type. For example, you want to store data
@@ -281,10 +281,12 @@ Objects API
 
 Now we have an object type containing a JSON schema for tree objects and we are ready to
 create objects. Before going further please, make sure that you configured the proper
-authorizations in the admin:
+authentication and authorizations in the admin:
 
 * The Objects API can access the Objecttypes API
 * The API token (in the Objects API) has write permissions for the object type "Boom".
+
+:ref:`api_authentication` and :ref:`api_authorization` document how to do it in details.
 
 In the examples below we use the API token for the Objects API with the value ``5678``.
 
