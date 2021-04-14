@@ -4,10 +4,10 @@
 Boom (Tree)
 ===========
 
-The "Boom" objecttype is based on the open source `Gemeentelijk Gegevensmodel`_ 
-(GGM) which in turn is based on the `Informatiemodel Beheer Openbare Ruimte`_ 
-(IMBOR) which is a collection of the `Basisregistratie Grootschalige 
-Topografie`_ (BGT) and the `Informatiemodel geografie`_ (IMGeo).
+The "Boom" objecttype is based on the open source `Gemeentelijk Gegevensmodel`_
+(GGM) which in turn is based on the `Informatiemodel Beheer Openbare Ruimte`_
+(IMBOR) which is a collection of the `Basisregistratie Grootschalige Topografie`_
+(BGT) and the `Informatiemodel geografie`_ (IMGeo).
 
 A `small script`_ was used to convert the GGM EAP model to JSON schema.
 
@@ -21,31 +21,31 @@ Metadata
 ========
 
 ========================   ==========================
-Attribute                  Value            
+Attribute                  Value
 ========================   ==========================
 name                       boom
 namePlural                 bomen
-description                                         
-labels                     
+description
+labels
 maintainerOrganization     Gemeente Delft
-maintainerDepartment       
+maintainerDepartment
 contactPerson              Ashkan Ashkpour
-contactEmail               aashkpour@delft.nl                        
-providerOrganization       
-source                     
+contactEmail               aashkpour@delft.nl
+providerOrganization
+source
 status                     draft
 dataClassification         open
 createdAt                  August 27, 2020
-modifiedAt                 
-publishedAt                
-updateFrequency            
-documentationUrl           
+modifiedAt
+publishedAt
+updateFrequency
+documentationUrl
 ========================   ==========================
 
 Schema
 ======
 
-You can download the JSON schema :download:`boom.json <_assets/boom.json>` or 
+You can download the JSON schema :download:`boom.json <_assets/boom.json>` or
 view it below:
 
 .. include:: _assets/boom.json
