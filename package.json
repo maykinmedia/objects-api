@@ -1,6 +1,6 @@
 {
   "name": "objects",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "objects project",
   "main": "src/static/objects/js/objects.js",
   "directories": {

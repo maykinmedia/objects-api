@@ -2,7 +2,7 @@
 Objecten API
 ============
 
-:Version: 1.0.0
+:Version: 1.1.0
 :Source: https://github.com/maykinmedia/objecttypes-api
 :Keywords: objecten, assets, zaakobjecten
 
@@ -41,6 +41,8 @@ latest          n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=htt
                                 (`verschillen <https://github.com/maykinmedia/objects-api/compare/1.0.0..master#diff-b9c28fec6c3f3fa5cff870d24601d6ab7027520f3b084cc767aefd258cb8c40a>`_)
 1.0.0           2021-01-13      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/1.0.0/src/openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/1.0.0/src/openapi.yaml>`_
+1.1.0           2021-04-21      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/1.1.0/src/openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/1.1.0/src/openapi.yaml>`_
 ==============  ==============  =============================
 
 Vorige versies worden nog 6 maanden ondersteund nadat de volgende versie is uitgebracht.
