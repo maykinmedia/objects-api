@@ -14,9 +14,9 @@ Change history
 * Added length validation fo url fields (#154)
 * Improved the Admin UI:
 
-    * Include `uuid` field to the "object" page (#156)
-    * Make `object_type` field immutable (#150)
-    * Add filtering on `object_type` to the "object" page (#157)
+  * Include `uuid` field to the "object" page (#156)
+  * Make `object_type` field immutable (#150)
+  * Add filtering on `object_type` to the "object" page (#157)
 
 **Bugfixes and QOL**
 
