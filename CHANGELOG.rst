@@ -7,7 +7,7 @@ Change history
 
 **Bugfixes and QOL**
 
-* Improve performance with database query optimization (#136) :zap:
+* Improved performance with database query optimization (#136) :zap:
 * Bumped to newer versions of Django, Jinja2, Pillow, PyYAML including security fixes (#183, #182, #184, #176, #193)
 
 * Fixed a crash when creating an object without a version in the admin (#146)
@@ -15,25 +15,24 @@ Change history
 
 **Deployment tooling / infrastructure**
 
-* Create Helm chart to deploy the Objects API on Kubernetes (#180)
-* Add Ansible configuration to deploy the Objecttypes on single server (#59)
+* Added Helm chart to deploy the Objects API on Kubernetes (#180)
+* Added Ansible configuration to deploy the Objecttypes on single server (#59)
 
 **Documentation**
 
-* Create a tutorial how to use the Objects API and the Objecttypes API with examples (#61)
-* Document how to configure authentication and authorization for the Objects API and the Objecttypes API (#179)
-* Document deployment of the Objects API and the Objecttypes API on single server and Kubernetes (#59)
-* Add AUTHORS file
-* Translate help-texts for `Content-Crs` and `Accept-Crs` headers from Dutch to English in the OAS (#106)
-* Add information about validation to the OAS (#106)
+* Added a tutorial how to use the Objects API and the Objecttypes API with examples (#61)
+* Documented how to configure authentication and authorization for the Objects API and the Objecttypes API (#179)
+* Documented deployment of the Objects API and the Objecttypes API on single server and Kubernetes (#59)
+* Translated descriptions for `Content-Crs` and `Accept-Crs` headers from Dutch to English in the OAS (#106)
+* Added information about validation to the OAS (#106)
 
 **New features**
 
-* Decouple authentication tokens from users in the admin (#115)
-* Add additional fields for tokens to store extra information (#155)
+* Decoupled authentication tokens from users in the admin (#115)
+* Added additional fields for tokens to store extra information (#155)
 * For object types use special ObjectType object instead of urls (#115)
 
-* Improve the Admin UI:
+* Improved the Admin UI:
 
     * Include `uuid` field to the "object" page (#156)
     * Make `object_type` field immutable (#150)
