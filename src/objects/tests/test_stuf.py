@@ -24,7 +24,7 @@ OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 class Stuf21Tests(TokenAuthMixin, APITestCase):
     """
-    Test cases base on Table 2.1 in the StUF 03.01
+    Test cases based on the Table 2.1 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|
     |5692      |1         |Poepenstaart |           |JP         |19770807     |ongehuwd        |19770807       |
@@ -274,7 +274,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
 
 class Stuf22Tests(TokenAuthMixin, APITestCase):
     """
-    Test cases base on Table 2.2 in the StUF 03.01
+    Test cases based on the Table 2.2 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|tijdstipRegistratie|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|-------------------|
     |5692      |1         |Poepenstaart |           |JP         |19770807     |ongehuwd        |19770807       |19770815           |
@@ -390,6 +390,160 @@ class Stuf22Tests(TokenAuthMixin, APITestCase):
         )
 
     def test_4d_not_found(self):
+        """
+        Test 4d: material history and formal history on 01-01-1975 should say:
+        No record.
+        """
+        material_response = self.client.get(self.url, {"date": "1975-01-01"})
+        formal_response = self.client.get(self.url, {"registrationDate": "1975-01-01"})
+
+        for response in [formal_response, material_response]:
+            self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class Stuf23Tests(TokenAuthMixin, APITestCase):
+    """
+    Test cases based on the Table 2.2 in the StUF 03.01
+    |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|tijdstipRegistratie|volgnrNaCorrectie|
+    |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|-------------------|-----------------|
+    |5692      |1         |Poepenstaart |           |JP         |19770807     |ongehuwd        |19770807       |19770815           |                 |
+    |5692      |10        |Berg         |van den    |JP         |19770807     |ongehuwd        |20010903       |20010910           |40               |
+    |5692      |40        |Bergh        |van den    |JP         |19770807     |ongehuwd        |20010903       |20011102           |                 |
+    |5692      |50        |Bergh        |van den    |JP         |19770807     |gehuwd          |20050423       |20050425           |                 |
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object = ObjectFactory.create(object_type=cls.object_type)
+        cls.record_1 = ObjectRecordFactory.create(
+            object=cls.object,
+            data={
+                "geslachtsnaam": "Poepenstaart",
+                "voorletters": "JP",
+                "geboortedatum": "1977-08-07",
+                "burgerlijkestaat": "ongehuwd",
+            },
+            start_at=date(1977, 8, 7),
+            end_at=date(2001, 9, 3),
+            registration_at=date(1977, 8, 15),
+        )
+        cls.record_10 = ObjectRecordFactory.create(
+            object=cls.object,
+            data={
+                "geslachtsnaam": "Berg",
+                "voorletters": "JP",
+                "geboortedatum": "1977-08-07",
+                "burgerlijkestaat": "ongehuwd",
+            },
+            start_at=date(2001, 9, 3),
+            end_at=date(2001, 9, 3),
+            registration_at=date(2001, 9, 10),
+        )
+        cls.record_40 = ObjectRecordFactory.create(
+            object=cls.object,
+            data={
+                "geslachtsnaam": "Bergh",
+                "voorvoegsel": "van den",
+                "voorletters": "JP",
+                "geboortedatum": "1977-08-07",
+                "burgerlijkestaat": "ongehuwd",
+            },
+            start_at=date(2001, 9, 3),
+            end_at=date(2005, 4, 23),
+            registration_at=date(2001, 11, 2),
+            correct=cls.record_10,
+        )
+        cls.record_50 = ObjectRecordFactory.create(
+            object=cls.object,
+            data={
+                "geslachtsnaam": "Bergh",
+                "voorvoegsel": "van den",
+                "voorletters": "JP",
+                "geboortedatum": "1977-08-07",
+                "burgerlijkestaat": "gehuwd",
+            },
+            start_at=date(2005, 4, 23),
+            registration_at=date(2005, 4, 25),
+        )
+
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_and_write,
+            token_auth=cls.token_auth,
+        )
+
+    def setUp(self):
+        super().setUp()
+
+        self.url = reverse("object-detail", args=[self.object.uuid])
+
+    def test_5a_present(self):
+        """
+        Test 5a: material history and formal history on 01-01-2020 should say:
+        Record 50
+        """
+        material_response = self.client.get(self.url, {"date": "2020-01-01"})
+        formal_response = self.client.get(self.url, {"registrationDate": "2020-01-01"})
+
+        for response in [formal_response, material_response]:
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["url"], f"http://testserver{self.url}")
+            self.assertEqual(response.json()["record"]["index"], self.record_50.index)
+
+    def test_5b_material_history(self):
+        """
+        Test 5b: material history on 01-10-2001 should say: Records 40.
+        """
+        material_response = self.client.get(self.url, {"date": "2001-10-01"})
+
+        self.assertEqual(material_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            material_response.json()["url"], f"http://testserver{self.url}"
+        )
+        self.assertEqual(
+            material_response.json()["record"]["index"], self.record_40.index
+        )
+
+    def test_5c_material_history(self):
+        """
+        Test 5c: material history on 04-09-2001 should say: Record 10.
+        """
+        material_response = self.client.get(self.url, {"date": "2001-09-04"})
+
+        self.assertEqual(material_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            material_response.json()["url"], f"http://testserver{self.url}"
+        )
+        self.assertEqual(
+            material_response.json()["record"]["index"], self.record_40.index
+        )
+
+    def test_5d_formal_history(self):
+        """
+        Test 5d: formal history on 01-10-2001 should say: Record 10
+        """
+        format_response = self.client.get(self.url, {"registrationDate": "2001-10-01"})
+
+        self.assertEqual(format_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(format_response.json()["url"], f"http://testserver{self.url}")
+        self.assertEqual(
+            format_response.json()["record"]["index"], self.record_10.index
+        )
+
+    def test_5e_formal_history(self):
+        """
+        est 5e: formal history on 04-09-2001 should say: Record 40
+        """
+        format_response = self.client.get(self.url, {"registrationDate": "2001-09-04"})
+
+        self.assertEqual(format_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(format_response.json()["url"], f"http://testserver{self.url}")
+        self.assertEqual(format_response.json()["record"]["index"], self.record_1.index)
+
+    def test_5f_not_found(self):
         """
         Test 4d: material history and formal history on 01-01-1975 should say:
         No record.
