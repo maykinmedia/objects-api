@@ -1,10 +1,10 @@
-.. _api_authorization:
+.. _admin_authorization:
 
 =============
 Authorization
 =============
 
-While :ref:`api_authentication` is a process of verifying who a client is, authorization
+While :ref:`admin_authentication` is a process of verifying who a client is, authorization
 is the process of verifying what they have access to. Authorization is usually
 done after successful authentication.
 
@@ -37,7 +37,7 @@ resource.
     :alt: Fill in the form and click on "save" button
 
 Fill in the form with the information about the Objecttypes API and put the Objecttypes API
-created in the :ref:`api_authentication` section of this document into "Header value" field.
+created in the :ref:`admin_authentication` section of this document into "Header value" field.
 If you use NLX you can configure it in the "NLX url" field. After the form is submitted
 the Objects API can access the Objecttypes API since it now has a security token for it.
 
@@ -65,7 +65,7 @@ Add a permission
 
 Finally it's time to create a permission to access objects with "boom" object types.
 Go to the token which should be granted this permission (it was probably created in the
-:ref:`api_authentication` section of this document).
+:ref:`admin_authentication` section of this document).
 
 .. image:: _assets/img/authorization_objects_permissions.png
     :alt: Fill in the form and click on "save" button
