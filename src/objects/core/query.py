@@ -42,7 +42,7 @@ class ObjectRecordQuerySet(models.QuerySet):
         still actual.
 
         If there are multiple records returned, the last added record (ie. with
-        the highest `index`) is the most actual record from a formal historical
+        the highest `index`) is the most actual record from a material historical
         perspective.
         """
         return (
@@ -57,7 +57,7 @@ class ObjectRecordQuerySet(models.QuerySet):
         perspective.
 
         Typically, the first record in the result set represents the record as
-        it is most actual from a material historical perspective.
+        it is most actual from a formal historical perspective.
         """
         return self.filter(registration_at__lte=date).order_by(
             "-registration_at", "-index"

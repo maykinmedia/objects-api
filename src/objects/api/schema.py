@@ -6,20 +6,20 @@ description = """An API to manage Objects.
 
 # Introduction
 
-An OBJECT is of a certain OBJECTTYPE (defined in the Objecttypes API). An 
+An OBJECT is of a certain OBJECTTYPE (defined in the Objecttypes API). An
 OBJECT has a few core attributes that every OBJECT (technically a RECORD,
 see below) has, although these attributes can sometimes be empty. They are
 attributes like `geometry` and some administrative attributes. The data that
-describes the actual object is stored in the `data` attribute and follows 
+describes the actual object is stored in the `data` attribute and follows
 the JSON schema as given by the OBJECTTYPE.
 
 ## Validation
 
 When an OBJECT is created or changed the `OBJECT.type` attribute refers to the
-matching OBJECTTYPE in the Objecttypes API. The RECORD always indicates which 
+matching OBJECTTYPE in the Objecttypes API. The RECORD always indicates which
 OBJECTTYPE-VERSION is used, shown in the `RECORD.typeVersion` attribute.
 
-Using these 2 attributes, the appropriate JSON schema is retrieved from the 
+Using these 2 attributes, the appropriate JSON schema is retrieved from the
 Objecttypes API and the OBJECT data is validated against this JSON schema.
 
 ## History
@@ -31,30 +31,30 @@ under the OBJECT and leaves the old RECORD as is.
 
 ### Material and formal history
 
-History can be seen from 2 perspectives: formal and material history. The 
-formal history describes the history as it should be (stored in the 
-`startAt` and `endAt` attributes). The material history describes the 
+History can be seen from 2 perspectives: material and formal history. The
+material history describes the history as it should be (stored in the
+`startAt` and `endAt` attributes). The formal history describes the
 history as it was administratively processed (stored in the `registeredAt`
 attribute).
 
-The difference is that an object could be created or updated in the real 
+The difference is that an object could be created or updated in the real
 world at a certain point in time but the administrative change (ie. save or
 update the object in the Objects API) can be done at a later time. The
-query parameters `?date=2021-01-01` (formal history) and 
-`?registrationDate=2021-01-01` (material history) allow for querying the 
+query parameters `?date=2021-01-01` (material history) and
+`?registrationDate=2021-01-01` (formal history) allow for querying the
 RECORDS as seen from both perspectives, and can yield different results.
 
 ### Corrections
 
 RECORDs cannot be deleted or changed once saved. If an error was made to
 a RECORD, the RECORD can be "corrected" by saving a new RECORD and indicate
-that it corrects a previous RECORD. This is done via the attribute 
+that it corrects a previous RECORD. This is done via the attribute
 `correctionFor`.
 
 ### Deletion
 
-Although OBJECTs can be deleted, it is sometimes better to set the 
-`endDate` of an OBJECT. Deleting an OBJECT also deletes all RECORDs in 
+Although OBJECTs can be deleted, it is sometimes better to set the
+`endDate` of an OBJECT. Deleting an OBJECT also deletes all RECORDs in
 accordance with privacy laws.
 
 # Authorizations
