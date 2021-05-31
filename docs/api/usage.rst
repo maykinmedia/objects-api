@@ -74,7 +74,7 @@ will have and to design JSON schema for trees. You can take a look at provided
 Create an object type
 ---------------------
 
-Now we need to create an object type which will include this JSON schema. The object type consist
+Now we need to create an object type which will include this JSON schema. The object type consists
 of metadata of the object type and (a version of) the JSON schema. This separation
 exists because the Objecttypes API supports versioning of the JSON schemas. If you want to change the
 JSON schema in the objecttype, a new version will be created. Therefore you don't need to worry

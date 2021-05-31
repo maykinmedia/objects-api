@@ -4,7 +4,7 @@
 Object types
 ============
 
-Creating and changing object types is typical tasks for the Objecttypes API.
+Creating and changing object types are common tasks for the Objecttypes API.
 :ref:`api_usage` describes how to do it with HTTP requests. But you can also
 use the admin interface to create, publish and update object types.
 
@@ -70,11 +70,11 @@ will have and to design JSON schema for trees. You can take a look at provided
     }
 
 
-In the admin page of the Objects API click on the "add" button for "Object types"
+In the admin page of the Objects API click on the "add" button for the "Object types"
 resource.
 
 .. image:: _assets/img/objecttype_main.png
-    :alt: Click on "add" button
+    :alt: Click on the "add" button
 
 Fill in the form with the meta information about the object type. The ``uuid`` field is already prefilled in.
 
