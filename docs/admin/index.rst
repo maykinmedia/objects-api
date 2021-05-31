@@ -14,3 +14,4 @@ Below you can find tutorials how to use admin interface to manage APIs.
 
    authentication
    authorization
+   objecttype
