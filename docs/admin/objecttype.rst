@@ -6,7 +6,7 @@ Object types
 
 Creating and changing object types are common tasks for the Objecttypes API.
 :ref:`api_usage` describes how to do it with HTTP requests. But you can also
-use the admin interface to create, publish and update object types.
+use the Objecttypes admin to create, publish and update object types.
 
 Create an object type
 ---------------------
@@ -70,8 +70,7 @@ will have and to design JSON schema for trees. You can take a look at provided
     }
 
 
-In the admin page of the Objects API click on the "add" button for the "Object types"
-resource.
+In the Objecttypes admin dashboard click on "Objecttypes" and click on the "Add" button.
 
 .. image:: _assets/img/objecttype_main.png
     :alt: Click on the "add" button

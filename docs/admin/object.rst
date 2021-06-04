@@ -4,7 +4,7 @@
 Objects
 =======
 
-Creating and updating objects are usually done using the Objects API. :ref:`api_usage`
+Creating and updating objects is usually done using the Objects API. :ref:`api_usage`
 describes how to do it in detail. But it's also possible to manage objects in the
 admin interface. In this tutorial we will create and update objects using the Objects
 admin.
@@ -35,8 +35,7 @@ in the related object type:
 
 If you want, you can validate your JSON data against the JSON schema on `JSONschema.dev <https://jsonschema.dev>`_
 
-In the admin page of the Objects API click on the "add" button for the "Objects"
-resource.
+In the Objects admin dashboard, click on "Objects" and click on the "Add" button.
 
 .. image:: _assets/img/object_main.png
     :alt: Click on the "add" button
