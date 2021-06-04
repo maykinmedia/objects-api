@@ -1,4 +1,4 @@
-.. _api_authentication:
+.. _admin_authentication:
 
 ==============
 Authentication
@@ -57,7 +57,7 @@ resource.
     :alt: Fill in the form and click on "save" button
 
 The "Permissions" section is used for authorizations and can be left empty for now.
-It's described in the :ref:`api_authorization` section of this document.
+It's described in the :ref:`admin_authorization` section of this document.
 
 After the form is filled in and submitted the token would be created. The token
 itself is a sequence of 40 letters and digits. It's value is generated automatically
@@ -77,4 +77,4 @@ included into "Authorization" header: ``Authorization: Token 5678``
 
 If you want to know how to use Objects API you can follow :ref:`api_usage`
 
-Now you can configure :ref:`api_authorization` for the Objects API.
+Now you can configure :ref:`admin_authorization` for the Objects API.

@@ -10,7 +10,7 @@ for this object type.
 Objecttypes API
 ===============
 Before continuing, make sure you have an API token to access the Objecttypes API.
-:ref:`api_authentication` document describes how to do it in details.
+:ref:`admin_authentication` document describes how to do it in details.
 In the examples below we use the API token for the Objecttypes API with the value ``1234``.
 
 Let's start with creating an object type. For example, you want to store data
@@ -74,7 +74,7 @@ will have and to design JSON schema for trees. You can take a look at provided
 Create an object type
 ---------------------
 
-Now we need to create an object type which will include this JSON schema. The object type consist
+Now we need to create an object type which will include this JSON schema. The object type consists
 of metadata of the object type and (a version of) the JSON schema. This separation
 exists because the Objecttypes API supports versioning of the JSON schemas. If you want to change the
 JSON schema in the objecttype, a new version will be created. Therefore you don't need to worry
@@ -286,7 +286,7 @@ authentication and authorizations in the admin:
 * The Objects API can access the Objecttypes API
 * The API token (in the Objects API) has write permissions for the object type "Boom".
 
-:ref:`api_authentication` and :ref:`api_authorization` document how to do it in details.
+:ref:`admin_authentication` and :ref:`admin_authorization` document how to do it in details.
 
 In the examples below we use the API token for the Objects API with the value ``5678``.
 
