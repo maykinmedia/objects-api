@@ -541,16 +541,16 @@ Retrieve an object (record) for a particular date
 
 Since there could be a difference between the real date of
 the object change and its registration in the system, the Objects API support both
-formal and material history. The formal history describes the history as it should
-be (stored in the ``startAt`` and ``endAt`` attributes). The material history describes the
+material and formal history. The material history describes the history as it should
+be (stored in the ``startAt`` and ``endAt`` attributes). The formal history describes the
 history as it was administratively processed (stored in the ``registeredAt``
 attribute).
 
-The query parameters ``date`` (formal history) and ``registrationDate`` (material history)
+The query parameters ``date`` (material history) and ``registrationDate`` (formal history)
 allow for querying the records as seen from both perspectives, and can yield different results.
 
 For example, if you want to display all the objects as they were on 2021-02-02, you can do this from 2 perspectives.
-First, let's do it from the formal history perspective:
+First, let's do it from the material history perspective:
 
 .. code-block:: http
 
@@ -588,10 +588,10 @@ First, let's do it from the formal history perspective:
         }
     ]
 
-We received our tree object in the response, because formally it came into existance on 2021-01-01
+We received our tree object in the response, because in reality it came into existence on 2021-01-01
 (``startAt``) and never ceased (``endAt`` is empty).
 
-Now let's do the same but from a material history perspective:
+Now let's do the same but from a formal history perspective:
 
 .. code-block:: http
 

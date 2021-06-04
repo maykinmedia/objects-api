@@ -87,7 +87,7 @@ class ObjectFilterSet(FilterSet):
     date = filters.DateFilter(
         method="filter_date",
         help_text=_(
-            "Display record data for the specified formal date, i.e. the specified "
+            "Display record data for the specified material date, i.e. the specified "
             "date would be between `startAt` and `endAt` attributes. The default value is today"
         ),
     )
