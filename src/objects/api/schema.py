@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_yasg import openapi
 
 description = """An API to manage Objects.
@@ -68,3 +69,14 @@ info = openapi.Info(
     default_version=settings.API_VERSION,
     description=description,
 )
+
+
+class AutoSchema(_AutoSchema):
+    def get_operation_id(self):
+        """
+        replace "objects_" with "object_" in the operation id for backward compatibility
+        """
+        operation_id = super().get_operation_id()
+        if operation_id.startswith("objects_"):
+            operation_id = operation_id.replace("objects_", "object_")
+        return operation_id
