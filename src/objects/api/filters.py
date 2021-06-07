@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -126,7 +128,7 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         fields = ("type", "data_attrs", "date", "registrationDate")
         form = ObjectFilterForm
 
-    def filter_data_attrs(self, queryset, name, value):
+    def filter_data_attrs(self, queryset, name, value: str):
         parts = value.split(",")
 
         for value_part in parts:
@@ -150,8 +152,8 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
         return queryset
 
-    def filter_date(self, queryset, name, value):
+    def filter_date(self, queryset, name, value: date):
         return queryset.filter_for_date(value)
 
-    def filter_registration_date(self, queryset, name, value):
+    def filter_registration_date(self, queryset, name, value: date):
         return queryset.filter_for_registration_date(value)
