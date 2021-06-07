@@ -130,6 +130,7 @@ django==2.2.20
     #   django-sniplates
     #   djangorestframework
     #   drf-nested-routers
+    #   drf-spectacular
     #   drf-yasg
     #   vng-api-common
     #   zgw-consumers
@@ -144,6 +145,7 @@ djangorestframework==3.12.4
     #   -r requirements/ci.txt
     #   djangorestframework-gis
     #   drf-nested-routers
+    #   drf-spectacular
     #   drf-yasg
     #   vng-api-common
 docutils==0.16
@@ -155,6 +157,8 @@ drf-nested-routers==0.93.3
     # via
     #   -r requirements/ci.txt
     #   vng-api-common
+drf-spectacular==0.16.0
+    # via -r requirements/ci.txt
 drf-yasg==1.20.0
     # via
     #   -r requirements/ci.txt
@@ -186,6 +190,7 @@ imagesize==1.2.0
 inflection==0.5.1
     # via
     #   -r requirements/ci.txt
+    #   drf-spectacular
     #   drf-yasg
 iso-639==0.4.5
     # via
@@ -207,7 +212,9 @@ jinja2==2.11.3
     #   coreschema
     #   sphinx
 jsonschema==3.2.0
-    # via -r requirements/ci.txt
+    # via
+    #   -r requirements/ci.txt
+    #   drf-spectacular
 lxml==4.6.3
     # via
     #   -r requirements/ci.txt
@@ -284,6 +291,7 @@ pytz==2021.1
 pyyaml==5.4.1
     # via
     #   -r requirements/ci.txt
+    #   drf-spectacular
     #   gemma-zds-client
     #   oyaml
     #   vng-api-common
@@ -385,6 +393,7 @@ uritemplate==3.0.1
     # via
     #   -r requirements/ci.txt
     #   coreapi
+    #   drf-spectacular
     #   drf-yasg
 urllib3==1.26.4
     # via
