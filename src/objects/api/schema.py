@@ -1,7 +1,20 @@
+import logging
+from collections import OrderedDict
+
 from django.conf import settings
 
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_yasg import openapi
+from rest_framework import exceptions
+from vng_api_common.exceptions import PreconditionFailed
+from vng_api_common.inspectors.view import (
+    DEFAULT_ACTION_ERRORS,
+    HTTP_STATUS_CODE_TITLES,
+)
+from vng_api_common.search import is_search_view
+from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
+
+logger = logging.getLogger(__name__)
 
 description = """An API to manage Objects.
 
@@ -80,3 +93,55 @@ class AutoSchema(_AutoSchema):
         if operation_id.startswith("objects_"):
             operation_id = operation_id.replace("objects_", "object_")
         return operation_id
+
+    def _get_response_bodies(self):
+        view_responses = super()._get_response_bodies()
+
+        # add responses for error status codes
+        view_responses.update(self._get_error_responses())
+        return view_responses
+
+    def _get_error_responses(self) -> OrderedDict:
+        """
+        Add the appropriate possible error responses to the schema.
+
+        E.g. - we know that HTTP 400 on a POST/PATCH/PUT leads to validation
+        errors, 403 to Permission Denied etc.
+        """
+        # only supports viewsets
+        if not hasattr(self.view, "action"):
+            return OrderedDict()
+
+        action = self.view.action
+        # search action is similar to create
+        if action not in DEFAULT_ACTION_ERRORS and is_search_view(self.view):
+            action = "create"
+
+        # general errors
+        general_klasses = DEFAULT_ACTION_ERRORS.get(action)
+        if general_klasses is None:
+            logger.debug("Unknown action %s, no default error responses added")
+            return OrderedDict()
+
+        exception_klasses = general_klasses[:]
+        # add validation errors
+        if self._is_list_view() and getattr(self.view, "filter_backends", None):
+            exception_klasses.append(exceptions.ValidationError)
+
+        # add geo errors
+        exception_klasses.append(PreconditionFailed)
+
+        status_codes = sorted({e.status_code for e in exception_klasses})
+
+        error_responses = OrderedDict()
+        for status_code in status_codes:
+            serializer = (
+                ValidatieFoutSerializer
+                if status_code == exceptions.ValidationError.status_code
+                else FoutSerializer
+            )
+            response = self._get_response_for_code(serializer, str(status_code))
+            response["description"] = HTTP_STATUS_CODE_TITLES.get(status_code, "")
+            error_responses[status_code] = response
+
+        return error_responses

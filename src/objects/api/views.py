@@ -119,4 +119,5 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
         return result
 
+    # for OAS generation
     search.is_search_action = True
