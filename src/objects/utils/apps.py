@@ -6,4 +6,7 @@ class UtilsConfig(AppConfig):
 
     def ready(self):
         from . import checks  # noqa
-        from . import oas_extentions  # noqa
+        from .oas_extensions import (  # noqa
+            DjangoFilterExtension,
+            GeometryFieldExtension,
+        )
