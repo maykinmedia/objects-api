@@ -2,17 +2,22 @@ import logging
 from collections import OrderedDict
 
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
+from drf_spectacular.utils import OpenApiParameter
 from drf_yasg import openapi
 from rest_framework import exceptions
 from vng_api_common.exceptions import PreconditionFailed
+from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.inspectors.view import (
     DEFAULT_ACTION_ERRORS,
     HTTP_STATUS_CODE_TITLES,
 )
 from vng_api_common.search import is_search_view
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
+
+from .mixins import GeoMixin
 
 logger = logging.getLogger(__name__)
 
@@ -98,10 +103,10 @@ class AutoSchema(_AutoSchema):
         view_responses = super()._get_response_bodies()
 
         # add responses for error status codes
-        view_responses.update(self._get_error_responses())
+        view_responses.update(self.get_error_responses())
         return view_responses
 
-    def _get_error_responses(self) -> OrderedDict:
+    def get_error_responses(self) -> OrderedDict:
         """
         Add the appropriate possible error responses to the schema.
 
@@ -126,7 +131,8 @@ class AutoSchema(_AutoSchema):
             exception_klasses.append(exceptions.ValidationError)
 
         # add geo errors
-        exception_klasses.append(PreconditionFailed)
+        if isinstance(self.view, GeoMixin):
+            exception_klasses.append(PreconditionFailed)
 
         status_codes = sorted({e.status_code for e in exception_klasses})
 
@@ -142,3 +148,62 @@ class AutoSchema(_AutoSchema):
             error_responses[status_code] = response
 
         return error_responses
+
+    def get_override_parameters(self):
+        """ Add request GEO headers"""
+        geo_headers = self.get_geo_headers()
+        return geo_headers
+
+    def get_geo_headers(self) -> list:
+        if not isinstance(self.view, GeoMixin):
+            return []
+
+        request_headers = []
+        if self.method != "DELETE":
+            request_headers.append(
+                OpenApiParameter(
+                    name=HEADER_ACCEPT,
+                    type=str,
+                    location=OpenApiParameter.HEADER,
+                    required=False,
+                    description=_(
+                        "The desired 'Coordinate Reference System' (CRS) of the response data. "
+                        "According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 "
+                        "is the same as WGS84)."
+                    ),
+                    enum=[DEFAULT_CRS],
+                )
+            )
+
+        if self.method in ("POST", "PUT", "PATCH"):
+            request_headers.append(
+                OpenApiParameter(
+                    name=HEADER_CONTENT,
+                    type=str,
+                    location=OpenApiParameter.HEADER,
+                    required=True,
+                    description=_(
+                        "The 'Coordinate Reference System' (CRS) of the request data. "
+                        "According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 "
+                        "is the same as WGS84)."
+                    ),
+                    enum=[DEFAULT_CRS],
+                ),
+            )
+
+        response_headers = [
+            OpenApiParameter(
+                name=HEADER_CONTENT,
+                type=str,
+                location=OpenApiParameter.HEADER,
+                description=_(
+                    "The 'Coordinate Reference System' (CRS) of the request data. "
+                    "According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 "
+                    "is the same as WGS84)."
+                ),
+                enum=[DEFAULT_CRS],
+                response=[200, 201],
+            )
+        ]
+
+        return request_headers + response_headers
