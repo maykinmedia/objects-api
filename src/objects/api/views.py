@@ -82,7 +82,8 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         return base.filter_for_token(self.request.auth)
 
     @extend_schema(
-        description="Retrieve all RECORDs of an OBJECT.", operation_id="object_history"
+        description="Retrieve all RECORDs of an OBJECT.",
+        responses={"200": HistoryRecordSerializer(many=True)},
     )
     @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
@@ -93,9 +94,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
 
-    @extend_schema(
-        description="Perform a (geo) search on OBJECTs.", operation_id="object_search"
-    )
+    @extend_schema(description="Perform a (geo) search on OBJECTs.")
     @action(detail=False, methods=["post"])
     def search(self, request):
         """Perform a (geo) search on OBJECTs"""

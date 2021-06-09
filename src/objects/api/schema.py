@@ -92,12 +92,12 @@ info = openapi.Info(
 class AutoSchema(_AutoSchema):
     def get_operation_id(self):
         """
-        replace "objects_" with "object_" in the operation id for backward compatibility
+        Use model name as a base for operation_id
         """
-        operation_id = super().get_operation_id()
-        if operation_id.startswith("objects_"):
-            operation_id = operation_id.replace("objects_", "object_")
-        return operation_id
+        if hasattr(self.view, "queryset"):
+            model_name = self.view.queryset.model._meta.model_name
+            return f"{model_name}_{self.view.action}"
+        return super().get_operation_id()
 
     def _get_response_bodies(self):
         view_responses = super()._get_response_bodies()
