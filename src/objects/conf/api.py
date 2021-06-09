@@ -90,4 +90,5 @@ SPECTACULAR_SETTINGS = {
     "EXTERNAL_DOCS": {
         "url": "https://objects-and-objecttypes-api.readthedocs.io/",
     },
+    "VERSION": "1.1.0",
 }
