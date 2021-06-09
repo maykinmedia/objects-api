@@ -1,18 +1,8 @@
-from collections import OrderedDict
-
 from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.utils import OpenApiParameter
-from rest_framework import exceptions
-from vng_api_common.exceptions import PreconditionFailed
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
-from vng_api_common.inspectors.view import (
-    DEFAULT_ACTION_ERRORS,
-    HTTP_STATUS_CODE_TITLES,
-)
-from vng_api_common.search import is_search_view
-from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
 from objects.api.mixins import GeoMixin
 
@@ -28,56 +18,6 @@ class AutoSchema(_AutoSchema):
             model_name = self.view.queryset.model._meta.model_name
             return f"{model_name}_{self.view.action}"
         return super().get_operation_id()
-
-    def _get_response_bodies(self):
-        view_responses = super()._get_response_bodies()
-
-        # add responses for error status codes
-        view_responses.update(self.get_error_responses())
-        return view_responses
-
-    def get_error_responses(self) -> OrderedDict:
-        """
-        Add the appropriate possible error responses to the schema.
-
-        E.g. - we know that HTTP 400 on a POST/PATCH/PUT leads to validation
-        errors, 403 to Permission Denied etc.
-        """
-        # only supports viewsets
-        if not hasattr(self.view, "action"):
-            return OrderedDict()
-
-        action = self.view.action
-        if action not in DEFAULT_ACTION_ERRORS:
-            # search action is similar to create
-            if is_search_view(self.view):
-                action = "create"
-            else:
-                action = "list"
-
-        exception_klasses = DEFAULT_ACTION_ERRORS[action][:]
-        # add validation errors
-        if self._is_list_view() and getattr(self.view, "filter_backends", None):
-            exception_klasses.append(exceptions.ValidationError)
-
-        # add geo errors
-        if isinstance(self.view, GeoMixin):
-            exception_klasses.append(PreconditionFailed)
-
-        status_codes = sorted({e.status_code for e in exception_klasses})
-
-        error_responses = OrderedDict()
-        for status_code in status_codes:
-            serializer = (
-                ValidatieFoutSerializer
-                if status_code == exceptions.ValidationError.status_code
-                else FoutSerializer
-            )
-            response = self._get_response_for_code(serializer, str(status_code))
-            response["description"] = HTTP_STATUS_CODE_TITLES.get(status_code, "")
-            error_responses[status_code] = response
-
-        return error_responses
 
     def get_override_parameters(self):
         """ Add request GEO headers"""
@@ -160,10 +100,7 @@ class AutoSchema(_AutoSchema):
             return []
 
         response_serializers = self.get_response_serializers()
-        if any(
-            isinstance(serializer, DynamicFieldsMixin)
-            for serializer in response_serializers
-        ):
+        if isinstance(response_serializers, DynamicFieldsMixin):
             return [
                 OpenApiParameter(
                     name="fields",
