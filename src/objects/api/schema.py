@@ -152,7 +152,8 @@ class AutoSchema(_AutoSchema):
     def get_override_parameters(self):
         """ Add request GEO headers"""
         geo_headers = self.get_geo_headers()
-        return geo_headers
+        content_type_headers = self.get_content_type_headers()
+        return geo_headers + content_type_headers
 
     def get_geo_headers(self) -> list:
         if not isinstance(self.view, GeoMixin):
@@ -207,3 +208,18 @@ class AutoSchema(_AutoSchema):
         ]
 
         return request_headers + response_headers
+
+    def get_content_type_headers(self) -> list:
+        if self.method not in ["POST", "PUT", "PATCH"]:
+            return []
+
+        return [
+            OpenApiParameter(
+                name="Content-Type",
+                type=str,
+                location=openapi.IN_HEADER,
+                required=True,
+                enum=["application/json"],
+                description=_("Content type of the request body."),
+            )
+        ]
