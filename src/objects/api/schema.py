@@ -113,17 +113,14 @@ class AutoSchema(_AutoSchema):
             return OrderedDict()
 
         action = self.view.action
-        # search action is similar to create
-        if action not in DEFAULT_ACTION_ERRORS and is_search_view(self.view):
-            action = "create"
+        if action not in DEFAULT_ACTION_ERRORS:
+            # search action is similar to create
+            if is_search_view(self.view):
+                action = "create"
+            else:
+                action = "list"
 
-        # general errors
-        general_klasses = DEFAULT_ACTION_ERRORS.get(action)
-        if general_klasses is None:
-            logger.debug("Unknown action %s, no default error responses added")
-            return OrderedDict()
-
-        exception_klasses = general_klasses[:]
+        exception_klasses = DEFAULT_ACTION_ERRORS[action][:]
         # add validation errors
         if self._is_list_view() and getattr(self.view, "filter_backends", None):
             exception_klasses.append(exceptions.ValidationError)
