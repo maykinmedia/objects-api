@@ -21,8 +21,7 @@ django-sniplates
 djangorestframework
 djangorestframework-gis
 # django-extra-fields
-# django-filter
-drf-yasg  # api documentation
+django-filter
 drf-spectacular  # api documentation
 
 # WSGI servers & monitoring - production oriented

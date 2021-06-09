@@ -31,7 +31,9 @@ django-choices==1.7.1
 django-compat==1.0.15
     # via django-hijack-admin
 django-filter==2.4.0
-    # via vng-api-common
+    # via
+    #   -r requirements/base.in
+    #   vng-api-common
 django-hijack-admin==2.1.10
     # via -r requirements/base.in
 django-hijack==2.3.0
@@ -91,9 +93,7 @@ drf-nested-routers==0.93.3
 drf-spectacular==0.16.0
     # via -r requirements/base.in
 drf-yasg==1.20.0
-    # via
-    #   -r requirements/base.in
-    #   vng-api-common
+    # via vng-api-common
 elastic-apm==6.1.1
     # via -r requirements/base.in
 faker==8.1.0

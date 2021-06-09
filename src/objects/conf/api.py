@@ -11,28 +11,10 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "objects.token.authentication.TokenAuthentication"
     ],
-    "DEFAULT_SCHEMA_CLASS": "objects.api.schema.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
     # test
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
-
-# OAS settings
-SWAGGER_SETTINGS = BASE_SWAGGER_SETTINGS.copy()
-SWAGGER_SETTINGS.update(
-    {
-        "DEFAULT_INFO": "objects.api.schema.info",
-        # Use apiKey type since OAS2 doesn't support Bearer authentication
-        "SECURITY_DEFINITIONS": {
-            "Token": {"type": "apiKey", "name": "Authorization", "in": "header"}
-        },
-        "DEFAULT_AUTO_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
-        "DEFAULT_FIELD_INSPECTORS": (
-            "objects.utils.inspectors.GeometryFieldInspector",
-            "objects.utils.inspectors.ObjectTypeFieldInspector",
-        )
-        + BASE_SWAGGER_SETTINGS["DEFAULT_FIELD_INSPECTORS"],
-    }
-)
 
 description = """An API to manage Objects.
 
@@ -100,22 +82,11 @@ SPECTACULAR_SETTINGS = {
     "SCHEMA_PATH_PREFIX": r"/api/v1",
     "TITLE": "Objects API",
     "DESCRIPTION": description,
-    # "POSTPROCESSING_HOOKS": [
-    #     "drf_spectacular.hooks.postprocess_schema_enums",
-    #     "drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields",
-    #     "zac.api.drf_spectacular.djangorestframework_camel_case.camelize_discriminators",
-    # ],
-    # "TOS": None,
-    # Optional: MAY contain "name", "url", "email"
+    "SERVE_INCLUDE_SCHEMA": False,
     "CONTACT": {
         "url": "https://github.com/maykinmedia/objects-api",
     },
-    # Optional: MUST contain "name", MAY contain URL
-    # "LICENSE": {"name": "EUPL-1.2"},
-    # "VERSION": "1.0.0",
-    # Tags defined in the global scope
-    # "TAGS": [],
-    # Optional: MUST contain 'url', may contain "description"
+    "LICENSE": {"name": "EUPL-1.2"},
     "EXTERNAL_DOCS": {
         "url": "https://objects-and-objecttypes-api.readthedocs.io/",
     },

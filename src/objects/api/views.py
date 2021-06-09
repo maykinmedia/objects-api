@@ -3,7 +3,6 @@ import datetime
 from django.db import models
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -85,7 +84,6 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         description="Retrieve all RECORDs of an OBJECT.",
         responses={"200": HistoryRecordSerializer(many=True)},
     )
-    @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
     def history(self, request, uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
