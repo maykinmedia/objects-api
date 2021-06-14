@@ -158,7 +158,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Object'
-          description: ''
+          description: OK
     post:
       operationId: object_create
       description: Create an OBJECT and its initial RECORD.
@@ -215,7 +215,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Object'
-          description: ''
+          description: Created
   /api/v1/objects/{uuid}:
     get:
       operationId: object_read
@@ -264,7 +264,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Object'
-          description: ''
+          description: OK
     put:
       operationId: object_update
       description: Update the OBJECT by creating a new RECORD with the updates values.
@@ -328,7 +328,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Object'
-          description: ''
+          description: OK
     patch:
       operationId: object_partial_update
       description: Update the OBJECT by creating a new RECORD with the updates values.
@@ -391,9 +391,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Object'
-          description: ''
+          description: OK
     delete:
-      operationId: object_destroy
+      operationId: object_delete
       description: Delete an OBJECT and all RECORDs belonging to it.
       parameters:
       - in: path
@@ -424,53 +424,6 @@ paths:
         description: 'The desired ''Coordinate Reference System'' (CRS) of the response
           data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 is
           the same as WGS84).'
-      - in: query
-        name: data_attrs
-        schema:
-          type: string
-        description: |
-          Only include objects that have attributes with certain values.
-          Data filtering expressions are comma-separated and are structured as follows:
-          A valid parameter value has the form `key__operator__value`.
-          `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
-          Note: Values can be string or numeric. Dates are not supported.
-
-          Valid operator values are:
-          * `exact` - equal to
-          * `gt` - greater than
-          * `gte` - greater than or equal to
-          * `lt` - lower than
-          * `lte` - lower than or equal to
-          `value` may not contain double underscore or comma characters.
-          `key` may not contain comma characters and includes double underscore only if it indicates nested attributes.
-
-          Example: in order to display only objects with `height` equal to 100, query `data_attrs=height__exact__100`
-          should be used. If `height` is nested inside `dimensions` attribute, query should look like
-          `data_attrs=dimensions__height__exact__100`
-      - in: query
-        name: date
-        schema:
-          type: string
-          format: date
-        description: Display record data for the specified material date, i.e. the
-          specified date would be between `startAt` and `endAt` attributes. The default
-          value is today
-      - in: query
-        name: registrationDate
-        schema:
-          type: string
-          format: date
-        description: Display record data for the specified registration date, i.e.
-          the specified date would be between `registrationAt` attributes of different
-          records
-      - in: query
-        name: type
-        schema:
-          type: string
-          format: uri
-          maxLength: 1000
-          minLength: 1
-        description: Url reference to OBJECTTYPE in Objecttypes API
       - in: path
         name: uuid
         schema:
@@ -499,7 +452,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/HistoryRecord'
-          description: ''
+          description: OK
   /api/v1/objects/search:
     post:
       operationId: object_search
@@ -538,7 +491,50 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Object'
+              type: object
+              allOf:
+              - $ref: '#/components/schemas/ObjectSearch'
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    format: uri
+                    maxLength: 1000
+                    minLength: 1
+                    description: Url reference to OBJECTTYPE in Objecttypes API
+                  data_attrs:
+                    type: string
+                    description: |
+                      Only include objects that have attributes with certain values.
+                      Data filtering expressions are comma-separated and are structured as follows:
+                      A valid parameter value has the form `key__operator__value`.
+                      `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
+                      Note: Values can be string or numeric. Dates are not supported.
+
+                      Valid operator values are:
+                      * `exact` - equal to
+                      * `gt` - greater than
+                      * `gte` - greater than or equal to
+                      * `lt` - lower than
+                      * `lte` - lower than or equal to
+                      `value` may not contain double underscore or comma characters.
+                      `key` may not contain comma characters and includes double underscore only if it indicates nested attributes.
+
+                      Example: in order to display only objects with `height` equal to 100, query `data_attrs=height__exact__100`
+                      should be used. If `height` is nested inside `dimensions` attribute, query should look like
+                      `data_attrs=dimensions__height__exact__100`
+                  date:
+                    type: string
+                    format: date
+                    description: Display record data for the specified material date,
+                      i.e. the specified date would be between `startAt` and `endAt`
+                      attributes. The default value is today
+                  registrationDate:
+                    type: string
+                    format: date
+                    description: Display record data for the specified registration
+                      date, i.e. the specified date would be between `registrationAt`
+                      attributes of different records
         required: true
       security:
       - tokenAuth: []
@@ -556,8 +552,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Object'
-          description: ''
+                type: array
+                items:
+                  $ref: '#/components/schemas/Object'
+          description: OK
 components:
   schemas:
     GeoJSONGeometry:
@@ -579,6 +577,11 @@ components:
           Polygon: '#/components/schemas/Polygon'
           MultiPolygon: '#/components/schemas/MultiPolygon'
           GeometryCollection: '#/components/schemas/GeometryCollection'
+    GeoWithin:
+      type: object
+      properties:
+        within:
+          $ref: '#/components/schemas/GeoJSONGeometry'
     Geometry:
       type: object
       title: Geometry
@@ -808,6 +811,13 @@ components:
       - registrationAt
       - startAt
       - typeVersion
+    ObjectSearch:
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeoWithin'
+      required:
+      - geometry
     PatchedObject:
       type: object
       description: |-
