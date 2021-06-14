@@ -38,7 +38,8 @@ from .serializers import (
         description="Update the OBJECT by creating a new RECORD with the updates values."
     ),
     destroy=extend_schema(
-        description="Delete an OBJECT and all RECORDs belonging to it."
+        description="Delete an OBJECT and all RECORDs belonging to it.",
+        operation_id="object_delete",
     ),
 )
 class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
@@ -87,12 +88,15 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
     def history(self, request, uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
-
         records = self.get_object().records.order_by("id")
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
 
-    @extend_schema(description="Perform a (geo) search on OBJECTs.")
+    @extend_schema(
+        description="Perform a (geo) search on OBJECTs.",
+        request=ObjectSearchSerializer,
+        responses={"200": ObjectSerializer(many=True)},
+    )
     @action(detail=False, methods=["post"])
     def search(self, request):
         """Perform a (geo) search on OBJECTs"""

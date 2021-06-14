@@ -1,8 +1,10 @@
 from django.utils.translation import ugettext_lazy as _
 
+from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.utils import OpenApiParameter
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
+from vng_api_common.inspectors.view import HTTP_STATUS_CODE_TITLES
 
 from objects.api.mixins import GeoMixin
 
@@ -25,6 +27,20 @@ class AutoSchema(_AutoSchema):
         content_type_headers = self.get_content_type_headers()
         field_params = self.get_fields_params()
         return geo_headers + content_type_headers + field_params
+
+    def _get_filter_parameters(self):
+        """ remove filter parameters from all actions except LIST """
+        if self.view.action != "list":
+            return []
+        return super()._get_filter_parameters()
+
+    def _get_response_for_code(self, serializer, status_code, media_types=None):
+        """ add default description to the response """
+        response = super()._get_response_for_code(serializer, status_code, media_types)
+
+        if not response.get("description"):
+            response["description"] = HTTP_STATUS_CODE_TITLES.get(int(status_code))
+        return response
 
     def get_geo_headers(self) -> list:
         if not isinstance(self.view, GeoMixin):
@@ -116,3 +132,39 @@ class AutoSchema(_AutoSchema):
             ]
 
         return []
+
+    def _get_request_body(self):
+        """update search request body with filter parameters"""
+        request_body = super()._get_request_body()
+
+        if self.view.action == "search":
+            filter_params = self.get_filter_params_for_search()
+
+            properties = {}
+            for param in filter_params:
+                schema = param["schema"]
+                schema["description"] = param["description"]
+                properties[param["name"]] = schema
+
+            filter_schema = {"type": "object", "properties": properties}
+
+            for media_type, media_value in request_body["content"].items():
+                request_body["content"][media_type]["schema"] = {
+                    "type": "object",
+                    "allOf": [media_value["schema"], filter_schema],
+                }
+
+        return request_body
+
+    def get_filter_params_for_search(self):
+        """copy paste of self._get_filter_parameters() without conditions"""
+        parameters = []
+        for filter_backend in self.view.filter_backends:
+            filter_extension = OpenApiFilterExtension.get_match(filter_backend())
+            if filter_extension:
+                parameters += filter_extension.get_schema_operation_parameters(self)
+            else:
+                parameters += filter_backend().get_schema_operation_parameters(
+                    self.view
+                )
+        return parameters
