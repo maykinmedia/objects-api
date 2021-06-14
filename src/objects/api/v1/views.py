@@ -11,9 +11,9 @@ from vng_api_common.search import SearchMixin
 from objects.core.models import Object, ObjectRecord
 from objects.token.permissions import ObjectTypeBasedPermission
 
-from .filters import ObjectFilterSet
-from .mixins import GeoMixin
-from .serializers import (
+from ..filters import ObjectFilterSet
+from ..mixins import GeoMixin
+from ..serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,
     ObjectSerializer,
