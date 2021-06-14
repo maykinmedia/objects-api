@@ -1,7 +1,5 @@
 import uuid
 
-from django.urls import reverse
-
 import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -12,8 +10,9 @@ from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
-from .constants import GEO_WRITE_KWARGS
-from .utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
+from ..constants import GEO_WRITE_KWARGS
+from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
+from .utils import reverse
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 

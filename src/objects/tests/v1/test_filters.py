@@ -1,5 +1,3 @@
-from django.urls import reverse, reverse_lazy
-
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -11,6 +9,8 @@ from objects.core.tests.factores import (
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
+
+from .utils import reverse, reverse_lazy
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 

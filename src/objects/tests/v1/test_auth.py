@@ -1,5 +1,4 @@
 from django.contrib.gis.geos import Point
-from django.urls import reverse, reverse_lazy
 
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -13,7 +12,8 @@ from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory, TokenAuthFactory
 from objects.utils.test import TokenAuthMixin
 
-from .constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
+from ..constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
+from .utils import reverse, reverse_lazy
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 

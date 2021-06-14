@@ -86,7 +86,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         responses={"200": HistoryRecordSerializer(many=True)},
     )
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
-    def history(self, request, uuid=None):
+    def history(self, request, version, uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
         records = self.get_object().records.order_by("id")
         serializer = self.get_serializer(records, many=True)
@@ -98,7 +98,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         responses={"200": ObjectSerializer(many=True)},
     )
     @action(detail=False, methods=["post"])
-    def search(self, request):
+    def search(self, request, version):
         """Perform a (geo) search on OBJECTs"""
         search_input = self.get_search_input()
 

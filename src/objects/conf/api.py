@@ -14,7 +14,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "DEFAULT_VERSION": "1",  # NOT to be confused with API_VERSION - it's the major version part
-    "ALLOWED_VERSIONS": ("1",),
+    "ALLOWED_VERSIONS": ("1", "2"),
     "VERSION_PARAM": "version",
     # test
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
