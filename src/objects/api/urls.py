@@ -1,5 +1,5 @@
 from django.conf.urls import include
-from django.urls import path
+from django.urls import path, re_path
 
 from drf_spectacular.views import (
     SpectacularJSONAPIView,
@@ -15,11 +15,11 @@ router.register(r"objects", ObjectViewSet)
 
 
 urlpatterns = [
-    path("v1/", include(router.urls)),
-    path(
-        "v1/",
+    re_path(
+        r"^v(?P<version>\d+)/",
         include(
             [
+                path("", include(router.urls)),
                 path(
                     "schema/openapi.yaml",
                     SpectacularYAMLAPIView.as_view(),
@@ -33,8 +33,8 @@ urlpatterns = [
             ]
         ),
     ),
-    path(
-        "v1",
+    re_path(
+        r"^v(?P<version>\d+)",
         SpectacularJSONAPIView.as_view(),
         name="schema-json",
     ),

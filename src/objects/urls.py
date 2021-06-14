@@ -7,6 +7,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views.generic.base import TemplateView
 
+from rest_framework.settings import api_settings
+
 handler500 = "objects.utils.views.server_error"
 admin.site.site_header = "objects admin"
 admin.site.site_title = "objects admin"
@@ -36,7 +38,13 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     # Simply show the master template.
-    path("", TemplateView.as_view(template_name="index.html")),
+    path(
+        "",
+        TemplateView.as_view(
+            template_name="index.html",
+            extra_context={"version": api_settings.DEFAULT_VERSION},
+        ),
+    ),
     path("api/", include("objects.api.urls")),
 ]
 
