@@ -7,7 +7,7 @@ from rest_framework.test import APITestCase
 
 from objects.accounts.constants import PermissionModes
 from objects.accounts.tests.factories import ObjectPermissionFactory
-from objects.core.tests.factores import ObjectRecordFactory
+from objects.core.tests.factories import ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 OBJECT_TYPE = "https://example.com/objecttypes/v1/types/abc109"
