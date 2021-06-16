@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Objects API
-  version: '1'
+  version: v1
   description: |+
     An API to manage Objects.
 
@@ -138,7 +138,7 @@ paths:
           minLength: 1
         description: Url reference to OBJECTTYPE in Objecttypes API
       tags:
-      - objects
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -191,7 +191,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - objects
+      - Objects
       requestBody:
         content:
           application/json:
@@ -246,7 +246,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -304,7 +304,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - Objects
       requestBody:
         content:
           application/json:
@@ -368,7 +368,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - Objects
       requestBody:
         content:
           application/json:
@@ -404,7 +404,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -432,7 +432,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -486,7 +486,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - objects
+      - Objects
       requestBody:
         content:
           application/json:
@@ -592,8 +592,7 @@ components:
         url: https://tools.ietf.org/html/rfc7946#section-3.1
       properties:
         type:
-          allOf:
-          - $ref: '#/components/schemas/TypeEnum'
+          type: string
           description: The geometry type
     GeometryCollection:
       type: object
@@ -874,18 +873,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Point2D'
-    TypeEnum:
-      type: string
-      enum:
-      - Point
-      - MultiPoint
-      - LineString
-      - MultiLineString
-      - Polygon
-      - MultiPolygon
-      - Feature
-      - FeatureCollection
-      - GeometryCollection
   securitySchemes:
     tokenAuth:
       type: apiKey

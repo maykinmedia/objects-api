@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Objects API
-  version: '2'
+  version: v2
   description: |+
     An API to manage Objects.
 
@@ -121,6 +121,18 @@ paths:
         description: 'Comma-separated fields, which should be displayed in the response.
           For example: ''url, uuid, record__geometry''. Attributes inside `record.data`
           field are not supported for this parameter. '
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       - in: query
         name: registrationDate
         schema:
@@ -138,7 +150,7 @@ paths:
           minLength: 1
         description: Url reference to OBJECTTYPE in Objecttypes API
       tags:
-      - api
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -155,9 +167,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Object'
+                $ref: '#/components/schemas/PaginatedObjectList'
           description: OK
     post:
       operationId: object_create
@@ -191,7 +201,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - api
+      - Objects
       requestBody:
         content:
           application/json:
@@ -246,7 +256,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - api
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -304,7 +314,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - api
+      - Objects
       requestBody:
         content:
           application/json:
@@ -368,7 +378,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - api
+      - Objects
       requestBody:
         content:
           application/json:
@@ -404,7 +414,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - api
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -424,6 +434,18 @@ paths:
         description: 'The desired ''Coordinate Reference System'' (CRS) of the response
           data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 is
           the same as WGS84).'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       - in: path
         name: uuid
         schema:
@@ -432,7 +454,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - api
+      - Objects
       security:
       - tokenAuth: []
       responses:
@@ -449,9 +471,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/HistoryRecord'
+                $ref: '#/components/schemas/PaginatedHistoryRecordList'
           description: OK
   /api/v2/objects/search:
     post:
@@ -485,8 +505,20 @@ paths:
           - application/json
         description: Content type of the request body.
         required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       tags:
-      - api
+      - Objects
       requestBody:
         content:
           application/json:
@@ -552,9 +584,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Object'
+                $ref: '#/components/schemas/PaginatedObjectList'
           description: OK
 components:
   schemas:
@@ -592,8 +622,7 @@ components:
         url: https://tools.ietf.org/html/rfc7946#section-3.1
       properties:
         type:
-          allOf:
-          - $ref: '#/components/schemas/TypeEnum'
+          type: string
           description: The geometry type
     GeometryCollection:
       type: object
@@ -818,6 +847,46 @@ components:
           $ref: '#/components/schemas/GeoWithin'
       required:
       - geometry
+    PaginatedHistoryRecordList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryRecord'
+    PaginatedObjectList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Object'
     PatchedObject:
       type: object
       description: |-
@@ -884,18 +953,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Point2D'
-    TypeEnum:
-      type: string
-      enum:
-      - Point
-      - MultiPoint
-      - LineString
-      - MultiLineString
-      - Polygon
-      - MultiPolygon
-      - Feature
-      - FeatureCollection
-      - GeometryCollection
   securitySchemes:
     tokenAuth:
       type: apiKey
