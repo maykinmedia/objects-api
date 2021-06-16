@@ -26,7 +26,7 @@ description:
   nl:
     shortDescription: API voor het beheren van objecten
     documentation: 'https://objects-and-objecttypes-api.readthedocs.io/'
-    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/openapi.yaml'
+    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v1/openapi.yaml'
     features:
       - Objecten API
       - Minimalistische objecten beheerinterface
@@ -45,7 +45,7 @@ description:
   en:
     shortDescription: API to manage objects
     documentation: 'https://objects-and-objecttypes-api.readthedocs.io/'
-    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/openapi.yaml'
+    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v1/openapi.yaml'
     features:
       - Objects API
       - Minimalistic object management interface
