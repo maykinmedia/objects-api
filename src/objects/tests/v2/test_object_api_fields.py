@@ -46,7 +46,7 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
         self.assertEqual(len(data), 2)
         self.assertEqual(
             data,

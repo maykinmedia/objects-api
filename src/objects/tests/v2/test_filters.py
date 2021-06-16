@@ -45,7 +45,7 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -108,7 +108,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -129,7 +129,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -153,7 +153,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
         data = sorted(data, key=lambda x: x["record"]["data"]["diameter"])
 
         self.assertEqual(len(data), 2)
@@ -182,7 +182,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -230,7 +230,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -258,7 +258,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -322,7 +322,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
         response = self.client.get(url, {"date": "2020-07-01"})
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -379,7 +379,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
         response = self.client.get(url, {"registrationDate": "2020-07-01"})
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(

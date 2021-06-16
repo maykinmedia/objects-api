@@ -62,7 +62,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -95,7 +95,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(

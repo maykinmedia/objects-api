@@ -57,10 +57,31 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
 
-        self.assertEqual(len(data), 1)
         self.assertEqual(
-            data[0]["url"],
-            f"http://testserver{reverse('object-detail', args=[object_record1.object.uuid])}",
+            data,
+            {
+                "count": 1,
+                "next": None,
+                "previous": None,
+                "results": [
+                    {
+                        "url": f'http://testserver{reverse("object-detail", args=[object_record1.object.uuid])}',
+                        "uuid": str(object_record1.object.uuid),
+                        "type": object_record1.object.object_type.url,
+                        "record": {
+                            "index": object_record1.index,
+                            "typeVersion": object_record1.version,
+                            "data": object_record1.data,
+                            "geometry": None,
+                            "startAt": object_record1.start_at.isoformat(),
+                            "endAt": object_record1.end_at,
+                            "registrationAt": object_record1.registration_at.isoformat(),
+                            "correctionFor": None,
+                            "correctedBy": None,
+                        },
+                    }
+                ],
+            },
         )
 
     def test_retrieve_object(self, m):

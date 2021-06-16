@@ -188,7 +188,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()), 0)
+        self.assertEqual(len(response.json()["results"]), 0)
 
     def test_list_objects_limited_to_object_permission(self):
         PermissionFactory.create(
@@ -205,7 +205,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -232,7 +232,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()), 0)
+        self.assertEqual(len(response.json()["results"]), 0)
 
     def test_search_objects_limited_to_object_permission(self):
         PermissionFactory.create(
@@ -262,7 +262,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
