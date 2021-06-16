@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.tests.factores import (
+from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
