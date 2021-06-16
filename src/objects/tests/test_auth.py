@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 from objects.accounts.constants import PermissionModes
 from objects.accounts.tests.factories import ObjectPermissionFactory
-from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
+from objects.core.tests.factories import ObjectFactory, ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM

@@ -13,7 +13,7 @@ from zgw_consumers.models import Service
 from objects.accounts.constants import PermissionModes
 from objects.accounts.tests.factories import ObjectPermissionFactory
 from objects.core.models import Object
-from objects.core.tests.factores import ObjectFactory, ObjectRecordFactory
+from objects.core.tests.factories import ObjectFactory, ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
@@ -71,7 +71,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                             "index": object_record1.index,
                             "typeVersion": object_record1.version,
                             "data": object_record1.data,
-                            "geometry": None,
+                            "geometry": json.loads(object_record1.geometry.json),
                             "startAt": object_record1.start_at.isoformat(),
                             "endAt": object_record1.end_at,
                             "registrationAt": object_record1.registration_at.isoformat(),
@@ -293,7 +293,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "index": 2,
                     "typeVersion": record2.version,
                     "data": record2.data,
-                    "geometry": None,
+                    "geometry": json.loads(record2.geometry.json),
                     "startAt": record2.start_at.isoformat(),
                     "endAt": None,
                     "registrationAt": date.today().isoformat(),

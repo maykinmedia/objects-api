@@ -9,7 +9,7 @@ from zgw_consumers.models import Service
 from objects.accounts.constants import PermissionModes
 from objects.accounts.tests.factories import ObjectPermissionFactory
 from objects.core.models import Object
-from objects.core.tests.factores import ObjectRecordFactory
+from objects.core.tests.factories import ObjectRecordFactory
 from objects.utils.test import TokenAuthMixin
 
 from .constants import GEO_WRITE_KWARGS
