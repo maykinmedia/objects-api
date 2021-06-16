@@ -3,7 +3,7 @@ name: lint-oas
 on:
   push:
     paths:
-      - src/openapi.yaml
+      - "src/objects/api/v*/openapi.yaml"
       - .github/workflows/lint-oas.yml
     branches:
       - '**'
@@ -12,6 +12,12 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ '1' ]
+
+    name: Run with version v${{ matrix.version }}
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -21,4 +27,4 @@ jobs:
       - name: Install spectral
         run: npm install -g @stoplight/spectral
       - name: Run OAS linter
-        run: spectral lint ./src/openapi.yaml
+        run: spectral lint ./src/objects/api/v${{ matrix.version }}/openapi.yaml
