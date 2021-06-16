@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [ '1', '2' ]
+        version: [ 'v1', 'v2' ]
 
     name: Run with version v${{ matrix.version }}
 
@@ -27,4 +27,4 @@ jobs:
       - name: Install spectral
         run: npm install -g @stoplight/spectral
       - name: Run OAS linter
-        run: spectral lint ./src/objects/api/v${{ matrix.version }}/openapi.yaml
+        run: spectral lint ./src/objects/api/${{ matrix.version }}/openapi.yaml
