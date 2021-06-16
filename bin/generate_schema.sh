@@ -9,8 +9,8 @@ if [ "$1" = "" ]; then
     exit 1
 fi
 
-if [ "$1" != "1" ]; then
-    echo "You need to pass a correct version in the first argument. Available values: 1"
+if [ "$1" != "1" ] && [ "$1" != "2" ]; then
+    echo "You need to pass a correct version in the first argument. Available values: 1, 2"
     exit 1
 fi
 

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Objects API
-  version: '1'
+  version: '2'
   description: |+
     An API to manage Objects.
 
@@ -68,7 +68,7 @@ info:
   license:
     name: EUPL-1.2
 paths:
-  /api/v1/objects:
+  /api/v2/objects:
     get:
       operationId: object_list
       description: Retrieve a list of OBJECTs and their actual RECORD. The actual
@@ -138,7 +138,7 @@ paths:
           minLength: 1
         description: Url reference to OBJECTTYPE in Objecttypes API
       tags:
-      - objects
+      - api
       security:
       - tokenAuth: []
       responses:
@@ -191,7 +191,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - objects
+      - api
       requestBody:
         content:
           application/json:
@@ -216,7 +216,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Object'
           description: Created
-  /api/v1/objects/{uuid}:
+  /api/v2/objects/{uuid}:
     get:
       operationId: object_read
       description: Retrieve a single OBJECT and its actual RECORD. The actual record
@@ -246,7 +246,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - api
       security:
       - tokenAuth: []
       responses:
@@ -304,7 +304,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - api
       requestBody:
         content:
           application/json:
@@ -368,7 +368,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - api
       requestBody:
         content:
           application/json:
@@ -404,13 +404,13 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - api
       security:
       - tokenAuth: []
       responses:
         '204':
           description: No response body
-  /api/v1/objects/{uuid}/history:
+  /api/v2/objects/{uuid}/history:
     get:
       operationId: object_history
       description: Retrieve all RECORDs of an OBJECT.
@@ -432,7 +432,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - objects
+      - api
       security:
       - tokenAuth: []
       responses:
@@ -453,7 +453,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/HistoryRecord'
           description: OK
-  /api/v1/objects/search:
+  /api/v2/objects/search:
     post:
       operationId: object_search
       description: Perform a (geo) search on OBJECTs.
@@ -486,7 +486,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - objects
+      - api
       requestBody:
         content:
           application/json:
@@ -655,6 +655,11 @@ components:
           readOnly: true
           description: Index of the record, which corrects the current record
       required:
+      - correctedBy
+      - correctionFor
+      - endAt
+      - index
+      - registrationAt
       - startAt
       - typeVersion
     LineString:
@@ -755,6 +760,7 @@ components:
       required:
       - record
       - type
+      - url
     ObjectRecord:
       type: object
       properties:
@@ -799,6 +805,10 @@ components:
           readOnly: true
           description: Index of the record, which corrects the current record
       required:
+      - correctedBy
+      - endAt
+      - index
+      - registrationAt
       - startAt
       - typeVersion
     ObjectSearch:
