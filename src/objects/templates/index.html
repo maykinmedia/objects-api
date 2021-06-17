@@ -63,10 +63,12 @@
         European Union Public License (EUPL) 1.2</a></b>
     </p>
 
+    {% with schema_view=version|add:":schema-redoc" api_root_view=version|add:":api-root" %}
     <p>
-      <a href="{% url 'schema-redoc' version %}" class="btn btn-sm btn-info"><i class="fas fa-file-alt"></i> Open API specification</a>
-      <a href="{% url 'api-root' version %}" class="btn btn-sm btn-info"><i class="fas fa-wifi"></i> API root</a>
+      <a href="{% url schema_view %}" class="btn btn-sm btn-info"><i class="fas fa-file-alt"></i> Open API specification</a>
+      <a href="{% url api_root_view %}" class="btn btn-sm btn-info"><i class="fas fa-wifi"></i> API root</a>
     </p>
+    {% endwith %}
 
     <p>
       <a href="{% url 'admin:index' %}" class="btn btn-sm btn-danger"><i class="fas fa-lock"></i> Administration</a>
