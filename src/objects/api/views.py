@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,30 +20,29 @@ from .serializers import (
 )
 
 
+@extend_schema_view(
+    list=extend_schema(
+        description="Retrieve a list of OBJECTs and their actual RECORD. "
+        "The actual record is defined as if the query parameter `date=<today>` was given."
+    ),
+    retrieve=extend_schema(
+        description="Retrieve a single OBJECT and its actual RECORD. "
+        "The actual record is defined as if the query parameter `date=<today>` was given.",
+        operation_id="object_read",
+    ),
+    create=extend_schema(description="Create an OBJECT and its initial RECORD."),
+    update=extend_schema(
+        description="Update the OBJECT by creating a new RECORD with the updates values."
+    ),
+    partial_update=extend_schema(
+        description="Update the OBJECT by creating a new RECORD with the updates values."
+    ),
+    destroy=extend_schema(
+        description="Delete an OBJECT and all RECORDs belonging to it.",
+        operation_id="object_delete",
+    ),
+)
 class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
-    """
-    Manage OBJECTs and their RECORDs.
-
-    list:
-    Retrieve a list of OBJECTs and their actual RECORD. The actual record is defined as if the query parameter `date=<today>` was given.
-
-    retrieve:
-    Retrieve a single OBJECT and its actual RECORD. The actual record is defined as if the query parameter `date=<today>` was given.
-
-    create:
-    Create an OBJECT and its initial RECORD.
-
-    update:
-    Update the OBJECT by creating a new RECORD with the updates values.
-
-    partial_update:
-    Update the OBJECT by creating a new RECORD with the updates values.
-
-    destroy:
-    Delete an OBJECT and all RECORDs belonging to it.
-
-    """
-
     queryset = Object.objects.select_related(
         "object_type", "object_type__service"
     ).order_by("-pk")
@@ -82,15 +81,22 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
         return base.filter_for_token(self.request.auth)
 
-    @swagger_auto_schema(responses={"200": HistoryRecordSerializer(many=True)})
+    @extend_schema(
+        description="Retrieve all RECORDs of an OBJECT.",
+        responses={"200": HistoryRecordSerializer(many=True)},
+    )
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
     def history(self, request, uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
-
         records = self.get_object().records.order_by("id")
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
 
+    @extend_schema(
+        description="Perform a (geo) search on OBJECTs.",
+        request=ObjectSearchSerializer,
+        responses={"200": ObjectSerializer(many=True)},
+    )
     @action(detail=False, methods=["post"])
     def search(self, request):
         """Perform a (geo) search on OBJECTs"""
@@ -114,4 +120,5 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
         return result
 
+    # for OAS generation
     search.is_search_action = True

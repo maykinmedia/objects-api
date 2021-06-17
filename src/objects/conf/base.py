@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
-    "drf_yasg",
+    "drf_spectacular",
     "sniplates",
     "hijack",
     "compat",  # Part of hijack

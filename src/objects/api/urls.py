@@ -1,29 +1,17 @@
 from django.conf.urls import include
-from django.urls import path, re_path
+from django.urls import path
 
-from drf_yasg.renderers import SwaggerJSONRenderer
+from drf_spectacular.views import (
+    SpectacularJSONAPIView,
+    SpectacularRedocView,
+    SpectacularYAMLAPIView,
+)
 from rest_framework import routers
-from vng_api_common.schema import SPEC_RENDERERS, SchemaView
 
 from .views import ObjectViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r"objects", ObjectViewSet)
-
-
-class JsonSchemaView(SchemaView):
-    @property
-    def _is_openapi_v2(self) -> bool:
-        return False
-
-    def get_renderers(self):
-        # only json renderers
-        renderers = [
-            renderer()
-            for renderer in SPEC_RENDERERS
-            if isinstance(renderer(), SwaggerJSONRenderer)
-        ]
-        return renderers
 
 
 urlpatterns = [
@@ -32,14 +20,14 @@ urlpatterns = [
         "v1/",
         include(
             [
-                re_path(
-                    r"^schema/openapi(?P<format>\.json|\.yaml)$",
-                    SchemaView.without_ui(cache_timeout=0),
-                    name="schema-yaml",
+                path(
+                    "schema/openapi.yaml",
+                    SpectacularYAMLAPIView.as_view(),
+                    name="schema",
                 ),
-                re_path(
-                    r"^schema/$",
-                    SchemaView.with_ui("redoc", cache_timeout=0),
+                path(
+                    "schema/",
+                    SpectacularRedocView.as_view(url_name="schema"),
                     name="schema-redoc",
                 ),
             ]
@@ -47,7 +35,7 @@ urlpatterns = [
     ),
     path(
         "v1",
-        JsonSchemaView.without_ui(cache_timeout=0),
+        SpectacularJSONAPIView.as_view(),
         name="schema-json",
     ),
 ]
