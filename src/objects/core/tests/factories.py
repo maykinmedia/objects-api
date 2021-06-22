@@ -2,13 +2,14 @@ import random
 import uuid
 from datetime import date, timedelta
 
-import factory
 from django.contrib.gis.geos import Point
 
-from ..models import Object, ObjectRecord, ObjectType
+import factory
 from factory.fuzzy import BaseFuzzyAttribute
 from zgw_consumers.constants import APITypes, AuthTypes
 from zgw_consumers.models import Service
+
+from ..models import Object, ObjectRecord, ObjectType
 
 
 class ServiceFactory(factory.django.DjangoModelFactory):
@@ -32,8 +33,7 @@ class ObjectTypeFactory(factory.django.DjangoModelFactory):
 
 class FuzzyPoint(BaseFuzzyAttribute):
     def fuzz(self):
-        return Point(random.uniform(-180.0, 180.0),
-                     random.uniform(-90.0, 90.0))
+        return Point(random.uniform(-180.0, 180.0), random.uniform(-90.0, 90.0))
 
 
 class ObjectDataFactory(factory.DictFactory):

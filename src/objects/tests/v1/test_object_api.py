@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from objects.core.models import Object
-from objects.core.tests.factores import (
+from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
@@ -285,7 +285,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "index": 2,
                     "typeVersion": record2.version,
                     "data": record2.data,
-                    "geometry": None,
+                    "geometry": json.loads(record2.geometry.json),
                     "startAt": record2.start_at.isoformat(),
                     "endAt": None,
                     "registrationAt": date.today().isoformat(),

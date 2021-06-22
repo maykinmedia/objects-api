@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from objects.core.models import Object
-from objects.core.tests.factores import ObjectRecordFactory, ObjectTypeFactory
+from objects.core.tests.factories import ObjectRecordFactory, ObjectTypeFactory
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin

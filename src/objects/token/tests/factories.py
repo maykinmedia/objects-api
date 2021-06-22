@@ -1,7 +1,7 @@
 import factory
 import factory.fuzzy
 
-from objects.core.tests.factores import ObjectTypeFactory
+from objects.core.tests.factories import ObjectTypeFactory
 
 from ..constants import PermissionModes
 
