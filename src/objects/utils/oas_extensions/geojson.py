@@ -15,17 +15,6 @@ geometry = ResolvedComponent(
         "properties": {
             "type": {
                 "type": "string",
-                "enum": [
-                    "Point",
-                    "MultiPoint",
-                    "LineString",
-                    "MultiLineString",
-                    "Polygon",
-                    "MultiPolygon",
-                    "Feature",
-                    "FeatureCollection",
-                    "GeometryCollection",
-                ],
                 "description": "The geometry type",
             }
         },

@@ -5,12 +5,10 @@ https://www.gemmaonline.nl/images/gemmaonline/f/fa/Stuf0301.pdf
 """
 from datetime import date
 
-from django.urls import reverse
-
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.tests.factores import (
+from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
@@ -18,6 +16,8 @@ from objects.core.tests.factores import (
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
+
+from .utils import reverse
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 

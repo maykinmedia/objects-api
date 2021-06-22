@@ -11,9 +11,10 @@ from vng_api_common.search import SearchMixin
 from objects.core.models import Object, ObjectRecord
 from objects.token.permissions import ObjectTypeBasedPermission
 
-from .filters import ObjectFilterSet
-from .mixins import GeoMixin
-from .serializers import (
+from ..filters import ObjectFilterSet
+from ..mixins import GeoMixin
+from ..pagination import DynamicPageSizePagination
+from ..serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,
     ObjectSerializer,
@@ -51,6 +52,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
     permission_classes = [ObjectTypeBasedPermission]
+    pagination_class = DynamicPageSizePagination
 
     def get_queryset(self):
         base = super().get_queryset()

@@ -1,15 +1,13 @@
 import json
 from datetime import date, timedelta
 
-from django.urls import reverse
-
 import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from objects.core.models import Object
-from objects.core.tests.factores import (
+from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
@@ -18,8 +16,9 @@ from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
-from .constants import GEO_WRITE_KWARGS
-from .utils import mock_objecttype_version, mock_service_oas_get
+from ..constants import GEO_WRITE_KWARGS
+from ..utils import mock_objecttype_version, mock_service_oas_get
+from .utils import reverse
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
@@ -286,7 +285,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "index": 2,
                     "typeVersion": record2.version,
                     "data": record2.data,
-                    "geometry": None,
+                    "geometry": json.loads(record2.geometry.json),
                     "startAt": record2.start_at.isoformat(),
                     "endAt": None,
                     "registrationAt": date.today().isoformat(),

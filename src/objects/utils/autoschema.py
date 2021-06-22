@@ -168,3 +168,6 @@ class AutoSchema(_AutoSchema):
                     self.view
                 )
         return parameters
+
+    def get_tags(self):
+        return ["Objects"]

@@ -1,15 +1,15 @@
 from django.contrib.gis.geos import Point
-from django.urls import reverse, reverse_lazy
 
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.tests.factores import ObjectRecordFactory, ObjectTypeFactory
+from objects.core.tests.factories import ObjectRecordFactory, ObjectTypeFactory
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
-from .constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
+from ..constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
+from .utils import reverse, reverse_lazy
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
@@ -62,7 +62,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
@@ -95,7 +95,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
         self.assertEqual(
