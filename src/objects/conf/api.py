@@ -91,4 +91,5 @@ SPECTACULAR_SETTINGS = {
         "url": "https://objects-and-objecttypes-api.readthedocs.io/",
     },
     "VERSION": "1.1.1",
+    "COMPONENT_NO_READ_ONLY_REQUIRED": True,
 }

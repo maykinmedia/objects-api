@@ -655,11 +655,6 @@ components:
           readOnly: true
           description: Index of the record, which corrects the current record
       required:
-      - correctedBy
-      - correctionFor
-      - endAt
-      - index
-      - registrationAt
       - startAt
       - typeVersion
     LineString:
@@ -760,7 +755,6 @@ components:
       required:
       - record
       - type
-      - url
     ObjectRecord:
       type: object
       properties:
@@ -805,10 +799,6 @@ components:
           readOnly: true
           description: Index of the record, which corrects the current record
       required:
-      - correctedBy
-      - endAt
-      - index
-      - registrationAt
       - startAt
       - typeVersion
     ObjectSearch:
