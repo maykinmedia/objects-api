@@ -1,6 +1,6 @@
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
-API_VERSION = "1.1.0"
+API_VERSION = "1.1.1"
 
 
 # api settings
@@ -90,5 +90,5 @@ SPECTACULAR_SETTINGS = {
     "EXTERNAL_DOCS": {
         "url": "https://objects-and-objecttypes-api.readthedocs.io/",
     },
-    "VERSION": "1.1.0",
+    "VERSION": "1.1.1",
 }

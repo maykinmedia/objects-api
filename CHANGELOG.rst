@@ -2,6 +2,19 @@
 Change history
 ==============
 
+1.1.1 (2021-06-22)
+------------------
+
+**Bugfixes and QOL**
+
+* Fixed OAS generation: remove unrelated error response bodies and headers, swap the notion of material and formal history (#197, #201)
+* Tested the implementation of the material and formal history (#168)
+
+**Documentation**
+
+* Documented how to use the Objecttypes admin and the Objects admin (#60)
+
+
 1.1.0 (2021-04-21)
 ------------------
 
