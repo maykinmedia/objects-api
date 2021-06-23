@@ -1,6 +1,7 @@
 import binascii
 import os
 
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -83,7 +84,20 @@ class Permission(models.Model):
         choices=PermissionModes.choices,
         help_text=_("Permission mode"),
     )
+    use_fields = models.BooleanField(
+        _("use fields"), default=False, help_text=_("Use field-based authorization")
+    )
+    # todo validate use_fields can't be true with empty fields
+    fields = ArrayField(
+        models.CharField(_("field"), max_length=30),
+        blank=True,
+        default=list,
+        help_text=_(
+            "Fields allowed for this token. Supports only first level of the `record.data` properties"
+        ),
+    )
 
     class Meta:
         verbose_name = _("permission")
         verbose_name_plural = _("permissions")
+        unique_together = ("token_auth", "object_type")
