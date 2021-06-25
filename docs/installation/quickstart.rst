@@ -3,11 +3,11 @@
 Quickstart
 ==========
 
-A simple ``docker-compose-quickstart.yml`` file is available to get the API's
+A simple ``docker-compose-quickstart.yml`` file is available to get the APIs
 up and running in minutes. This file has some convenience settings to get
 started quickly and these should never be used for anything besides testing:
 
-* A default secret is set in the ``SECRET_KEY`` environment variable
+* A default secret is set in the ``SECRET_KEY`` environment variable.
 * A predefined database and database account is used.
 * API authorizations are disabled.
 

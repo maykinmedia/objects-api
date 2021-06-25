@@ -7,8 +7,8 @@ To store and expose various types of domain specific data, or objects, we need
 an appropriate API. Domain specific objects can be a "signal", "dog", "tree",
 "parking permit", "complaint", "family", or anything really.
 
-Organizations, specifically municipalities, want to store, retrieve and connect
-these different kind of objects. For example: A "Zaak" should be able to refer
+Organizations (specifically municipalities) want to store, retrieve and connect
+these different kind of objects. For example: A "Zaak" (Case) should be able to refer
 to a "tree", or all "trees" need to be shown on a geographic map.
 
 These object registrations are necessary in the IT-landscape to create domain

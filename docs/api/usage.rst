@@ -14,7 +14,7 @@ Before continuing, make sure you have an API token to access the Objecttypes API
 In the examples below we use the API token for the Objecttypes API with the value ``1234``.
 
 Let's start with creating an object type. For example, you want to store data
-about trees in your town. First, you need to decide which attributes your data
+about trees (Bomen) in your town. First, you need to decide which attributes your data
 will have and to design JSON schema for trees. You can take a look at provided
 :ref:`examples_index`. Here is a JSON schema which we will use in the example:
 
