@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
+from glom import glom
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 

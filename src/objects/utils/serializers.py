@@ -1,6 +1,23 @@
 from django.utils.translation import ugettext_lazy as _
 
+from glom import GlomError, glom
 from rest_framework import serializers
+
+
+def build_spec(fields) -> dict:
+    spec = {}
+    for spec_field in fields:
+        build_spec_field(spec, name=spec_field, value=spec_field)
+    return spec
+
+
+def build_spec_field(spec, name, value):
+    if "__" in name:
+        parent, field_name = name.split("__", 1)
+        spec[parent] = spec.get(parent, {})
+        build_spec_field(spec[parent], field_name, value)
+    else:
+        spec[name] = value.replace("__", ".")
 
 
 class DynamicFieldsMixin:
@@ -9,57 +26,25 @@ class DynamicFieldsMixin:
     It also supports nested fields which are serializers themselves.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
 
         query_fields = self.get_query_fields()
+
         if not query_fields:
-            return
+            return data
 
-        # support selecting nested fields
-        nested_fields = [
-            field_name
-            for field_name, field in self.fields.items()
-            if isinstance(field, serializers.Serializer)
-        ]
-        for nested_field in nested_fields:
-            allowed_nested_fields = self.update_fields(query_fields, nested_field)
-            if allowed_nested_fields:
-                query_fields -= allowed_nested_fields
-                query_fields |= {nested_field}
-
-        self.update_fields(query_fields)
-
-    def update_fields(self, query_fields, parent=None) -> set:
-        pattern = f"{parent}__" if parent else ""
-        allowed = set(
-            field_name.replace(pattern, "", 1)
-            for field_name in query_fields
-            if field_name.startswith(pattern)
-        )
-        fields = self.fields[parent].fields if parent else self.fields
-        existing = set(fields)
-
-        extra_fields = allowed - existing
-        if extra_fields:
-            msg_fields = [f"{pattern}{field_name}" for field_name in extra_fields]
+        spec = build_spec(query_fields)
+        try:
+            return glom(data, spec)
+        except GlomError as exc:
             raise serializers.ValidationError(
-                _("'fields' query parameter has invalid values: %(msg_fields)s")
-                % {"msg_fields": ", ".join(msg_fields)}
+                f"'fields' query parameter has invalid values: {exc.args[0]}"
             )
-
-        for field_name in existing - allowed:
-            fields.pop(field_name)
-
-        # add back prefix
-        return set(f"{pattern}{field_name}" for field_name in allowed)
 
     def get_query_fields(self) -> set:
         request = self.context.get("request")
-        if not request:
-            return set()
-
-        if request.method != "GET":
+        if not request or request.method != "GET":
             return set()
 
         fields = request.query_params.get("fields")
