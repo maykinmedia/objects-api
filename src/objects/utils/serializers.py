@@ -1,7 +1,5 @@
 import logging
 
-from django.db import models
-
 from glom import GlomError, glom
 from rest_framework import serializers
 
@@ -26,21 +24,38 @@ def build_spec_field(spec, name, value):
         spec[name] = value.replace("__", ".")
 
 
+def get_field_names(data: dict) -> list:
+    field_names = []
+    for key, value in data.items():
+        if not isinstance(value, dict):
+            field_names.append(key)
+        else:
+            field_names += [f"{key}__{val}" for val in get_field_names(value)]
+
+    return field_names
+
+
 class DynamicFieldsMixin:
     """
     this mixin allows selecting fields for serializer in the query param
     It also supports nested fields.
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.not_allowed = set()
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
 
-        allowed_fields = self.get_allowed_fields()
+        allowed_fields = self.get_allowed_fields(instance)
         query_fields = self.get_query_fields()
 
         if not query_fields and allowed_fields == ["*"]:
             return data
 
+        #  limit all data to the allowed
         if allowed_fields == ["*"]:
             allowed_data = data
         else:
@@ -52,8 +67,11 @@ class DynamicFieldsMixin:
                     f"Fields in the configured authorization are absent in the data: {exc.args[0]}"
                 )
 
+        #  limit allowed data to requested in fields= query param
         if not query_fields:
             result_data = allowed_data
+            not_allowed = set(get_field_names(data)) - set(get_field_names(result_data))
+            self.not_allowed |= not_allowed
         else:
             spec_query = build_spec(query_fields)
             try:
@@ -62,12 +80,16 @@ class DynamicFieldsMixin:
                 raise serializers.ValidationError(
                     f"'fields' query parameter has invalid values: {exc.args[0]}"
                 )
+            not_allowed = set(get_field_names(glom(data, spec_query))) - set(
+                get_field_names(result_data)
+            )
+            self.not_allowed |= not_allowed
 
         return result_data
 
     def get_query_fields(self) -> list:
         request = self.context.get("request")
-        if not request or request.method != "GET":
+        if not request:
             return []
 
         fields = request.query_params.get("fields")
@@ -76,19 +98,14 @@ class DynamicFieldsMixin:
 
         return list(set(field.strip() for field in fields.split(",")))
 
-    def get_allowed_fields(self) -> list:
+    def get_allowed_fields(self, instance) -> list:
         request = self.context.get("request")
-        object = self.instance
 
         # if not instance -> create or update -> all fields are allowed
-        if not object or not request:
+        if not request:
             return ["*"]
 
-        # skip for list serializers, since it's check on its child level
-        if isinstance(object, models.QuerySet) or isinstance(object, list):
-            return ["*"]
-
-        permission = request.auth.get_permission_for_object_type(object.object_type)
+        permission = request.auth.get_permission_for_object_type(instance.object_type)
         if permission.mode == PermissionModes.read_only and permission.use_fields:
             return permission.fields
 

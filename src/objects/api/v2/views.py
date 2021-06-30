@@ -124,3 +124,18 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
     # for OAS generation
     search.is_search_action = True
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        """ add warning header if not all data is allowed to display """
+        serializer = getattr(response.data, "serializer", None)
+
+        if serializer:
+            if self.action == "retrieve" and serializer.not_allowed:
+                self.headers["NOT_ALLOWED_FIELDS"] = ",".join(serializer.not_allowed)
+
+            elif self.action in ("list", "search") and serializer.child.not_allowed:
+                self.headers["NOT_ALLOWED_FIELDS"] = ",".join(
+                    serializer.child.not_allowed
+                )
+
+        return super().finalize_response(request, response, *args, **kwargs)
