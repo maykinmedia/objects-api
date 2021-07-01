@@ -107,5 +107,8 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data, ["'fields' query parameter has invalid values: 'someField'"]
+            data,
+            [
+                "'fields' query parameter has invalid or unauthorized values: 'someField'"
+            ],
         )

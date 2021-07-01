@@ -128,9 +128,11 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
     def finalize_response(self, request, response, *args, **kwargs):
         """ add warning header if not all data is allowed to display """
-        serializer = getattr(response.data, "serializer", None)
 
-        if serializer and response.status_code == 200:
+        if response.status_code == 200:
+            serializer = getattr(response.data, "serializer", None) or getattr(
+                response.data.get("results"), "serializer", None
+            )
             if self.action == "retrieve" and serializer.not_allowed:
                 self.headers[
                     settings.UNAUTHORIZED_FIELDS_HEADER

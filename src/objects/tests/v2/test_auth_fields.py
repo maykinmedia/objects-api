@@ -177,7 +177,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response.json(),
+            response.json()["results"],
             [
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[record2.object.uuid])}",
@@ -243,7 +243,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response.json(),
+            response.json()["results"],
             [
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[record2.object.uuid])}",
@@ -359,7 +359,7 @@ class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response.json(),
+            response.json()["results"],
             [
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
