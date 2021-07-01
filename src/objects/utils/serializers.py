@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 
 from glom import GlomError, glom
 from rest_framework import serializers
@@ -35,6 +36,16 @@ def get_field_names(data: dict) -> list:
     return field_names
 
 
+class NotAllowedDict(defaultdict):
+    def pretty(self):
+        if len(self.keys()) == 0:
+            return ""
+        if len(self.keys()) == 1:
+            value = list(self.values())[0]
+            return ",".join(value)
+        return "; ".join([f"{key}={','.join(value)}" for (key, value) in self.items()])
+
+
 class DynamicFieldsMixin:
     """
     this mixin allows selecting fields for serializer in the query param
@@ -44,7 +55,7 @@ class DynamicFieldsMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.not_allowed = set()
+        self.not_allowed = NotAllowedDict(set)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -71,19 +82,21 @@ class DynamicFieldsMixin:
         if not query_fields:
             result_data = allowed_data
             not_allowed = set(get_field_names(data)) - set(get_field_names(result_data))
-            self.not_allowed |= not_allowed
+            if not_allowed:
+                self.not_allowed[instance.object_type.url] |= not_allowed
         else:
             spec_query = build_spec(query_fields)
             try:
                 result_data = glom(allowed_data, spec_query)
             except GlomError as exc:
                 raise serializers.ValidationError(
-                    f"'fields' query parameter has invalid values: {exc.args[0]}"
+                    f"'fields' query parameter has invalid or unauthorized values: {exc.args[0]}"
                 )
             not_allowed = set(get_field_names(glom(data, spec_query))) - set(
                 get_field_names(result_data)
             )
-            self.not_allowed |= not_allowed
+            if not_allowed:
+                self.not_allowed[instance.object_type.url] |= not_allowed
 
         return result_data
 

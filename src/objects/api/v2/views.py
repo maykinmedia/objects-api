@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -129,13 +130,15 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
         """ add warning header if not all data is allowed to display """
         serializer = getattr(response.data, "serializer", None)
 
-        if serializer:
+        if serializer and response.status_code == 200:
             if self.action == "retrieve" and serializer.not_allowed:
-                self.headers["NOT_ALLOWED_FIELDS"] = ",".join(serializer.not_allowed)
+                self.headers[
+                    settings.UNAUTHORIZED_FIELDS_HEADER
+                ] = serializer.not_allowed.pretty()
 
             elif self.action in ("list", "search") and serializer.child.not_allowed:
-                self.headers["NOT_ALLOWED_FIELDS"] = ",".join(
-                    serializer.child.not_allowed
-                )
+                self.headers[
+                    settings.UNAUTHORIZED_FIELDS_HEADER
+                ] = serializer.child.not_allowed.pretty()
 
         return super().finalize_response(request, response, *args, **kwargs)
