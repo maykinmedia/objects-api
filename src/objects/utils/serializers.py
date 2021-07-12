@@ -9,6 +9,9 @@ from objects.token.constants import PermissionModes
 logger = logging.getLogger(__name__)
 
 
+ALL_FIELDS = ["*"]
+
+
 def build_spec(fields) -> dict:
     spec = {}
     for spec_field in fields:
@@ -63,11 +66,11 @@ class DynamicFieldsMixin:
         allowed_fields = self.get_allowed_fields(instance)
         query_fields = self.get_query_fields()
 
-        if not query_fields and allowed_fields == ["*"]:
+        if not query_fields and allowed_fields == ALL_FIELDS:
             return data
 
         #  limit all data to the allowed
-        if allowed_fields == ["*"]:
+        if allowed_fields == ALL_FIELDS:
             allowed_data = data
         else:
             spec_allowed = build_spec(allowed_fields)
@@ -116,10 +119,10 @@ class DynamicFieldsMixin:
 
         # if not instance -> create or update -> all fields are allowed
         if not request:
-            return ["*"]
+            return ALL_FIELDS
 
         permission = request.auth.get_permission_for_object_type(instance.object_type)
         if permission.mode == PermissionModes.read_only and permission.use_fields:
             return permission.fields
 
-        return ["*"]
+        return ALL_FIELDS
