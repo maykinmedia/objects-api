@@ -1,11 +1,17 @@
 from django.contrib import admin
 
+from objects.utils.admin import EditInlineAdminMixin
+
 from .models import Permission, TokenAuth
 
 
-class PermissionInline(admin.TabularInline):
+@admin.register(Permission)
+class PermissionAdmin(admin.ModelAdmin):
+    list_display = ("token_auth", "object_type", "mode", "use_fields")
+
+
+class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
     model = Permission
-    extra = 1
 
 
 @admin.register(TokenAuth)
