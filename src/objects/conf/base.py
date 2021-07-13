@@ -29,6 +29,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+IS_HTTPS = os.getenv("IS_HTTPS", not DEBUG)
+
 ALLOWED_HOSTS = []
 
 DATABASES = {
@@ -71,7 +73,10 @@ INSTALLED_APPS = [
     "hijack_admin",
     "rest_framework",
     "rest_framework_gis",
+    "solo",
+    "django_markup",
     "vng_api_common",
+    "vng_api_common.notifications",
     "zgw_consumers",
     # Project applications.
     "objects.accounts",
@@ -371,3 +376,9 @@ ELASTIC_APM = {
 }
 
 SITE_ID = os.getenv("SITE_ID", 1)
+
+# VNG API Common
+CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
+
+# settings for sending notifications
+NOTIFICATIONS_KANAAL = "objecten"
