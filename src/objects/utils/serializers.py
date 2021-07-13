@@ -12,29 +12,31 @@ logger = logging.getLogger(__name__)
 ALL_FIELDS = ["*"]
 
 
-def build_spec(fields) -> dict:
+def build_spec(fields, sep=".") -> dict:
     spec = {}
     for spec_field in fields:
-        build_spec_field(spec, name=spec_field, value=spec_field)
+        build_spec_field(spec, name=spec_field, value=spec_field, sep=sep)
     return spec
 
 
-def build_spec_field(spec, name, value):
+def build_spec_field(spec, name, value, sep):
     if "__" in name:
         parent, field_name = name.split("__", 1)
         spec[parent] = spec.get(parent, {})
-        build_spec_field(spec[parent], field_name, value)
+        build_spec_field(spec[parent], field_name, value, sep)
     else:
-        spec[name] = value.replace("__", ".")
+        spec[name] = value.replace("__", sep)
 
 
 def get_field_names(data: dict) -> list:
     field_names = []
     for key, value in data.items():
-        if not isinstance(value, dict):
-            field_names.append(key)
-        else:
+        if isinstance(value, dict):
             field_names += [f"{key}__{val}" for val in get_field_names(value)]
+        elif isinstance(value, serializers.Serializer):
+            field_names += [f"{key}__{val}" for val in get_field_names(value.fields)]
+        else:
+            field_names.append(key)
 
     return field_names
 
