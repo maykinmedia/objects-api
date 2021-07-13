@@ -1,4 +1,25 @@
+from datetime import datetime
+from typing import Any
+
 from djchoices import DjangoChoices
+
+
+def string_to_value(value: str) -> Any:
+    if is_number(value):
+        return float(value)
+    elif is_date(value):
+        return datetime.strptime(value, "%Y-%m-%d").isoformat()
+
+    return None
+
+
+def is_date(value: str) -> bool:
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+
+    return True
 
 
 def is_number(value: str) -> bool:

@@ -195,7 +195,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.json(), ["Operator `lt` supports only numeric values"]
+            response.json(), ["Operator `lt` supports only dates and/or numeric values"]
         )
 
     def test_filter_invalid_operator(self):

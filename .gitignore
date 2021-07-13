@@ -25,6 +25,7 @@ src/objects/static/bundles/
 # Environment
 local.py
 /env/
+/venv/
 /media/
 /static/
 /mail/

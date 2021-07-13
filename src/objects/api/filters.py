@@ -12,7 +12,12 @@ from vng_api_common.filtersets import FilterSet
 from objects.core.models import Object, ObjectType
 
 from .constants import Operators
-from .utils import display_choice_values_for_help_text, is_number
+from .utils import (
+    display_choice_values_for_help_text,
+    is_number,
+    is_date,
+    string_to_value,
+)
 from .validators import validate_data_attrs
 
 
@@ -108,7 +113,7 @@ class ObjectFilterSet(FilterSet):
 Data filtering expressions are comma-separated and are structured as follows:
 A valid parameter value has the form `key__operator__value`.
 `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
-Note: Values can be string or numeric. Dates are not supported.
+Note: Values can be string, numeric, or dates.
 
 Valid operator values are:
 %(operator_choices)s
@@ -133,13 +138,13 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
         for value_part in parts:
             variable, operator, val = value_part.rsplit("__", 2)
-            val_numeric = float(val) if is_number(val) else None
+            real_value = string_to_value(val)
 
             if operator == "exact":
                 #  for exact operator try to filter on string and numeric values
                 in_vals = [val]
-                if is_number(val):
-                    in_vals.append(val_numeric)
+                if real_value:
+                    in_vals.append(real_value)
                 queryset = queryset.filter(
                     **{f"records__data__{variable}__in": in_vals}
                 )
@@ -147,7 +152,7 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
             else:
                 # only numeric
                 queryset = queryset.filter(
-                    **{f"records__data__{variable}__{operator}": val_numeric}
+                    **{f"records__data__{variable}__{operator}": real_value}
                 )
 
         return queryset
