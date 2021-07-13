@@ -37,3 +37,10 @@
     {% endif %}
     {{ block.super }}
 {% endblock %}
+
+{% block footer %}
+    {{ block.super }}
+    {# Load the custom JS #}
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
+
