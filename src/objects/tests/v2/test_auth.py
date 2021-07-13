@@ -89,6 +89,21 @@ class PermissionTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_history_with_fields_permissions(self):
+        PermissionFactory.create(
+            object_type=self.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=self.token_auth,
+            use_fields=True,
+            fields=["url"],
+        )
+        object = ObjectFactory.create(object_type=self.object_type)
+        url = reverse("object-history", args=[object.uuid])
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     def test_update_with_read_only_perm(self):
         PermissionFactory.create(
             object_type=self.object_type,

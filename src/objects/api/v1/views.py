@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -122,3 +123,20 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
 
     # for OAS generation
     search.is_search_action = True
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        """ add warning header if not all data is allowed to display """
+        serializer = getattr(response.data, "serializer", None)
+
+        if serializer and response.status_code == 200:
+            if self.action == "retrieve" and serializer.not_allowed:
+                self.headers[
+                    settings.UNAUTHORIZED_FIELDS_HEADER
+                ] = serializer.not_allowed.pretty()
+
+            elif self.action in ("list", "search") and serializer.child.not_allowed:
+                self.headers[
+                    settings.UNAUTHORIZED_FIELDS_HEADER
+                ] = serializer.child.not_allowed.pretty()
+
+        return super().finalize_response(request, response, *args, **kwargs)

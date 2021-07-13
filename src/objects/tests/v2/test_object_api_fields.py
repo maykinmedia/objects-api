@@ -94,6 +94,11 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
         )
 
     def test_fields_invalid(self):
+        object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(
+            object=object,
+            start_at=date.today(),
+        )
         url = reverse("object-list")
 
         response = self.client.get(url, {"fields": "url,someField"})
@@ -102,5 +107,8 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data, ["'fields' query parameter has invalid values: someField"]
+            data,
+            [
+                "'fields' query parameter has invalid or unauthorized values: 'someField'"
+            ],
         )

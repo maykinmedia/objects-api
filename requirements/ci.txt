@@ -7,9 +7,15 @@
 attrs==20.3.0
     # via
     #   -r requirements/base.txt
+    #   glom
     #   jsonschema
 beautifulsoup4==4.9.3
     # via webtest
+boltons==21.0.0
+    # via
+    #   -r requirements/base.txt
+    #   face
+    #   glom
 certifi==2020.12.5
     # via
     #   -r requirements/base.txt
@@ -132,6 +138,10 @@ drf-yasg==1.20.0
     #   vng-api-common
 elastic-apm==6.1.1
     # via -r requirements/base.txt
+face==20.1.1
+    # via
+    #   -r requirements/base.txt
+    #   glom
 factory-boy==3.2.0
     # via -r requirements/test-tools.in
 faker==8.1.0
@@ -146,6 +156,8 @@ gemma-zds-client==1.0.0
     #   -r requirements/base.txt
     #   vng-api-common
     #   zgw-consumers
+glom==20.11.0
+    # via -r requirements/base.txt
 idna==2.10
     # via
     #   -r requirements/base.txt

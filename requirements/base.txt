@@ -5,7 +5,13 @@
 #    pip-compile --no-emit-index-url requirements/base.in
 #
 attrs==20.3.0
-    # via jsonschema
+    # via
+    #   glom
+    #   jsonschema
+boltons==21.0.0
+    # via
+    #   face
+    #   glom
 certifi==2020.12.5
     # via
     #   elastic-apm
@@ -96,12 +102,16 @@ drf-yasg==1.20.0
     # via vng-api-common
 elastic-apm==6.1.1
     # via -r requirements/base.in
+face==20.1.1
+    # via glom
 faker==8.1.0
     # via zgw-consumers
 gemma-zds-client==1.0.0
     # via
     #   vng-api-common
     #   zgw-consumers
+glom==20.11.0
+    # via -r requirements/base.in
 idna==2.10
     # via requests
 inflection==0.5.1
