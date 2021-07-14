@@ -113,7 +113,7 @@ class ObjectFilterSet(FilterSet):
 Data filtering expressions are comma-separated and are structured as follows:
 A valid parameter value has the form `key__operator__value`.
 `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
-Note: Values can be string, numeric, or dates.
+Note: Values can be string, numeric, or dates (ISO format; YYYY-MM-DD).
 
 Valid operator values are:
 %(operator_choices)s
