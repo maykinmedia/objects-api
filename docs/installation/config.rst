@@ -4,9 +4,8 @@
 Environment configuration reference
 ===================================
 
-The Objects and Objecttypes APIs can be ran both as a Docker container or 
-directly on a VPS or dedicated server. It relies on other services, such as 
-database and cache backends, which can be configured through environment 
+The Objects and Objecttypes APIs can be run both as a Docker container or a VPS / dedicated server. It relies on other services, such as
+database and cache backends, which can be configured through environment
 variables.
 
 Available environment variables
@@ -27,7 +26,7 @@ Required settings
 
 * ``ALLOWED_HOSTS``: A comma separated (without spaces!) list of domains that
   serve the installation. Used to protect against ``Host`` header attacks.
-  Defaults to ``*`` for the ``docker`` environment and defaults to 
+  Defaults to ``*`` for the ``docker`` environment and defaults to
   ``127.0.0.1,localhost`` for the ``dev`` environment.
 
 Database settings
@@ -47,20 +46,20 @@ Database settings
 Other settings
 --------------
 
-* ``ADMINS``: Comma seperated list (without spaces!) of e-mail addresses to 
+* ``ADMINS``: Comma seperated list (without spaces!) of e-mail addresses to
   sent an email in the case of any errors. Defaults to an empty list.
 
 * ``SITE_ID``: The database ID of the site object. Defaults to ``1``.
 
 * ``DEBUG``: Used for more traceback information on development environment.
-  Various other security settings are derived from this setting! Defaults to 
+  Various other security settings are derived from this setting! Defaults to
   ``True`` for the ``dev`` environment, otherwise defaults to ``False``.
 
-* ``IS_HTTPS``: Used to construct absolute URLs and controls a variety of 
-  security settings. Defaults to the inverse of ``DEBUG``. 
+* ``IS_HTTPS``: Used to construct absolute URLs and controls a variety of
+  security settings. Defaults to the inverse of ``DEBUG``.
 
 * ``SUBPATH``: If hosted on a subpath, provide the value here. If you provide
-  ``/gateway``, the component assumes its running at the base URL: 
+  ``/gateway``, the component assumes its running at the base URL:
   ``https://somedomain/gateway/``. Defaults to an empty string.
 
 * ``SENTRY_DSN``: URL of the sentry project to send error reports to. Defaults

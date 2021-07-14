@@ -18,9 +18,9 @@ Introduction
 ============
 
 The Objects API aims to easily store various objects and make them available in
-standardized format. The Objects API can be used by any organization to manage
-relevant objects. An organization can also choose to use the Objects API to
-expose objects to the public, as Open Data.
+standardized format. It can be used by any organization to manage
+relevant objects. An organization can also choose to use it to
+expose objects to the public as *Open Data*.
 
 To define the format of objects, so called object types, organizations can use
 a national and/or local `Objecttypes API`_.
