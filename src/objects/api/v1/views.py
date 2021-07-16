@@ -6,12 +6,14 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object, ObjectRecord
 from objects.token.permissions import ObjectTypeBasedPermission
 
 from ..filters import ObjectFilterSet
+from ..kanalen import KANAAL_OBJECTEN
 from ..mixins import GeoMixin
 from ..serializers import (
     HistoryRecordSerializer,
@@ -42,7 +44,9 @@ from ..serializers import (
         operation_id="object_delete",
     ),
 )
-class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
+class ObjectViewSet(
+    NotificationViewSetMixin, SearchMixin, GeoMixin, viewsets.ModelViewSet
+):
     queryset = Object.objects.select_related(
         "object_type", "object_type__service"
     ).order_by("-pk")
@@ -51,12 +55,17 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
     permission_classes = [ObjectTypeBasedPermission]
+    notifications_kanaal = KANAAL_OBJECTEN
 
     def get_queryset(self):
         base = super().get_queryset()
 
-        date = self.request.query_params.get("date", None)
-        registration_date = self.request.query_params.get("registrationDate", None)
+        # `vng_api_common.utils.get_viewset_for_path` passes an empty request
+        # object that does not have `query_params`
+        date = getattr(self.request, "query_params", {}).get("date", None)
+        registration_date = getattr(self.request, "query_params", {}).get(
+            "registrationDate", None
+        )
 
         # prefetch filtered records as actual ones for DB optimization
         record_queryset = (
