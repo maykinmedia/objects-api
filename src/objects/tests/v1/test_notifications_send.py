@@ -1,4 +1,4 @@
-from unittest.mock import DEFAULT, patch
+from unittest.mock import patch
 
 from django.test import override_settings
 
@@ -8,6 +8,7 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.notifications.models import NotificationsConfig
+from zds_client.client import Client
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
