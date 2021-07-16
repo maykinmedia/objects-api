@@ -1,5 +1,6 @@
 # Dependencies only relevant for (unit) testing
 coverage < 5.0
+django_capture_on_commit_callbacks
 django-jenkins
 django-webtest
 factory-boy
