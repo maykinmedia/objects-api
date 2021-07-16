@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Objects API
   version: v2
-  description: |+
+  description: |
     An API to manage Objects.
 
     # Introduction
@@ -63,6 +63,11 @@ info:
     The API uses API-tokens that grant certain permissions. The API-token is
     passed via a header, like this: `Authorization: Token <token>`
 
+    # Notifications
+
+    When OBJECTs are created, updated or deleted via the API, notifications of
+    these operations are published to the configured Notifications API in the
+    `objecten` channel.
   contact:
     url: https://github.com/maykinmedia/objects-api
   license:

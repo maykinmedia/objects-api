@@ -80,6 +80,11 @@ accordance with privacy laws.
 The API uses API-tokens that grant certain permissions. The API-token is
 passed via a header, like this: `Authorization: Token <token>`
 
+# Notifications
+
+When OBJECTs are created, updated or deleted via the API, notifications of
+these operations are published to the configured Notifications API in the
+`objecten` channel.
 """
 
 SPECTACULAR_SETTINGS = {
