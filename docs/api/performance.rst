@@ -2,8 +2,7 @@
 Performance
 ===================
 
-To ensure good user experience and quality of execution, we have a dedicated `performance testing repository`_, it is run
-on a system with the following specifications:
+To ensure good user experience and quality of performance, we have a dedicated `performance testing repository`_. It runs on a system with the following specifications:
 
 .. csv-table:: System specifications
    :widths: 20, 80
@@ -14,40 +13,42 @@ on a system with the following specifications:
     **CPU(s)**: x2 (Intel Xeon E312xx)
     **Hard drive**: 52GB
 
-We run the tests after every major Objects API version and document the stats, this careful analysis allows us to meet high-quality standards.
+We run the tests after every major version of the Objects API. After that, we report and document the stats. This careful analysis allows us to showcase our high-quality optimization process.
 
-.. csv-table:: Performance results (v2.0.0-alpha / latest)
-   :header: "v2.0.0-alpha", "Average (ms)",	"Min (ms)",	"Max (ms)", "Average size (bytes)",	"RPS",	"Failures/s"
+Results
+_______
+
+
+.. csv-table:: Performance results per version (30 minutes)
+   :header: "#", "v2.0.0-alpha", "v1.1.1", "v1.1.0"
    :delim: ;
 
-    GET;Retrieve by data_attrs;474;349;584;59724;0.1;0.0
-    GET;Retrieve by date;436;383;534;59749;0.1;0.0
-    GET;Retrieve by geo coordinates;432;389;474;59779;0.1;0.0
-    GET;Retrieve by pageSize (100);389;389;389;59776;0.0;0.0
-    GET;Retrieve by pageSize (150);460;415;510;89471;0.0;0.0
-    GET;Retrieve by pageSize (25);357;336;376;15057;0.0;0.0
-    GET;Retrieve by pageSize (250);592;502;678;148838;0.0;0.0
-    GET;Retrieve by pageSize (5);327;327;327;3072;0.0;0.0
-    GET;Retrieve by pageSize (50);363;361;365;29905;0.0;0.0
-    GET;Retrieve by pageSize (500);828;793;864;297323;0.0;0.0
-    GET;Retrieve by registrationDate;158;122;192;16565;0.1;0.0
-    GET;Retrieve single object;103;88;124;1676;0.1;0.0
+    1;127;127;125
+    2;117;111;115
+    3;129;128;127
+    4;127;128;127
+    5;130;131;130
+    6;106;106;109
+    7;**123**;**122**;**122**
 
-.. csv-table:: Tested requests
-   :header: "#", "Method", "Type"
+
+.. csv-table:: Testing methods
+   :header: "#", "Method", "Name"
+   :widths: 10, 20, 70
    :delim: ;
 
-    1;GET;Retrieve by data_attrs
-    2;GET;Retrieve by date
-    3;GET;Retrieve by geo coordinates
-    4;GET;Retrieve by pageSize (100)
-    5;GET;Retrieve by pageSize (150)
-    6;GET;Retrieve by pageSize (25)
-    7;GET;Retrieve by pageSize (250)
-    8;GET;Retrieve by pageSize (5)
-    9;GET;Retrieve by pageSize (50)
-    10;GET;Retrieve by pageSize (500)
-    11;GET;Retrieve by registrationDate
-    12;GET;Retrieve single object
+    1;GET;Retrieve all objects (ms)
+    2;GET;Retrieve by data_attrs (ms)
+    3;GET;Retrieve by date (ms)
+    4;GET;Retrieve by geo coordinates (ms)
+    5;GET;Retrieve by registrationDate (ms)
+    6;GET;Retrieve single object (ms)
+    7;*;Aggregated
+
+All performance reports are available for download for all versions:
+
+- :download:`v2.0.0-alpha <_assets/v2.0.0-alpha.html>`
+- :download:`v1.1.1 <_assets/v1.1.1.html>`
+- :download:`v1.1.0 <_assets/v1.1.0.html>`
 
 .. _`performance testing repository`: https://github.com/maykinmedia/objects-api-performance
