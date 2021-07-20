@@ -9,7 +9,7 @@ const mount = () => {
     if (!node) return;
 
     const objectFields = jsonScriptToVar('object-fields');
-    const dataFields = jsonScriptToVar('data-fields');
+    const dataFieldChoices = jsonScriptToVar('data-field-choices');
     const tokenChoices = jsonScriptToVar('token-auth-choices');
     const objecttypeChoices = jsonScriptToVar('object-type-choices');
     const modeChoices = jsonScriptToVar('mode-choices');
@@ -20,7 +20,7 @@ const mount = () => {
     ReactDOM.render(
         <PermissionForm
             objectFields={objectFields}
-            dataFields={dataFields}
+            dataFieldChoices={dataFieldChoices}
             tokenChoices={tokenChoices}
             objecttypeChoices={objecttypeChoices}
             modeChoices={modeChoices}

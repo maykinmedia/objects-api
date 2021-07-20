@@ -19,7 +19,7 @@ class PermissionAdmin(admin.ModelAdmin):
         object_fields = build_spec(get_field_names(object_serializer.fields), sep="__")
         return object_fields
 
-    def get_data_fields(self):
+    def get_data_field_choices(self):
         data_fields = {}
         for object_type in ObjectType.objects.all():
             client = object_type.service.build_client()
@@ -59,7 +59,7 @@ class PermissionAdmin(admin.ModelAdmin):
 
         return {
             "object_fields": self.get_object_fields(),
-            "data_fields": self.get_data_fields(),
+            "data_field_choices": self.get_data_field_choices(),
             "token_auth_choices": token_auth_choices,
             "object_type_choices": object_type_choices,
             "mode_choices": mode_choices,

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
 
-const CheckboxInput = ({name, id, checked, label, onChange}) => {
+const CheckboxInput = ({name, id, value, label, onChange}) => {
     return (
         <div className="checkbox-row">
             <input
                 type="checkbox"
                 id={id}
                 name={name}
-                checked={checked}
-                onChange={(event) => {
+                checked={value}
+                onChange={(event ) => {
                     if (onChange) {
-                        onChange(event);
+                        onChange(event.target.checked);
                     }
                 }}
             />
@@ -22,8 +22,7 @@ const CheckboxInput = ({name, id, checked, label, onChange}) => {
 
 
 const TextInput = (props) => {
-    const { id, name, initial, label } = props;
-    const [value, setValue] = useState(initial || "");
+    const { id, name, value, label, onChange } = props;
 
     return (
          <div>
@@ -33,9 +32,11 @@ const TextInput = (props) => {
                 id={id}
                 name={name}
                 onChange={ (event) => {
-                    setValue(event.text);
+                    if (onChange) {
+                        onChange(event.target.value);
+                    }
                 }}
-                defaultValue={value}
+                value={value}
             />
          </div>
     );
