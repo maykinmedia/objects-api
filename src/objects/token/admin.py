@@ -33,7 +33,9 @@ class PermissionAdmin(admin.ModelAdmin):
             schema = response[-1]["jsonSchema"]
             # use only first level of properties
             properties = list(schema["properties"].keys())
-            data_fields[object_type.id] = {prop: f"record__data__{prop}" for prop in properties}
+            data_fields[object_type.id] = {
+                prop: f"record__data__{prop}" for prop in properties
+            }
         return data_fields
 
     def get_initial_data(self, request, object_id):

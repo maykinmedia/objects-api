@@ -15,22 +15,23 @@ const CheckboxInput = ({name, id, value, label, onChange}) => {
                     }
                 }}
             />
-            <label className="vCheckboxLabel" htmlFor={id}>{ label }</label>
+            {label ? <label className="vCheckboxLabel" htmlFor={id}>{ label }</label> : null}
         </div>
     );
 };
 
 
 const TextInput = (props) => {
-    const { id, name, value, label, onChange } = props;
+    const { id, name, value, label, onChange, hidden } = props;
 
     return (
          <div>
-            <label htmlFor={id}>{label}</label>
+             {label ? <label htmlFor={id}>{label}</label> : null}
             <input
                 type="text"
                 id={id}
                 name={name}
+                hidden={hidden}
                 onChange={ (event) => {
                     if (onChange) {
                         onChange(event.target.value);

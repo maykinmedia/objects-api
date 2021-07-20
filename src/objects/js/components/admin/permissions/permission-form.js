@@ -60,13 +60,12 @@ const PermissionForm = (props) => {
             />
         </div>
 
-        <div className="form-row">
-            <TextInput
+        <TextInput
                 name="fields"
                 id="id_fields"
-                label="Fields:"
-                value={useFields ? fields : ""}/>
-        </div>
+                hidden={true}
+                value={useFields ? fields : ""}
+        />
 
         { useFields ?
 

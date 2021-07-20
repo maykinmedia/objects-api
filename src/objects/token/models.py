@@ -2,6 +2,7 @@ import binascii
 import os
 
 from django.contrib.postgres.fields import ArrayField
+from django.core import exceptions
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -104,3 +105,9 @@ class Permission(models.Model):
         verbose_name = _("permission")
         verbose_name_plural = _("permissions")
         unique_together = ("token_auth", "object_type")
+
+    def clean(self):
+        if bool(self.use_fields) ^ bool(self.fields):
+            raise exceptions.ValidationError(
+                _("Fields are required for field-based authorization")
+            )
