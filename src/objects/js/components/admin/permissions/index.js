@@ -10,11 +10,20 @@ const mount = () => {
 
     const objectFields = jsonScriptToVar('object-fields');
     const dataFields = jsonScriptToVar('data-fields');
+    const tokenChoices = jsonScriptToVar('token-auth-choices');
+    const objecttypeChoices = jsonScriptToVar('object-type-choices');
+    const modeChoices = jsonScriptToVar('mode-choices');
 
     console.log(objectFields);
 
     ReactDOM.render(
-        <PermissionForm objectFields={objectFields} dataFields={dataFields} />,
+        <PermissionForm
+            objectFields={objectFields}
+            dataFields={dataFields}
+            tokenChoices={tokenChoices}
+            objecttypeChoices={objecttypeChoices}
+            modeChoices={modeChoices}
+        />,
         node
     );
 };

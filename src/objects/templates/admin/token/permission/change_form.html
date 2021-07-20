@@ -2,11 +2,12 @@
 {% load i18n admin_urls %}
 
 {% block field_sets %}
-    {{ block.super }}
-
     {# Inject backend-controlled constants/content into the frontend state #}
     {{ object_fields|json_script:"object-fields" }}
     {{ data_fields|json_script:"data-fields" }}
+    {{ token_auth_choices|json_script:"token-auth-choices" }}
+    {{ object_type_choices|json_script:"object-type-choices" }}
+    {{ mode_choices|json_script:"mode-choices" }}
 
 
     <div id="react-permissions">

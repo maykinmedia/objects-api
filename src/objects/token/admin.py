@@ -5,6 +5,7 @@ from objects.core.models import ObjectType
 from objects.utils.admin import EditInlineAdminMixin
 from objects.utils.serializers import build_spec, get_field_names
 
+from .constants import PermissionModes
 from .models import Permission, TokenAuth
 
 
@@ -35,9 +36,26 @@ class PermissionAdmin(admin.ModelAdmin):
         return data_fields
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
+        mode_choices = [("", "---------")] + list(PermissionModes.choices)
+        token_auth_choices = [("", "---------")] + [
+            (token.pk, str(token)) for token in TokenAuth.objects.all()
+        ]
+        object_type_choices = [("", "---------")] + [
+            (object_type.pk, str(object_type))
+            for object_type in ObjectType.objects.all()
+        ]
+        print("token_auth_choices=", token_auth_choices)
+
         extra_context = extra_context or {}
-        extra_context["object_fields"] = self.get_object_fields()
-        extra_context["data_fields"] = self.get_data_fields()
+        extra_context.update(
+            {
+                "object_fields": self.get_object_fields(),
+                "data_fields": self.get_data_fields(),
+                "token_auth_choices": token_auth_choices,
+                "object_type_choices": object_type_choices,
+                "mode_choices": mode_choices,
+            }
+        )
 
         return super().change_view(
             request,
