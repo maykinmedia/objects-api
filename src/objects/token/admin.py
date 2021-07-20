@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.utils import unquote
 
 from objects.api.serializers import ObjectSerializer
 from objects.core.models import ObjectType
@@ -35,7 +36,18 @@ class PermissionAdmin(admin.ModelAdmin):
             data_fields[object_type.id] = properties
         return data_fields
 
-    def change_view(self, request, object_id, form_url="", extra_context=None):
+    def get_initial_data(self, request, object_id):
+        obj = self.get_object(request, unquote(object_id)) if object_id else None
+        ModelForm = self.get_form(request, obj, change=not obj)
+        if request.method == "POST":
+            form = ModelForm(request.POST, request.FILES, instance=obj)
+        else:
+            form = ModelForm(instance=obj)
+
+        initial_data = {field.name: field.value() for field in form}
+        return initial_data
+
+    def get_extra_context(self, request, object_id):
         mode_choices = [("", "---------")] + list(PermissionModes.choices)
         token_auth_choices = [("", "---------")] + [
             (token.pk, str(token)) for token in TokenAuth.objects.all()
@@ -44,18 +56,19 @@ class PermissionAdmin(admin.ModelAdmin):
             (object_type.pk, str(object_type))
             for object_type in ObjectType.objects.all()
         ]
-        print("token_auth_choices=", token_auth_choices)
 
+        return {
+            "object_fields": self.get_object_fields(),
+            "data_fields": self.get_data_fields(),
+            "token_auth_choices": token_auth_choices,
+            "object_type_choices": object_type_choices,
+            "mode_choices": mode_choices,
+            "initial_data": self.get_initial_data(request, object_id),
+        }
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
         extra_context = extra_context or {}
-        extra_context.update(
-            {
-                "object_fields": self.get_object_fields(),
-                "data_fields": self.get_data_fields(),
-                "token_auth_choices": token_auth_choices,
-                "object_type_choices": object_type_choices,
-                "mode_choices": mode_choices,
-            }
-        )
+        extra_context.update(self.get_extra_context(request, object_id))
 
         return super().change_view(
             request,
@@ -63,6 +76,12 @@ class PermissionAdmin(admin.ModelAdmin):
             form_url,
             extra_context=extra_context,
         )
+
+    def add_view(self, request, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context.update(self.get_extra_context(request, object_id=None))
+
+        return super().add_view(request, form_url, extra_context)
 
 
 class PermissionInline(EditInlineAdminMixin, admin.TabularInline):

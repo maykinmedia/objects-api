@@ -44,9 +44,8 @@ const TextInput = (props) => {
 
 const SelectInput = (props) => {
     const { choices, name, id, label, onChange, initialValue } = props;
-    console.log(choices);
 
-    const [currentValue, setCurrentValue] = useState(initialValue);
+    const [currentValue, setCurrentValue] = useState(initialValue || "");
 
     const options = choices.map( ([value, label], index) =>
         <option key={index} value={value}>{label}</option>

@@ -13,6 +13,7 @@ const mount = () => {
     const tokenChoices = jsonScriptToVar('token-auth-choices');
     const objecttypeChoices = jsonScriptToVar('object-type-choices');
     const modeChoices = jsonScriptToVar('mode-choices');
+    const initialData = jsonScriptToVar('initial-data');
 
     console.log(objectFields);
 
@@ -23,6 +24,7 @@ const mount = () => {
             tokenChoices={tokenChoices}
             objecttypeChoices={objecttypeChoices}
             modeChoices={modeChoices}
+            initialData={initialData}
         />,
         node
     );
