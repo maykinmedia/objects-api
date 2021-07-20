@@ -26,7 +26,7 @@ const TextInput = (props) => {
 
     return (
          <div>
-             <label htmlFor={id}>{label}</label>
+            <label htmlFor={id}>{label}</label>
             <input
                 type="text"
                 id={id}
@@ -47,7 +47,6 @@ const SelectInput = (props) => {
     const { choices, name, id, label, onChange, initialValue } = props;
 
     const [currentValue, setCurrentValue] = useState(initialValue || "");
-
     const options = choices.map( ([value, label], index) =>
         <option key={index} value={value}>{label}</option>
     );
@@ -63,7 +62,7 @@ const SelectInput = (props) => {
                 onChange={ (event, value) => {
                     setCurrentValue(value);
                     if (onChange) {
-                        onChange(value);
+                        onChange(event.target.value);
                     }
                 }}
             >

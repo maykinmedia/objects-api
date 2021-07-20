@@ -15,8 +15,6 @@ const mount = () => {
     const modeChoices = jsonScriptToVar('mode-choices');
     const initialData = jsonScriptToVar('initial-data');
 
-    console.log(objectFields);
-
     ReactDOM.render(
         <PermissionForm
             objectFields={objectFields}
