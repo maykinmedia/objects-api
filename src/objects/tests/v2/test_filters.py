@@ -137,6 +137,21 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
+    def test_filter_exact_date(self):
+        record = ObjectRecordFactory.create(
+            data={"date": "2000-11-01"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(self.url, {"data_attrs": "date__exact__2000-11-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
     def test_filter_lte(self):
         record1 = ObjectRecordFactory.create(
             data={"diameter": 4}, object__object_type=self.object_type
@@ -195,7 +210,38 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.json(), ["Operator `lt` supports only numeric values"]
+            response.json(), ["Operator `lt` supports only dates and/or numeric values"]
+        )
+
+    def test_filter_lte_date(self):
+        record = ObjectRecordFactory.create(
+            data={"date": "2000-11-01"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(self.url, {"data_attrs": "date__lte__2000-12-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+        response = self.client.get(self.url, {"data_attrs": "date__lte__2000-10-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
+
+        response = self.client.get(self.url, {"data_attrs": "date__lte__2000-11-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
     def test_filter_invalid_operator(self):

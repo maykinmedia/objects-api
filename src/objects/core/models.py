@@ -4,6 +4,7 @@ import uuid
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -82,7 +83,10 @@ class ObjectRecord(models.Model):
         help_text=_("Version of the OBJECTTYPE for data in the object record"),
     )
     data = JSONField(
-        _("data"), help_text=_("Object data, based on OBJECTTYPE"), default=dict
+        _("data"),
+        help_text=_("Object data, based on OBJECTTYPE"),
+        default=dict,
+        encoder=DjangoJSONEncoder,
     )
     start_at = models.DateField(
         _("start at"), help_text=_("Legal start date of the object record")

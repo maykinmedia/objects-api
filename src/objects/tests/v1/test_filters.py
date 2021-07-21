@@ -195,7 +195,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.json(), ["Operator `lt` supports only numeric values"]
+            response.json(), ["Operator `lt` supports only dates and/or numeric values"]
         )
 
     def test_filter_invalid_operator(self):
@@ -334,8 +334,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
     def test_filter_registration_date_detail(self):
         object = ObjectFactory.create(object_type=self.object_type)
         record1 = ObjectRecordFactory.create(
-            object=object,
-            registration_at="2020-01-01",
+            object=object, registration_at="2020-01-01",
         )
         record2 = ObjectRecordFactory.create(
             object=object, registration_at="2021-01-01"
