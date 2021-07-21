@@ -91,7 +91,6 @@ class Permission(models.Model):
     use_fields = models.BooleanField(
         _("use fields"), default=False, help_text=_("Use field-based authorization")
     )
-    # todo validate use_fields can't be true with empty fields
     fields = ArrayField(
         models.CharField(_("field"), max_length=30),
         blank=True,
@@ -107,7 +106,12 @@ class Permission(models.Model):
         unique_together = ("token_auth", "object_type")
 
     def clean(self):
-        if bool(self.use_fields) ^ bool(self.fields):
+        if self.mode == PermissionModes.read_and_write and self.use_fields:
+            raise exceptions.ValidationError(
+                _("Field-based authorization is supported only for read-only mode")
+            )
+
+        if self.use_fields ^ bool(self.fields):
             raise exceptions.ValidationError(
                 _("Fields are required for field-based authorization")
             )

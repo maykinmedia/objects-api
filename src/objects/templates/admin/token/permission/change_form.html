@@ -2,16 +2,18 @@
 {% load i18n admin_urls %}
 
 {% block field_sets %}
+{#    {{ block.super }}#}
+
     {# Inject backend-controlled constants/content into the frontend state #}
     {{ object_fields|json_script:"object-fields" }}
     {{ data_field_choices|json_script:"data-field-choices" }}
     {{ token_auth_choices|json_script:"token-auth-choices" }}
     {{ object_type_choices|json_script:"object-type-choices" }}
     {{ mode_choices|json_script:"mode-choices" }}
-    {{ initial_data|json_script:"initial-data" }}
+    {{ form_data|json_script:"form-data" }}
 
     <div id="react-permissions">
-        {# empty on purpose - react managed #}
+         empty on purpose - react managed
     </div>
 
 {% endblock %}

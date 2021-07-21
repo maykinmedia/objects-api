@@ -5,11 +5,12 @@ import { authFields } from "./auth-fields";
 
 
 const PermissionForm = (props) => {
-    const {objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, initialData} = props;
+    const {objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData} = props;
 
-    const [useFields, setUseFields] = useState(initialData["use_fields"]);
-    const [fields, setFields] = useState(initialData["fields"] ? initialData["fields"].split(",") : []);
-    const [dataFields, setDataFields] = useState(dataFieldChoices[initialData["object_type"]]);
+    const {values, errors} = formData;
+    const [useFields, setUseFields] = useState(values["use_fields"]);
+    const [fields, setFields] = useState(values["fields"] ? values["fields"].split(",") : []);
+    const [dataFields, setDataFields] = useState(dataFieldChoices[values["object_type"]]);
 
     return (
      <fieldset className="module aligned">
@@ -19,7 +20,8 @@ const PermissionForm = (props) => {
                 id="id_token_auth"
                 label="Token auth:"
                 choices={tokenChoices}
-                initialValue={initialData["token_auth"]}
+                initialValue={values["token_auth"]}
+                errors={errors["token_auth"]}
             />
         </div>
 
@@ -29,7 +31,8 @@ const PermissionForm = (props) => {
                 id="id_object_type"
                 label="Object type:"
                 choices={objecttypeChoices}
-                initialValue={initialData["object_type"]}
+                initialValue={values["object_type"]}
+                errors={errors["object_type"]}
                 onChange={(value) => {
                     setDataFields(dataFieldChoices[value]);
                     // remove other data fields from selected
@@ -45,7 +48,8 @@ const PermissionForm = (props) => {
                 id="id_mode"
                 label="Mode:"
                 choices={modeChoices}
-                initialValue={initialData["mode"]}
+                initialValue={values["mode"]}
+                errors={errors["mode"]}
             />
 
         </div>

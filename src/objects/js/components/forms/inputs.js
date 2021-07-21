@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { ErrorList } from "./error-list";
+
 
 const CheckboxInput = ({name, id, value, label, onChange}) => {
     return (
@@ -45,15 +47,18 @@ const TextInput = (props) => {
 
 
 const SelectInput = (props) => {
-    const { choices, name, id, label, onChange, initialValue } = props;
+    const { choices, name, id, label, onChange, initialValue, errors } = props;
 
     const [currentValue, setCurrentValue] = useState(initialValue || "");
+    const [_errors, setErrors] = useState(errors || []);
+
     const options = choices.map( ([value, label], index) =>
         <option key={index} value={value}>{label}</option>
     );
 
     return (
         <div>
+            <ErrorList errors={_errors} />
             <label className="required" htmlFor={id}>{label}</label>
             <select
                 name={name}
@@ -62,6 +67,7 @@ const SelectInput = (props) => {
                 value={currentValue}
                 onChange={ (event, value) => {
                     setCurrentValue(value);
+                    setErrors([]);
                     if (onChange) {
                         onChange(event.target.value);
                     }

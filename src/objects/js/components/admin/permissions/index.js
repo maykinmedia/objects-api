@@ -13,7 +13,7 @@ const mount = () => {
     const tokenChoices = jsonScriptToVar('token-auth-choices');
     const objecttypeChoices = jsonScriptToVar('object-type-choices');
     const modeChoices = jsonScriptToVar('mode-choices');
-    const initialData = jsonScriptToVar('initial-data');
+    const formData = jsonScriptToVar('form-data');
 
     ReactDOM.render(
         <PermissionForm
@@ -22,7 +22,7 @@ const mount = () => {
             tokenChoices={tokenChoices}
             objecttypeChoices={objecttypeChoices}
             modeChoices={modeChoices}
-            initialData={initialData}
+            formData={formData}
         />,
         node
     );

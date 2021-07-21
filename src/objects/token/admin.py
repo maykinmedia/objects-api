@@ -38,16 +38,27 @@ class PermissionAdmin(admin.ModelAdmin):
             }
         return data_fields
 
-    def get_initial_data(self, request, object_id):
+    def get_form_data(self, request, object_id) -> dict:
         obj = self.get_object(request, unquote(object_id)) if object_id else None
         ModelForm = self.get_form(request, obj, change=not obj)
         if request.method == "POST":
             form = ModelForm(request.POST, request.FILES, instance=obj)
         else:
             form = ModelForm(instance=obj)
+        form.is_valid()
 
-        initial_data = {field.name: field.value() for field in form}
-        return initial_data
+        values = {field.name: field.value() for field in form}
+        errors = (
+            {
+                field: [
+                    {"msg": next(iter(error)), "code": error.code} for error in _errors
+                ]
+                for field, _errors in form.errors.as_data().items()
+            }
+            if form.is_bound
+            else {}
+        )
+        return {"values": values, "errors": errors}
 
     def get_extra_context(self, request, object_id):
         mode_choices = [("", "---------")] + list(PermissionModes.choices)
@@ -65,7 +76,7 @@ class PermissionAdmin(admin.ModelAdmin):
             "token_auth_choices": token_auth_choices,
             "object_type_choices": object_type_choices,
             "mode_choices": mode_choices,
-            "initial_data": self.get_initial_data(request, object_id),
+            "form_data": self.get_form_data(request, object_id),
         }
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
