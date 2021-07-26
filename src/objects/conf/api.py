@@ -83,6 +83,8 @@ passed via a header, like this: `Authorization: Token <token>`
 """
 
 SPECTACULAR_SETTINGS = {
+    "SCHEMA_PATH_PREFIX": r"/api/v[1-9]+",
+    "SCHEMA_PATH_PREFIX_TRIM": True,
     "TITLE": "Objects API",
     "DESCRIPTION": description,
     "SERVE_INCLUDE_SCHEMA": False,
@@ -95,6 +97,12 @@ SPECTACULAR_SETTINGS = {
     },
     "VERSION": None,
     "COMPONENT_NO_READ_ONLY_REQUIRED": True,
+    "POSTPROCESSING_HOOKS": [
+        "drf_spectacular.hooks.postprocess_schema_enums",
+        "objects.utils.hooks.postprocess_servers",
+    ],
 }
+
+OAS_SERVERS = {"v1": [{"url": "/api/v1"}], "v2": [{"url": "/api/v2"}]}
 
 UNAUTHORIZED_FIELDS_HEADER = "X-Unauthorized-Fields"
