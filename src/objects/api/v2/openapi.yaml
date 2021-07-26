@@ -68,7 +68,7 @@ info:
   license:
     name: EUPL-1.2
 paths:
-  /api/v2/objects:
+  /objects:
     get:
       operationId: object_list
       description: Retrieve a list of OBJECTs and their actual RECORD. The actual
@@ -225,7 +225,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Object'
           description: Created
-  /api/v2/objects/{uuid}:
+  /objects/{uuid}:
     get:
       operationId: object_read
       description: Retrieve a single OBJECT and its actual RECORD. The actual record
@@ -418,7 +418,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v2/objects/{uuid}/history:
+  /objects/{uuid}/history:
     get:
       operationId: object_history
       description: Retrieve all RECORDs of an OBJECT.
@@ -471,7 +471,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedHistoryRecordList'
           description: OK
-  /api/v2/objects/search:
+  /objects/search:
     post:
       operationId: object_search
       description: Perform a (geo) search on OBJECTs.
@@ -755,7 +755,7 @@ components:
       type: object
       description: |-
         this mixin allows selecting fields for serializer in the query param
-        It also supports nested fields which are serializers themselves.
+        It also supports nested fields.
       properties:
         url:
           type: string
@@ -879,7 +879,7 @@ components:
       type: object
       description: |-
         this mixin allows selecting fields for serializer in the query param
-        It also supports nested fields which are serializers themselves.
+        It also supports nested fields.
       properties:
         url:
           type: string
@@ -949,3 +949,5 @@ components:
       description: Token-based authentication with required prefix "Token"
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/
+servers:
+- url: /api/v2
