@@ -334,7 +334,8 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
     def test_filter_registration_date_detail(self):
         object = ObjectFactory.create(object_type=self.object_type)
         record1 = ObjectRecordFactory.create(
-            object=object, registration_at="2020-01-01",
+            object=object,
+            registration_at="2020-01-01",
         )
         record2 = ObjectRecordFactory.create(
             object=object, registration_at="2021-01-01"

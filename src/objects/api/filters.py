@@ -14,8 +14,8 @@ from objects.core.models import Object, ObjectType
 from .constants import Operators
 from .utils import (
     display_choice_values_for_help_text,
-    is_number,
     is_date,
+    is_number,
     string_to_value,
 )
 from .validators import validate_data_attrs

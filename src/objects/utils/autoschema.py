@@ -22,20 +22,20 @@ class AutoSchema(_AutoSchema):
         return super().get_operation_id()
 
     def get_override_parameters(self):
-        """ Add request GEO headers"""
+        """Add request GEO headers"""
         geo_headers = self.get_geo_headers()
         content_type_headers = self.get_content_type_headers()
         field_params = self.get_fields_params()
         return geo_headers + content_type_headers + field_params
 
     def _get_filter_parameters(self):
-        """ remove filter parameters from all actions except LIST """
+        """remove filter parameters from all actions except LIST"""
         if self.view.action != "list":
             return []
         return super()._get_filter_parameters()
 
     def _get_response_for_code(self, serializer, status_code, media_types=None):
-        """ add default description to the response """
+        """add default description to the response"""
         response = super()._get_response_for_code(serializer, status_code, media_types)
 
         if not response.get("description"):
