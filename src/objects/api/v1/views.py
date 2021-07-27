@@ -125,7 +125,7 @@ class ObjectViewSet(SearchMixin, GeoMixin, viewsets.ModelViewSet):
     search.is_search_action = True
 
     def finalize_response(self, request, response, *args, **kwargs):
-        """ add warning header if not all data is allowed to display """
+        """add warning header if not all data is allowed to display"""
         serializer = getattr(response.data, "serializer", None)
 
         if serializer and response.status_code == 200:

@@ -68,7 +68,7 @@ info:
   license:
     name: EUPL-1.2
 paths:
-  /api/v1/objects:
+  /objects:
     get:
       operationId: object_list
       description: Retrieve a list of OBJECTs and their actual RECORD. The actual
@@ -92,7 +92,7 @@ paths:
           Data filtering expressions are comma-separated and are structured as follows:
           A valid parameter value has the form `key__operator__value`.
           `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
-          Note: Values can be string or numeric. Dates are not supported.
+          Note: Values can be string, numeric, or dates (ISO format; YYYY-MM-DD).
 
           Valid operator values are:
           * `exact` - equal to
@@ -215,7 +215,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Object'
           description: Created
-  /api/v1/objects/{uuid}:
+  /objects/{uuid}:
     get:
       operationId: object_read
       description: Retrieve a single OBJECT and its actual RECORD. The actual record
@@ -408,7 +408,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/objects/{uuid}/history:
+  /objects/{uuid}/history:
     get:
       operationId: object_history
       description: Retrieve all RECORDs of an OBJECT.
@@ -451,7 +451,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/HistoryRecord'
           description: OK
-  /api/v1/objects/search:
+  /objects/search:
     post:
       operationId: object_search
       description: Perform a (geo) search on OBJECTs.
@@ -507,7 +507,7 @@ paths:
                       Data filtering expressions are comma-separated and are structured as follows:
                       A valid parameter value has the form `key__operator__value`.
                       `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
-                      Note: Values can be string or numeric. Dates are not supported.
+                      Note: Values can be string, numeric, or dates (ISO format; YYYY-MM-DD).
 
                       Valid operator values are:
                       * `exact` - equal to
@@ -725,7 +725,7 @@ components:
       type: object
       description: |-
         this mixin allows selecting fields for serializer in the query param
-        It also supports nested fields which are serializers themselves.
+        It also supports nested fields.
       properties:
         url:
           type: string
@@ -809,7 +809,7 @@ components:
       type: object
       description: |-
         this mixin allows selecting fields for serializer in the query param
-        It also supports nested fields which are serializers themselves.
+        It also supports nested fields.
       properties:
         url:
           type: string
@@ -877,5 +877,9 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+tags:
+- name: Objects
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/
+servers:
+- url: /api/v1
