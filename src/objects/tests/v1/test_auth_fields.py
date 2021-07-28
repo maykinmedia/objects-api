@@ -33,10 +33,12 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record__startAt"],
+            fields={"1": ["url", "type", "record__startAt"]},
         )
         object = ObjectFactory.create(object_type=self.object_type)
-        record = ObjectRecordFactory.create(object=object, data={"name": "some"})
+        record = ObjectRecordFactory.create(
+            object=object, data={"name": "some"}, version=1
+        )
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url)
@@ -72,10 +74,10 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record"],
+            fields={"1": ["url", "type", "record"]},
         )
         object = ObjectFactory.create(object_type=self.object_type)
-        record = ObjectRecordFactory.create(object=object)
+        record = ObjectRecordFactory.create(object=object, version=1)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url, {"fields": "url,type,record__data__name"})
@@ -97,10 +99,10 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "some"],
+            fields={"1": ["url", "type", "some"]},
         )
         object = ObjectFactory.create(object_type=self.object_type)
-        ObjectRecordFactory.create(object=object)
+        ObjectRecordFactory.create(object=object, version=1)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url)
@@ -117,11 +119,11 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record__data__name"],
+            fields={"1": ["url", "type", "record__data__name"]},
         )
         object = ObjectFactory.create(object_type=self.object_type)
         ObjectRecordFactory.create(
-            object=object, data={"name": "some", "desc": "some desc"}
+            object=object, data={"name": "some", "desc": "some desc"}, version=1
         )
         url = reverse("object-detail", args=[object.uuid])
 
@@ -140,6 +142,26 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             response._headers["x-unauthorized-fields"][1], "record__data__desc"
         )
 
+    def test_retrieve_no_allowed_fields(self):
+        PermissionFactory.create(
+            object_type=self.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=self.token_auth,
+            use_fields=True,
+            fields={"2": ["url", "type", "record"]},
+        )
+        object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(
+            object=object, data={"name": "some", "desc": "some desc"}, version=1
+        )
+        url = reverse("object-detail", args=[object.uuid])
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), {})
+        self.assertIn("x-unauthorized-fields", response._headers)
+
 
 class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
@@ -157,20 +179,22 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record"],
+            fields={"1": ["url", "type", "record"]},
         )
         PermissionFactory.create(
             object_type=self.other_object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "uuid", "record"],
+            fields={"1": ["url", "uuid", "record"]},
         )
         record1 = ObjectRecordFactory.create(
-            object__object_type=self.object_type, data={"name": "some"}
+            object__object_type=self.object_type, data={"name": "some"}, version=1
         )
         record2 = ObjectRecordFactory.create(
-            object__object_type=self.other_object_type, data={"name": "other"}
+            object__object_type=self.other_object_type,
+            data={"name": "other"},
+            version=1,
         )
 
         response = self.client.get(self.url)
@@ -213,7 +237,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         )
         self.assertEqual(
             response._headers["x-unauthorized-fields"][1],
-            f"{self.other_object_type.url}=type; {self.object_type.url}=uuid",
+            f"{self.other_object_type.url}(1)=type; {self.object_type.url}(1)=uuid",
         )
 
     def test_list_with_query_fields(self):
@@ -223,20 +247,20 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record"],
+            fields={"1": ["url", "type", "record"]},
         )
         PermissionFactory.create(
             object_type=other_object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "uuid", "record"],
+            fields={"1": ["url", "uuid", "record"]},
         )
         record1 = ObjectRecordFactory.create(
-            object__object_type=self.object_type, data={"name": "some"}
+            object__object_type=self.object_type, data={"name": "some"}, version=1
         )
         record2 = ObjectRecordFactory.create(
-            object__object_type=other_object_type, data={"name": "other"}
+            object__object_type=other_object_type, data={"name": "other"}, version=1
         )
 
         response = self.client.get(self.url, {"fields": "url,record__data"})
@@ -267,20 +291,22 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "some", "record"],
+            fields={"1": ["url", "some", "record"]},
         )
         PermissionFactory.create(
             object_type=self.other_object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "uuid", "record"],
+            fields={"1": ["url", "uuid", "record"]},
         )
         ObjectRecordFactory.create(
-            object__object_type=self.object_type, data={"name": "some"}
+            object__object_type=self.object_type, data={"name": "some"}, version=1
         )
         ObjectRecordFactory.create(
-            object__object_type=self.other_object_type, data={"name": "other"}
+            object__object_type=self.other_object_type,
+            data={"name": "other"},
+            version=1,
         )
 
         response = self.client.get(self.url)
@@ -291,20 +317,20 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             ["Fields in the configured authorization are absent in the data: 'some'"],
         )
 
-    def test_retrieve_query_fields_not_allowed(self):
+    def test_list_query_fields_not_allowed(self):
         PermissionFactory.create(
             object_type=self.object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record"],
+            fields={"1": ["url", "type", "record"]},
         )
         PermissionFactory.create(
             object_type=self.other_object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "uuid", "record"],
+            fields={"1": ["url", "uuid", "record"]},
         )
         ObjectRecordFactory.create(
             object__object_type=self.object_type, data={"name": "some"}
@@ -320,6 +346,37 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             response.json(),
             ["'fields' query parameter has invalid or unauthorized values: 'uuid'"],
         )
+
+    def test_list_no_allowed_fields(self):
+        PermissionFactory.create(
+            object_type=self.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=self.token_auth,
+            use_fields=True,
+            fields={"2": ["url", "type", "record"]},
+        )
+        PermissionFactory.create(
+            object_type=self.other_object_type,
+            mode=PermissionModes.read_only,
+            token_auth=self.token_auth,
+            use_fields=True,
+            fields={"2": ["url", "uuid", "record"]},
+        )
+        ObjectRecordFactory.create(
+            object__object_type=self.object_type, data={"name": "some"}, version=1
+        )
+        ObjectRecordFactory.create(
+            object__object_type=self.other_object_type,
+            data={"name": "other"},
+            version=1,
+        )
+        url = reverse("object-list")
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), [{}, {}])
+        self.assertIn("x-unauthorized-fields", response._headers)
 
 
 class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):
@@ -337,12 +394,13 @@ class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields=["url", "type", "record__geometry"],
+            fields={"1": ["url", "type", "record__geometry"]},
         )
         record = ObjectRecordFactory.create(
             geometry=Point(4.905289, 52.369918),
             object__object_type=self.object_type,
             data={"name": "some"},
+            version=1,
         )
         response = self.client.post(
             self.url,
