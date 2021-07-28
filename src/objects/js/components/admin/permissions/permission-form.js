@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
 import { CheckboxInput, TextInput, SelectInput } from "../../forms/inputs";
-import { authFields } from "./auth-fields";
+import { versionAuthFields } from "./auth-fields";
 
 
 const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData}) => {
     const {values, errors} = formData;
     const [mode, setMode]  = useState(values["mode"]);
     const [useFields, setUseFields] = useState(values["use_fields"]);
-    const [fields, setFields] = useState(values["fields"] ? values["fields"].split(",") : []);
-    const [dataFields, setDataFields] = useState(dataFieldChoices[values["object_type"]]);
+    const [objectType, setObjectType] = useState(values["object_type"]);
+
+    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {});
 
     return (
      <fieldset className="module aligned">
@@ -33,10 +34,8 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
                 initialValue={values["object_type"]}
                 errors={errors["object_type"]}
                 onChange={(value) => {
-                    setDataFields(dataFieldChoices[value]);
-                    // remove other data fields from selected
-                    const newFields = fields.filter(x => !x.startsWith("record__data__"))
-                    setFields(newFields);
+                    setObjectType(value);
+                    setFields({});
                 }}
             />
         </div>
@@ -74,7 +73,7 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
                 name="fields"
                 id="id_fields"
                 hidden={true}
-                value={useFields ? fields : ""}
+                value={useFields ? JSON.stringify(fields) : ""}
         />
 
         { useFields ?
@@ -82,7 +81,7 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
             <div className="form-row">
                 <label htmlFor="id_selected_fields">Fields:</label>
                 <div id="id_selected_fields" className="permission-fields">
-                    { authFields(objectFields, dataFields, fields, setFields) }
+                    { versionAuthFields(objectType, objectFields, dataFieldChoices, fields, setFields) }
                 </div>
             </div>
 

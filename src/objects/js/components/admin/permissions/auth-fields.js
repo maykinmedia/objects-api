@@ -60,5 +60,33 @@ const authFields = (object_fields, dataFields, fields, setFields) => {
     });
 };
 
+const versionAuthFields = (objectType, objectFields, dataFieldChoices, fields, setFields) => {
 
-export { authFields };
+    const dataFields = dataFieldChoices[objectType];
+    const objecttypeVersions = Object.entries(dataFieldChoices).reduce((acc, [k, v]) => {
+        acc[k] = Object.keys(v);
+        return acc;
+    }, {});
+
+    const currentVersions = objecttypeVersions[objectType];
+
+    return currentVersions.map((version, index) => {
+        const setVersionFields = (value) => {
+            const newFields = {...fields};
+            newFields[version] = value;
+            setFields(newFields);
+            };
+
+        return (
+            <div key={index} className="form-row">
+                <h3>Version {version}</h3>
+                <div className="permission-fields__nested">
+                    {authFields(objectFields, dataFields[version], fields[version] || [], setVersionFields)}
+                </div>
+            </div>
+        );
+    });
+}
+
+
+export { versionAuthFields };
