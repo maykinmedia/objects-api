@@ -30,14 +30,15 @@ class PermissionAdmin(admin.ModelAdmin):
             if isinstance(response, dict):
                 response = response["results"]
 
-            # to select fields use the latest version
-            # TODO should we include objecttype versions in field-based auth?
-            schema = response[-1]["jsonSchema"]
             # use only first level of properties
-            properties = list(schema["properties"].keys())
             data_fields[object_type.id] = {
-                prop: f"record__data__{prop}" for prop in properties
+                version["version"]: {
+                    prop: f"record__data__{prop}"
+                    for prop in list(version["jsonSchema"]["properties"].keys())
+                }
+                for version in response
             }
+        print("data_fields=", data_fields)
         return data_fields
 
     def get_form_data(self, request, object_id) -> dict:

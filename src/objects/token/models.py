@@ -1,7 +1,7 @@
 import binascii
 import os
 
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core import exceptions
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -91,12 +91,14 @@ class Permission(models.Model):
     use_fields = models.BooleanField(
         _("use fields"), default=False, help_text=_("Use field-based authorization")
     )
-    fields = ArrayField(
-        models.CharField(_("field"), max_length=30),
+    fields = JSONField(
+        _("mode"),
         blank=True,
-        default=list,
+        null=True,
+        default=dict,
         help_text=_(
-            "Fields allowed for this token. Supports only first level of the `record.data` properties"
+            "Fields allowed for this token in relation to objecttype versions. "
+            "Supports only first level of the `record.data` properties"
         ),
     )
 
@@ -109,9 +111,4 @@ class Permission(models.Model):
         if self.mode == PermissionModes.read_and_write and self.use_fields:
             raise exceptions.ValidationError(
                 _("Field-based authorization is supported only for read-only mode")
-            )
-
-        if self.use_fields and not self.fields:
-            raise exceptions.ValidationError(
-                _("Fields are required for field-based authorization")
             )
