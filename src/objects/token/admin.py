@@ -38,7 +38,6 @@ class PermissionAdmin(admin.ModelAdmin):
                 }
                 for version in response
             }
-        print("data_fields=", data_fields)
         return data_fields
 
     def get_form_data(self, request, object_id) -> dict:

@@ -71,6 +71,15 @@ class Object(models.Model):
     def last_record(self):
         return self.records.order_by("-start_at", "-index").first()
 
+    @property
+    def record(self):
+        # `actual_records` attribute is set in ObjectViewSet.get_queryset
+        if getattr(self, "actual_records", None):
+            return self.actual_records[0]
+
+        # for create and update
+        return self.current_record
+
 
 class ObjectRecord(models.Model):
     index = models.PositiveIntegerField(

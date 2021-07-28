@@ -21,15 +21,12 @@ class JsonSchemaValidator:
 
     def __call__(self, attrs):
         object_type = attrs.get("object_type") or self.instance.object_type
-        version = (
-            attrs.get("current_record", {}).get("version")
-            or self.instance.current_record.version
-        )
+        version = attrs.get("record", {}).get("version") or self.instance.record.version
 
-        if attrs.get("current_record"):
-            data = attrs["current_record"].get("data", {})
+        if attrs.get("record"):
+            data = attrs["record"].get("data", {})
         else:
-            data = self.instance.current_record.data
+            data = self.instance.record.data
 
         if not object_type or not version or not data:
             return
