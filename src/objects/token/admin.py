@@ -18,7 +18,7 @@ class PermissionAdmin(admin.ModelAdmin):
 
     def get_object_fields(self):
         object_serializer = ObjectSerializer()
-        object_fields = build_spec(get_field_names(object_serializer.fields), sep="__")
+        object_fields = build_spec(get_field_names(object_serializer.fields), ui=True)
         return object_fields
 
     def get_data_field_choices(self):
