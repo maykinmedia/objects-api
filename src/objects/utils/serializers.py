@@ -127,7 +127,13 @@ class DynamicFieldsMixin:
         if not request:
             return ALL_FIELDS
 
-        permission = request.auth.get_permission_for_object_type(instance.object_type)
+        # use prefetch_related for DB optimization
+        if getattr(instance.object_type, "token_permissions", None):
+            permission = instance.object_type.token_permissions[0]
+        else:
+            permission = request.auth.get_permission_for_object_type(
+                instance.object_type
+            )
         if permission.mode == PermissionModes.read_only and permission.use_fields:
             return permission.fields.get(str(instance.record.version), [])
 

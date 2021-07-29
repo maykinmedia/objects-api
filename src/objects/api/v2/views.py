@@ -11,6 +11,7 @@ from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object, ObjectRecord
+from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
 from ..filters import ObjectFilterSet
@@ -81,7 +82,12 @@ class ObjectViewSet(
                 "records",
                 queryset=record_queryset.select_related("correct", "corrected"),
                 to_attr="actual_records",
-            )
+            ),
+            models.Prefetch(
+                "object_type__permissions",
+                queryset=Permission.objects.filter(token_auth=self.request.auth),
+                to_attr="token_permissions",
+            ),
         )
 
         if self.action not in ("list", "search"):
