@@ -14,6 +14,8 @@ jobs:
         run: sleep 10
       - name: Load fixtures
         run: docker-compose -f docker-compose-qs.yml exec -T web src/manage.py loaddata demodata
+      - name: Create superuser
+        run: docker-compose -f docker-compose-qs.yml exec -T web src/manage.py createsuperuser --username admin --email admin@admin.nl --no-input
       - name: Check main page
         run: |
           curl_status=$(curl -w '%{http_code}' -o /dev/null  -s http://localhost:8000/)
