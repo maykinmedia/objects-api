@@ -51,6 +51,13 @@ Objecttypes API
 
       $ docker-compose exec web src/manage.py loaddata demodata
 
+5. Create a superuser
+
+   .. code:: shell
+
+      $ docker-compose exec web src/manage.py createsuperuser
+
+
 Objects API
 -----------
 
@@ -89,11 +96,20 @@ Objects API
 
       $ docker-compose exec web src/manage.py loaddata demodata
 
-5. Retrieve an object via the Objects API in your webbrowser:
+
+5. Create a superuser
+
+   .. code:: shell
+
+      $ docker-compose exec web src/manage.py createsuperuser
+
+
+6. Retrieve an object via the Objects API in your webbrowser:
 
    .. code::
 
       http://localhost:8000/api/v1/objects/
 
 
-TODO: Auth, fixtures, objects...
+After you have the Objects API and the Objecttypes API running you can configure
+:ref:`admin_authentication`, :ref:`admin_authorization` and use the API's.
