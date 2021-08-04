@@ -1,7 +1,9 @@
 import logging
 import os
+from unittest.mock import DEFAULT
 
 from requests_mock import Mocker
+from zds_client.client import Client
 
 logger = logging.getLogger(__name__)
 
@@ -9,6 +11,8 @@ MOCK_FILES_DIR = os.path.join(
     os.path.abspath(os.path.dirname(__file__)),
     "schemas",
 )
+
+original_from_url = Client.from_url
 
 _cache = {}
 
@@ -78,3 +82,12 @@ def mock_objecttype_version(url: str) -> dict:
         "modifiedAt": "2020-11-16",
         "publishedAt": "2020-11-16",
     }
+
+
+def notifications_client_mock(value):
+    """
+    Return the default unittest.patch mock result for notifications client
+    """
+    if "notificaties" in value:
+        return DEFAULT
+    return original_from_url(value)

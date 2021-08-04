@@ -45,6 +45,8 @@ urlpatterns = [
             extra_context={"version": api_settings.DEFAULT_VERSION},
         ),
     ),
+    path("ref/", include("vng_api_common.urls")),
+    path("ref/", include("vng_api_common.notifications.urls")),
     path("api/", include("objects.api.urls")),
 ]
 

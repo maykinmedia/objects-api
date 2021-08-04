@@ -1,4 +1,5 @@
 import os
+import sys
 import warnings
 
 os.environ.setdefault(
@@ -21,6 +22,7 @@ from .base import *  # noqa isort:skip
 #
 
 DEBUG = True
+IS_HTTPS = False
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ADMINS = ()
@@ -119,6 +121,9 @@ warnings.filterwarnings(
     RuntimeWarning,
     r"django\.db\.models\.fields",
 )
+
+if "test" in sys.argv:
+    NOTIFICATIONS_DISABLED = True
 
 # Override settings with local settings.
 try:

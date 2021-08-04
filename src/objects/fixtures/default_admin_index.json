@@ -29,6 +29,10 @@
                 "appgroup"
             ],
             [
+                "notifications",
+                "notificationsconfig"
+            ],
+            [
                 "sites",
                 "site"
             ],
