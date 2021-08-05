@@ -4,15 +4,15 @@ from django.urls import path
 from drf_spectacular.views import (
     SpectacularJSONAPIView,
     SpectacularRedocView,
-    SpectacularSwaggerView,
     SpectacularYAMLAPIView,
 )
 from rest_framework import routers
 
-from .views import ObjectViewSet
+from .views import ObjectViewSet, PermissionViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r"objects", ObjectViewSet)
+router.register(r"permissions", PermissionViewSet)
 
 app_name = "v2"
 
