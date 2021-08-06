@@ -1044,6 +1044,9 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+tags:
+- name: objects
+- name: permissions
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/
 servers:

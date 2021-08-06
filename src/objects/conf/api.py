@@ -106,6 +106,7 @@ SPECTACULAR_SETTINGS = {
         "drf_spectacular.hooks.postprocess_schema_enums",
         "objects.utils.hooks.postprocess_servers",
     ],
+    "TAGS": [{"name": "objects"}, {"name": "permissions"}],
 }
 
 OAS_SERVERS = {"v1": [{"url": "/api/v1"}], "v2": [{"url": "/api/v2"}]}
