@@ -142,7 +142,7 @@ paths:
           minLength: 1
         description: Url reference to OBJECTTYPE in Objecttypes API
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -201,7 +201,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -255,7 +255,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -319,7 +319,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -383,7 +383,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -419,7 +419,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -447,7 +447,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -501,7 +501,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -894,8 +894,6 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
-tags:
-- name: Objects
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/
 servers:

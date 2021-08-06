@@ -154,7 +154,7 @@ paths:
           minLength: 1
         description: Url reference to OBJECTTYPE in Objecttypes API
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -211,7 +211,7 @@ paths:
         description: Content type of the request body.
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -265,7 +265,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -329,7 +329,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -393,7 +393,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -429,7 +429,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -469,7 +469,7 @@ paths:
           description: Unique identifier (UUID4)
         required: true
       tags:
-      - Objects
+      - objects
       security:
       - tokenAuth: []
       responses:
@@ -533,7 +533,7 @@ paths:
         schema:
           type: integer
       tags:
-      - Objects
+      - objects
       requestBody:
         content:
           application/json:
@@ -600,6 +600,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedObjectList'
+          description: OK
+  /permissions:
+    get:
+      operationId: permission_list
+      description: Retrieve a list of permissions available for the user
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - permissions
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPermissionList'
           description: OK
 components:
   schemas:
@@ -717,6 +746,11 @@ components:
             items:
               $ref: '#/components/schemas/Point2D'
             minItems: 2
+    ModeEnum:
+      enum:
+      - read_only
+      - read_and_write
+      type: string
     MultiLineString:
       type: object
       description: GeoJSON multi-line-string geometry
@@ -892,6 +926,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Object'
+    PaginatedPermissionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
     PatchedObject:
       type: object
       description: |-
@@ -920,6 +974,32 @@ components:
           allOf:
           - $ref: '#/components/schemas/ObjectRecord'
           description: State of the OBJECT at a certain time
+    Permission:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 1000
+          description: Url reference to OBJECTTYPE in Objecttypes API
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/ModeEnum'
+          description: Permission mode
+        use_fields:
+          type: boolean
+          description: Use field-based authorization
+        fields:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          title: Mode
+          description: Fields allowed for this token in relation to objecttype versions.
+            Supports only first level of the `record.data` properties
+      required:
+      - mode
+      - type
     Point:
       type: object
       description: GeoJSON point geometry
@@ -964,8 +1044,6 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
-tags:
-- name: Objects
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/
 servers:
