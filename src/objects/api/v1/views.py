@@ -68,6 +68,7 @@ class ObjectViewSet(
         registration_date = getattr(self.request, "query_params", {}).get(
             "registrationDate", None
         )
+        token_auth = getattr(self.request, "auth", None)
 
         # prefetch filtered records as actual ones for DB optimization
         record_queryset = (
@@ -83,7 +84,7 @@ class ObjectViewSet(
             ),
             models.Prefetch(
                 "object_type__permissions",
-                queryset=Permission.objects.filter(token_auth=self.request.auth),
+                queryset=Permission.objects.filter(token_auth=token_auth),
                 to_attr="token_permissions",
             ),
         )
