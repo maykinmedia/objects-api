@@ -8,6 +8,7 @@ const PermissionForm = (props) => {
     const {objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData} = props;
 
     const {values, errors} = formData;
+    const [mode, setMode]  = useState(values["mode"]);
     const [useFields, setUseFields] = useState(values["use_fields"]);
     const [fields, setFields] = useState(values["fields"] ? values["fields"].split(",") : []);
     const [dataFields, setDataFields] = useState(dataFieldChoices[values["object_type"]]);
@@ -48,8 +49,14 @@ const PermissionForm = (props) => {
                 id="id_mode"
                 label="Mode:"
                 choices={modeChoices}
-                initialValue={values["mode"]}
+                initialValue={mode}
                 errors={errors["mode"]}
+                onChange={(value) => {
+                    setMode(value);
+                    if (value === "read_and_write") {
+                        setUseFields(false);
+                    }
+                }}
             />
 
         </div>
@@ -58,7 +65,8 @@ const PermissionForm = (props) => {
             <CheckboxInput
                 name="use_fields"
                 id="id_use_fields"
-                label="Use fields"
+                label="Use field-based authorization"
+                disabled={mode === "read_and_write"}
                 value={useFields}
                 onChange={(value) => {setUseFields(value)}}
             />

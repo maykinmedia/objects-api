@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { ErrorList } from "./error-list";
 
 
-const CheckboxInput = ({name, id, value, label, onChange}) => {
+const CheckboxInput = ({name, id, value, label, disabled, onChange}) => {
     return (
         <div className="checkbox-row">
             <input
@@ -11,6 +11,7 @@ const CheckboxInput = ({name, id, value, label, onChange}) => {
                 id={id}
                 name={name}
                 checked={value}
+                disabled={disabled}
                 onChange={(event ) => {
                     if (onChange) {
                         onChange(event.target.checked);
