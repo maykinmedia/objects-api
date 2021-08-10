@@ -8,13 +8,18 @@ from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from rest_framework.settings import api_settings
+from two_factor.admin import AdminSiteOTPRequired
+from two_factor.urls import urlpatterns as tf_urls
 
 handler500 = "objects.utils.views.server_error"
 admin.site.site_header = "objects admin"
 admin.site.site_title = "objects admin"
 admin.site.index_title = "Welcome to the objects admin"
+# admin.site.__class__ = AdminSiteOTPRequired
+
 
 urlpatterns = [
+    path("", include(tf_urls)),
     path(
         "admin/password_reset/",
         auth_views.PasswordResetView.as_view(),

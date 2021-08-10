@@ -17,6 +17,8 @@ django-hijack-admin
 django-redis
 django-rosetta
 django-sniplates
+django-two-factor-auth
+django-two-factor-auth[phonenumbers]
 
 # API libraries
 djangorestframework

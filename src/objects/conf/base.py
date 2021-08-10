@@ -78,6 +78,11 @@ INSTALLED_APPS = [
     "vng_api_common",
     "vng_api_common.notifications",
     "zgw_consumers",
+    # 2fa apps
+    "two_factor",
+    "django_otp",
+    "django_otp.plugins.otp_static",
+    "django_otp.plugins.otp_totp",
     # Project applications.
     "objects.accounts",
     "objects.api",
@@ -96,6 +101,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
+    "django_otp.middleware.OTPMiddleware",
 ]
 
 ROOT_URLCONF = "objects.urls"
@@ -382,3 +388,8 @@ CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
 
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
+
+
+# 2FA settings
+LOGIN_URL = "two_factor:login"
+LOGIN_REDIRECT_URL = "two_factor:profile"
