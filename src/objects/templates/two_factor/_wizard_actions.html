@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<div class="submit-row">
+{% if cancel_url %}
+  <a href="{{ cancel_url }}"
+     class="float-right btn btn-link">{% trans "Cancel" %}</a>
+{% endif %}
+{% if wizard.steps.prev %}
+  <input name="wizard_goto_step" type="submit"
+          value="{{ wizard.steps.prev }}"
+          class="btn btn-secondary">{% trans "Back" %}</input>
+{% else %}
+  <input disabled name="" type="button" class="btn" value="{% trans 'Back' %}"/>
+{% endif %}
+<input type="submit" class="btn btn-primary" value="{% trans 'Next' %}"/>
+</div>
