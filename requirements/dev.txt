@@ -84,6 +84,10 @@ django-filter==2.4.0
     # via
     #   -r requirements/ci.txt
     #   vng-api-common
+django-formtools==2.3
+    # via
+    #   -r requirements/ci.txt
+    #   maykin-django-two-factor-auth
 django-hijack-admin==2.1.10
     # via -r requirements/ci.txt
 django-hijack==2.3.0
@@ -104,6 +108,14 @@ django-ordered-model==3.4.1
     # via
     #   -r requirements/ci.txt
     #   django-admin-index
+django-otp==1.0.6
+    # via
+    #   -r requirements/ci.txt
+    #   maykin-django-two-factor-auth
+django-phonenumber-field==5.2.0
+    # via
+    #   -r requirements/ci.txt
+    #   maykin-django-two-factor-auth
 django-redis==4.12.1
     # via -r requirements/ci.txt
 django-relativedelta==1.1.2
@@ -134,9 +146,12 @@ django==2.2.24
     #   django-debug-toolbar
     #   django-extensions
     #   django-filter
+    #   django-formtools
     #   django-hijack
     #   django-jenkins
     #   django-markup
+    #   django-otp
+    #   django-phonenumber-field
     #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
@@ -146,6 +161,7 @@ django==2.2.24
     #   drf-nested-routers
     #   drf-spectacular
     #   drf-yasg
+    #   maykin-django-two-factor-auth
     #   vng-api-common
     #   zgw-consumers
 djangorestframework-camel-case==1.2.0
@@ -207,7 +223,7 @@ idna==2.10
     #   requests
 imagesize==1.2.0
     # via sphinx
-importlib-metadata==4.6.1
+importlib-metadata==4.8.1
     # via
     #   -r requirements/ci.txt
     #   flake8
@@ -254,6 +270,8 @@ markupsafe==1.1.1
     # via
     #   -r requirements/ci.txt
     #   jinja2
+maykin-django-two-factor-auth[phonenumbers]==2.0.2
+    # via -r requirements/ci.txt
 mccabe==0.6.1
     # via flake8
 mypy-extensions==0.4.3
@@ -271,6 +289,10 @@ pathspec==0.8.1
     # via black
 pep517==0.10.0
     # via pip-tools
+phonenumbers==8.12.29
+    # via
+    #   -r requirements/ci.txt
+    #   maykin-django-two-factor-auth
 pillow==8.3.2
     # via -r requirements/ci.txt
 pip-tools==6.0.1
@@ -326,6 +348,10 @@ pyyaml==5.4.1
     #   gemma-zds-client
     #   oyaml
     #   vng-api-common
+qrcode==6.1
+    # via
+    #   -r requirements/ci.txt
+    #   maykin-django-two-factor-auth
 recommonmark==0.7.1
     # via -r requirements/dev.in
 redis==3.5.3
@@ -368,6 +394,7 @@ six==1.15.0
     #   isodate
     #   jsonschema
     #   python-dateutil
+    #   qrcode
     #   requests-mock
     #   webtest
 snowballstemmer==2.1.0
@@ -415,7 +442,7 @@ toml==0.10.2
     #   pep517
 typed-ast==1.4.3
     # via black
-typing-extensions==3.10.0.0
+typing-extensions==3.10.0.2
     # via
     #   -r requirements/ci.txt
     #   black
