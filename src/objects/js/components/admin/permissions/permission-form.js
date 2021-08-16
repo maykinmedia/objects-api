@@ -4,8 +4,8 @@ import { CheckboxInput, TextInput, SelectInput } from "../../forms/inputs";
 import { authFields } from "./auth-fields";
 
 
-const PermissionForm = (props) => {
-    const {objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData} = props;
+const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData}) => {
+
 
     const {values, errors} = formData;
     const [mode, setMode]  = useState(values["mode"]);

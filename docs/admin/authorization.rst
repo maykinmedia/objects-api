@@ -68,7 +68,7 @@ Finally it's time to create a permission to access objects with "boom" object ty
 .. image:: _assets/img/authorization_objects_main_permission.png
     :alt: Click on the "add" button for "Permission"
 
-In the admin page of the Objects API click on the "add" button for "Permission"
+In the admin page of the Objects API, click on the "Add" button next to the "Permissions"
 resource.
 
 .. image:: _assets/img/authorization_objects_permission.png

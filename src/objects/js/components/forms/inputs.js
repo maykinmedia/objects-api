@@ -24,8 +24,7 @@ const CheckboxInput = ({name, id, value, label, disabled, onChange}) => {
 };
 
 
-const TextInput = (props) => {
-    const { id, name, value, label, onChange, hidden } = props;
+const TextInput = ({id, name, value, label, onChange, hidden}) => {
 
     return (
          <div>
@@ -47,8 +46,7 @@ const TextInput = (props) => {
 };
 
 
-const SelectInput = (props) => {
-    const { choices, name, id, label, onChange, initialValue, errors } = props;
+const SelectInput = ({choices, name, id, label, onChange, initialValue, errors}) => {
 
     const [currentValue, setCurrentValue] = useState(initialValue || "");
     const [_errors, setErrors] = useState(errors || []);

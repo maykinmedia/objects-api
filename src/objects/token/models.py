@@ -111,7 +111,7 @@ class Permission(models.Model):
                 _("Field-based authorization is supported only for read-only mode")
             )
 
-        if self.use_fields ^ bool(self.fields):
+        if self.use_fields and not self.fields:
             raise exceptions.ValidationError(
                 _("Fields are required for field-based authorization")
             )

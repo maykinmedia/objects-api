@@ -1,8 +1,7 @@
 import React from 'react';
 
 
-const ErrorList = (props) => {
-    const { errors } = props;
+const ErrorList = ({ errors }) => {
     if (!errors.length) return null;
 
     return (
