@@ -9,6 +9,8 @@ from objects.utils.serializers import build_spec, get_field_names
 from .constants import PermissionModes
 from .models import Permission, TokenAuth
 
+EMPTY_FIELD_CHOICE = ("", "---------")
+
 
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
@@ -61,11 +63,11 @@ class PermissionAdmin(admin.ModelAdmin):
         return {"values": values, "errors": errors}
 
     def get_extra_context(self, request, object_id):
-        mode_choices = [("", "---------")] + list(PermissionModes.choices)
-        token_auth_choices = [("", "---------")] + [
+        mode_choices = [EMPTY_FIELD_CHOICE] + list(PermissionModes.choices)
+        token_auth_choices = [EMPTY_FIELD_CHOICE] + [
             (token.pk, str(token)) for token in TokenAuth.objects.all()
         ]
-        object_type_choices = [("", "---------")] + [
+        object_type_choices = [EMPTY_FIELD_CHOICE] + [
             (object_type.pk, str(object_type))
             for object_type in ObjectType.objects.all()
         ]

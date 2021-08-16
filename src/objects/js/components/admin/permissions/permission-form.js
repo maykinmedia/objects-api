@@ -5,8 +5,6 @@ import { authFields } from "./auth-fields";
 
 
 const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData}) => {
-
-
     const {values, errors} = formData;
     const [mode, setMode]  = useState(values["mode"]);
     const [useFields, setUseFields] = useState(values["use_fields"]);

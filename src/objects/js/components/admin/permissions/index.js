@@ -15,7 +15,7 @@ const mount = () => {
             dataFieldChoices={jsonScriptToVar('data-field-choices')}
             tokenChoices={jsonScriptToVar('token-auth-choices')}
             objecttypeChoices={jsonScriptToVar('object-type-choices')}
-            modeChoices={jsonScriptToVar('mode-choices'}
+            modeChoices={jsonScriptToVar('mode-choices')}
             formData={jsonScriptToVar('form-data')}
         />,
         node
