@@ -31,5 +31,6 @@ API                     Specification version(s)
 
    usage
    postman
+   performance
    compliancy/api-strategy
    compliancy/vng
