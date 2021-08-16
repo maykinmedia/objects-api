@@ -27,30 +27,16 @@ _______
 
 
 .. csv-table:: Performance results per version (30 minutes)
-   :header: "#", "v2.0.0-alpha", "v1.1.1", "v1.1.0"
+   :header: "Method", "Test", "v2.0.0-alpha", "v1.1.1", "v1.1.0"
    :delim: ;
 
-    1;127;127;125
-    2;117;111;115
-    3;129;128;127
-    4;127;128;127
-    5;130;131;130
-    6;106;106;109
-    7;**123**;**122**;**122**
-
-
-.. csv-table:: Testing methods
-   :header: "#", "Method", "Name"
-   :widths: 10, 20, 70
-   :delim: ;
-
-    1;GET;Retrieve all objects (ms)
-    2;GET;Retrieve by data_attrs (ms)
-    3;GET;Retrieve by date (ms)
-    4;GET;Retrieve by geo coordinates (ms)
-    5;GET;Retrieve by registrationDate (ms)
-    6;GET;Retrieve single object (ms)
-    7;*;Aggregated
+    GET;Retrieve all objects (ms);127;127;125
+    GET;Retrieve by data_attrs (ms);117;111;115
+    GET;Retrieve by date (ms);129;128;127
+    GET;Retrieve by geo coordinates (ms);127;128;127
+    GET;Retrieve by registrationDate (ms);130;131;130
+    GET;Retrieve by single object (ms);106;106;109
+    ;Aggregated;**123**;**122**;**122**
 
 All performance reports are available for download for all versions:
 
