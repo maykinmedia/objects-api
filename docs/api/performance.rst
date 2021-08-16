@@ -13,7 +13,14 @@ To ensure good user experience and quality of performance, we have a dedicated `
     **CPU(s)**: x2 (Intel Xeon E312xx)
     **Hard drive**: 52GB
 
-We run the tests after every major version of the Objects API. After that, we report and document the stats. This careful analysis allows us to showcase our high-quality optimization process.
+The tests run under the following conditions:
+
+* 500 total objects are used to ensure compatibility across older versions without pagination.
+* 4 unique objecttypes.
+* A single user simulates requests for a duration of 5 minutes.
+
+We run the tests after every major version of the Objects API.
+After that, we report and document the stats. This careful analysis allows us to showcase our high-quality optimization process.
 
 Results
 _______
