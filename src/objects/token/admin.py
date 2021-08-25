@@ -18,7 +18,7 @@ class PermissionAdmin(admin.ModelAdmin):
 
     def get_object_fields(self):
         object_serializer = ObjectSerializer()
-        object_fields = build_spec(get_field_names(object_serializer.fields), sep="__")
+        object_fields = build_spec(get_field_names(object_serializer.fields), ui=True)
         return object_fields
 
     def get_data_field_choices(self):
@@ -30,13 +30,13 @@ class PermissionAdmin(admin.ModelAdmin):
             if isinstance(response, dict):
                 response = response["results"]
 
-            # to select fields use the latest version
-            # TODO should we include objecttype versions in field-based auth?
-            schema = response[-1]["jsonSchema"]
             # use only first level of properties
-            properties = list(schema["properties"].keys())
             data_fields[object_type.id] = {
-                prop: f"record__data__{prop}" for prop in properties
+                version["version"]: {
+                    prop: f"record__data__{prop}"
+                    for prop in list(version["jsonSchema"]["properties"].keys())
+                }
+                for version in response
             }
         return data_fields
 

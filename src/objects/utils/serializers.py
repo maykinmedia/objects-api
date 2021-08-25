@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 
-from glom import GlomError, glom
+from glom import SKIP, GlomError, glom
 from rest_framework import serializers
 
 from objects.token.constants import PermissionModes
@@ -12,20 +12,26 @@ logger = logging.getLogger(__name__)
 ALL_FIELDS = ["*"]
 
 
-def build_spec(fields, sep=".") -> dict:
+def build_spec(fields, ui=False) -> dict:
     spec = {}
     for spec_field in fields:
-        build_spec_field(spec, name=spec_field, value=spec_field, sep=sep)
+        build_spec_field(spec, name=spec_field, value=spec_field, ui=ui)
     return spec
 
 
-def build_spec_field(spec, name, value, sep):
+def build_spec_field(spec, name, value, ui):
     if "__" in name:
         parent, field_name = name.split("__", 1)
         spec[parent] = spec.get(parent, {})
-        build_spec_field(spec[parent], field_name, value, sep)
+        build_spec_field(spec[parent], field_name, value, ui)
     else:
-        spec[name] = value.replace("__", sep)
+        # SKIP data attributes which are not required
+        spec_val = (
+            value.replace("__", ".")
+            if not value.startswith("record__data__")
+            else lambda x: glom(x, value.replace("__", "."), default=SKIP)
+        )
+        spec[name] = value if ui else spec_val
 
 
 def get_field_names(data: dict) -> list:
@@ -88,7 +94,9 @@ class DynamicFieldsMixin:
             result_data = allowed_data
             not_allowed = set(get_field_names(data)) - set(get_field_names(result_data))
             if not_allowed:
-                self.not_allowed[instance.object_type.url] |= not_allowed
+                self.not_allowed[
+                    f"{instance.object_type.url}({instance.record.version})"
+                ] |= not_allowed
         else:
             spec_query = build_spec(query_fields)
             try:
@@ -101,7 +109,9 @@ class DynamicFieldsMixin:
                 get_field_names(result_data)
             )
             if not_allowed:
-                self.not_allowed[instance.object_type.url] |= not_allowed
+                self.not_allowed[
+                    f"{instance.object_type.url}({instance.record.version})"
+                ] |= not_allowed
 
         return result_data
 
@@ -123,8 +133,14 @@ class DynamicFieldsMixin:
         if not request:
             return ALL_FIELDS
 
-        permission = request.auth.get_permission_for_object_type(instance.object_type)
+        # use prefetch_related for DB optimization
+        if getattr(instance.object_type, "token_permissions", None):
+            permission = instance.object_type.token_permissions[0]
+        else:
+            permission = request.auth.get_permission_for_object_type(
+                instance.object_type
+            )
         if permission.mode == PermissionModes.read_only and permission.use_fields:
-            return permission.fields
+            return permission.fields.get(str(instance.record.version), [])
 
         return ALL_FIELDS

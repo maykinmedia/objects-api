@@ -156,6 +156,12 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            X-Unauthorized-Fields:
+              schema:
+                type: string
+              description: 'List of fields that are not allowed to display if the
+                field-based authorization is turned on. The value has the following
+                format: `objectType1:fieldA,fieldB; objectType2:fieldC,fieldD`'
           content:
             application/json:
               schema:
@@ -263,6 +269,12 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            X-Unauthorized-Fields:
+              schema:
+                type: string
+              description: 'List of fields that are not allowed to display if the
+                field-based authorization is turned on. The value has the following
+                format: `objectType1:fieldA,fieldB; objectType2:fieldC,fieldD`'
           content:
             application/json:
               schema:

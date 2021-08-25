@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.extensions import OpenApiFilterExtension
@@ -127,7 +128,18 @@ class AutoSchema(_AutoSchema):
                         "Comma-separated fields, which should be displayed in the response. "
                         "For example: 'url, uuid, record__geometry'."
                     ),
-                )
+                ),
+                OpenApiParameter(
+                    name=settings.UNAUTHORIZED_FIELDS_HEADER,
+                    type=str,
+                    location=OpenApiParameter.HEADER,
+                    response=True,
+                    description=_(
+                        "List of fields that are not allowed to display if the field-based "
+                        "authorization is turned on. The value has the following format: "
+                        "`objectType1:fieldA,fieldB; objectType2:fieldC,fieldD`"
+                    ),
+                ),
             ]
 
         return []

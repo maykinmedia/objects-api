@@ -11,6 +11,7 @@ from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object, ObjectRecord
+from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
 from ..filters import ObjectFilterSet
@@ -64,11 +65,12 @@ class ObjectViewSet(
         base = super().get_queryset()
 
         # `vng_api_common.utils.get_viewset_for_path` passes an empty request
-        # object that does not have `query_params`
+        # object that does not have `query_params` and 'auth'
         date = getattr(self.request, "query_params", {}).get("date", None)
         registration_date = getattr(self.request, "query_params", {}).get(
             "registrationDate", None
         )
+        token_auth = getattr(self.request, "auth", None)
 
         # prefetch filtered records as actual ones for DB optimization
         record_queryset = (
@@ -81,7 +83,12 @@ class ObjectViewSet(
                 "records",
                 queryset=record_queryset.select_related("correct", "corrected"),
                 to_attr="actual_records",
-            )
+            ),
+            models.Prefetch(
+                "object_type__permissions",
+                queryset=Permission.objects.filter(token_auth=token_auth),
+                to_attr="token_permissions",
+            ),
         )
 
         if self.action not in ("list", "search"):

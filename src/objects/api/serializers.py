@@ -1,7 +1,6 @@
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
-from glom import glom
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
@@ -46,14 +45,6 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "endAt": {"source": "end_at", "read_only": True},
             "registrationAt": {"source": "registration_at", "read_only": True},
         }
-
-    def get_attribute(self, instance: Object) -> ObjectRecord:
-        # `actual_records` attribute is set in ObjectViewSet.get_queryset
-        if getattr(instance, "actual_records", None):
-            return instance.actual_records[0]
-
-        # for create and update
-        return instance.current_record
 
 
 class HistoryRecordSerializer(serializers.ModelSerializer):
@@ -102,7 +93,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         validators=[IsImmutableValidator()],
     )
     record = ObjectRecordSerializer(
-        source="current_record", help_text=_("State of the OBJECT at a certain time")
+        help_text=_("State of the OBJECT at a certain time")
     )
 
     class Meta:
@@ -116,7 +107,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
     @transaction.atomic
     def create(self, validated_data):
-        record_data = validated_data.pop("current_record")
+        record_data = validated_data.pop("record")
         object = super().create(validated_data)
 
         record_data["object"] = object
@@ -125,14 +116,14 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        record_data = validated_data.pop("current_record", None)
+        record_data = validated_data.pop("record", None)
         object = super().update(instance, validated_data)
 
         if record_data:
             record_data["object"] = object
             # in case of PATCH:
             if not record_data.get("version"):
-                record_data["version"] = object.current_record.version
+                record_data["version"] = object.record.version
             ObjectRecordSerializer().create(record_data)
         return object
 
