@@ -64,14 +64,26 @@ Add a permission
 ----------------
 
 Finally it's time to create a permission to access objects with "boom" object types.
-Go to the token which should be granted this permission (it was probably created in the
-:ref:`admin_authentication` section of this document).
 
-.. image:: _assets/img/authorization_objects_permissions.png
+.. image:: _assets/img/authorization_objects_main_permission.png
+    :alt: Click on the "add" button for "Permission"
+
+In the admin page of the Objects API, click on the "Add" button next to the "Permissions"
+resource.
+
+.. image:: _assets/img/authorization_objects_permission.png
     :alt: Fill in the form and click on "save" button
 
-In the "Permissions" section choose the object type created in the previous step and
-choose the rights this token will have and submit the form.
+Select the token object created in the :ref:`admin_authentication` section, the object type
+created in the previous step and the permission mode.
+
+.. image:: _assets/img/authorization_objects_permission_fields.png
+    :alt: Check allowed fields for field-based authorization
+
+Checking the attribute "Use fields" turns on the field based authorization, i.e you can select
+the particular list of fields of the object this token will have access to. The field-based
+authorization is allowed only for "read-only" permission mode. After choosing the allowed
+fields you can submit the form.
 
 Now the client who has this token can access the objects with the "Boom" object type.
 

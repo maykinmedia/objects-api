@@ -1,0 +1,18 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block field_sets %}
+
+    {# Inject backend-controlled constants/content into the frontend state #}
+    {{ object_fields|json_script:"object-fields" }}
+    {{ data_field_choices|json_script:"data-field-choices" }}
+    {{ token_auth_choices|json_script:"token-auth-choices" }}
+    {{ object_type_choices|json_script:"object-type-choices" }}
+    {{ mode_choices|json_script:"mode-choices" }}
+    {{ form_data|json_script:"form-data" }}
+
+    <div id="react-permissions">
+         empty on purpose - react managed
+    </div>
+
+{% endblock %}

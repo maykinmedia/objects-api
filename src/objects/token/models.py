@@ -2,6 +2,7 @@ import binascii
 import os
 
 from django.contrib.postgres.fields import ArrayField
+from django.core import exceptions
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -57,6 +58,9 @@ class TokenAuth(models.Model):
         verbose_name = _("token authorization")
         verbose_name_plural = _("token authorizations")
 
+    def __str__(self):
+        return self.contact_person
+
     def save(self, *args, **kwargs):
         if not self.token:
             self.token = self.generate_token()
@@ -87,7 +91,6 @@ class Permission(models.Model):
     use_fields = models.BooleanField(
         _("use fields"), default=False, help_text=_("Use field-based authorization")
     )
-    # todo validate use_fields can't be true with empty fields
     fields = ArrayField(
         models.CharField(_("field"), max_length=30),
         blank=True,
@@ -101,3 +104,14 @@ class Permission(models.Model):
         verbose_name = _("permission")
         verbose_name_plural = _("permissions")
         unique_together = ("token_auth", "object_type")
+
+    def clean(self):
+        if self.mode == PermissionModes.read_and_write and self.use_fields:
+            raise exceptions.ValidationError(
+                _("Field-based authorization is supported only for read-only mode")
+            )
+
+        if self.use_fields and not self.fields:
+            raise exceptions.ValidationError(
+                _("Fields are required for field-based authorization")
+            )

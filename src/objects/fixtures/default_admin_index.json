@@ -89,6 +89,10 @@
             [
                 "token",
                 "tokenauth"
+            ],
+            [
+                "token",
+                "permission"
             ]
         ]
     }
