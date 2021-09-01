@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord, ObjectType
+from objects.token.models import Permission
 from objects.utils.serializers import DynamicFieldsMixin
 
 from .fields import ObjectSlugRelatedField, ObjectTypeField
@@ -134,3 +135,17 @@ class GeoWithinSerializer(serializers.Serializer):
 
 class ObjectSearchSerializer(serializers.Serializer):
     geometry = GeoWithinSerializer(required=True)
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    type = ObjectTypeField(
+        min_length=1,
+        max_length=1000,
+        source="object_type",
+        queryset=ObjectType.objects.all(),
+        help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
+    )
+
+    class Meta:
+        model = Permission
+        fields = ("type", "mode", "use_fields", "fields")

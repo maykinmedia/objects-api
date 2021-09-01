@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
@@ -22,6 +22,7 @@ from ..serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,
     ObjectSerializer,
+    PermissionSerializer,
 )
 
 
@@ -160,3 +161,24 @@ class ObjectViewSet(
                 ] = serializer.child.not_allowed.pretty()
 
         return super().finalize_response(request, response, *args, **kwargs)
+
+
+@extend_schema_view(
+    list=extend_schema(
+        description="Retrieve a list of permissions available for the user"
+    )
+)
+class PermissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Permission.objects.select_related("object_type", "token_auth").order_by(
+        "object_type"
+    )
+    serializer_class = PermissionSerializer
+    lookup_field = "uuid"
+    search_input_serializer_class = ObjectSearchSerializer
+    pagination_class = DynamicPageSizePagination
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # show permissions for the current user
+        return queryset.filter(token_auth=self.request.auth)
