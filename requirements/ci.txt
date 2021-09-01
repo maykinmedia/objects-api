@@ -39,7 +39,7 @@ coverage==4.5.4
     # via -r requirements/test-tools.in
 cssselect==1.1.0
     # via pyquery
-django-admin-index==1.4.0
+django-admin-index==1.5.0
     # via -r requirements/base.txt
 django-axes==5.14.0
     # via -r requirements/base.txt
