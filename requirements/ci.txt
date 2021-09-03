@@ -226,7 +226,7 @@ markupsafe==1.1.1
     # via
     #   -r requirements/base.txt
     #   jinja2
-maykin-django-two-factor-auth[phonenumbers]==2.0.2
+maykin-django-two-factor-auth[phonenumbers]==2.0.3
     # via -r requirements/base.txt
 oyaml==1.0
     # via

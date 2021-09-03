@@ -270,7 +270,7 @@ markupsafe==1.1.1
     # via
     #   -r requirements/ci.txt
     #   jinja2
-maykin-django-two-factor-auth[phonenumbers]==2.0.2
+maykin-django-two-factor-auth[phonenumbers]==2.0.3
     # via -r requirements/ci.txt
 mccabe==0.6.1
     # via flake8

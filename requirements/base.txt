@@ -151,7 +151,7 @@ markdown==3.3.4
     # via vng-api-common
 markupsafe==1.1.1
     # via jinja2
-maykin-django-two-factor-auth[phonenumbers]==2.0.2
+maykin-django-two-factor-auth[phonenumbers]==2.0.3
     # via -r requirements/base.in
 oyaml==1.0
     # via vng-api-common
