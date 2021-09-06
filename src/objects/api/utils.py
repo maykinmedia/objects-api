@@ -10,7 +10,7 @@ def string_to_value(value: str) -> Any:
     elif is_date(value):
         return datetime.strptime(value, "%Y-%m-%d")
 
-    return None
+    return value
 
 
 def is_date(value: str) -> bool:

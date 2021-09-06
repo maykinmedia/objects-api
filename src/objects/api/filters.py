@@ -12,12 +12,7 @@ from vng_api_common.filtersets import FilterSet
 from objects.core.models import Object, ObjectType
 
 from .constants import Operators
-from .utils import (
-    display_choice_values_for_help_text,
-    is_date,
-    is_number,
-    string_to_value,
-)
+from .utils import display_choice_values_for_help_text, string_to_value
 from .validators import validate_data_attrs
 
 
@@ -143,14 +138,13 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
             if operator == "exact":
                 #  for exact operator try to filter on string and numeric values
                 in_vals = [val]
-                if real_value:
+                if real_value != value:
                     in_vals.append(real_value)
                 queryset = queryset.filter(
                     **{f"records__data__{variable}__in": in_vals}
                 )
 
             else:
-                # only numeric
                 queryset = queryset.filter(
                     **{f"records__data__{variable}__{operator}": real_value}
                 )
