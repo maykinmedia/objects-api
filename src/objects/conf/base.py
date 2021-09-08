@@ -382,3 +382,4 @@ CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
 
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
+NOTIFICATIONS_DISABLED = os.getenv("NOTIFICATIONS_DISABLED", False)
