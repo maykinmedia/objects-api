@@ -1,5 +1,3 @@
-from datetime import date
-
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -123,6 +121,12 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         )
         % {"operator_choices": display_choice_values_for_help_text(Operators)},
     )
+    data_contains = filters.CharFilter(
+        method="filter_data_contains",
+        help_text=_(
+            "Expression to search in `data` values if property name is unknown"
+        ),
+    )
 
     class Meta:
         model = Object
@@ -151,6 +155,16 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
                 )
 
         return queryset
+
+    def filter_data_contains(self, queryset, name, value: str):
+        # TODO for numbers
+        # execute where clause with jsonpath: where data @? '$.** ? (@ like_regex "$value" flag "i")'
+        return queryset.extra(
+            where=[
+                "core_objectrecord.data @? CONCAT('$.** ? (@ like_regex \"',%s::text,'\")')::jsonpath"
+            ],
+            params=[value],
+        )
 
     def filter_date(self, queryset, name, value: date):
         return queryset.filter_for_date(value)
