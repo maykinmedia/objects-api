@@ -112,6 +112,7 @@ Note: Values can be string, numeric, or dates (ISO format; YYYY-MM-DD).
 
 Valid operator values are:
 %(operator_choices)s
+
 `value` may not contain double underscore or comma characters.
 `key` may not contain comma characters and includes double underscore only if it indicates nested attributes.
 
