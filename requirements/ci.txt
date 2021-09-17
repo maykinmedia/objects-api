@@ -218,7 +218,7 @@ packaging==20.9
     # via
     #   -r requirements/base.txt
     #   drf-yasg
-pillow==8.2.0
+pillow==8.3.2
     # via -r requirements/base.txt
 polib==1.1.1
     # via
@@ -304,7 +304,7 @@ six==1.15.0
     #   webtest
 soupsieve==2.2.1
     # via beautifulsoup4
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via
     #   -r requirements/base.txt
     #   django
