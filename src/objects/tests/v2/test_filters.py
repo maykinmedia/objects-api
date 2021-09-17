@@ -491,10 +491,10 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_without_nesting(self):
         record = ObjectRecordFactory.create(
-            data={"name": "something important"}, object__object_type=self.object_type
+            data={"name": "Something important"}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(
-            data={"name": "nothing important"}, object__object_type=self.object_type
+            data={"name": "Nothing important"}, object__object_type=self.object_type
         )
         ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
@@ -512,11 +512,11 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_with_nesting(self):
         record = ObjectRecordFactory.create(
-            data={"person": {"name": "something important"}},
+            data={"person": {"name": "Something important"}},
             object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
-            data={"person": {"name": "nothing important"}},
+            data={"person": {"name": "Nothing important"}},
             object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
