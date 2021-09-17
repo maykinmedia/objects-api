@@ -118,13 +118,11 @@ class ObjectViewSet(
     def search(self, request):
         """Perform a (geo) search on OBJECTs"""
         search_input = self.get_search_input()
+        queryset = self.filter_queryset(self.get_queryset())
 
-        within = search_input["geometry"]["within"]
-        queryset = (
-            self.filter_queryset(self.get_queryset())
-            .filter(records__geometry__within=within)
-            .distinct()
-        )
+        if "geometry" in search_input:
+            within = search_input["geometry"]["within"]
+            queryset = queryset.filter(records__geometry__within=within).distinct()
 
         return self.get_search_output(queryset)
 

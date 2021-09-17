@@ -102,3 +102,23 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
             data[0]["url"],
             f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
         )
+
+    def test_without_geometry(self):
+        record = ObjectRecordFactory.create(object__object_type=self.object_type)
+        ObjectRecordFactory.create(object__object_type=self.another_object_type)
+
+        response = self.client.post(
+            self.url,
+            {"type": self.object_type.url},
+            **GEO_WRITE_KWARGS,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
+        )

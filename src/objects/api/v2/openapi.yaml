@@ -582,7 +582,6 @@ paths:
                     description: Display record data for the specified registration
                       date, i.e. the specified date would be between `registrationAt`
                       attributes of different records
-        required: true
       security:
       - tokenAuth: []
       responses:
@@ -884,8 +883,6 @@ components:
       properties:
         geometry:
           $ref: '#/components/schemas/GeoWithin'
-      required:
-      - geometry
     PaginatedHistoryRecordList:
       type: object
       properties:

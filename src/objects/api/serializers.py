@@ -134,7 +134,7 @@ class GeoWithinSerializer(serializers.Serializer):
 
 
 class ObjectSearchSerializer(serializers.Serializer):
-    geometry = GeoWithinSerializer(required=True)
+    geometry = GeoWithinSerializer(required=False)
 
 
 class PermissionSerializer(serializers.ModelSerializer):
