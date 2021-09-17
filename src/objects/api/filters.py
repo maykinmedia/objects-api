@@ -121,10 +121,10 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         )
         % {"operator_choices": display_choice_values_for_help_text(Operators)},
     )
-    data_contains = filters.CharFilter(
-        method="filter_data_contains",
+    data_icontains = filters.CharFilter(
+        method="filter_data_icontains",
         help_text=_(
-            "Expression to search in `data` values if property name is unknown"
+            "Search in `data` values when the property name is unknown, can be used fro strings"
         ),
     )
 
@@ -156,15 +156,10 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
         return queryset
 
-    def filter_data_contains(self, queryset, name, value: str):
-        # TODO for numbers
-        # execute where clause with jsonpath: where data @? '$.** ? (@ like_regex "$value" flag "i")'
-        return queryset.extra(
-            where=[
-                "core_objectrecord.data @? CONCAT('$.** ? (@ like_regex \"',%s::text,'\")')::jsonpath"
-            ],
-            params=[value],
-        )
+    def filter_data_icontains(self, queryset, name, value: str):
+        # WHERE clause has jsonpath: where data @? '$.** ? (@ like_regex "$value" flag "i")'
+        where_str = "core_objectrecord.data @? CONCAT('$.** ? (@ like_regex \"',%s::text,'\")')::jsonpath"
+        return queryset.extra(where=[where_str], params=[value])
 
     def filter_date(self, queryset, name, value: date):
         return queryset.filter_for_date(value)
