@@ -312,6 +312,27 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
+    def test_filter_icontains_string(self):
+        record = ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"name": "Nothing important"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attrs": "name__icontains__some"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
 
 class FilterDateTests(TokenAuthMixin, APITestCase):
     @classmethod
