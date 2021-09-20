@@ -90,3 +90,4 @@ settings:
 postgresql:
   postgresqlPassword: objects
   postgresqlPostgresPassword: objects
+  image.tag: 12.8.0
