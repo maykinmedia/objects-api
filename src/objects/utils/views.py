@@ -36,7 +36,7 @@ def exception_handler(exc, context):
     # provide user-friendly response if data_icontains was used but DB couldn't process it
     if not response and isinstance(exc, DatabaseError) and "jsonpath" in exc.args[0]:
         data = {
-            "detail": "Objects DB doesn't support 'data_icontains'. Please, update it to Postgres 12."
+            "detail": "This search operation is not supported by the underlying data store."
         }
         response = Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=data)
 
