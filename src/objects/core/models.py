@@ -97,6 +97,9 @@ class ObjectRecord(models.Model):
         default=dict,
         encoder=DjangoJSONEncoder,
     )
+    _cached_data = models.TextField(
+        help_text=_("JSON data converted to the text blob for search purposes."),
+    )
     start_at = models.DateField(
         _("start at"), help_text=_("Legal start date of the object record")
     )
@@ -148,5 +151,8 @@ class ObjectRecord(models.Model):
             previous_record = self.object.last_record
             previous_record.end_at = self.start_at
             previous_record.save()
+
+        if not self._cached_data:
+            self._cached_data = self.data
 
         super().save(*args, **kwargs)
