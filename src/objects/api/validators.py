@@ -6,7 +6,7 @@ from rest_framework import serializers
 from objects.core.utils import check_objecttype
 
 from .constants import Operators
-from .utils import is_number, string_to_value
+from .utils import string_to_value
 
 
 class JsonSchemaValidator:
@@ -81,7 +81,9 @@ def validate_data_attrs(value: str):
             }
             raise serializers.ValidationError(message, code=code)
 
-        if operator != Operators.exact and not string_to_value(val):
+        if operator not in (Operators.exact, Operators.icontains) and isinstance(
+            string_to_value(val), str
+        ):
             message = _(
                 "Operator `%(operator)s` supports only dates and/or numeric values"
             ) % {"operator": operator}

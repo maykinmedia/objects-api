@@ -9,3 +9,6 @@ class Operators(DjangoChoices):
     gte = ChoiceItem("gte", _("greater than or equal to"))
     lt = ChoiceItem("lt", _("lower than"))
     lte = ChoiceItem("lte", _("lower than or equal to"))
+    icontains = ChoiceItem(
+        "icontains", _("case-insensitive partial matches on string values.")
+    )
