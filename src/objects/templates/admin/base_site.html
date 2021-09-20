@@ -23,6 +23,7 @@
     {% if site_url %}
         <a href="{{ site_url }}">{{ settings.SITE_TITLE }}</a> /
     {% endif %}
+    <a href="{% url 'admin:two_factor:profile' %}">{% trans 'View 2fa profile' %}</a> /
     {% if user.has_usable_password %}
     <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
     {% endif %}
