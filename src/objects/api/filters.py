@@ -123,9 +123,7 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
     )
     data_icontains = filters.CharFilter(
         method="filter_data_icontains",
-        help_text=_(
-            "Search in all `data` values of string properties."
-        ),
+        help_text=_("Search in all `data` values of string properties."),
     )
 
     class Meta:

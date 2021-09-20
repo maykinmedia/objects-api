@@ -498,6 +498,6 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             response.json(),
             {
-                "detail": "Objects DB doesn't support 'data_icontains'. Please, update it to Postgres 12."
+                "detail": "This search operation is not supported by the underlying data store."
             },
         )

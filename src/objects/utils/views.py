@@ -1,3 +1,5 @@
+import logging
+
 from django import http
 from django.db.utils import DatabaseError
 from django.template import TemplateDoesNotExist, loader
@@ -7,6 +9,8 @@ from django.views.defaults import ERROR_500_TEMPLATE_NAME
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import exception_handler as drf_exception_handler
+
+logger = logging.getLogger(__name__)
 
 
 @requires_csrf_token
@@ -39,5 +43,6 @@ def exception_handler(exc, context):
             "detail": "This search operation is not supported by the underlying data store."
         }
         response = Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+        logger.exception(exc)
 
     return response

@@ -117,8 +117,7 @@ paths:
         name: data_icontains
         schema:
           type: string
-        description: Search in `data` values when the property name is unknown, can
-          be used fro strings
+        description: Search in all `data` values of string properties.
       - in: query
         name: date
         schema:
@@ -562,8 +561,7 @@ paths:
                       attributes of different records
                   data_icontains:
                     type: string
-                    description: Search in `data` values when the property name is
-                      unknown, can be used fro strings
+                    description: Search in all `data` values of string properties.
       security:
       - tokenAuth: []
       responses:
