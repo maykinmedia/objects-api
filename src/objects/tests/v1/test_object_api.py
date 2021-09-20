@@ -135,6 +135,9 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(record.registration_at, date(2020, 8, 8))
         self.assertEqual(record.geometry.coords, (4.910649523925713, 52.37240093589432))
         self.assertIsNone(record.end_at)
+        self.assertEqual(
+            record._cached_data, str({"plantDate": "2020-04-12", "diameter": 30})
+        )
 
     def test_update_object(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -190,6 +193,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(current_record.registration_at, date(2020, 8, 8))
         self.assertIsNone(current_record.end_at)
         self.assertEqual(current_record.correct, initial_record)
+        self.assertEqual(
+            current_record._cached_data,
+            str({"plantDate": "2020-04-12", "diameter": 30}),
+        )
         # assert changes to initial record
         self.assertNotEqual(current_record, initial_record)
         self.assertEqual(initial_record.corrected, current_record)
@@ -234,6 +241,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(current_record.registration_at, date(2020, 8, 8))
         self.assertIsNone(current_record.end_at)
         self.assertEqual(current_record.correct, initial_record)
+        self.assertEqual(
+            current_record._cached_data,
+            str({"plantDate": "2020-04-12", "diameter": 30}),
+        )
         # assert changes to initial record
         self.assertNotEqual(current_record, initial_record)
         self.assertEqual(initial_record.corrected, current_record)
