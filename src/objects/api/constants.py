@@ -10,5 +10,5 @@ class Operators(DjangoChoices):
     lt = ChoiceItem("lt", _("lower than"))
     lte = ChoiceItem("lte", _("lower than or equal to"))
     icontains = ChoiceItem(
-        "icontains", _("case-insensitive containment, can be used for strings.")
+        "icontains", _("case-insensitive partial matches on string values.")
     )
