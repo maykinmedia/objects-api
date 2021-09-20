@@ -423,3 +423,62 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
                 "'date' and 'registrationDate' parameters can't be used in the same request"
             ],
         )
+
+
+class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("object-list")
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
+        )
+
+    def test_filter_without_nesting(self):
+        record = ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"name": "Nothing important"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_icontains": "some"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_with_nesting(self):
+        record = ObjectRecordFactory.create(
+            data={"person": {"name": "Something important"}},
+            object__object_type=self.object_type,
+        )
+        ObjectRecordFactory.create(
+            data={"person": {"name": "Nothing important"}},
+            object__object_type=self.object_type,
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_icontains": "some"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
