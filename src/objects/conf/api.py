@@ -16,6 +16,7 @@ REST_FRAMEWORK = {
     "DEFAULT_VERSION": "v1",  # NOT to be confused with API_VERSION - it's the major version part
     "ALLOWED_VERSIONS": ("v1", "v2"),
     "VERSION_PARAM": "version",
+    "EXCEPTION_HANDLER": "objects.utils.views.exception_handler",
     # test
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }

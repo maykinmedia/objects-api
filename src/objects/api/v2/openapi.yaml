@@ -114,6 +114,11 @@ paths:
           should be used. If `height` is nested inside `dimensions` attribute, query should look like
           `data_attrs=dimensions__height__exact__100`
       - in: query
+        name: data_icontains
+        schema:
+          type: string
+        description: Search in all `data` values of string properties.
+      - in: query
         name: date
         schema:
           type: string
@@ -586,6 +591,9 @@ paths:
                     description: Display record data for the specified registration
                       date, i.e. the specified date would be between `registrationAt`
                       attributes of different records
+                  data_icontains:
+                    type: string
+                    description: Search in all `data` values of string properties.
       security:
       - tokenAuth: []
       responses:
