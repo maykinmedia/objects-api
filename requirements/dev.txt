@@ -36,6 +36,10 @@ certifi==2020.12.5
     #   elastic-apm
     #   requests
     #   sentry-sdk
+cffi==1.14.6
+    # via
+    #   -r requirements/ci.txt
+    #   cryptography
 chardet==4.0.0
     # via
     #   -r requirements/ci.txt
@@ -57,6 +61,12 @@ coreschema==0.0.4
     #   drf-yasg
 coverage==4.5.4
     # via -r requirements/ci.txt
+cryptography==3.4.8
+    # via
+    #   -r requirements/ci.txt
+    #   josepy
+    #   mozilla-django-oidc
+    #   pyopenssl
 cssselect==1.1.0
     # via
     #   -r requirements/ci.txt
@@ -65,6 +75,10 @@ django-admin-index==1.5.0
     # via -r requirements/ci.txt
 django-axes==5.14.0
     # via -r requirements/ci.txt
+django-better-admin-arrayfield==1.4.2
+    # via
+    #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
 django-capture-on-commit-callbacks==1.5.0
     # via -r requirements/ci.txt
 django-choices==1.7.1
@@ -133,6 +147,7 @@ django-sniplates==0.7.0
 django-solo==1.1.5
     # via
     #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
     #   vng-api-common
     #   zgw-consumers
 django-webtest==1.9.7
@@ -162,6 +177,8 @@ django==2.2.24
     #   drf-spectacular
     #   drf-yasg
     #   maykin-django-two-factor-auth
+    #   mozilla-django-oidc
+    #   mozilla-django-oidc-db
     #   vng-api-common
     #   zgw-consumers
 djangorestframework-camel-case==1.2.0
@@ -254,6 +271,10 @@ jinja2==2.11.3
     #   -r requirements/ci.txt
     #   coreschema
     #   sphinx
+josepy==1.9.0
+    # via
+    #   -r requirements/ci.txt
+    #   mozilla-django-oidc
 jsonschema==3.2.0
     # via
     #   -r requirements/ci.txt
@@ -274,6 +295,12 @@ maykin-django-two-factor-auth[phonenumbers]==2.0.3
     # via -r requirements/ci.txt
 mccabe==0.6.1
     # via flake8
+mozilla-django-oidc-db==0.5.0
+    # via -r requirements/ci.txt
+mozilla-django-oidc==1.2.4
+    # via
+    #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
 mypy-extensions==0.4.3
     # via black
 oyaml==1.0
@@ -302,9 +329,15 @@ polib==1.1.1
     #   -r requirements/ci.txt
     #   django-rosetta
 psycopg2==2.8.6
-    # via -r requirements/ci.txt
+    # via
+    #   -r requirements/ci.txt
+    #   mozilla-django-oidc-db
 pycodestyle==2.7.0
     # via flake8
+pycparser==2.20
+    # via
+    #   -r requirements/ci.txt
+    #   cffi
 pyflakes==2.3.1
     # via flake8
 pygments==2.8.1
@@ -316,6 +349,10 @@ pyjwt==2.0.1
     #   -r requirements/ci.txt
     #   gemma-zds-client
     #   vng-api-common
+pyopenssl==20.0.1
+    # via
+    #   -r requirements/ci.txt
+    #   josepy
 pyparsing==2.4.7
     # via
     #   -r requirements/ci.txt
@@ -370,6 +407,7 @@ requests==2.25.1
     #   coreapi
     #   django-rosetta
     #   gemma-zds-client
+    #   mozilla-django-oidc
     #   requests-mock
     #   sphinx
     #   vng-api-common
@@ -393,6 +431,8 @@ six==1.15.0
     #   django-rosetta
     #   isodate
     #   jsonschema
+    #   mozilla-django-oidc
+    #   pyopenssl
     #   python-dateutil
     #   qrcode
     #   requests-mock
