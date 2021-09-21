@@ -47,6 +47,7 @@ urlpatterns = [
     ),
     path("ref/", include("vng_api_common.urls")),
     path("ref/", include("vng_api_common.notifications.urls")),
+    path("oidc/", include("mozilla_django_oidc.urls")),
     path("api/", include("objects.api.urls")),
 ]
 

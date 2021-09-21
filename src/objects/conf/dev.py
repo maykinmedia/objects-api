@@ -109,6 +109,7 @@ CACHES = {
     "axes_cache": {
         "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     },
+    "oidc": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
 }
 
 AXES_CACHE = "axes_cache"

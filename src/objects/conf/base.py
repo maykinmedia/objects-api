@@ -66,11 +66,14 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
+    "django_better_admin_arrayfield",
     "drf_spectacular",
     "sniplates",
     "hijack",
     "compat",  # Part of hijack
     "hijack_admin",
+    "mozilla_django_oidc",
+    "mozilla_django_oidc_db",
     "rest_framework",
     "rest_framework_gis",
     "solo",
@@ -98,6 +101,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "mozilla_django_oidc_db.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
@@ -276,6 +280,10 @@ LOGGING = {
             "level": "INFO",
             "propagate": True,
         },
+        "mozilla_django_oidc": {
+            "handlers": ["project"],
+            "level": "DEBUG",
+        },
     },
 }
 
@@ -291,7 +299,11 @@ AUTHENTICATION_BACKENDS = [
     "axes.backends.AxesBackend",
     "objects.accounts.backends.UserModelEmailBackend",
     "django.contrib.auth.backends.ModelBackend",
+    "mozilla_django_oidc_db.backends.OIDCAuthenticationBackend",
 ]
+
+LOGIN_REDIRECT_URL = reverse_lazy("admin:index")
+LOGOUT_REDIRECT_URL = reverse_lazy("admin:index")
 
 #
 # Custom settings
@@ -406,3 +418,10 @@ TWO_FACTOR_PATCH_ADMIN = os.getenv("TWO_FACTOR_PATCH_ADMIN", "True") in [
     "true",
     "yes",
 ]
+
+#
+# Mozilla Django OIDC DB settings
+#
+OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
+MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
+MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
