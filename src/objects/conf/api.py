@@ -1,7 +1,7 @@
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 API_VERSION = "1.1.1"
-
+VERSIONS = {"v1": "1.1.1", "v2": "2.0.0"}
 
 # api settings
 REST_FRAMEWORK = {
@@ -106,6 +106,7 @@ SPECTACULAR_SETTINGS = {
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
         "objects.utils.hooks.postprocess_servers",
+        "objects.utils.hooks.postprocess_versions",
     ],
     "TAGS": [{"name": "objects"}, {"name": "permissions"}],
 }
