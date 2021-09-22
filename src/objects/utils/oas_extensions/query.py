@@ -6,7 +6,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter
 from vng_api_common import filters
 
-from objects.api.filters import ObjectTypeFilter
+from ..filters import ObjectTypeFilter
 
 
 class DjangoFilterExtension(_DjangoFilterExtension):

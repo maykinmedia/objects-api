@@ -14,7 +14,6 @@ from objects.core.models import Object, ObjectRecord
 from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
-from ..filters import ObjectFilterSet
 from ..kanalen import KANAAL_OBJECTEN
 from ..mixins import GeoMixin
 from ..serializers import (
@@ -22,6 +21,7 @@ from ..serializers import (
     ObjectSearchSerializer,
     ObjectSerializer,
 )
+from .filters import ObjectFilterSet
 
 
 @extend_schema_view(
