@@ -2,6 +2,21 @@
 Change history
 ==============
 
+2.0.0 (2021-09-22)
+------------------
+
+**Breaking features**
+
+* paginated API responses (#148)
+
+**New features**
+
+* supported `data_icontains` query param which requires Postgres 12+ (#235)
+
+**Deployment tooling / infrastructure**
+
+* updated Postgres version in the Objects API Helm chart (#242)
+
 1.2.0 (2021-09-22)
 ------------------
 
