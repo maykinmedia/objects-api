@@ -65,6 +65,9 @@ Other settings
 * ``SENTRY_DSN``: URL of the sentry project to send error reports to. Defaults
   to an empty string (ie. no monitoring).
 
+* ``NOTIFICATIONS_DISABLED``: indicates whether or not notifications should be
+  sent to the Notificaties API for operations on the Object endpoint.
+  Defaults to ``True`` for the ``dev`` environment, otherwise defaults to ``False``.
 
 Specifying the environment variables
 =====================================

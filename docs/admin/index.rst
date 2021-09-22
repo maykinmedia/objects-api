@@ -16,3 +16,4 @@ Below, you can find tutorials how to use the admin interface to manage the APIs.
    authorization
    objecttype
    object
+   notifications
