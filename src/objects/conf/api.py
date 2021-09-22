@@ -1,7 +1,7 @@
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
-API_VERSION = "1.1.1"
-
+API_VERSION = "2.0.0"
+VERSIONS = {"v1": "1.2.0", "v2": "2.0.0"}
 
 # api settings
 REST_FRAMEWORK = {
@@ -13,7 +13,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
-    "DEFAULT_VERSION": "v1",  # NOT to be confused with API_VERSION - it's the major version part
+    "DEFAULT_VERSION": "v2",  # NOT to be confused with API_VERSION - it's the major version part
     "ALLOWED_VERSIONS": ("v1", "v2"),
     "VERSION_PARAM": "version",
     "EXCEPTION_HANDLER": "objects.utils.views.exception_handler",
@@ -106,6 +106,7 @@ SPECTACULAR_SETTINGS = {
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
         "objects.utils.hooks.postprocess_servers",
+        "objects.utils.hooks.postprocess_versions",
     ],
     "TAGS": [{"name": "objects"}, {"name": "permissions"}],
 }

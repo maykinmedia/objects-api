@@ -2,6 +2,53 @@
 Change history
 ==============
 
+2.0.0 (2021-09-22)
+------------------
+
+**Component changes**
+
+* Supports API 2.0.0 and API 1.2.0
+
+**API 1.2.0 changes**
+
+* **New features**
+
+  * supported having several API versions at the same time (#195)
+  * enabled selecting set of fields for every object type version which are allowed to display in the API (#79)
+  * sent notifications when the objects are changed in the API using Notificaties API. Sending notifications is an optional feature that can be disabled (#221, #237)
+  * added an endpoint to show which API permissions the client has (#81)
+  * made `geometry` field non-required for the `search` endpoint (#236)
+  * supported dates in the `data_attrs=` query param (#214)
+  * supported `icontains` operator in the `data_attrs=` query param, which allows case-insensitive search on the part of the string (#235)
+  * added two-factor authentication for the Objects Admin (#232)
+
+* **Bugfixes and QOL**
+
+  * bumped to newer versions of django, django-debug-toolbar, urllib3, sqlparse (#225, #243)
+  * added superuser for quick-start (#203)
+  * tested the performance of the API per version (#219)
+
+* **Documentation**
+
+  * marked read-only fields as non-required in OAS (#210)
+  * described how to configure authorization with the set of allowed fields in the admin (#79)
+  * documented how to configure notifications (#245)
+
+**API 2.0.0 changes**
+
+* **Breaking features**
+
+  * paginated API responses (#148)
+
+* **New features**
+
+  * supported `data_icontains` query param which requires Postgres 12+ (#235)
+
+* **Deployment tooling / infrastructure**
+
+  * updated Postgres version in the Objects API Helm chart (#242)
+
+
 1.1.1 (2021-06-22)
 ------------------
 
