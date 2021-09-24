@@ -392,3 +392,17 @@ CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
 NOTIFICATIONS_DISABLED = os.getenv("NOTIFICATIONS_DISABLED", False)
+
+#
+# Maykin fork of DJANGO-TWO-FACTOR-AUTH
+#
+TWO_FACTOR_FORCE_OTP_ADMIN = os.getenv("TWO_FACTOR_FORCE_OTP_ADMIN", "True") in [
+    "True",
+    "true",
+    "yes",
+]
+TWO_FACTOR_PATCH_ADMIN = os.getenv("TWO_FACTOR_PATCH_ADMIN", "True") in [
+    "True",
+    "true",
+    "yes",
+]

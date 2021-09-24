@@ -28,3 +28,9 @@ AXES_BEHIND_REVERSE_PROXY = False
 
 NOTIFICATIONS_DISABLED = True
 IS_HTTPS = False
+
+
+#
+# Maykin fork of django-two-factor-auth
+#
+TWO_FACTOR_FORCE_OTP_ADMIN = False

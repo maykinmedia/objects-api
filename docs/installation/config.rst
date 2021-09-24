@@ -69,6 +69,12 @@ Other settings
   sent to the Notificaties API for operations on the Object endpoint.
   Defaults to ``True`` for the ``dev`` environment, otherwise defaults to ``False``.
 
+* ``TWO_FACTOR_FORCE_OTP_ADMIN``: Enforce 2 Factor Authentication in the admin or not.
+  Default ``True``. You'll probably want to disable this when using OIDC.
+
+* ``TWO_FACTOR_PATCH_ADMIN``: Whether to use the 2 Factor Authentication login flow for
+  the admin or not. Default ``True``. You'll probably want to disable this when using OIDC.
+
 Specifying the environment variables
 =====================================
 
