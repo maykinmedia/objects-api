@@ -75,6 +75,12 @@ Other settings
 * ``TWO_FACTOR_PATCH_ADMIN``: Whether to use the 2 Factor Authentication login flow for
   the admin or not. Default ``True``. You'll probably want to disable this when using OIDC.
 
+* ``SUPERUSER_NAME``: the username of the superuser account that is created automatically
+  after running migrations (if not specified, no superuser account is created)
+
+* ``SUPERUSER_PASSWORD``: the password of the superuser account that is created automatically
+  after running migrations (if not specified, no superuser account is created)
+
 Specifying the environment variables
 =====================================
 
