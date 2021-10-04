@@ -58,5 +58,9 @@ in an Autorisaties API. Open Zaak is an example of an application that implement
 For more information on how to configure API authorizations in Open Zaak,
 please refer to the `Open Zaak authorization documentation`_.
 
+For more information on how to set up subscriptions in Open Notificaties, please refer
+to the `Open Notificaties subscription documentation`_.
+
 .. _documentation: https://open-notificaties.readthedocs.io
 .. _Open Zaak authorization documentation: https://open-zaak.readthedocs.io/en/stable/manual/api-authorizations.html
+.. _Open Notificaties subscription documentation: https://open-notificaties.readthedocs.io/en/stable/manual/subscriptions.html
