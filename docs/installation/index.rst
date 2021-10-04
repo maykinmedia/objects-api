@@ -17,3 +17,4 @@ this.
    quickstart
    config
    deployment/index
+   oidc

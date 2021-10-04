@@ -19,6 +19,7 @@ django-rosetta
 django-sniplates
 maykin-django-two-factor-auth
 maykin-django-two-factor-auth[phonenumbers]
+mozilla-django-oidc-db
 
 # API libraries
 djangorestframework

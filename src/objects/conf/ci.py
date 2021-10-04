@@ -14,6 +14,7 @@ CACHES = {
     "axes": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"},
     "oas": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
     "sessions": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+    "oidc": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
 }
 
 LOGGING = None  # Quiet is nice
