@@ -38,7 +38,7 @@ if [ -d $fixtures_dir ]; then
 fi
 
 # Create superuser
-# specify password by setting DJANGO_SUPERUSER_PASSWORD in the env
+# specify password by setting OBJECTS_SUPERUSER_PASSWORD in the env
 # specify username by setting OBJECTS_SUPERUSER_USERNAME in the env
 # specify email by setting OBJECTS_SUPERUSER_EMAIL in the env
 if [ -n "${OBJECTS_SUPERUSER_USERNAME}" ]; then
@@ -46,7 +46,7 @@ if [ -n "${OBJECTS_SUPERUSER_USERNAME}" ]; then
         --no-input \
         --username "${OBJECTS_SUPERUSER_USERNAME}" \
         --email "${OBJECTS_SUPERUSER_EMAIL:-admin@admin.org}"
-    unset OBJECTS_SUPERUSER_USERNAME OBJECTS_SUPERUSER_EMAIL DJANGO_SUPERUSER_PASSWORD
+    unset OBJECTS_SUPERUSER_USERNAME OBJECTS_SUPERUSER_EMAIL OBJECTS_SUPERUSER_PASSWORD
 fi
 
 # Start server

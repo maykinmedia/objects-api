@@ -88,7 +88,7 @@ variables. The user will only be created if it doesn't exist yet.
   this to a non-empty value will enable the creation of the superuser. Default empty.
 * ``OBJECTS_SUPERUSER_EMAIL``: specify the e-mail address to configure for the superuser.
   Defaults to `admin@admin.org`. Only has an effect if ``OBJECTS_SUPERUSER_USERNAME`` is set.
-* ``DJANGO_SUPERUSER_PASSWORD``: specify the password for the superuser. Default empty,
+* ``OBJECTS_SUPERUSER_PASSWORD``: specify the password for the superuser. Default empty,
   which means the superuser will be created _without_ password. Only has an effect
   if ``OBJECTS_SUPERUSER_USERNAME`` is set.
 

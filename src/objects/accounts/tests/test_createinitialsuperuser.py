@@ -105,10 +105,10 @@ class CreateInitialSuperuserTests(TestCase):
         self.assertFalse(user.check_password("admin"))
 
     def test_password_from_env(self):
-        os.environ["DJANGO_SUPERUSER_PASSWORD"] = "admin"
+        os.environ["OBJECTS_SUPERUSER_PASSWORD"] = "admin"
 
         def reset_env():
-            del os.environ["DJANGO_SUPERUSER_PASSWORD"]
+            del os.environ["OBJECTS_SUPERUSER_PASSWORD"]
 
         self.addCleanup(reset_env)
 

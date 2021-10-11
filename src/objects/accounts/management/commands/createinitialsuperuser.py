@@ -38,7 +38,7 @@ class Command(BaseCommand):
             return
 
         password = options.get("password") or os.environ.get(
-            "DJANGO_SUPERUSER_PASSWORD"
+            "OBJECTS_SUPERUSER_PASSWORD"
         )
 
         if password or options["generate_password"]:
