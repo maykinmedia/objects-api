@@ -58,6 +58,7 @@ Installation
    .. code:: shell
 
       $ git clone git@github.com:maykinmedia/objects-api.git
+      $ cd objects-api/deployment/single-server/
 
 2. Setup virtual environment:
 
@@ -80,10 +81,7 @@ Installation
 
    .. code:: shell
 
-      $ ansible-galaxy collection install community.docker
-      $ ansible-galaxy collection install git+https://github.com/maykinmedia/commonground-ansible.git
-
-   .. note:: The last collection might require explicit access.
+      $ ansible-galaxy collection install -r requirements.yml
 
 4. Edit the playbook ``app.yml`` to match your setup. Take special note of all
    **TODO** settings and **read through all the comments and variables**.
