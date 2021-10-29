@@ -75,6 +75,23 @@ Other settings
 * ``TWO_FACTOR_PATCH_ADMIN``: Whether to use the 2 Factor Authentication login flow for
   the admin or not. Default ``True``. You'll probably want to disable this when using OIDC.
 
+Initial superuser creation
+--------------------------
+
+A clean installation of Objects API comes without pre-installed or pre-configured admin
+user by default.
+
+Users of Objects API can opt-in to provision an initial superuser via environment
+variables. The user will only be created if it doesn't exist yet.
+
+* ``OBJECTS_SUPERUSER_USERNAME``: specify the username of the superuser to create. Setting
+  this to a non-empty value will enable the creation of the superuser. Default empty.
+* ``OBJECTS_SUPERUSER_EMAIL``: specify the e-mail address to configure for the superuser.
+  Defaults to `admin@admin.org`. Only has an effect if ``OBJECTS_SUPERUSER_USERNAME`` is set.
+* ``OBJECTS_SUPERUSER_PASSWORD``: specify the password for the superuser. Default empty,
+  which means the superuser will be created _without_ password. Only has an effect
+  if ``OBJECTS_SUPERUSER_USERNAME`` is set.
+
 Specifying the environment variables
 =====================================
 
