@@ -5,9 +5,7 @@ from djchoices import DjangoChoices
 
 
 def string_to_value(value: str) -> Any:
-    if is_number(value):
-        return float(value)
-    elif is_date(value):
+    if is_date(value):
         return datetime.strptime(value, "%Y-%m-%d")
 
     return value
