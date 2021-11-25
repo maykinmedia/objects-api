@@ -89,19 +89,25 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         parts = value.split(",")
 
         for value_part in parts:
-            variable, operator, val = value_part.rsplit("__", 2)
-            real_value = string_to_value(val)
+            variable, operator, str_value = value_part.rsplit("__", 2)
+            real_value = string_to_value(str_value)
 
             if operator == "exact":
                 #  for exact operator try to filter on string and numeric values
-                in_vals = [val]
+                in_vals = [str_value]
                 if real_value != value:
                     in_vals.append(real_value)
                 queryset = queryset.filter(
                     **{f"records__data__{variable}__in": in_vals}
                 )
+            elif operator == "icontains":
+                # icontains treats everything like strings
+                queryset = queryset.filter(
+                    **{f"records__data__{variable}__icontains": str_value}
+                )
 
             else:
+                # gt, gte, lt, lte operators
                 queryset = queryset.filter(
                     **{f"records__data__{variable}__{operator}": real_value}
                 )
