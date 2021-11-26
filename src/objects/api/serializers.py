@@ -9,7 +9,7 @@ from objects.token.models import Permission
 from objects.utils.serializers import DynamicFieldsMixin
 
 from .fields import ObjectSlugRelatedField, ObjectTypeField
-from .validators import IsImmutableValidator, JsonSchemaValidator
+from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -104,7 +104,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
             "url": {"lookup_field": "uuid"},
             "uuid": {"validators": [IsImmutableValidator()]},
         }
-        validators = [JsonSchemaValidator()]
+        validators = [JsonSchemaValidator(), GeometryValidator()]
 
     @transaction.atomic
     def create(self, validated_data):
