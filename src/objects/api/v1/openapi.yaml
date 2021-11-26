@@ -648,7 +648,8 @@ components:
           - $ref: '#/components/schemas/GeoJSONGeometry'
           nullable: true
           description: Point, linestring or polygon object which represents the coordinates
-            of the object
+            of the object. Geometry can be added only if the related OBJECTTYPE allows
+            it (`OBJECTTYPE.hasGeometry = true`)
         startAt:
           type: string
           format: date
@@ -793,7 +794,8 @@ components:
           - $ref: '#/components/schemas/GeoJSONGeometry'
           nullable: true
           description: Point, linestring or polygon object which represents the coordinates
-            of the object
+            of the object. Geometry can be added only if the related OBJECTTYPE allows
+            it (`OBJECTTYPE.hasGeometry = true`)
         startAt:
           type: string
           format: date
