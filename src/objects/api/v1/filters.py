@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -5,7 +7,7 @@ from django_filters import filters
 from rest_framework import serializers
 from vng_api_common.filtersets import FilterSet
 
-from objects.core.models import Object, ObjectType
+from objects.core.models import ObjectRecord, ObjectType
 from objects.utils.filters import ObjectTypeFilter
 
 from ..constants import Operators
@@ -30,9 +32,9 @@ class ObjectFilterForm(forms.Form):
         return cleaned_data
 
 
-class ObjectFilterSet(FilterSet):
+class ObjectRecordFilterSet(FilterSet):
     type = ObjectTypeFilter(
-        field_name="object_type",
+        field_name="object__object_type",
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
         queryset=ObjectType.objects.all(),
         min_length=1,
@@ -77,7 +79,7 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
     )
 
     class Meta:
-        model = Object
+        model = ObjectRecord
         fields = ("type", "data_attrs", "date", "registrationDate")
         form = ObjectFilterForm
 
@@ -93,19 +95,17 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
                 in_vals = [str_value]
                 if real_value != value:
                     in_vals.append(real_value)
-                queryset = queryset.filter(
-                    **{f"records__data__{variable}__in": in_vals}
-                )
+                queryset = queryset.filter(**{f"data__{variable}__in": in_vals})
             elif operator == "icontains":
                 # icontains treats everything like strings
                 queryset = queryset.filter(
-                    **{f"records__data__{variable}__icontains": str_value}
+                    **{f"data__{variable}__icontains": str_value}
                 )
 
             else:
                 # gt, gte, lt, lte operators
                 queryset = queryset.filter(
-                    **{f"records__data__{variable}__{operator}": real_value}
+                    **{f"data__{variable}__{operator}": real_value}
                 )
 
         return queryset
