@@ -41,24 +41,36 @@ class ObjectRecordQuerySet(models.QuerySet):
         the given `date`. If there is no `end_at` date, it means the record is
         still actual.
 
-        If there are multiple records returned, the last added record (ie. with
-        the highest `index`) is the most actual record from a material historical
+        Return records with the largest index for the object as the most actual
+        record from a material historical
         perspective.
         """
-        return (
+        filtered_records = (
             self.filter(start_at__lte=date)
             .filter(models.Q(end_at__gte=date) | models.Q(end_at__isnull=True))
-            .order_by("-index")
+            .order_by()
         )
+        grouped_records = (
+            filtered_records.filter(object=models.OuterRef("object"))
+            .values("object")
+            .annotate(max_index=models.Max("index"))
+            .values("max_index")
+        )
+        return self.filter(index=models.Subquery(grouped_records))
 
     def filter_for_registration_date(self, date):
         """
         Return records as seen on `date` and later, from a formal historical
         perspective.
 
-        Typically, the first record in the result set represents the record as
-        it is most actual from a formal historical perspective.
+        Return records with the largest index for the object as the most actual
+        from a formal historical perspective.
         """
-        return self.filter(registration_at__lte=date).order_by(
-            "-registration_at", "-index"
+        filtered_records = self.filter(registration_at__lte=date).order_by()
+        grouped_records = (
+            filtered_records.filter(object=models.OuterRef("object"))
+            .values("object")
+            .annotate(max_index=models.Max("index"))
+            .values("max_index")
         )
+        return self.filter(index=models.Subquery(grouped_records))
