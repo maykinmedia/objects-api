@@ -49,6 +49,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
 
     def test_retrieve_no_object_permission(self):
         object = ObjectFactory.create()
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url)
@@ -62,6 +63,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
             token_auth=self.token_auth,
         )
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url)
@@ -70,6 +72,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
 
     def test_history_no_object_permissions(self):
         object = ObjectFactory.create()
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-history", args=[object.uuid])
 
         response = self.client.get(url)
@@ -83,6 +86,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
             token_auth=self.token_auth,
         )
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-history", args=[object.uuid])
 
         response = self.client.get(url)
@@ -98,6 +102,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
             fields=["url"],
         )
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-history", args=[object.uuid])
 
         response = self.client.get(url)
@@ -111,6 +116,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
             token_auth=self.token_auth,
         )
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.put(url, **GEO_WRITE_KWARGS)
@@ -124,6 +130,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
             token_auth=self.token_auth,
         )
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.patch(url, **GEO_WRITE_KWARGS)
@@ -137,6 +144,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
             token_auth=self.token_auth,
         )
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.delete(url, **GEO_WRITE_KWARGS)
