@@ -374,7 +374,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()['results']
+        data = response.json()["results"]
         self.assertEqual(len(data), 0)
 
 
