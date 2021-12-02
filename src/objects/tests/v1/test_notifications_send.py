@@ -11,7 +11,11 @@ from vng_api_common.notifications.models import NotificationsConfig
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
-from objects.core.tests.factories import ObjectFactory, ObjectTypeFactory
+from objects.core.tests.factories import (
+    ObjectFactory,
+    ObjectRecordFactory,
+    ObjectTypeFactory,
+)
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
@@ -121,6 +125,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         obj = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=obj)
         url = reverse("object-detail", args=[obj.uuid])
 
         data = {
@@ -172,6 +177,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         obj = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=obj)
         url = reverse("object-detail", args=[obj.uuid])
 
         data = {
@@ -222,6 +228,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         )
 
         obj = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=obj)
         url = reverse("object-detail", args=[obj.uuid])
         full_url = f"http://testserver{url}"
 
