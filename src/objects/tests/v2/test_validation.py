@@ -182,9 +182,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         )
         m.get(
             self.object_type.url,
-            json=mock_objecttype(
-                self.object_type.url, attrs={"canHaveGeometry": False}
-            ),
+            json=mock_objecttype(self.object_type.url, attrs={"allowGeometry": False}),
         )
 
         url = reverse("object-list")
@@ -209,11 +207,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             ["This object type doesn't support geometry"],
         )
 
-    def test_create_object_with_geometry_without_canHaveGeometry(self, m):
-        """test the support of Objecttypes api without canHaveGeometry property"""
+    def test_create_object_with_geometry_without_allowGeometry(self, m):
+        """test the support of Objecttypes api without allowGeometry property"""
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         object_type_response = mock_objecttype(self.object_type.url)
-        del object_type_response["canHaveGeometry"]
+        del object_type_response["allowGeometry"]
         m.get(self.object_type.url, json=object_type_response)
         m.get(
             f"{self.object_type.url}/versions/1",
@@ -329,9 +327,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         )
         m.get(
             self.object_type.url,
-            json=mock_objecttype(
-                self.object_type.url, attrs={"canHaveGeometry": False}
-            ),
+            json=mock_objecttype(self.object_type.url, attrs={"allowGeometry": False}),
         )
 
         initial_record = ObjectRecordFactory.create(

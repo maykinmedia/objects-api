@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             name="geometry",
             field=django.contrib.gis.db.models.fields.GeometryField(
                 blank=True,
-                help_text="Point, linestring or polygon object which represents the coordinates of the object. Geometry can be added only if the related OBJECTTYPE allows this (`OBJECTTYPE.canHaveGeometry = true` or `OBJECTTYPE.canHaveGeometry` doesn't exist)",
+                help_text="Point, linestring or polygon object which represents the coordinates of the object. Geometry can be added only if the related OBJECTTYPE allows this (`OBJECTTYPE.allowGeometry = true` or `OBJECTTYPE.allowGeometry` doesn't exist)",
                 null=True,
                 srid=4326,
                 verbose_name="geometry",

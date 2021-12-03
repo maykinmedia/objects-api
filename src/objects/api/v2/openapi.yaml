@@ -716,7 +716,7 @@ components:
           nullable: true
           description: Point, linestring or polygon object which represents the coordinates
             of the object. Geometry can be added only if the related OBJECTTYPE allows
-            this (`OBJECTTYPE.canHaveGeometry = true` or `OBJECTTYPE.canHaveGeometry`
+            this (`OBJECTTYPE.allowGeometry = true` or `OBJECTTYPE.allowGeometry`
             doesn't exist)
         startAt:
           type: string
@@ -868,7 +868,7 @@ components:
           nullable: true
           description: Point, linestring or polygon object which represents the coordinates
             of the object. Geometry can be added only if the related OBJECTTYPE allows
-            this (`OBJECTTYPE.canHaveGeometry = true` or `OBJECTTYPE.canHaveGeometry`
+            this (`OBJECTTYPE.allowGeometry = true` or `OBJECTTYPE.allowGeometry`
             doesn't exist)
         startAt:
           type: string
