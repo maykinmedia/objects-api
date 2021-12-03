@@ -18,6 +18,7 @@ from objects.utils.test import TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
 from ..utils import (
+    mock_objecttype,
     mock_objecttype_version,
     mock_service_oas_get,
     notifications_client_mock,
@@ -68,6 +69,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
+        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         url = reverse("object-list")
         data = {
@@ -116,10 +118,10 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
+        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         obj = ObjectFactory.create(object_type=self.object_type)
         url = reverse("object-detail", args=[obj.uuid])
-        full_url = f"http://testserver{url}"
 
         data = {
             "type": self.object_type.url,
@@ -167,10 +169,10 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
+        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         obj = ObjectFactory.create(object_type=self.object_type)
         url = reverse("object-detail", args=[obj.uuid])
-        full_url = f"http://testserver{url}"
 
         data = {
             "type": self.object_type.url,

@@ -174,6 +174,68 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             [f"Object with index={record.index} does not exist."],
         )
 
+    def test_create_object_geometry_not_allowed(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(
+            self.object_type.url,
+            json=mock_objecttype(self.object_type.url, attrs={"allowGeometry": False}),
+        )
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["non_field_errors"],
+            ["This object type doesn't support geometry"],
+        )
+
+    def test_create_object_with_geometry_without_allowGeometry(self, m):
+        """test the support of Objecttypes api without allowGeometry property"""
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        object_type_response = mock_objecttype(self.object_type.url)
+        del object_type_response["allowGeometry"]
+        m.get(self.object_type.url, json=object_type_response)
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
     def test_update_object_with_correction_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(
@@ -256,3 +318,40 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(data["uuid"], ["This field can't be changed"])
+
+    def test_update_geometry_not_allowed(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(
+            self.object_type.url,
+            json=mock_objecttype(self.object_type.url, attrs={"allowGeometry": False}),
+        )
+
+        initial_record = ObjectRecordFactory.create(
+            object__object_type=self.object_type, geometry=None
+        )
+        object = initial_record.object
+
+        url = reverse("object-detail", args=[object.uuid])
+        data = {
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
+                "startAt": "2020-01-01",
+            }
+        }
+
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["non_field_errors"],
+            ["This object type doesn't support geometry"],
+        )

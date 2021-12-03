@@ -17,7 +17,7 @@ from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
-from ..utils import mock_objecttype_version, mock_service_oas_get
+from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
@@ -104,6 +104,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         url = reverse("object-list")
         data = {
@@ -142,6 +143,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         # other object - to check that correction works when there is another record with the same index
         ObjectRecordFactory.create(object__object_type=self.object_type)

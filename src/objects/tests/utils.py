@@ -34,8 +34,9 @@ def mock_service_oas_get(m: Mocker, url: str, service: str, oas_url: str = "") -
     m.get(oas_url, content=content)
 
 
-def mock_objecttype(url: str) -> dict:
-    return {
+def mock_objecttype(url: str, attrs=None) -> dict:
+    attrs = attrs or {}
+    response = {
         "url": url,
         "name": "Boom",
         "namePlural": "Bomen",
@@ -52,14 +53,18 @@ def mock_objecttype(url: str) -> dict:
         "labels": {},
         "createdAt": "2020-12-01",
         "modifiedAt": "2020-12-01",
+        "allowGeometry": True,
         "versions": [
             f"{url}/versions/1",
         ],
     }
+    response.update(attrs)
+    return response
 
 
-def mock_objecttype_version(url: str) -> dict:
-    return {
+def mock_objecttype_version(url: str, attrs=None) -> dict:
+    attrs = attrs or {}
+    response = {
         "url": f"{url}/versions/1",
         "version": 1,
         "objectType": url,
@@ -82,6 +87,8 @@ def mock_objecttype_version(url: str) -> dict:
         "modifiedAt": "2020-11-16",
         "publishedAt": "2020-11-16",
     }
+    response.update(attrs)
+    return response
 
 
 def notifications_client_mock(value):
