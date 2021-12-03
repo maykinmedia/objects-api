@@ -23,7 +23,7 @@ from ..serializers import (
     ObjectSerializer,
     PermissionSerializer,
 )
-from .filters import ObjectFilterSet
+from .filters import ObjectRecordFilterSet
 
 
 @extend_schema_view(
@@ -55,7 +55,7 @@ class ObjectViewSet(
         "object_type", "object_type__service"
     ).order_by("-pk")
     serializer_class = ObjectSerializer
-    filterset_class = ObjectFilterSet
+    filterset_class = ObjectRecordFilterSet
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
     permission_classes = [ObjectTypeBasedPermission]
@@ -95,11 +95,22 @@ class ObjectViewSet(
         if self.action not in ("list", "search"):
             return base
 
-        # default filtering on current day
-        if not date:
-            base = base.filter_for_date(datetime.date.today())
-
         return base.filter_for_token(self.request.auth)
+
+    def filter_queryset(self, queryset):
+        """ filter records first"""
+        filtered_records = super().filter_queryset(
+            ObjectRecord.objects.select_related("object")
+        )
+
+        date = getattr(self.request, "query_params", {}).get("date", None)
+        registration_date = getattr(self.request, "query_params", {}).get(
+            "registrationDate", None
+        )
+        if self.action in ("list", "search") and not date and not registration_date:
+            filtered_records = filtered_records.filter_for_date(datetime.date.today())
+
+        return queryset.filter(records__in=filtered_records).distinct()
 
     @extend_schema(
         description="Retrieve all RECORDs of an OBJECT.",

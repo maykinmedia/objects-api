@@ -1,7 +1,11 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.tests.factories import ObjectFactory, ObjectTypeFactory
+from objects.core.tests.factories import (
+    ObjectFactory,
+    ObjectRecordFactory,
+    ObjectTypeFactory,
+)
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
@@ -30,6 +34,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
 
     def test_get_without_geo_headers(self):
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url)
@@ -39,6 +44,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
 
     def test_get_with_geo_headers(self):
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.get(url, **GEO_READ_KWARGS)
@@ -93,6 +99,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
 
     def test_delete_without_geo_headers(self):
         object = ObjectFactory.create(object_type=self.object_type)
+        ObjectRecordFactory.create(object=object)
         url = reverse("object-detail", args=[object.uuid])
 
         response = self.client.delete(url)

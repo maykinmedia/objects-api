@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from unittest.mock import patch
 
 from django.db.utils import ProgrammingError
@@ -357,6 +358,24 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             data[0]["url"],
             f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
+
+    def test_filter_exclude_old_records(self):
+        record_old = ObjectRecordFactory.create(
+            data={"diameter": 45},
+            object__object_type=self.object_type,
+            start_at=date.today() - timedelta(days=10),
+            end_at=date.today() - timedelta(days=1),
+        )
+        record_new = ObjectRecordFactory.create(
+            data={"diameter": 50}, object=record_old.object, start_at=record_old.end_at
+        )
+
+        response = self.client.get(self.url, {"data_attrs": "diameter__exact__45"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
 
 
 class FilterDateTests(TokenAuthMixin, APITestCase):

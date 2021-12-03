@@ -40,3 +40,23 @@ class DjangoFilterExtension(_DjangoFilterExtension):
         return super().resolve_filter_field(
             auto_schema, model, filterset_class, field_name, filter_field
         )
+
+    def get_schema_operation_parameters(self, auto_schema, *args, **kwargs):
+        """some tweaking because filterset has a different model than the view"""
+
+        view = auto_schema.view
+        if view.__class__.__name__ != "ObjectViewSet":
+            return super().get_schema_operation_parameters(auto_schema, *args, **kwargs)
+
+        view_model = view.queryset.model
+        record_model = view_model.records.rel.related_model
+        filterset_class = self.target.get_filterset_class(
+            auto_schema.view, record_model.objects.none()
+        )
+
+        result = []
+        for field_name, filter_field in filterset_class.base_filters.items():
+            result += self.resolve_filter_field(
+                auto_schema, record_model, filterset_class, field_name, filter_field
+            )
+        return result
