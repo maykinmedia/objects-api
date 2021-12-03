@@ -124,7 +124,8 @@ class ObjectRecord(models.Model):
         help_text=_(
             "Point, linestring or polygon object which represents the coordinates of the "
             "object. Geometry can be added only if the related OBJECTTYPE allows this "
-            "(`OBJECTTYPE.hasGeometry = true`)"
+            "(`OBJECTTYPE.canHaveGeometry = true` or `OBJECTTYPE.canHaveGeometry` doesn't "
+            "exist)"
         ),
     )
 

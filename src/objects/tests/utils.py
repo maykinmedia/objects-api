@@ -53,7 +53,7 @@ def mock_objecttype(url: str, attrs=None) -> dict:
         "labels": {},
         "createdAt": "2020-12-01",
         "modifiedAt": "2020-12-01",
-        "hasGeometry": True,
+        "canHaveGeometry": True,
         "versions": [
             f"{url}/versions/1",
         ],
