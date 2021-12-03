@@ -117,7 +117,7 @@ class GeometryValidator:
             msg = f"Object type can not be retrieved: {exc.args[0]}"
             raise ValidationError(msg)
 
-        has_geometry = response.get("hasGeometry")
+        has_geometry = response.get("hasGeometry", True)
 
         if geometry and not has_geometry:
             raise serializers.ValidationError(self.message, code=self.code)

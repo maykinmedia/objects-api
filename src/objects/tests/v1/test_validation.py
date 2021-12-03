@@ -207,6 +207,35 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
             ["This object type doesn't support geometry"],
         )
 
+    def test_create_object_with_geometry_without_hasgeometry(self, m):
+        """test the support of Objecttypes api without hasGeometry property"""
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        object_type_response = mock_objecttype(self.object_type.url)
+        del object_type_response["hasGeometry"]
+        m.get(self.object_type.url, json=object_type_response)
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
     def test_update_object_with_correction_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(
