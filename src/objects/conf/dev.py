@@ -125,6 +125,8 @@ warnings.filterwarnings(
 
 if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True
+    TWO_FACTOR_PATCH_ADMIN = False
+    TWO_FACTOR_FORCE_OTP_ADMIN = False
 
 # Override settings with local settings.
 try:
