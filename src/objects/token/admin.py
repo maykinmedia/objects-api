@@ -34,7 +34,7 @@ class PermissionAdmin(admin.ModelAdmin):
             data_fields[object_type.id] = {
                 version["version"]: {
                     prop: f"record__data__{prop}"
-                    for prop in list(version["jsonSchema"]["properties"].keys())
+                    for prop in list(version["jsonSchema"].get("properties", {}).keys())
                 }
                 for version in response
             }
