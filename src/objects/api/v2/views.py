@@ -6,7 +6,9 @@ from django.db import models
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
+from vng_api_common.filters import Backend as FilterBackend
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.search import SearchMixin
 
@@ -14,6 +16,7 @@ from objects.core.models import Object, ObjectRecord
 from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
+from ..filter_backends import OrderingBackend
 from ..kanalen import KANAAL_OBJECTEN
 from ..mixins import GeoMixin
 from ..pagination import DynamicPageSizePagination
@@ -55,7 +58,9 @@ class ObjectViewSet(
         "object_type", "object_type__service"
     ).order_by("-pk")
     serializer_class = ObjectSerializer
+    filter_backends = [FilterBackend, OrderingBackend]
     filterset_class = ObjectRecordFilterSet
+    ordering_fields = "__all__"
     lookup_field = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
     permission_classes = [ObjectTypeBasedPermission]
@@ -98,10 +103,17 @@ class ObjectViewSet(
         return base.filter_for_token(self.request.auth)
 
     def filter_queryset(self, queryset):
+        for backend in list(self.filter_backends):
+            if backend == FilterBackend:
+                queryset = self.filter_queryset_on_records(queryset)
+            else:
+                queryset = backend().filter_queryset(self.request, queryset, self)
+        return queryset
+
+    def filter_queryset_on_records(self, queryset):
         """ filter records first"""
-        filtered_records = super().filter_queryset(
-            ObjectRecord.objects.select_related("object")
-        )
+        records = ObjectRecord.objects.select_related("object")
+        filtered_records = FilterBackend().filter_queryset(self.request, records, self)
 
         date = getattr(self.request, "query_params", {}).get("date", None)
         registration_date = getattr(self.request, "query_params", {}).get(
