@@ -243,7 +243,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Object'
           description: Created
-  /objects/{uuid}:
+  /objects/{object__uuid}:
     get:
       operationId: object_read
       description: Retrieve a single OBJECT and its actual RECORD. The actual record
@@ -265,7 +265,7 @@ paths:
         description: 'Comma-separated fields, which should be displayed in the response.
           For example: ''url, uuid, record__geometry''.'
       - in: path
-        name: uuid
+        name: object__uuid
         schema:
           type: string
           format: uuid
@@ -329,7 +329,7 @@ paths:
         description: Content type of the request body.
         required: true
       - in: path
-        name: uuid
+        name: object__uuid
         schema:
           type: string
           format: uuid
@@ -393,7 +393,7 @@ paths:
         description: Content type of the request body.
         required: true
       - in: path
-        name: uuid
+        name: object__uuid
         schema:
           type: string
           format: uuid
@@ -429,7 +429,7 @@ paths:
       description: Delete an OBJECT and all RECORDs belonging to it.
       parameters:
       - in: path
-        name: uuid
+        name: object__uuid
         schema:
           type: string
           format: uuid
@@ -442,7 +442,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /objects/{uuid}/history:
+  /objects/{object__uuid}/history:
     get:
       operationId: object_history
       description: Retrieve all RECORDs of an OBJECT.
@@ -456,6 +456,13 @@ paths:
         description: 'The desired ''Coordinate Reference System'' (CRS) of the response
           data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 is
           the same as WGS84).'
+      - in: path
+        name: object__uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        required: true
       - name: page
         required: false
         in: query
@@ -468,13 +475,6 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-          description: Unique identifier (UUID4)
-        required: true
       tags:
       - objects
       security:

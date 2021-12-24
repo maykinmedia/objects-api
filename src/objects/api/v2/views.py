@@ -3,13 +3,18 @@ import datetime
 from django.conf import settings
 from django.db import models
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiTypes,
+    extend_schema,
+    extend_schema_view,
+)
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from vng_api_common.search import SearchMixin
 
-from objects.core.models import Object, ObjectRecord
+from objects.core.models import ObjectRecord
 from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
