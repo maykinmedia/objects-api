@@ -39,7 +39,9 @@ class ObjectTypeBasedPermission(BasePermission):
         if bypass_permissions(request):
             return True
 
-        object_permission = request.auth.get_permission_for_object_type(obj.object_type)
+        object_permission = request.auth.get_permission_for_object_type(
+            obj.object.object_type
+        )
         if not object_permission:
             return False
 

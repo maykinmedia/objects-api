@@ -574,7 +574,7 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
         )
 
     @patch(
-        "objects.core.query.ObjectQuerySet._fetch_all",
+        "objects.core.query.ObjectRecordQuerySet._fetch_all",
         side_effect=ProgrammingError("'jsonpath' is not found"),
     )
     def test_filter_db_error(self, mock_query):

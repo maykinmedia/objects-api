@@ -4,7 +4,6 @@ from django.urls import path
 from drf_spectacular.views import (
     SpectacularJSONAPIView,
     SpectacularRedocView,
-    SpectacularSwaggerView,
     SpectacularYAMLAPIView,
 )
 from rest_framework import routers
@@ -12,7 +11,7 @@ from rest_framework import routers
 from .views import ObjectViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r"objects", ObjectViewSet)
+router.register(r"objects", ObjectViewSet, basename="object")
 
 app_name = "v1"
 
