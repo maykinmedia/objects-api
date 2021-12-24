@@ -22,6 +22,7 @@ class ObjectTypeExtension(OpenApiSerializerFieldExtension):
 
 class HyperlinkedIdentityFieldExtension(OpenApiSerializerFieldExtension):
     target_class = serializers.HyperlinkedIdentityField
+    match_subclasses = True
 
     def map_serializer_field(self, auto_schema, direction):
         schema = build_basic_type(OpenApiTypes.URI)
