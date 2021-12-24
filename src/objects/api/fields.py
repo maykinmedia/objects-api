@@ -11,11 +11,11 @@ class ObjectSlugRelatedField(serializers.SlugRelatedField):
     def get_queryset(self):
         queryset = ObjectRecord.objects.all()
 
-        object_instance = self.parent.parent.instance
-        if not object_instance:
+        record_instance = self.parent.parent.instance
+        if not record_instance:
             return queryset.none()
 
-        return queryset.filter(object=object_instance)
+        return queryset.filter(object=record_instance.object)
 
 
 class ObjectTypeField(serializers.RelatedField):

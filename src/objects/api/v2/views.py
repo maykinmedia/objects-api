@@ -7,7 +7,6 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import Object, ObjectRecord
@@ -15,7 +14,7 @@ from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
 from ..kanalen import KANAAL_OBJECTEN
-from ..mixins import GeoMixin
+from ..mixins import GeoMixin, ObjectNotificationMixin
 from ..pagination import DynamicPageSizePagination
 from ..serializers import (
     HistoryRecordSerializer,
@@ -49,14 +48,18 @@ from .filters import ObjectRecordFilterSet
     ),
 )
 class ObjectViewSet(
-    NotificationViewSetMixin, SearchMixin, GeoMixin, viewsets.ModelViewSet
+    ObjectNotificationMixin, SearchMixin, GeoMixin, viewsets.ModelViewSet
 ):
-    queryset = Object.objects.select_related(
-        "object_type", "object_type__service"
+    queryset = ObjectRecord.objects.select_related(
+        "object",
+        "object__object_type",
+        "object__object_type__service",
+        "correct",
+        "corrected",
     ).order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectRecordFilterSet
-    lookup_field = "uuid"
+    lookup_field = "object__uuid"
     search_input_serializer_class = ObjectSearchSerializer
     permission_classes = [ObjectTypeBasedPermission]
     pagination_class = DynamicPageSizePagination
@@ -64,29 +67,11 @@ class ObjectViewSet(
 
     def get_queryset(self):
         base = super().get_queryset()
-
-        # `vng_api_common.utils.get_viewset_for_path` passes an empty request
-        # object that does not have `query_params` and 'auth'
-        date = getattr(self.request, "query_params", {}).get("date", None)
-        registration_date = getattr(self.request, "query_params", {}).get(
-            "registrationDate", None
-        )
         token_auth = getattr(self.request, "auth", None)
-
-        # prefetch filtered records as actual ones for DB optimization
-        record_queryset = (
-            ObjectRecord.objects.filter_for_registration_date(registration_date)
-            if registration_date and not date
-            else ObjectRecord.objects.filter_for_date(date or datetime.date.today())
-        )
+        # prefetch permissions for DB optimization. Used in DynamicFieldsMixin
         base = base.prefetch_related(
             models.Prefetch(
-                "records",
-                queryset=record_queryset.select_related("correct", "corrected"),
-                to_attr="actual_records",
-            ),
-            models.Prefetch(
-                "object_type__permissions",
+                "object__object_type__permissions",
                 queryset=Permission.objects.filter(token_auth=token_auth),
                 to_attr="token_permissions",
             ),
@@ -95,31 +80,36 @@ class ObjectViewSet(
         if self.action not in ("list", "search"):
             return base
 
-        return base.filter_for_token(self.request.auth)
+        # show only allowed objects
+        base = base.filter_for_token(token_auth)
 
-    def filter_queryset(self, queryset):
-        """ filter records first"""
-        filtered_records = super().filter_queryset(
-            ObjectRecord.objects.select_related("object")
-        )
-
+        # show only actual objects
         date = getattr(self.request, "query_params", {}).get("date", None)
         registration_date = getattr(self.request, "query_params", {}).get(
             "registrationDate", None
         )
-        if self.action in ("list", "search") and not date and not registration_date:
-            filtered_records = filtered_records.filter_for_date(datetime.date.today())
+        if not date and not registration_date:
+            base = base.filter_for_date(datetime.date.today())
 
-        return queryset.filter(records__in=filtered_records).distinct()
+        return base
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        # keep only records with max index per object
+        return queryset.keep_max_record_per_object()
+
+    def perform_destroy(self, instance):
+        instance.object.delete()
 
     @extend_schema(
         description="Retrieve all RECORDs of an OBJECT.",
         responses={"200": HistoryRecordSerializer(many=True)},
     )
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
-    def history(self, request, uuid=None):
+    def history(self, request, object__uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
-        records = self.get_object().records.order_by("id")
+        records = self.get_object().object.records.order_by("id")
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
 
@@ -136,7 +126,7 @@ class ObjectViewSet(
 
         if "geometry" in search_input:
             within = search_input["geometry"]["within"]
-            queryset = queryset.filter(records__geometry__within=within).distinct()
+            queryset = queryset.filter(geometry__within=within).distinct()
 
         return self.get_search_output(queryset)
 
