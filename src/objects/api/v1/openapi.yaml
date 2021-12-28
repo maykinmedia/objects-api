@@ -228,7 +228,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Object'
           description: Created
-  /objects/{object__uuid}:
+  /objects/{uuid}:
     get:
       operationId: object_read
       description: Retrieve a single OBJECT and its actual RECORD. The actual record
@@ -250,7 +250,7 @@ paths:
         description: 'Comma-separated fields, which should be displayed in the response.
           For example: ''url, uuid, record__geometry''.'
       - in: path
-        name: object__uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -314,7 +314,7 @@ paths:
         description: Content type of the request body.
         required: true
       - in: path
-        name: object__uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -378,7 +378,7 @@ paths:
         description: Content type of the request body.
         required: true
       - in: path
-        name: object__uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -414,7 +414,7 @@ paths:
       description: Delete an OBJECT and all RECORDs belonging to it.
       parameters:
       - in: path
-        name: object__uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -427,7 +427,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /objects/{object__uuid}/history:
+  /objects/{uuid}/history:
     get:
       operationId: object_history
       description: Retrieve all RECORDs of an OBJECT.
@@ -442,7 +442,7 @@ paths:
           data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 is
           the same as WGS84).'
       - in: path
-        name: object__uuid
+        name: uuid
         schema:
           type: string
           format: uuid

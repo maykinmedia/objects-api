@@ -59,6 +59,7 @@ class ObjectViewSet(
     serializer_class = ObjectSerializer
     filterset_class = ObjectRecordFilterSet
     lookup_field = "object__uuid"
+    lookup_url_kwarg = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
     permission_classes = [ObjectTypeBasedPermission]
     notifications_kanaal = KANAAL_OBJECTEN
@@ -105,7 +106,7 @@ class ObjectViewSet(
         responses={"200": HistoryRecordSerializer(many=True)},
     )
     @action(detail=True, methods=["get"], serializer_class=HistoryRecordSerializer)
-    def history(self, request, object__uuid=None):
+    def history(self, request, uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
         records = self.get_object().object.records.order_by("id")
         serializer = self.get_serializer(records, many=True)

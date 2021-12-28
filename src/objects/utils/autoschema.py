@@ -3,12 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
-from drf_spectacular.plumbing import (
-    build_basic_type,
-    build_parameter_type,
-    get_view_model,
-)
-from drf_spectacular.utils import OpenApiParameter, OpenApiTypes
+from drf_spectacular.plumbing import build_parameter_type, get_view_model
+from drf_spectacular.utils import OpenApiParameter
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.inspectors.view import HTTP_STATUS_CODE_TITLES
 
@@ -190,8 +186,8 @@ class AutoSchema(_AutoSchema):
         return parameters
 
     def _resolve_path_parameters(self, variables):
-        object_path = "object__uuid"
-        if variables == [object_path]:
+        object_path = "uuid"
+        if variables == [object_path] and self.view.basename == "object":
             model = get_view_model(self.view)
             object_field = model._meta.get_field("object")
             uuid_field = object_field.related_model._meta.get_field("uuid")
