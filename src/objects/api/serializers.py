@@ -8,7 +8,7 @@ from objects.core.models import Object, ObjectRecord, ObjectType
 from objects.token.models import Permission
 from objects.utils.serializers import DynamicFieldsMixin
 
-from .fields import ObjectSlugRelatedField, ObjectTypeField
+from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 
 
@@ -82,18 +82,6 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "endAt": {"source": "end_at", "read_only": True},
             "registrationAt": {"source": "registration_at", "read_only": True},
         }
-
-
-class ObjectUrlField(serializers.HyperlinkedIdentityField):
-    lookup_field = "object__uuid"
-
-    def get_url(self, obj, view_name, request, format):
-        if hasattr(obj, "pk") and obj.pk in (None, ""):
-            return None
-
-        lookup_value = getattr(obj.object, "uuid")
-        kwargs = {self.lookup_url_kwarg: lookup_value}
-        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
 
 
 class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerializer):
