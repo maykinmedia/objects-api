@@ -6,14 +6,15 @@ from django.db import models
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
-from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from vng_api_common.filters import Backend as FilterBackend
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import ObjectRecord
 from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
+from ..filter_backends import OrderingBackend
 from ..kanalen import KANAAL_OBJECTEN
 from ..mixins import GeoMixin, ObjectNotificationMixin
 from ..pagination import DynamicPageSizePagination
@@ -60,6 +61,8 @@ class ObjectViewSet(
     ).order_by("-pk")
     serializer_class = ObjectSerializer
     filterset_class = ObjectRecordFilterSet
+    filter_backends = [FilterBackend, OrderingBackend]
+    ordering_fields = "__all__"
     lookup_field = "object__uuid"
     lookup_url_kwarg = "uuid"
     search_input_serializer_class = ObjectSearchSerializer

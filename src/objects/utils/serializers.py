@@ -1,8 +1,9 @@
 import logging
 from collections import defaultdict
+from typing import Dict, List, Tuple
 
 from glom import SKIP, GlomError, glom
-from rest_framework import serializers
+from rest_framework import fields, serializers
 
 from objects.token.constants import PermissionModes
 
@@ -34,17 +35,32 @@ def build_spec_field(spec, name, value, ui):
         spec[name] = value if ui else spec_val
 
 
-def get_field_names(data: dict) -> list:
-    field_names = []
+def get_field_names(data: Dict[str, fields.Field]) -> List[str]:
+    """ return list of names for all serializer fields. Supports nesting"""
+    names_and_sources = get_field_names_and_sources(data)
+    return [name for name, source in names_and_sources]
+
+
+def get_field_names_and_sources(data: Dict[str, fields.Field]) -> List[Tuple[str, str]]:
+    """ return list of (name, source) for all serializer fields. Supports nesting"""
+    names_and_sources = []
     for key, value in data.items():
         if isinstance(value, dict):
-            field_names += [f"{key}__{val}" for val in get_field_names(value)]
+            names_and_sources += [
+                (f"{key}__{name}", source.replace(".", "__"))
+                for name, source in get_field_names_and_sources(value)
+            ]
         elif isinstance(value, serializers.Serializer):
-            field_names += [f"{key}__{val}" for val in get_field_names(value.fields)]
+            names_and_sources += [
+                (f"{key}__{name}", source.replace(".", "__"))
+                for name, source in get_field_names_and_sources(value.fields)
+            ]
+        elif isinstance(value, fields.Field):
+            names_and_sources.append((key, value.source.replace(".", "__")))
         else:
-            field_names.append(key)
+            names_and_sources.append((key, key))
 
-    return field_names
+    return names_and_sources
 
 
 class NotAllowedDict(defaultdict):
