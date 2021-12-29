@@ -63,6 +63,7 @@ class ObjectViewSet(
     filterset_class = ObjectRecordFilterSet
     filter_backends = [FilterBackend, OrderingBackend]
     ordering_fields = "__all__"
+    json_field = "record__data"
     lookup_field = "object__uuid"
     lookup_url_kwarg = "uuid"
     search_input_serializer_class = ObjectSearchSerializer
