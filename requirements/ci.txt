@@ -126,7 +126,7 @@ django-solo==1.1.5
     #   zgw-consumers
 django-webtest==1.9.7
     # via -r requirements/test-tools.in
-django==2.2.24
+django==2.2.26
     # via
     #   -r requirements/base.txt
     #   django-axes
@@ -237,7 +237,7 @@ jsonschema==3.2.0
     # via
     #   -r requirements/base.txt
     #   drf-spectacular
-lxml==4.6.3
+lxml==4.7.1
     # via pyquery
 markdown==3.3.4
     # via
