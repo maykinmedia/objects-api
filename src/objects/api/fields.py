@@ -11,11 +11,11 @@ class ObjectSlugRelatedField(serializers.SlugRelatedField):
     def get_queryset(self):
         queryset = ObjectRecord.objects.all()
 
-        object_instance = self.parent.parent.instance
-        if not object_instance:
+        record_instance = self.parent.parent.instance
+        if not record_instance:
             return queryset.none()
 
-        return queryset.filter(object=object_instance)
+        return queryset.filter(object=record_instance.object)
 
 
 class ObjectTypeField(serializers.RelatedField):
@@ -48,3 +48,15 @@ class ObjectTypeField(serializers.RelatedField):
 
     def to_representation(self, obj):
         return obj.url
+
+
+class ObjectUrlField(serializers.HyperlinkedIdentityField):
+    lookup_field = "uuid"
+
+    def get_url(self, obj, view_name, request, format):
+        if hasattr(obj, "pk") and obj.pk in (None, ""):
+            return None
+
+        lookup_value = getattr(obj.object, "uuid")
+        kwargs = {self.lookup_url_kwarg: lookup_value}
+        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)

@@ -106,7 +106,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "create",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": str(self.object_type),
+                    "objectType": self.object_type.url,
                 },
             },
         )
@@ -158,7 +158,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "update",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": str(self.object_type),
+                    "objectType": self.object_type.url,
                 },
             },
         )
@@ -210,7 +210,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "partial_update",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": str(self.object_type),
+                    "objectType": self.object_type.url,
                 },
             },
         )
@@ -249,7 +249,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "destroy",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": str(self.object_type),
+                    "objectType": self.object_type.url,
                 },
             },
         )

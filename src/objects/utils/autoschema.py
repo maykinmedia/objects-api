@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
+from drf_spectacular.plumbing import build_parameter_type, get_view_model
 from drf_spectacular.utils import OpenApiParameter
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.inspectors.view import HTTP_STATUS_CODE_TITLES
@@ -11,15 +12,19 @@ from objects.api.mixins import GeoMixin
 
 from .serializers import DynamicFieldsMixin
 
+object_path_parameter = OpenApiParameter(
+    name="object__uuid", required=True, location=OpenApiParameter.PATH
+)
+
 
 class AutoSchema(_AutoSchema):
     def get_operation_id(self):
         """
         Use model name as a base for operation_id
         """
-        if hasattr(self.view, "queryset"):
-            model_name = self.view.queryset.model._meta.model_name
-            return f"{model_name}_{self.view.action}"
+        if hasattr(self.view, "basename"):
+            basename = self.view.basename
+            return f"{basename}_{self.view.action}"
         return super().get_operation_id()
 
     def get_override_parameters(self):
@@ -179,3 +184,19 @@ class AutoSchema(_AutoSchema):
                     self.view
                 )
         return parameters
+
+    def _resolve_path_parameters(self, variables):
+        object_path = "uuid"
+        if variables == [object_path] and self.view.basename == "object":
+            model = get_view_model(self.view)
+            object_field = model._meta.get_field("object")
+            uuid_field = object_field.related_model._meta.get_field("uuid")
+            schema = self._map_model_field(uuid_field, direction=None)
+
+            return [
+                build_parameter_type(
+                    name=object_path, location=OpenApiParameter.PATH, schema=schema
+                )
+            ]
+
+        return super()._resolve_path_parameters(variables)

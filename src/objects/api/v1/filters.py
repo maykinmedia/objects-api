@@ -1,5 +1,3 @@
-import datetime
-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -15,7 +13,7 @@ from ..utils import display_choice_values_for_help_text, string_to_value
 from ..validators import validate_data_attrs
 
 
-class ObjectFilterForm(forms.Form):
+class ObjectRecordFilterForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         date = cleaned_data.get("date")
@@ -81,7 +79,7 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
     class Meta:
         model = ObjectRecord
         fields = ("type", "data_attrs", "date", "registrationDate")
-        form = ObjectFilterForm
+        form = ObjectRecordFilterForm
 
     def filter_data_attrs(self, queryset, name, value: str):
         parts = value.split(",")

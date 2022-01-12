@@ -1,3 +1,5 @@
+from django.db import models
+
 from rest_framework.exceptions import NotAcceptable
 from rest_framework.renderers import BrowsableAPIRenderer
 from vng_api_common.exceptions import PreconditionFailed
@@ -7,6 +9,11 @@ from vng_api_common.geo import (
     HEADER_CONTENT,
     GeoMixin as _GeoMixin,
     extract_header,
+)
+from vng_api_common.notifications.viewsets import (
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
+    conditional_atomic,
 )
 
 
@@ -31,3 +38,18 @@ class GeoMixin(_GeoMixin):
         requested_crs = extract_header(request, HEADER_ACCEPT)
         if requested_crs and requested_crs != DEFAULT_CRS:
             raise NotAcceptable(detail=f"CRS '{requested_crs}' is niet ondersteund")
+
+
+class ObjectNotificationMixin(NotificationCreateMixin, NotificationDestroyMixin):
+    def construct_message(self, data: dict, instance: models.Model = None) -> dict:
+        message = super().construct_message(data, instance)
+        message["resource"] = "object"
+        return message
+
+    def update(self, request, *args, **kwargs):
+        with conditional_atomic(self.notifications_wrap_in_atomic_block)():
+            response = super().update(request, *args, **kwargs)
+
+            instance = self.get_object()
+            self.notify(response.status_code, response.data, instance=instance)
+            return response

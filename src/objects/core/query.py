@@ -12,12 +12,6 @@ class ObjectTypeQuerySet(models.QuerySet):
 
 
 class ObjectQuerySet(models.QuerySet):
-    def filter_for_token(self, token):
-        if not token:
-            return self.none()
-        allowed_object_types = token.permissions.values("object_type")
-        return self.filter(object_type__in=models.Subquery(allowed_object_types))
-
     def filter_for_date(self, date):
         return (
             self.filter(records__start_at__lte=date)
@@ -33,6 +27,27 @@ class ObjectQuerySet(models.QuerySet):
 
 
 class ObjectRecordQuerySet(models.QuerySet):
+    def filter_for_token(self, token):
+        if not token:
+            return self.none()
+        allowed_object_types = token.permissions.values("object_type")
+        return self.filter(
+            object__object_type__in=models.Subquery(allowed_object_types)
+        )
+
+    def keep_max_record_per_object(self):
+        """
+        Return records with the largest index for the object
+        """
+        filtered_records = self.order_by()
+        grouped_records = (
+            filtered_records.filter(object=models.OuterRef("object"))
+            .values("object")
+            .annotate(max_index=models.Max("index"))
+            .values("max_index")
+        )
+        return self.filter(index=models.Subquery(grouped_records))
+
     def filter_for_date(self, date):
         """
         Return records as seen on `date` from a material historical perspective.
@@ -41,36 +56,15 @@ class ObjectRecordQuerySet(models.QuerySet):
         the given `date`. If there is no `end_at` date, it means the record is
         still actual.
 
-        Return records with the largest index for the object as the most actual
-        record from a material historical
-        perspective.
+
         """
-        filtered_records = (
-            self.filter(start_at__lte=date)
-            .filter(models.Q(end_at__gte=date) | models.Q(end_at__isnull=True))
-            .order_by()
+        return self.filter(start_at__lte=date).filter(
+            models.Q(end_at__gte=date) | models.Q(end_at__isnull=True)
         )
-        grouped_records = (
-            filtered_records.filter(object=models.OuterRef("object"))
-            .values("object")
-            .annotate(max_index=models.Max("index"))
-            .values("max_index")
-        )
-        return self.filter(index=models.Subquery(grouped_records))
 
     def filter_for_registration_date(self, date):
         """
         Return records as seen on `date` and later, from a formal historical
         perspective.
-
-        Return records with the largest index for the object as the most actual
-        from a formal historical perspective.
         """
-        filtered_records = self.filter(registration_at__lte=date).order_by()
-        grouped_records = (
-            filtered_records.filter(object=models.OuterRef("object"))
-            .values("object")
-            .annotate(max_index=models.Max("index"))
-            .values("max_index")
-        )
-        return self.filter(index=models.Subquery(grouped_records))
+        return self.filter(registration_at__lte=date)

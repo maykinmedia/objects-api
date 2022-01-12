@@ -8,7 +8,7 @@ from objects.core.models import Object, ObjectRecord, ObjectType
 from objects.token.models import Permission
 from objects.utils.serializers import DynamicFieldsMixin
 
-from .fields import ObjectSlugRelatedField, ObjectTypeField
+from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 
 
@@ -85,48 +85,53 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
 
 
 class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerializer):
+    url = ObjectUrlField(view_name="object-detail")
+    uuid = serializers.UUIDField(
+        source="object.uuid",
+        required=False,
+        validators=[IsImmutableValidator()],
+        help_text=_("Unique identifier (UUID4)"),
+    )
     type = ObjectTypeField(
         min_length=1,
         max_length=1000,
-        source="object_type",
+        source="object.object_type",
         queryset=ObjectType.objects.all(),
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
         validators=[IsImmutableValidator()],
     )
     record = ObjectRecordSerializer(
-        help_text=_("State of the OBJECT at a certain time")
+        source="*", help_text=_("State of the OBJECT at a certain time")
     )
 
     class Meta:
-        model = Object
+        model = ObjectRecord
         fields = ("url", "uuid", "type", "record")
         extra_kwargs = {
-            "url": {"lookup_field": "uuid"},
-            "uuid": {"validators": [IsImmutableValidator()]},
+            "url": {"lookup_field": "object.uuid"},
         }
         validators = [JsonSchemaValidator(), GeometryValidator()]
 
     @transaction.atomic
     def create(self, validated_data):
-        record_data = validated_data.pop("record")
-        object = super().create(validated_data)
+        object_data = validated_data.pop("object")
+        object = Object.objects.create(**object_data)
 
-        record_data["object"] = object
-        ObjectRecordSerializer().create(record_data)
-        return object
+        validated_data["object"] = object
+        record = super().create(validated_data)
+        return record
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        record_data = validated_data.pop("record", None)
-        object = super().update(instance, validated_data)
+        # object_data is not used since all object attributes are immutable
+        object_data = validated_data.pop("object", None)
+        validated_data["object"] = instance.object
+        # in case of PATCH
+        if "version" not in validated_data:
+            validated_data["version"] = instance.version
 
-        if record_data:
-            record_data["object"] = object
-            # in case of PATCH:
-            if not record_data.get("version"):
-                record_data["version"] = object.record.version
-            ObjectRecordSerializer().create(record_data)
-        return object
+        record = super().create(validated_data)
+        return record
 
 
 class GeoWithinSerializer(serializers.Serializer):

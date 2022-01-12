@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
+from rest_framework.fields import get_attribute
 from zds_client.client import ClientError
 
 from objects.core.utils import check_objecttype
@@ -21,13 +22,12 @@ class JsonSchemaValidator:
         self.instance = getattr(serializer, "instance", None)
 
     def __call__(self, attrs):
-        object_type = attrs.get("object_type") or self.instance.object_type
-        version = attrs.get("record", {}).get("version") or self.instance.record.version
-
-        if attrs.get("record"):
-            data = attrs["record"].get("data", {})
-        else:
-            data = self.instance.record.data
+        object_type = (
+            attrs.get("object", {}).get("object_type")
+            or self.instance.object.object_type
+        )
+        version = attrs.get("version") or self.instance.version
+        data = attrs.get("data", {}) or self.instance.data
 
         if not object_type or not version or not data:
             return
@@ -60,7 +60,7 @@ class IsImmutableValidator:
         if not self.instance:
             return
 
-        current_value = getattr(self.instance, self.serializer_field.source)
+        current_value = get_attribute(self.instance, self.serializer_field.source_attrs)
 
         if new_value != current_value:
             raise serializers.ValidationError(self.message, code=self.code)
@@ -103,8 +103,11 @@ class GeometryValidator:
         self.instance = getattr(serializer, "instance", None)
 
     def __call__(self, attrs):
-        object_type = attrs.get("object_type") or self.instance.object_type
-        geometry = attrs.get("record", {}).get("geometry")
+        object_type = (
+            attrs.get("object", {}).get("object_type")
+            or self.instance.object.object_type
+        )
+        geometry = attrs.get("geometry")
 
         if not geometry:
             return

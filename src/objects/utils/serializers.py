@@ -1,8 +1,9 @@
 import logging
 from collections import defaultdict
+from typing import Dict, List, Tuple
 
 from glom import SKIP, GlomError, glom
-from rest_framework import serializers
+from rest_framework import fields, serializers
 
 from objects.token.constants import PermissionModes
 
@@ -34,17 +35,32 @@ def build_spec_field(spec, name, value, ui):
         spec[name] = value if ui else spec_val
 
 
-def get_field_names(data: dict) -> list:
-    field_names = []
+def get_field_names(data: Dict[str, fields.Field]) -> List[str]:
+    """ return list of names for all serializer fields. Supports nesting"""
+    names_and_sources = get_field_names_and_sources(data)
+    return [name for name, source in names_and_sources]
+
+
+def get_field_names_and_sources(data: Dict[str, fields.Field]) -> List[Tuple[str, str]]:
+    """ return list of (name, source) for all serializer fields. Supports nesting"""
+    names_and_sources = []
     for key, value in data.items():
         if isinstance(value, dict):
-            field_names += [f"{key}__{val}" for val in get_field_names(value)]
+            names_and_sources += [
+                (f"{key}__{name}", source.replace(".", "__"))
+                for name, source in get_field_names_and_sources(value)
+            ]
         elif isinstance(value, serializers.Serializer):
-            field_names += [f"{key}__{val}" for val in get_field_names(value.fields)]
+            names_and_sources += [
+                (f"{key}__{name}", source.replace(".", "__"))
+                for name, source in get_field_names_and_sources(value.fields)
+            ]
+        elif isinstance(value, fields.Field):
+            names_and_sources.append((key, value.source.replace(".", "__")))
         else:
-            field_names.append(key)
+            names_and_sources.append((key, key))
 
-    return field_names
+    return names_and_sources
 
 
 class NotAllowedDict(defaultdict):
@@ -95,7 +111,7 @@ class DynamicFieldsMixin:
             not_allowed = set(get_field_names(data)) - set(get_field_names(result_data))
             if not_allowed:
                 self.not_allowed[
-                    f"{instance.object_type.url}({instance.record.version})"
+                    f"{instance.object.object_type.url}({instance.version})"
                 ] |= not_allowed
         else:
             spec_query = build_spec(query_fields)
@@ -110,7 +126,7 @@ class DynamicFieldsMixin:
             )
             if not_allowed:
                 self.not_allowed[
-                    f"{instance.object_type.url}({instance.record.version})"
+                    f"{instance.object.object_type.url}({instance.version})"
                 ] |= not_allowed
 
         return result_data
@@ -134,13 +150,13 @@ class DynamicFieldsMixin:
             return ALL_FIELDS
 
         # use prefetch_related for DB optimization
-        if getattr(instance.object_type, "token_permissions", None):
-            permission = instance.object_type.token_permissions[0]
+        if getattr(instance.object.object_type, "token_permissions", None):
+            permission = instance.object.object_type.token_permissions[0]
         else:
             permission = request.auth.get_permission_for_object_type(
-                instance.object_type
+                instance.object.object_type
             )
         if permission.mode == PermissionModes.read_only and permission.use_fields:
-            return permission.fields.get(str(instance.record.version), [])
+            return permission.fields.get(str(instance.version), [])
 
         return ALL_FIELDS
