@@ -2,6 +2,40 @@
 Change history
 ==============
 
+2.1.0 (2022-01-12)
+------------------
+
+**Component changes**
+
+* **Bugfixes and QOL**
+
+  * managed 2FA authentication using environment variables (#250)
+  * integrated with OpenID Connect (#246)
+  * create initial superuser with environment variables (#254)
+  * removed non-actual results when filtering on `data_attr` query param (#260)
+  * supported objecttypes with json schemas without properties in the Objects Admin (#273)
+  * bumped to newer versions of mozilla-django-oidc-db (#264)
+
+* **Deployment tooling / infrastructure**
+
+  * use ansible collections from Ansible Galaxy (#241)
+
+**API 1.3.0 changes**
+
+* **New features**
+
+  * supported numeric values for `icontains` query param (#262)
+  * supported validation on `hasGeometry` field in the Objecttypes API (#263)
+
+**API 2.1.0 changes**
+
+* **New features**
+
+  * supported numeric values for `icontains` query param (#262)
+  * supported validation on `hasGeometry` field in the Objecttypes API (#263)
+  * supported `ordering` query param which allows to sort the results (#274)
+
+
 2.0.0 (2021-09-22)
 ------------------
 
