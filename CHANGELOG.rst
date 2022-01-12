@@ -14,7 +14,7 @@ Change history
   * create initial superuser with environment variables (#254)
   * removed non-actual results when filtering on `data_attr` query param (#260)
   * supported objecttypes with json schemas without properties in the Objects Admin (#273)
-  * bumped to newer versions of mozilla-django-oidc-db (#264)
+  * bumped to newer versions of mozilla-django-oidc-db (#264), django, lxml, babel and npm packages (#279)
 
 * **Deployment tooling / infrastructure**
 
