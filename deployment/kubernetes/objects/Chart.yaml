@@ -12,3 +12,8 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     tags:
       - postgresql
+  - name: redis
+    version: ~13.0.0
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - redis

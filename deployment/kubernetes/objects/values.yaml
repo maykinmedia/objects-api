@@ -1,5 +1,6 @@
 tags:
   postgresql: true
+  redis: true
 
 replicaCount: 1
 
@@ -86,6 +87,10 @@ settings:
     username: postgres
     password: objects
     name: postgres
+  
+  cache:
+    default: open-zaak-redis-master:6379/0
+    axes: open-zaak-redis-master:6379/0
 
 
 #########################
@@ -95,3 +100,22 @@ postgresql:
   postgresqlPassword: objects
   postgresqlPostgresPassword: objects
   image.tag: 12.8.0
+
+
+##################
+# Redis subchart #
+##################
+
+redis:
+  usePassword: false
+
+  cluster:
+    enabled: false
+
+  persistence:
+    existingClaim: null
+
+  master:
+    persistence:
+      enabled: false
+      size: 1Gi
