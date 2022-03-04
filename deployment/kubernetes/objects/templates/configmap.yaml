@@ -13,3 +13,17 @@ data:
   DB_NAME: {{ .Values.settings.database.name | toString | quote }}
   CACHE_DEFAULT: {{ .Values.settings.cache.default | toString | quote }}
   CACHE_AXES: {{ .Values.settings.cache.axes | toString | quote }}
+  DEBUG: {{ .Values.settings.debug | toString | quote }}
+  IS_HTTPS: {{ .Values.settings.isHttps | toString | quote }}
+  NOTIFICATIONS_DISABLED: {{ .Values.settings.notificationsDisabled | toString | quote }}
+  TWO_FACTOR_FORCE_OTP_ADMIN: {{ .Values.settings.twoFactorForceOtpAdmin | toString | quote }}
+  TWO_FACTOR_PATCH_ADMIN: {{ .Values.settings.twoFactorPatchAdmin | toString | quote }}
+  {{- if .Values.settings.admins }}
+  ADMINS: {{ .Values.settings.admins | toString | quote }}
+  {{- end }}
+  {{- if .Values.settings.subPath }}
+  SUBPATH: {{ .Values.settings.subPath | toString | quote }}
+  {{- end }}
+  {{- if .Values.settings.siteId }}
+  SITE_ID: {{ .Values.settings.siteId | toString | quote }}
+  {{- end }}

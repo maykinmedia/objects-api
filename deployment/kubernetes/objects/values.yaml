@@ -79,7 +79,15 @@ affinity: {}
 
 settings:
   secretKey: NOT-SO-SECRET
-  allowedHosts: "*"
+  allowedHosts: "objects.gemeente.nl"
+  admins: ""
+  siteId: ""
+  debug: "False"
+  isHttps: "True"
+  subPath: ""
+  notificationsDisabled: "False"
+  twoFactorForceOtpAdmin: "True"
+  twoFactorPatchAdmin: "True"
 
   database:
     host: objects-postgresql
@@ -92,6 +100,8 @@ settings:
     default: open-zaak-redis-master:6379/0
     axes: open-zaak-redis-master:6379/0
 
+  sentry:
+    dsn: ""
 
 #########################
 ## PostgreSQL subchart ##
