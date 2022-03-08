@@ -95,6 +95,7 @@ settings:
     username: postgres
     password: objects
     name: postgres
+    sslmode: prefer
   
   cache:
     default: open-zaak-redis-master:6379/0

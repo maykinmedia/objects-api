@@ -11,6 +11,7 @@ data:
   DB_PORT: {{ .Values.settings.database.port | toString | quote }}
   DB_USER: {{ .Values.settings.database.username | toString | quote }}
   DB_NAME: {{ .Values.settings.database.name | toString | quote }}
+  PGSSLMODE: {{ .Values.settings.database.sslmode | toString | quote }}
   CACHE_DEFAULT: {{ .Values.settings.cache.default | toString | quote }}
   CACHE_AXES: {{ .Values.settings.cache.axes | toString | quote }}
   DEBUG: {{ .Values.settings.debug | toString | quote }}
