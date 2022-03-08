@@ -1,6 +1,6 @@
 # Core python libraries
 glom # data represenation based on spec
-Pillow  # handle images
+Pillow >= 9.0  # handle images
 psycopg2  # database driver
 pytz  # handle timezones
 python-dotenv  # environment variables for secrets
