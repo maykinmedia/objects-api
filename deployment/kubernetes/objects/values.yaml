@@ -79,7 +79,7 @@ affinity: {}
 
 settings:
   secretKey: NOT-SO-SECRET
-  allowedHosts: "objects.gemeente.nl"
+  allowedHosts: "objects"
   admins: ""
   siteId: ""
   debug: "False"
