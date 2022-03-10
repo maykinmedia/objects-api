@@ -177,7 +177,7 @@ packaging==20.9
     # via drf-yasg
 phonenumbers==8.12.29
     # via maykin-django-two-factor-auth
-pillow==8.3.2
+pillow==9.0.1
     # via -r requirements/base.in
 polib==1.1.1
     # via django-rosetta

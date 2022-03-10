@@ -320,7 +320,7 @@ phonenumbers==8.12.29
     # via
     #   -r requirements/ci.txt
     #   maykin-django-two-factor-auth
-pillow==8.3.2
+pillow==9.0.1
     # via -r requirements/ci.txt
 pip-tools==6.0.1
     # via -r requirements/dev.in
