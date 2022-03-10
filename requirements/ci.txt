@@ -267,7 +267,7 @@ phonenumbers==8.12.29
     # via
     #   -r requirements/base.txt
     #   maykin-django-two-factor-auth
-pillow==8.3.2
+pillow==9.0.1
     # via -r requirements/base.txt
 polib==1.1.1
     # via
