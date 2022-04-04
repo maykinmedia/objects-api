@@ -43,6 +43,18 @@ Database settings
 
 * ``DB_PORT``: Port number of the database. Defaults to ``5432``.
 
+Elastic APM settings
+--------------------
+
+An integration with `Elastic APM <https://www.elastic.co/observability/application-performance-monitoring>`_
+can be configured by setting the following environment variables
+
+* ``ELASTIC_APM_SERVICE_NAME``: the name of the service in APM, i.e. "Objects API - staging"
+
+* ``ELASTIC_APM_SERVER_URL``: the URL of the APM instance to connect with
+
+* ``ELASTIC_APM_SECRET_TOKEN``: the token that is required to communicate with the APM instance
+
 Other settings
 --------------
 
