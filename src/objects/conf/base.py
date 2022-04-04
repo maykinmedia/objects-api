@@ -388,13 +388,21 @@ if SENTRY_DSN:
         **SENTRY_CONFIG, integrations=SENTRY_SDK_INTEGRATIONS, send_default_pii=True
     )
 
+#
 # Elastic APM
-
+#
+ELASTIC_APM_SERVER_URL = os.getenv("ELASTIC_APM_SERVER_URL", None)
 ELASTIC_APM = {
-    "SERVICE_NAME": "objects",
+    "SERVICE_NAME": os.getenv("ELASTIC_APM_SERVICE_NAME", "Objects API"),
     "SECRET_TOKEN": os.getenv("ELASTIC_APM_SECRET_TOKEN", "default"),
-    "SERVER_URL": os.getenv("ELASTIC_APM_SERVER_URL", "http://example.com"),
+    "SERVER_URL": ELASTIC_APM_SERVER_URL,
+    "ENABLED": bool(ELASTIC_APM_SERVER_URL),
 }
+if ELASTIC_APM_SERVER_URL:
+    MIDDLEWARE = ["elasticapm.contrib.django.middleware.TracingMiddleware"] + MIDDLEWARE
+    INSTALLED_APPS = INSTALLED_APPS + [
+        "elasticapm.contrib.django",
+    ]
 
 SITE_ID = os.getenv("SITE_ID", 1)
 
