@@ -31,7 +31,9 @@ drf-spectacular  # api documentation
 # WSGI servers & monitoring - production oriented
 uwsgi
 sentry-sdk  # error monitoring
-elastic-apm  # Elastic APM integration
+elastic-apm[opentelemetry]  # Elastic APM integration
+opentelemetry-sdk
+opentelemetry-instrumentation-django
 
 # Common ground libraries
 vng_api_common[markdown_docs]>=1.6.4
