@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 import sys
 
+from opentelemetry.instrumentation.django import DjangoInstrumentor
+
 from objects.setup import setup_env
 
 if __name__ == "__main__":
     setup_env()
+
+    # This call is what makes the Django application be instrumented
+    DjangoInstrumentor().instrument()
 
     try:
         from django.core.management import execute_from_command_line
