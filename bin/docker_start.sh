@@ -51,14 +51,14 @@ fi
 
 # Start server
 >&2 echo "Starting server"
-uwsgi \
+cd src/
+opentelemetry-instrument uwsgi \
     --http :$uwsgi_port \
     --http-keepalive \
     --manage-script-name \
     --mount $mountpoint=objects.wsgi:application \
     --static-map /static=/app/static \
     --static-map /media=/app/media  \
-    --chdir src \
     --enable-threads \
     --processes $uwsgi_processes \
     --threads $uwsgi_threads \
