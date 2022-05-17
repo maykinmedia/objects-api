@@ -2,7 +2,7 @@
 Change history
 ==============
 
-2.1.0 (2022-01-12)
+2.1.0 (2022-05-17)
 ------------------
 
 **Component changes**
@@ -14,7 +14,8 @@ Change history
   * create initial superuser with environment variables (#254)
   * removed non-actual results when filtering on `data_attr` query param (#260)
   * supported objecttypes with json schemas without properties in the Objects Admin (#273)
-  * bumped to newer versions of mozilla-django-oidc-db (#264), django, lxml, babel and npm packages (#279)
+  * bumped to newer versions of mozilla-django-oidc-db (#264), django, lxml, babel, waitress(#293), pillow (#285) and npm packages (#279)
+  * remove swagger2openapi from dependencies (#292)
 
 * **Deployment tooling / infrastructure**
 
