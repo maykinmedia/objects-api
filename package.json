@@ -9,8 +9,7 @@
   "scripts": {
     "test": "gulp test",
     "build": "gulp build",
-    "watch": "gulp watch",
-    "convert": "swagger2openapi src/swagger2.0.json -o src/openapi.yaml"
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -64,7 +63,6 @@
     "sass-loader": "latest",
     "simulant": "latest",
     "sinon": "latest",
-    "swagger2openapi": "^7.0.8",
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest",
