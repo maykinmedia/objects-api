@@ -40,8 +40,8 @@ _______
 
 All performance reports are available for download for all versions:
 
-- :download:`v2.0.0-alpha <_assets/v2.0.0-alpha.html>`
-- :download:`v1.1.1 <_assets/v1.1.1.html>`
-- :download:`v1.1.0 <_assets/v1.1.0.html>`
+- :download:`v2.0.0-alpha <_assets/v2.0.0-alpha.pdf>`
+- :download:`v1.1.1 <_assets/v1.1.1.pdf>`
+- :download:`v1.1.0 <_assets/v1.1.0.pdf>`
 
 .. _`performance testing repository`: https://github.com/maykinmedia/objects-api-performance
