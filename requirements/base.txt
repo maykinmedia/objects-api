@@ -187,7 +187,7 @@ psycopg2==2.8.6
     #   mozilla-django-oidc-db
 pycparser==2.20
     # via cffi
-pyjwt==2.0.1
+pyjwt==2.4.0
     # via
     #   gemma-zds-client
     #   vng-api-common
