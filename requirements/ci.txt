@@ -281,7 +281,7 @@ pycparser==2.20
     # via
     #   -r requirements/base.txt
     #   cffi
-pyjwt==2.0.1
+pyjwt==2.4.0
     # via
     #   -r requirements/base.txt
     #   gemma-zds-client
