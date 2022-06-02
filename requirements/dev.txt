@@ -344,7 +344,7 @@ pygments==2.8.1
     # via
     #   sphinx
     #   sphinx-tabs
-pyjwt==2.0.1
+pyjwt==2.4.0
     # via
     #   -r requirements/ci.txt
     #   gemma-zds-client
