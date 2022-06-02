@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="{% static 'vng_api_common/libs/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/screen.css' %}">
     <link rel="stylesheet" href="{% static 'vng_api_common/libs/fontawesome/css/all.min.css' %}">
 
     <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
@@ -17,10 +17,8 @@
 
     {% if not settings.SITE_TITLE or not settings.PROJECT_NAME %}
       <div class="container">
-        <div class="alert alert-danger">
-          Please add the variables <em>SITE_TITLE</em> and <em>PROJECT_NAME</em> to your <em>settings.py</em> and make
-          sure they are available via <em>context processors</em>.
-        </div>
+        Please add the variables <em>SITE_TITLE</em> and <em>PROJECT_NAME</em> to your <em>settings.py</em> and make
+        sure they are available via <em>context processors</em>.
       </div>
     {% endif %}
 
@@ -29,56 +27,46 @@
       to get some actual content.
     {% endblock %}
 
-    <div class="container">
-      <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-          <div class="col-4 col-md">
-            <img class="mb-2" src="{% static 'img/maykin_logo.png' %}" alt="Maykin Media logo" height="48">
-            <img class="mb-2" src="{% static 'img/opengem_logo.png' %}" alt="Open Gemeente Initiatief logo" height="48">
-            <small class="d-block mb-3 text-muted">
-              Developed by <a class="text-info" href="https://www.maykinmedia.nl">Maykin Media</a><br>
-              within the <a class="text-info" href="https://opengem.nl">Open Gemeente Initiatief</a> &copy; {% now "Y" %}<br>
-              commissioned by the <a class="text-info" href="https://www.utrecht.nl">Municipality of Utrecht</a>
-            </small>
-          </div>
-          <div class="col-4 col-md">
-            <h5>Objects API</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="https://objects-and-objecttypes-api.readthedocs.io/">Documentation</a></li>
-              <li><a class="text-muted" href="https://commonground.nl/groups/view/54477963/objecten-en-objecttypen-api">Community on CommonGround.nl</a></li>
-              <li><a class="text-muted" href="https://hub.docker.com/r/maykinmedia/objects-api">Docker images</a></li>
-              <li><a class="text-muted" href="https://github.com/maykinmedia/objects-api">Code on Github</a></li>
-            </ul>
-          </div>
-          <div class="col-4 col-md">
-            <h5>Other</h5>
-            <ul class="list-unstyled text-small">
-              <li>Report <a class="text-muted" href="https://github.com/maykinmedia/objects-api/issues">issues</a> for questions, bugs or wishes</li>
-              <li>Read more on <a class="text-muted" href="https://commonground.nl/">Common Ground</a></li>
-            </ul>
-          </div>
+    <footer class="footer container">
+      <div class="footer__row">
+        <div class="footer__col footer__col--small">
+          <img src="{% static 'img/maykin_logo.png' %}" alt="Maykin Media logo" height="48">
+          <img src="{% static 'img/opengem_logo.png' %}" alt="Open Gemeente Initiatief logo" height="48">
+          <p>
+          Developed by <a class="link" href="https://www.maykinmedia.nl">Maykin Media</a><br>
+          within the <a class="link" href="https://opengem.nl">Open Gemeente Initiatief</a> &copy; {% now "Y" %}<br>
+          commissioned by the <a class="link" href="https://www.utrecht.nl">Municipality of Utrecht</a>
+          </p>
         </div>
-        <div class="row">
-          <div class="col-6 text-muted">
-            <code>{{ settings.RELEASE }}</code>
-          </div>
-          <div class="col-6 text-muted text-right">
-            <code>{{ settings.GIT_SHA|default:"" }}</code>
-          </div>
+        <div class="footer__col">
+          <h5 class="footer__header">Objects API</h5>
+          <ul class="footer__list">
+            <li><a class="link link--muted" href="https://objects-and-objecttypes-api.readthedocs.io/">Documentation</a></li>
+            <li><a class="link link--muted" href="https://commonground.nl/groups/view/54477963/objecten-en-objecttypen-api">Community on CommonGround.nl</a></li>
+            <li><a class="link link--muted" href="https://hub.docker.com/r/maykinmedia/objects-api">Docker images</a></li>
+            <li><a class="link link--muted" href="https://github.com/maykinmedia/objects-api">Code on Github</a></li>
+          </ul>
         </div>
-      </footer>
-    </div>
+        <div class="footer__col">
+          <h5 class="footer__header">Other</h5>
+          <ul class="footer__list">
+            <li>Report <a class="link link--muted" href="https://github.com/maykinmedia/objects-api/issues">issues</a> for questions, bugs or wishes</li>
+            <li>Read more on <a class="link link--muted" href="https://commonground.nl/">Common Ground</a></li>
+          </ul>
+        </div>
+      </div>
 
-    <script src="{% static 'vng_api_common/libs/jquery/jquery-3.3.1.slim.min.js' %}"></script>
-    <script src="{% static 'vng_api_common/libs/popper/popper.min.js' %}"></script>
-    <script src="{% static 'vng_api_common/libs/bootstrap/js/bootstrap.min.js' %}"></script>
+      <div class="footer__row">
+        <div class="footer__col">
+          <code>{{ settings.RELEASE }}</code>
+        </div>
+        <div class="footer__col footer__col--right">
+          <code>{{ settings.GIT_SHA|default:"" }}</code>
+        </div>
+      </div>
+    </footer>
 
-    <script>
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-    </script>
-
+    <script src="{% static 'js/main.js' %}" type="text/javascript"></script>
     {% block extra_scripts %}{% endblock %}
   </body>
 </html>
