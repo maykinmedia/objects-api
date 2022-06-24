@@ -1,4 +1,5 @@
 import json
+import uuid
 from datetime import date, timedelta
 
 import requests_mock
@@ -316,4 +317,66 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "correctedBy": None,
                 },
             ],
+        )
+
+    # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we descovered that updating an object \
+    # where the startAt value has been moddified with an earlier date causes an 500 response.
+    def test_updating_object_after_changing_the_startAt_value_returns_200(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        object_uuid = uuid.uuid4()
+
+        url_object_list = reverse("object-list")
+        start_data = {
+            "uuid": object_uuid,
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
+                "startAt": "2020-01-02",
+            },
+        }
+
+        response_object_list = self.client.post(
+            url_object_list, start_data, **GEO_WRITE_KWARGS
+        )
+
+        self.assertEqual(response_object_list.status_code, status.HTTP_201_CREATED)
+
+        url_object_update = reverse("object-detail", args=[object_uuid])
+        modified_data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [4.910649523925713, 52.37240093589432],
+                },
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response_object_details = self.client.put(
+            url_object_update, modified_data, **GEO_WRITE_KWARGS
+        )
+
+        self.assertEqual(response_object_details.status_code, status.HTTP_200_OK)
+
+        response_updating_data_after_startAt_modification = self.client.put(
+            url_object_update, modified_data, **GEO_WRITE_KWARGS
+        )
+
+        self.assertEqual(
+            response_updating_data_after_startAt_modification.status_code,
+            status.HTTP_200_OK,
         )
