@@ -2,6 +2,17 @@
 Change history
 ==============
 
+2.1.1 (2022-06-24)
+------------------
+
+* **Bugfixes and QOL**
+
+  * fixed updating objects with earlier `startAt` attribute (#282)
+  * removed boostrap from the landing page (#294)
+  * bumped to newer versions of pyjwt (#299)
+  * fixed Elastic APM configuration (#289)
+
+
 2.1.0 (2022-05-17)
 ------------------
 
