@@ -8,21 +8,22 @@ from objects.utils.serializers import get_field_names_and_sources
 
 class OrderingBackend(OrderingFilter):
     """
-    This backend can be used when DB fields have different names/paths when
+    This backend can be used when DB fields have different names/paths than
     serializer fields. It keeps the mapping between the serializer and DB fields and
     also supports ordering on nested fields.
-    It also supports ordering on any attribute of JSON field
+
+    It also supports ordering on any attribute of JSON field.
     """
 
     json_field = None
     ordering_description = _(
         "Comma-separated fields, which are used to order results. "
-        "For descending order user '-' as prefix. Nested fileds are also supported. "
+        "For descending order use '-' as prefix. Nested fields are also supported. "
         "For example: '-record__data__length,record__index'."
     )
 
     def get_valid_fields(self, queryset, view, context={}):
-        """ add nested fields to available fields for ordering"""
+        """add nested fields to available fields for ordering"""
         valid_fields = getattr(view, "ordering_fields", self.ordering_fields)
 
         if valid_fields is None:
@@ -102,7 +103,7 @@ class OrderingBackend(OrderingFilter):
         return getattr(view, "json_field", self.json_field)
 
     def get_db_ordering(self, request, queryset, view) -> list:
-        """ get serializer ordering fields and convert them to db fields"""
+        """get serializer ordering fields and convert them to db fields"""
         ordering = self.get_ordering(request, queryset, view)
         ordering = ordering or []
 
