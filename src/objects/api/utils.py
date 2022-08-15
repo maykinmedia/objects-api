@@ -1,10 +1,10 @@
 from datetime import date
-from typing import Any
+from typing import Union
 
 from djchoices import DjangoChoices
 
 
-def string_to_value(value: str) -> Any:
+def string_to_value(value: str) -> Union[str, float, date]:
     if is_number(value):
         return float(value)
     elif is_date(value):
