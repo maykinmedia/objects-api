@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from typing import Any
 
 from djchoices import DjangoChoices
@@ -8,14 +8,14 @@ def string_to_value(value: str) -> Any:
     if is_number(value):
         return float(value)
     elif is_date(value):
-        return datetime.strptime(value, "%Y-%m-%d")
+        return date.fromisoformat(value)
 
     return value
 
 
 def is_date(value: str) -> bool:
     try:
-        datetime.strptime(value, "%Y-%m-%d")
+        date.fromisoformat(value)
     except ValueError:
         return False
 
