@@ -15,7 +15,7 @@ ROOT_DIR = os.path.abspath(
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": "objects",
         "USER": "objects",
         "PASSWORD": "objects",
