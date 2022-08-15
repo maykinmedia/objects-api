@@ -65,7 +65,7 @@ given and if everything is approved, it will be merged.
 
 ### Reviews on releases
 
-All pull requests will be reviewed by a project memeber before they are merged 
+All pull requests will be reviewed by a project member before they are merged 
 to a release branch. 
 
 
