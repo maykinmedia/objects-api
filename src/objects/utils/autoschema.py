@@ -1,3 +1,5 @@
+from typing import List
+
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -117,7 +119,7 @@ class AutoSchema(_AutoSchema):
             )
         ]
 
-    def get_fields_params(self) -> []:
+    def get_fields_params(self) -> List[OpenApiParameter]:
         if self.method != "GET":
             return []
 
