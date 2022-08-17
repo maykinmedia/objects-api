@@ -587,3 +587,45 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
                 "detail": "This search operation is not supported by the underlying data store."
             },
         )
+
+
+class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("object-list")
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
+        )
+
+        cls.record_v1 = ObjectRecordFactory.create(
+            data={"person": {"name": "Something important"}},
+            object__object_type=cls.object_type,
+            version=1
+        )
+
+        cls.record_v2 = ObjectRecordFactory.create(
+            data={"person": {"name": "Something important"}},
+            object__object_type=cls.object_type,
+            version=2
+        )
+
+    def test_filter_existing_version(self):
+        response = self.client.get(self.url, {"typeVersion": 1})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["record"]["typeVersion"], 1)
+
+    def test_filter_unkown_version(self):
+        response = self.client.get(self.url, {"typeVersion": 3})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
