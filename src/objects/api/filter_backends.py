@@ -22,7 +22,7 @@ class OrderingBackend(OrderingFilter):
     )
 
     def get_valid_fields(self, queryset, view, context={}):
-        """ add nested fields to available fields for ordering"""
+        """add nested fields to available fields for ordering"""
         valid_fields = getattr(view, "ordering_fields", self.ordering_fields)
 
         if valid_fields is None:
@@ -102,7 +102,7 @@ class OrderingBackend(OrderingFilter):
         return getattr(view, "json_field", self.json_field)
 
     def get_db_ordering(self, request, queryset, view) -> list:
-        """ get serializer ordering fields and convert them to db fields"""
+        """get serializer ordering fields and convert them to db fields"""
         ordering = self.get_ordering(request, queryset, view)
         ordering = ordering or []
 
