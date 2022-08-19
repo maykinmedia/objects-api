@@ -46,7 +46,9 @@ class PermissionAdmin(admin.ModelAdmin):
         if request.method == "POST":
             form = ModelForm(request.POST, request.FILES, instance=obj)
         else:
-            form = ModelForm(instance=obj, initial={"token_auth": request.GET.get("token_auth")})
+            form = ModelForm(
+                instance=obj, initial={"token_auth": request.GET.get("token_auth")}
+            )
         form.is_valid()
 
         values = {field.name: field.value() for field in form}
