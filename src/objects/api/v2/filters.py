@@ -40,7 +40,10 @@ class ObjectRecordFilterSet(FilterSet):
         min_length=1,
         max_length=1000,
     )
-    typeVersion = filters.NumberFilter(field_name="version")
+    typeVersion = filters.NumberFilter(
+        field_name="version",
+        help_text=_("Display record data for the specified type version"),
+    )
     date = filters.DateFilter(
         method="filter_date",
         help_text=_(

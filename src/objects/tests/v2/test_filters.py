@@ -606,13 +606,13 @@ class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
         cls.record_v1 = ObjectRecordFactory.create(
             data={"person": {"name": "Something important"}},
             object__object_type=cls.object_type,
-            version=1
+            version=1,
         )
 
         cls.record_v2 = ObjectRecordFactory.create(
             data={"person": {"name": "Something important"}},
             object__object_type=cls.object_type,
-            version=2
+            version=2,
         )
 
     def test_filter_existing_version(self):
