@@ -1,5 +1,7 @@
+from datetime import date as date_
+
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_filters import filters
 from rest_framework import serializers
@@ -37,6 +39,10 @@ class ObjectRecordFilterSet(FilterSet):
         queryset=ObjectType.objects.all(),
         min_length=1,
         max_length=1000,
+    )
+    typeVersion = filters.NumberFilter(
+        field_name="version",
+        help_text=_("Display record data for the specified type version"),
     )
     date = filters.DateFilter(
         method="filter_date",
@@ -117,8 +123,8 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         where_str = "core_objectrecord.data @? CONCAT('$.** ? (@ like_regex \"',%s::text,'\" flag \"i\")')::jsonpath"
         return queryset.extra(where=[where_str], params=[value])
 
-    def filter_date(self, queryset, name, value: date):
+    def filter_date(self, queryset, name, value: date_):
         return queryset.filter_for_date(value)
 
-    def filter_registration_date(self, queryset, name, value: date):
+    def filter_registration_date(self, queryset, name, value: date_):
         return queryset.filter_for_registration_date(value)

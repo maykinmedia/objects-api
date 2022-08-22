@@ -36,13 +36,13 @@ def build_spec_field(spec, name, value, ui):
 
 
 def get_field_names(data: Dict[str, fields.Field]) -> List[str]:
-    """ return list of names for all serializer fields. Supports nesting"""
+    """return list of names for all serializer fields. Supports nesting"""
     names_and_sources = get_field_names_and_sources(data)
     return [name for name, source in names_and_sources]
 
 
 def get_field_names_and_sources(data: Dict[str, fields.Field]) -> List[Tuple[str, str]]:
-    """ return list of (name, source) for all serializer fields. Supports nesting"""
+    """return list of (name, source) for all serializer fields. Supports nesting"""
     names_and_sources = []
     for key, value in data.items():
         if isinstance(value, dict):

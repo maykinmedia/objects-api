@@ -136,7 +136,7 @@ paths:
         required: false
         in: query
         description: 'Comma-separated fields, which are used to order results. For
-          descending order user ''-'' as prefix. Nested fileds are also supported.
+          descending order use ''-'' as prefix. Nested fields are also supported.
           For example: ''-record__data__length,record__index''.'
         schema:
           type: string
@@ -168,6 +168,11 @@ paths:
           maxLength: 1000
           minLength: 1
         description: Url reference to OBJECTTYPE in Objecttypes API
+      - in: query
+        name: typeVersion
+        schema:
+          type: integer
+        description: Display record data for the specified type version
       tags:
       - objects
       security:
@@ -599,13 +604,16 @@ paths:
                     description: Display record data for the specified registration
                       date, i.e. the specified date would be between `registrationAt`
                       attributes of different records
+                  typeVersion:
+                    type: integer
+                    description: Display record data for the specified type version
                   data_icontains:
                     type: string
                     description: Search in all `data` values of string properties.
                   ordering:
                     type: string
                     description: 'Comma-separated fields, which are used to order
-                      results. For descending order user ''-'' as prefix. Nested fileds
+                      results. For descending order use ''-'' as prefix. Nested fields
                       are also supported. For example: ''-record__data__length,record__index''.'
       security:
       - tokenAuth: []
