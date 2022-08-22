@@ -46,7 +46,9 @@ class PermissionAdmin(admin.ModelAdmin):
         if request.method == "POST":
             form = ModelForm(request.POST, request.FILES, instance=obj)
         else:
-            form = ModelForm(instance=obj)
+            form = ModelForm(
+                instance=obj, initial={"token_auth": request.GET.get("token_auth")}
+            )
         form.is_valid()
 
         values = {field.name: field.value() for field in form}
@@ -101,6 +103,7 @@ class PermissionAdmin(admin.ModelAdmin):
 
 class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
     model = Permission
+    fk_name = "token_auth"
     fields = ("object_type", "mode", "use_fields", "fields")
 
 
