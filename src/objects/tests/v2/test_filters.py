@@ -377,6 +377,29 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         data = response.json()["results"]
         self.assertEqual(len(data), 0)
 
+    def test_filter_date_field_gte(self):
+        record = ObjectRecordFactory.create(
+            data={"dateField": "2000-10-10"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(
+            self.url, {"data_attrs": "dateField__gte__2000-10-10"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+
+        response = self.client.get(
+            self.url, {"data_attrs": "dateField__gte__2000-10-11"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 0)
+
 
 class FilterDateTests(TokenAuthMixin, APITestCase):
     @classmethod
