@@ -4,6 +4,7 @@ os.environ.setdefault("DB_USER", os.getenv("DB_USER", "objects"))
 os.environ.setdefault("DB_NAME", os.getenv("DB_NAME", "objects"))
 os.environ.setdefault("DB_PASSWORD", os.getenv("DB_PASSWORD", "objects"))
 os.environ.setdefault("DB_HOST", os.getenv("DB_HOST", "db"))
+os.environ.setdefault("ENVIRONMENT", "docker")
 
 from .base import *  # noqa isort:skip
 from .utils import config  # noqa isort:skip
@@ -34,17 +35,12 @@ if subpath:
 
 
 #
-# Custom settings
-#
-ENVIRONMENT = "docker"
-
-ELASTIC_APM["SERVICE_NAME"] += " " + ENVIRONMENT
-
-
-#
 # Library settings
 #
 
 # django-axes
 AXES_BEHIND_REVERSE_PROXY = False
 AXES_CACHE = "axes_cache"
+
+# Elastic APM
+ELASTIC_APM["SERVICE_NAME"] += " " + ENVIRONMENT

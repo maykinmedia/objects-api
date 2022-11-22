@@ -57,9 +57,12 @@ can be configured by setting the following environment variables
 
 Other settings
 --------------
+* ``ENVIRONMENT``: An identifier for the environment, displayed in the admin depending on
+  the settings module used and included in the error monitoring (see ``SENTRY_DSN``).
+  The default is set according to ``DJANGO_SETTINGS_MODULE``. Good examples values are:
 
-* ``ADMINS``: Comma seperated list (without spaces!) of e-mail addresses to
-  sent an email in the case of any errors. Defaults to an empty list.
+  * ``production``
+  * ``test``
 
 * ``SITE_ID``: The database ID of the site object. Defaults to ``1``.
 
