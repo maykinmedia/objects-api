@@ -5,6 +5,8 @@ import logging
 import os
 
 os.environ.setdefault("SECRET_KEY", "dummy")
+os.environ.setdefault("IS_HTTPS", "no")
+os.environ.setdefault("ENVIRONMENT", "ci")
 
 from .base import *  # noqa isort:skip
 
@@ -20,7 +22,6 @@ CACHES = {
 LOGGING = None  # Quiet is nice
 logging.disable(logging.CRITICAL)
 
-ENVIRONMENT = "ci"
 
 #
 # Django-axes
@@ -28,7 +29,6 @@ ENVIRONMENT = "ci"
 AXES_BEHIND_REVERSE_PROXY = False
 
 NOTIFICATIONS_DISABLED = True
-IS_HTTPS = False
 
 
 #

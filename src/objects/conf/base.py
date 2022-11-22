@@ -6,10 +6,11 @@ from django.urls import reverse_lazy
 from sentry_sdk.integrations import django, redis
 
 from .api import *  # noqa
+from .utils import config
 
 try:
     from sentry_sdk.integrations import celery
-except Exception:  # no celery in this proejct
+except Exception:  # no celery in this project
     celery = None
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,27 +21,28 @@ BASE_DIR = os.path.abspath(
     os.path.join(DJANGO_PROJECT_DIR, os.path.pardir, os.path.pardir)
 )
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+#
+# Core Django settings
+#
+SITE_ID = config("SITE_ID", 1)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config("DEBUG", default=False)
 
-IS_HTTPS = os.getenv("IS_HTTPS", not DEBUG)
-
-ALLOWED_HOSTS = []
+IS_HTTPS = config("IS_HTTPS", not DEBUG)
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", split=True)
 
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": os.getenv("DB_NAME", "objects"),
-        "USER": os.getenv("DB_USER", "objects"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "objects"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
-        "PORT": os.getenv("DB_PORT", 5432),
+        "NAME": config("DB_NAME", "objects"),
+        "USER": config("DB_USER", "objects"),
+        "PASSWORD": config("DB_PASSWORD", "objects"),
+        "HOST": config("DB_HOST", "localhost"),
+        "PORT": config("DB_PORT", 5432),
     }
 }
 
@@ -308,11 +310,18 @@ LOGIN_REDIRECT_URL = reverse_lazy("admin:index")
 LOGOUT_REDIRECT_URL = reverse_lazy("admin:index")
 
 #
+# SECURITY settings
+#
+SESSION_COOKIE_SECURE = IS_HTTPS
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = IS_HTTPS
+
+#
 # Custom settings
 #
 PROJECT_NAME = "Objects"
 SITE_TITLE = "Starting point"
-ENVIRONMENT = None
+ENVIRONMENT = config("ENVIRONMENT", "")
 SHOW_ALERT = True
 
 #
@@ -369,7 +378,7 @@ HIJACK_REGISTER_ADMIN = False
 HIJACK_ALLOW_GET_REQUESTS = True
 
 # Sentry SDK
-SENTRY_DSN = os.getenv("SENTRY_DSN")
+SENTRY_DSN = config("SENTRY_DSN", None)
 
 SENTRY_SDK_INTEGRATIONS = [
     django.DjangoIntegration(),
@@ -383,7 +392,8 @@ if SENTRY_DSN:
 
     SENTRY_CONFIG = {
         "dsn": SENTRY_DSN,
-        "release": os.getenv("VERSION_TAG", "VERSION_TAG not set"),
+        "release": config("VERSION_TAG", "VERSION_TAG not set"),
+        "environment": ENVIRONMENT,
     }
 
     sentry_sdk.init(
@@ -393,10 +403,10 @@ if SENTRY_DSN:
 #
 # Elastic APM
 #
-ELASTIC_APM_SERVER_URL = os.getenv("ELASTIC_APM_SERVER_URL", None)
+ELASTIC_APM_SERVER_URL = config("ELASTIC_APM_SERVER_URL", None)
 ELASTIC_APM = {
-    "SERVICE_NAME": os.getenv("ELASTIC_APM_SERVICE_NAME", "Objects API"),
-    "SECRET_TOKEN": os.getenv("ELASTIC_APM_SECRET_TOKEN", "default"),
+    "SERVICE_NAME": config("ELASTIC_APM_SERVICE_NAME", "Objects API"),
+    "SECRET_TOKEN": config("ELASTIC_APM_SECRET_TOKEN", "default"),
     "SERVER_URL": ELASTIC_APM_SERVER_URL,
     "ENABLED": bool(ELASTIC_APM_SERVER_URL),
 }
@@ -406,32 +416,19 @@ if ELASTIC_APM_SERVER_URL:
         "elasticapm.contrib.django",
     ]
 
-SITE_ID = os.getenv("SITE_ID", 1)
 
 # VNG API Common
 CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
 
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
-NOTIFICATIONS_DISABLED = os.getenv("NOTIFICATIONS_DISABLED", False) in [
-    "True",
-    "true",
-    "yes",
-]
+NOTIFICATIONS_DISABLED = config("NOTIFICATIONS_DISABLED", False)
 
 #
 # Maykin fork of DJANGO-TWO-FACTOR-AUTH
 #
-TWO_FACTOR_FORCE_OTP_ADMIN = os.getenv("TWO_FACTOR_FORCE_OTP_ADMIN", "True") in [
-    "True",
-    "true",
-    "yes",
-]
-TWO_FACTOR_PATCH_ADMIN = os.getenv("TWO_FACTOR_PATCH_ADMIN", "True") in [
-    "True",
-    "true",
-    "yes",
-]
+TWO_FACTOR_FORCE_OTP_ADMIN = config("TWO_FACTOR_FORCE_OTP_ADMIN", not DEBUG)
+TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
 
 #
 # Mozilla Django OIDC DB settings
