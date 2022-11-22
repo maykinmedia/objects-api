@@ -8,6 +8,8 @@ os.environ.setdefault(
     "SECRET_KEY", "2(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg"
 )
 os.environ.setdefault("IS_HTTPS", "no")
+os.environ.setdefault("ENVIRONMENT", "development")
+
 os.environ.setdefault("DB_NAME", "objects"),
 os.environ.setdefault("DB_USER", "objects"),
 os.environ.setdefault("DB_PASSWORD", "objects"),
@@ -54,11 +56,6 @@ LOGGING["loggers"].update(
     }
 )
 
-
-#
-# Custom settings
-#
-ENVIRONMENT = "development"
 
 #
 # Library settings
