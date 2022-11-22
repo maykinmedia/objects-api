@@ -5,6 +5,7 @@ import logging
 import os
 
 os.environ.setdefault("SECRET_KEY", "dummy")
+os.environ.setdefault("IS_HTTPS", "no")
 
 from .base import *  # noqa isort:skip
 
@@ -28,7 +29,6 @@ ENVIRONMENT = "ci"
 AXES_BEHIND_REVERSE_PROXY = False
 
 NOTIFICATIONS_DISABLED = True
-IS_HTTPS = False
 
 
 #
