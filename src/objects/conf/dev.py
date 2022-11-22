@@ -2,35 +2,23 @@ import os
 import sys
 import warnings
 
+os.environ.setdefault("DEBUG", "yes")
+os.environ.setdefault("ALLOWED_HOSTS", "*")
 os.environ.setdefault(
     "SECRET_KEY", "2(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg"
 )
-
-# uses postgresql by default, see base.py
+os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("DB_NAME", "objects"),
 os.environ.setdefault("DB_USER", "objects"),
 os.environ.setdefault("DB_PASSWORD", "objects"),
 
 from .base import *  # noqa isort:skip
 
-# Feel free to switch dev to sqlite3 for simple projects,
-# or override DATABASES in your local.py
-# DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
-
 #
 # Standard Django settings.
 #
 
-DEBUG = True
-IS_HTTPS = False
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-ADMINS = ()
-MANAGERS = ADMINS
-
-# Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 LOGGING["loggers"].update(
     {
@@ -66,14 +54,6 @@ LOGGING["loggers"].update(
     }
 )
 
-#
-# Additional Django settings
-#
-
-# Disable security measures for development
-SESSION_COOKIE_SECURE = False
-SESSION_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SECURE = False
 
 #
 # Custom settings
