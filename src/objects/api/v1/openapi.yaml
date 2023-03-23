@@ -654,12 +654,12 @@ components:
         startAt:
           type: string
           format: date
-          description: Legal start date of the object record
+          description: Legal start date of the object record (inclusive)
         endAt:
           type: string
           format: date
           readOnly: true
-          description: Legal end date of the object record
+          description: Legal end date of the object record (exclusive)
         registrationAt:
           type: string
           format: date
@@ -801,12 +801,12 @@ components:
         startAt:
           type: string
           format: date
-          description: Legal start date of the object record
+          description: Legal start date of the object record (inclusive)
         endAt:
           type: string
           format: date
           readOnly: true
-          description: Legal end date of the object record
+          description: Legal end date of the object record (exclusive)
         registrationAt:
           type: string
           format: date

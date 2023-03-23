@@ -380,3 +380,75 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             response_updating_data_after_startAt_modification.status_code,
             status.HTTP_200_OK,
         )
+
+
+@requests_mock.Mocker()
+class ObjectApiTodayTests(TokenAuthMixin, APITestCase):
+    maxDiff = None
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_and_write,
+            token_auth=cls.token_auth,
+        )
+
+    def test_update_object_issue_324(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+        today = date.today()
+
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"adres": {"straat": "Bospad"}, "diameter": 30},
+                "startAt": today,
+            },
+        }
+        url = reverse("object-list")
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        object = Object.objects.get()
+
+        url = reverse("object-detail", args=[object.uuid])
+        data = {
+            "type": object.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"adres": {"straat": "Dorpsstraat"}, "diameter": 30},
+                "startAt": today,
+            },
+        }
+
+        response = self.client.put(url, data, **GEO_WRITE_KWARGS)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        object.refresh_from_db()
+        self.assertEqual(object.object_type, self.object_type)
+        self.assertEqual(object.records.count(), 2)
+        url = reverse("object-list")
+        response = self.client.get(url, {"data_attrs": "adres__straat__exact__Bospad"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
+
+        response = self.client.get(
+            url, {"data_attrs": "adres__straat__exact__Dorpsstraat"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)

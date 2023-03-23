@@ -377,6 +377,53 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         data = response.json()["results"]
         self.assertEqual(len(data), 0)
 
+        response = self.client.get(self.url, {"data_attrs": "diameter__exact__50"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+
+    def test_filter_exclude_old_records_issue_324(self):
+        """
+        Filter and conflict resolution.
+
+        If record A ends at X and a newer record B starts at X, both match on
+        date X. Normally, conflict resolution returns only record B. However,
+        when you add a filter, it first finds the record matching this filter.
+        If the filter only results in record A, there are no conflicts and
+        record A is returned.
+        """
+        record_old = ObjectRecordFactory.create(
+            data={"adres": {"straat": "Bospad"}},
+            object__object_type=self.object_type,
+            start_at=date.today() - timedelta(days=1),
+            end_at=date.today(),
+        )
+        record_new = ObjectRecordFactory.create(
+            data={"adres": {"straat": "Dorpsstraat"}},
+            object=record_old.object,
+            start_at=record_old.end_at,
+        )
+
+        response = self.client.get(
+            self.url, {"data_attrs": "adres__straat__exact__Bospad"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
+
+        response = self.client.get(
+            self.url, {"data_attrs": "adres__straat__exact__Dorpsstraat"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+
     def test_filter_date_field_gte(self):
         record = ObjectRecordFactory.create(
             data={"dateField": "2000-10-10"}, object__object_type=self.object_type

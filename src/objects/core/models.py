@@ -98,10 +98,12 @@ class ObjectRecord(models.Model):
         encoder=DjangoJSONEncoder,
     )
     start_at = models.DateField(
-        _("start at"), help_text=_("Legal start date of the object record")
+        _("start at"), help_text=_("Legal start date of the object record (inclusive)")
     )
     end_at = models.DateField(
-        _("end at"), null=True, help_text=_("Legal end date of the object record")
+        _("end at"),
+        null=True,
+        help_text=_("Legal end date of the object record (exclusive)"),
     )
     registration_at = models.DateField(
         _("registration at"),
