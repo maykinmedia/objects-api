@@ -15,7 +15,7 @@ env:
 jobs:
   tests:
     name: Run the Django test suite
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       postgres:
@@ -67,7 +67,7 @@ jobs:
     needs: tests
 
     name: Build (and push) Docker image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
