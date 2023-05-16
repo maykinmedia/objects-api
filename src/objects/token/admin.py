@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.utils import unquote
 
 from objects.api.serializers import ObjectSerializer
-from objects.core.models import ObjectType
+from objects.core.models import ObjectRecord, ObjectType
 from objects.utils.admin import EditInlineAdminMixin
 from objects.utils.serializers import build_spec, get_field_names
 
@@ -14,7 +14,23 @@ EMPTY_FIELD_CHOICE = ("", "---------")
 
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
-    list_display = ("token_auth", "object_type", "mode", "use_fields")
+    list_display = (
+        "token_auth",
+        "object_type",
+        "get_object_type_uuid",
+        "get_object_record_version",
+        "mode",
+        "use_fields",
+    )
+
+    def get_object_type_uuid(self, obj):
+        return obj.object_type.uuid
+
+    def get_object_record_version(self, obj):
+        return ObjectRecord.objects.filter(object__object_type=obj.object_type).count()
+
+    get_object_record_version.short_description = "version"
+    get_object_type_uuid.short_description = "UUID"
 
     def get_object_fields(self):
         object_serializer = ObjectSerializer()
@@ -104,7 +120,23 @@ class PermissionAdmin(admin.ModelAdmin):
 class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
     model = Permission
     fk_name = "token_auth"
-    fields = ("object_type", "mode", "use_fields", "fields")
+    fields = (
+        "object_type",
+        "get_object_type_uuid",
+        "get_object_record_version",
+        "mode",
+        "use_fields",
+        "fields",
+    )
+
+    def get_object_type_uuid(self, obj):
+        return obj.object_type.uuid
+
+    def get_object_record_version(self, obj):
+        return ObjectRecord.objects.filter(object__object_type=obj.object_type).count()
+
+    get_object_record_version.short_description = "version"
+    get_object_type_uuid.short_description = "UUID"
 
 
 @admin.register(TokenAuth)

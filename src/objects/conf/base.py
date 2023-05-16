@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     "objects.core",
     "objects.token",
     "objects.utils",
+    "markdown",
 ]
 
 MIDDLEWARE = [

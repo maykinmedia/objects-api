@@ -29,10 +29,12 @@ django-filter
 drf-spectacular  # api documentation
 
 # WSGI servers & monitoring - production oriented
-uwsgi
+uwsgi==2.0.21
 sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
 
 # Common ground libraries
 vng_api_common[markdown_docs]>=1.6.4
 zgw-consumers  # external api auths
+ruamel.yaml.clib==0.2.7
+Markdown==3.4.3

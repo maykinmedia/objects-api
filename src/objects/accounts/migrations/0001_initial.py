@@ -8,7 +8,6 @@ import objects.accounts.managers
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [

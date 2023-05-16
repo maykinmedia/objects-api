@@ -45,7 +45,6 @@ class ResetSequences(migrations.RunSQL):
         if router.allow_migrate(
             schema_editor.connection.alias, app_label, **self.hints
         ):
-
             base_sql = _get_reset_sql()
 
             with schema_editor.connection.cursor() as cursor:
