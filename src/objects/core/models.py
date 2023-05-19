@@ -27,6 +27,13 @@ class ObjectType(models.Model):
         max_length=100,
         help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
     )
+    _version = models.IntegerField(
+        help_text=_(
+            "Cached version of the objecttype retrieved from the Objecttype API"
+        ),
+        null=True,
+        blank=True,
+    )
 
     objects = ObjectTypeQuerySet.as_manager()
 
@@ -50,6 +57,9 @@ class ObjectType(models.Model):
 
         if not self._name:
             self._name = object_type_data["name"]
+
+        if not self._version:
+            self._version = object_type_data["version"]
 
 
 class Object(models.Model):

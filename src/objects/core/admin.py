@@ -7,6 +7,7 @@ from .models import Object, ObjectRecord, ObjectType
 
 @admin.register(ObjectType)
 class ObjectTypeAdmin(admin.ModelAdmin):
+    list_display = ("_name", "uuid", "_version")
     readonly_fields = ("_name",)
 
 
