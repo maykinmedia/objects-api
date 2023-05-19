@@ -25,7 +25,7 @@ class ObjectType(models.Model):
     )
     _name = models.CharField(
         max_length=100,
-        help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
+        help_text=_("Cached name of the objecttype retrieved from the Objecttype API"), unique=True
     )
 
     objects = ObjectTypeQuerySet.as_manager()
