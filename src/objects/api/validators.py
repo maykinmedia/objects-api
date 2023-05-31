@@ -116,7 +116,6 @@ class GeometryValidator:
         try:
             response = client.retrieve("objecttype", url=object_type.url)
         except ClientError as exc:
-
             msg = f"Object type can not be retrieved: {exc.args[0]}"
             raise ValidationError(msg)
 

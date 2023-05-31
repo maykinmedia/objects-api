@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0027_auto_20211203_1209'),
+        ("core", "0027_auto_20211203_1209"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='objecttype',
-            name='_name',
-            field=models.CharField(help_text='Cached name of the objecttype retrieved from the Objecttype API', max_length=100, unique=True),
+            model_name="objecttype",
+            name="_name",
+            field=models.CharField(
+                help_text="Cached name of the objecttype retrieved from the Objecttype API",
+                max_length=100,
+                unique=True,
+            ),
         ),
     ]
