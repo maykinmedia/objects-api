@@ -412,7 +412,7 @@ requests==2.25.1
     #   sphinx
     #   vng-api-common
     #   zgw-consumers
-ruamel.yaml.clib==0.2.2
+ruamel.yaml.clib==0.2.7
     # via
     #   -r requirements/ci.txt
     #   ruamel.yaml
@@ -503,7 +503,7 @@ urllib3==1.26.6
     #   elastic-apm
     #   requests
     #   sentry-sdk
-uwsgi==2.0.19.1
+uwsgi==2.0.21
     # via -r requirements/ci.txt
 vng-api-common[markdown_docs]==1.6.4
     # via -r requirements/ci.txt
