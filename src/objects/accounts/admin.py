@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from hijack_admin.admin import HijackUserAdminMixin
+from hijack.contrib.admin import HijackUserAdminMixin
 
 from .models import User
 

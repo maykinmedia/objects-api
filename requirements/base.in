@@ -13,7 +13,7 @@ django-admin-index
 django-axes==6.0.1
 django-choices==1.7.2
 django-hijack==3.4.1
-django-hijack-admin==2.1.10
+# django-hijack-admin==2.1.10
 django-redis==5.2.0
 django-rosetta==0.9.9
 django-sniplates==0.7.1
@@ -22,7 +22,7 @@ maykin-django-two-factor-auth[phonenumbers]==2.0.4
 mozilla-django-oidc-db==0.12.0
 
 # API libraries
-djangorestframework==3.14.0
+djangorestframework==3.12.4
 djangorestframework-gis==1.0
 # django-extra-fields
 django-filter==23.2
@@ -34,5 +34,5 @@ sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
 
 # Common ground libraries
-# vng_api_common[markdown_docs]==2.0.4
+vng_api_common[markdown_docs]==2.0.4
 zgw-consumers==0.26.2  # external api auths

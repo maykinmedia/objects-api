@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     "sniplates",
     "hijack",
     "compat",  # Part of hijack
-    "hijack_admin",
+    # "hijack_admin",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
     "rest_framework",
@@ -94,6 +94,9 @@ INSTALLED_APPS = [
     "objects.core",
     "objects.token",
     "objects.utils",
+
+    "privates",  # Needed for admin usage.
+    "simple_certmanager"
 ]
 
 MIDDLEWARE = [
@@ -108,6 +111,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
     "django_otp.middleware.OTPMiddleware",
+    'vng_api_common.middleware.AuthMiddleware',
+    'vng_api_common.middleware.APIVersionHeaderMiddleware',
 ]
 
 ROOT_URLCONF = "objects.urls"
@@ -436,3 +441,6 @@ TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+PRIVATE_MEDIA_ROOT = os.path.join(BASE_DIR, "private-media")
+PRIVATE_MEDIA_URL = "/private-media/"
