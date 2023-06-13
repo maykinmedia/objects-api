@@ -190,7 +190,9 @@ mozilla-django-oidc==2.0.0
 mozilla-django-oidc-db==0.12.0
     # via -r requirements/base.in
 notifications-api-common==0.2.2
-    # via vng-api-common
+    # via
+    #   -r requirements/base.in
+    #   vng-api-common
 oyaml==1.0
     # via vng-api-common
 phonenumbers==8.13.13

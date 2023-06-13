@@ -36,3 +36,4 @@ elastic-apm  # Elastic APM integration
 # Common ground libraries
 vng_api_common[markdown_docs]==2.0.4
 zgw-consumers==0.26.2  # external api auths
+notifications-api-common==0.2.2

@@ -94,7 +94,7 @@ INSTALLED_APPS = [
     "objects.core",
     "objects.token",
     "objects.utils",
-
+    "notifications_api_common",     
     "privates",  # Needed for admin usage.
     "simple_certmanager"
 ]
@@ -444,3 +444,4 @@ MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
 
 PRIVATE_MEDIA_ROOT = os.path.join(BASE_DIR, "private-media")
 PRIVATE_MEDIA_URL = "/private-media/"
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
