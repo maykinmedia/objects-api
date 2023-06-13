@@ -4,7 +4,7 @@ bumpversion
 
 # Code formatting
 black
-isort
+isort==5.12.0
 flake8
 
 # Debug tooling

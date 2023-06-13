@@ -72,8 +72,6 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "sniplates",
     "hijack",
-    "compat",  # Part of hijack
-    "hijack_admin",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
     "rest_framework",
@@ -94,6 +92,9 @@ INSTALLED_APPS = [
     "objects.core",
     "objects.token",
     "objects.utils",
+    "notifications_api_common",
+    "privates",  # Needed for admin usage.
+    "simple_certmanager",
 ]
 
 MIDDLEWARE = [
@@ -108,6 +109,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
     "django_otp.middleware.OTPMiddleware",
+    "vng_api_common.middleware.AuthMiddleware",
+    "vng_api_common.middleware.APIVersionHeaderMiddleware",
 ]
 
 ROOT_URLCONF = "objects.urls"
@@ -347,12 +350,11 @@ AXES_COOLOFF_TIME = 1
 # If True only locks based on user id and never locks by IP if attempts limit
 # exceed, otherwise utilize the existing IP and user locking logic Default:
 # False
-AXES_ONLY_USER_FAILURES = True
+AXES_LOCKOUT_PARAMETERS = ["username"]
 # If set, specifies a template to render when a user is locked out. Template
 # receives cooloff_time and failure_limit as context variables. Default: None
 AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
-AXES_USE_USER_AGENT = True  # Default: False
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True  # Default: False
+AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]]
 
 # The default meta precedence order
 IPWARE_META_PRECEDENCE_ORDER = (
@@ -436,3 +438,5 @@ TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

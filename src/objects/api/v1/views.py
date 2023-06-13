@@ -4,10 +4,10 @@ from django.conf import settings
 from django.db import models
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import ObjectRecord

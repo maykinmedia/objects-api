@@ -1,13 +1,12 @@
 from unittest.mock import patch
 
-from django.test import override_settings
+from django.test import TestCase, override_settings
 
 import requests_mock
-from django_capture_on_commit_callbacks import capture_on_commit_callbacks
 from freezegun import freeze_time
+from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITestCase
-from vng_api_common.notifications.models import NotificationsConfig
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
@@ -51,8 +50,8 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         super().setUp()
 
         config = NotificationsConfig.get_solo()
-        Service.objects.update_or_create(
-            api_root=config.api_root,
+        service = Service.objects.update_or_create(
+            api_root="https://notifications-api.nl/api/v1/",
             defaults=dict(
                 api_type=APITypes.nrc,
                 client_id="test",
@@ -61,6 +60,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 user_representation="Test",
             ),
         )
+        NotificationsConfig.notifications_api_service = service
 
     @patch("zds_client.Client.from_url", side_effect=notifications_client_mock)
     def test_send_notif_create_object(self, mocker, mock_client):
@@ -89,7 +89,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         }
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
@@ -141,7 +141,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         }
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.put(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
@@ -193,7 +193,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         }
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
@@ -232,7 +232,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         url = reverse("object-detail", args=[obj.uuid])
         full_url = f"http://testserver{url}"
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.delete(url, **GEO_WRITE_KWARGS)
 
         self.assertEqual(

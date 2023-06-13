@@ -3,7 +3,6 @@ from unittest.mock import patch
 from django.test import override_settings
 
 import requests_mock
-from django_capture_on_commit_callbacks import capture_on_commit_callbacks
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -89,7 +88,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         }
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
@@ -141,7 +140,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         }
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.put(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
@@ -193,7 +192,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         }
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
@@ -232,7 +231,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         url = reverse("object-detail", args=[obj.uuid])
         full_url = f"http://testserver{url}"
 
-        with capture_on_commit_callbacks(execute=True):
+        with self.captureOnCommitCallbacks(execute=True) as callbacks:
             response = self.client.delete(url, **GEO_WRITE_KWARGS)
 
         self.assertEqual(

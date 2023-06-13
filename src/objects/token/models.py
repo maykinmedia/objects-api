@@ -1,9 +1,9 @@
 import binascii
 import os
 
-from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core import exceptions
 from django.db import models
+from django.db.models import JSONField
 from django.utils.translation import gettext_lazy as _
 
 from objects.core.models import ObjectType

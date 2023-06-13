@@ -4,7 +4,7 @@ from typing import Dict
 from django.conf import settings
 from django.db import models
 
-from vng_api_common.notifications.kanalen import Kanaal
+from notifications_api_common.kanalen import Kanaal
 
 from objects.core.models import Object, ObjectRecord
 

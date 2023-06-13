@@ -2,10 +2,10 @@ import datetime
 import uuid
 
 from django.contrib.gis.db.models import GeometryField
-from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from django.db.models import JSONField
 from django.utils.translation import gettext_lazy as _
 
 from requests.exceptions import ConnectionError
