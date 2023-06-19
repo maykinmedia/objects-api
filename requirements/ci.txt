@@ -83,7 +83,7 @@ django-better-admin-arrayfield==1.4.2
     # via
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
-django-capture-on-commit-callbacks==1.5.0
+django-capture-on-commit-callbacks==1.11.0
     # via -r requirements/test-tools.in
 django-choices==1.7.1
     # via

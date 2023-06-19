@@ -53,7 +53,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             },
         )
         self.assertEqual(
-            set(response._headers["x-unauthorized-fields"][1].split(",")),
+            set(response.headers["x-unauthorized-fields"].split(",")),
             {
                 "uuid",
                 "record__data__name",
@@ -139,7 +139,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             },
         )
         self.assertEqual(
-            response._headers["x-unauthorized-fields"][1], "record__data__desc"
+            response.headers["x-unauthorized-fields"], "record__data__desc"
         )
 
     def test_retrieve_no_allowed_fields(self):
@@ -236,7 +236,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             ],
         )
         self.assertEqual(
-            response._headers["x-unauthorized-fields"][1],
+            response.headers["x-unauthorized-fields"],
             f"{self.other_object_type.url}(1)=type; {self.object_type.url}(1)=uuid",
         )
 

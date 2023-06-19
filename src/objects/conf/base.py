@@ -91,6 +91,8 @@ INSTALLED_APPS = [
     "objects.core",
     "objects.token",
     "objects.utils",
+    "privates",  # Needed for admin usage.
+    "simple_certmanager"    
 ]
 
 MIDDLEWARE = [
@@ -364,7 +366,6 @@ IPWARE_META_PRECEDENCE_ORDER = (
     "HTTP_VIA",
     "REMOTE_ADDR",
 )
-
 
 
 # Sentry SDK

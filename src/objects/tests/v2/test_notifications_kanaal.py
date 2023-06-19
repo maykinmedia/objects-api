@@ -6,7 +6,10 @@ from django.core.management import call_command
 from django.test import override_settings
 
 from rest_framework.test import APITestCase
-from vng_api_common.notifications.kanalen import Kanaal
+from notifications_api_common.kanalen import Kanaal
+from notifications_api_common.models import NotificationsConfig
+
+from zgw_consumers.models import Service
 
 from objects.core.models import Object
 
@@ -21,7 +24,7 @@ class CreateNotifKanaalTestCase(APITestCase):
         site.save()
 
     @patch(
-        "vng_api_common.notifications.management.commands.register_kanaal.get_client"
+        "notifications_api_common.models.NotificationsConfig.get_client"
     )
     def test_kanaal_create_with_name(self, mock_get_client):
         """
@@ -31,12 +34,14 @@ class CreateNotifKanaalTestCase(APITestCase):
         client.list.return_value = []
         # ensure this is added to the registry
         Kanaal(label="kanaal_test", main_resource=Object)
+        service = Service(api_root="https://example.com/api/v1")
+        service.save()
+        NotificationsConfig.notifications_api_service = service
 
         stdout = StringIO()
         call_command(
-            "register_kanaal",
-            "kanaal_test",
-            notificaties_api_root="https://example.com/api/v1",
+            "register_kanalen",
+            kanalen=["kanaal_test"],
             stdout=stdout,
         )
 
@@ -50,7 +55,7 @@ class CreateNotifKanaalTestCase(APITestCase):
         )
 
     @patch(
-        "vng_api_common.notifications.management.commands.register_kanaal.get_client"
+        "notifications_api_common.models.NotificationsConfig.get_client"
     )
     @override_settings(NOTIFICATIONS_KANAAL="dummy-kanaal")
     def test_kanaal_create_without_name(self, mock_get_client):
@@ -59,13 +64,16 @@ class CreateNotifKanaalTestCase(APITestCase):
         """
         client = mock_get_client.return_value
         client.list.return_value = []
+        client.create.reset_mock()
         # ensure this is added to the registry
         Kanaal(label="dummy-kanaal", main_resource=Object)
+        service = Service(api_root="https://example.com/api/v1")
+        service.save()
+        NotificationsConfig.notifications_api_service = service
 
         stdout = StringIO()
         call_command(
-            "register_kanaal",
-            notificaties_api_root="https://example.com/api/v1",
+            "register_kanalen",
             stdout=stdout,
         )
 
