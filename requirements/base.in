@@ -12,8 +12,6 @@ django < 3.0
 django-admin-index
 django-axes
 django-choices
-django-hijack
-django-hijack-admin
 django-redis
 django-rosetta
 django-sniplates
