@@ -331,6 +331,7 @@ mypy-extensions==0.4.3
 notifications-api-common==0.2.2
     # via
     #   -r requirements/ci.txt
+    #   -r requirements/dev.in
     #   vng-api-common
 oyaml==1.0
     # via

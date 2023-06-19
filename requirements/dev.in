@@ -16,3 +16,4 @@ sphinx
 sphinx_rtd_theme
 sphinx-tabs
 recommonmark
+notifications-api-common==0.2.2
