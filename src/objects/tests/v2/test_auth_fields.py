@@ -91,7 +91,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
                 "record": {"data": {"name": record.data["name"]}},
             },
         )
-        self.assertNotIn("x-unauthorized-fields", response._headers)
+        self.assertNotIn("x-unauthorized-fields", response.headers)
 
     def test_retrieve_incorrect_auth_fields(self):
         PermissionFactory.create(
@@ -160,7 +160,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {})
-        self.assertIn("x-unauthorized-fields", response._headers)
+        self.assertIn("x-unauthorized-fields", response.headers)
 
 
 class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
@@ -283,7 +283,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
                 },
             ],
         )
-        self.assertNotIn("x-unauthorized-fields", response._headers)
+        self.assertNotIn("x-unauthorized-fields", response.headers)
 
     def test_list_incorrect_auth_fields(self):
         PermissionFactory.create(
@@ -378,7 +378,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()["results"], [{}, {}])
-        self.assertIn("x-unauthorized-fields", response._headers)
+        self.assertIn("x-unauthorized-fields", response.headers)
 
 
 class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):

@@ -8,7 +8,7 @@ python-decouple  # processing of envvar configs
 jsonschema
 
 # Framework libraries
-django < 3.0
+django==3.2
 django-admin-index
 django-axes
 django-choices
@@ -20,11 +20,11 @@ maykin-django-two-factor-auth[phonenumbers]
 mozilla-django-oidc-db
 
 # API libraries
-djangorestframework
-djangorestframework-gis
+djangorestframework==3.12.4
+djangorestframework-gis==1.0
 # django-extra-fields
-django-filter
-drf-spectacular  # api documentation
+django-filter==23.2
+drf-spectacular==0.26.2 # api documentation
 
 # WSGI servers & monitoring - production oriented
 uwsgi
@@ -32,5 +32,6 @@ sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
 
 # Common ground libraries
-vng_api_common[markdown_docs]>=1.6.4
-zgw-consumers  # external api auths
+vng_api_common[markdown_docs]==2.0.4
+zgw-consumers==0.26.2  # external api auths
+notifications-api-common==0.2.2

@@ -10,7 +10,7 @@ from vng_api_common.geo import (
     GeoMixin as _GeoMixin,
     extract_header,
 )
-from vng_api_common.notifications.viewsets import (
+from notifications_api_common.viewsets import (
     NotificationCreateMixin,
     NotificationDestroyMixin,
     conditional_atomic,

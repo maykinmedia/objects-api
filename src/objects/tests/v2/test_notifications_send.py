@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from django.test import override_settings
+from django.test import TestCase
 
 import requests_mock
 from django_capture_on_commit_callbacks import capture_on_commit_callbacks

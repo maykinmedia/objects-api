@@ -11,7 +11,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "objects.token.authentication.TokenAuthentication"
     ],
-    "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
+    # "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_VERSION": "v2",  # NOT to be confused with API_VERSION - it's the major version part
     "ALLOWED_VERSIONS": ("v1", "v2"),
