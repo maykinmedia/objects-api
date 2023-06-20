@@ -25,7 +25,6 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_done",
     ),
-    path("admin/hijack/", include("hijack.urls")),
     path("admin/", admin.site.urls),
     path(
         "reset/<uidb64>/<token>/",
