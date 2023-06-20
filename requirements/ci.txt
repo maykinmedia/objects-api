@@ -223,7 +223,7 @@ jsonschema==3.2.0
     #   drf-spectacular
 lxml==4.7.1
     # via pyquery
-markdown==3.3.4
+markdown==3.4.3
     # via
     #   -r requirements/base.txt
     #   vng-api-common

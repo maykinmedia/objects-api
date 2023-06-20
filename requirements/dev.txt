@@ -265,7 +265,7 @@ lxml==4.7.1
     # via
     #   -r requirements/ci.txt
     #   pyquery
-markdown==3.3.4
+markdown==3.4.3
     # via
     #   -r requirements/ci.txt
     #   vng-api-common

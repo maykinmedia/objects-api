@@ -148,8 +148,10 @@ jsonschema==3.2.0
     # via
     #   -r requirements/base.in
     #   drf-spectacular
-markdown==3.3.4
-    # via vng-api-common
+markdown==3.4.3
+    # via
+    #   -r requirements/base.in
+    #   vng-api-common
 markupsafe==1.1.1
     # via jinja2
 maykin-django-two-factor-auth[phonenumbers]==2.0.3

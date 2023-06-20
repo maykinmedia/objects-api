@@ -34,3 +34,4 @@ elastic-apm  # Elastic APM integration
 # Common ground libraries
 vng_api_common[markdown_docs]>=1.6.4
 zgw-consumers  # external api auths
+markdown==3.4.3
