@@ -68,7 +68,6 @@ def move_objecttypes_from_model(apps, _):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0021_auto_20201222_1745"),
         ("zgw_consumers", "0011_remove_service_extra"),

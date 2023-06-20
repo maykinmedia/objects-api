@@ -22,7 +22,6 @@ def fill_record_index(apps, _):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0018_auto_20210113_1239"),
     ]

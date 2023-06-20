@@ -22,7 +22,6 @@ def move_data_from_record(apps, _):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0003_objectrecord"),
     ]
