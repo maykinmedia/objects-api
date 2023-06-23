@@ -1,6 +1,5 @@
 import os
 
-# Django-hijack (and Django-hijack-admin)
 from django.urls import reverse_lazy
 
 from sentry_sdk.integrations import django, redis
@@ -71,9 +70,6 @@ INSTALLED_APPS = [
     "django_better_admin_arrayfield",
     "drf_spectacular",
     "sniplates",
-    "hijack",
-    "compat",  # Part of hijack
-    "hijack_admin",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
     "rest_framework",
@@ -368,14 +364,6 @@ IPWARE_META_PRECEDENCE_ORDER = (
     "REMOTE_ADDR",
 )
 
-# Django-Hijack
-HIJACK_LOGIN_REDIRECT_URL = "/"
-HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy("admin:accounts_user_changelist")
-# The Admin mixin is used because we use a custom User-model.
-HIJACK_REGISTER_ADMIN = False
-# This is a CSRF-security risk.
-# See: http://django-hijack.readthedocs.io/en/latest/configuration/#allowing-get-method-for-hijack-views
-HIJACK_ALLOW_GET_REQUESTS = True
 
 # Sentry SDK
 SENTRY_DSN = config("SENTRY_DSN", None)
