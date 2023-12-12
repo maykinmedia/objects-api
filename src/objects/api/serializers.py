@@ -9,8 +9,8 @@ from objects.token.models import Permission
 from objects.utils.serializers import DynamicFieldsMixin
 
 from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
-from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 from .utils import merge_patch
+from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):

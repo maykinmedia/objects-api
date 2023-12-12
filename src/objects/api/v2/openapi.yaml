@@ -377,6 +377,8 @@ paths:
     patch:
       operationId: object_partial_update
       description: Update the OBJECT by creating a new RECORD with the updates values.
+        The provided `record.data` value will be merged with the existing record data,
+        according to [RFC7396](https://datatracker.ietf.org/doc/html/rfc7396).
       parameters:
       - in: header
         name: Accept-Crs
