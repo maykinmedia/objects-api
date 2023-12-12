@@ -205,7 +205,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         )
 
         initial_record = ObjectRecordFactory.create(
-            version=1, object__object_type=self.object_type, start_at=date.today()
+            version=1,
+            object__object_type=self.object_type,
+            start_at=date.today(),
+            data={"name": "Name", "diameter": 20},
         )
         object = initial_record.object
 
@@ -229,8 +232,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         current_record = object.current_record
 
         self.assertEqual(current_record.version, initial_record.version)
+        # The actual behavior of the data merging is in test_merge_patch.py:
         self.assertEqual(
-            current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
+            current_record.data,
+            {"plantDate": "2020-04-12", "diameter": 30, "name": "Name"},
         )
         self.assertEqual(current_record.start_at, date(2020, 1, 1))
         self.assertEqual(current_record.registration_at, date(2020, 8, 8))

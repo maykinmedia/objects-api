@@ -10,6 +10,7 @@ from objects.utils.serializers import DynamicFieldsMixin
 
 from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
+from .utils import merge_patch
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -129,6 +130,11 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         # in case of PATCH
         if "version" not in validated_data:
             validated_data["version"] = instance.version
+            if "data" in validated_data:
+                # Apply JSON Merge Patch for record data
+                validated_data["data"] = merge_patch(
+                    instance.data, validated_data["data"]
+                )
 
         record = super().create(validated_data)
         return record
