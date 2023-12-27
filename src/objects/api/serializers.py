@@ -127,14 +127,12 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         # object_data is not used since all object attributes are immutable
         object_data = validated_data.pop("object", None)
         validated_data["object"] = instance.object
-        # in case of PATCH
+        # version should be set
         if "version" not in validated_data:
             validated_data["version"] = instance.version
-            if "data" in validated_data:
-                # Apply JSON Merge Patch for record data
-                validated_data["data"] = merge_patch(
-                    instance.data, validated_data["data"]
-                )
+        if self.partial and "data" in validated_data:
+            # Apply JSON Merge Patch for record data
+            validated_data["data"] = merge_patch(instance.data, validated_data["data"])
 
         record = super().create(validated_data)
         return record
