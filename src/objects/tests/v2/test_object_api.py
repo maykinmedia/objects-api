@@ -1,13 +1,14 @@
 import json
 import uuid
 from datetime import date, timedelta
+from typing import cast
 
 import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.models import Object
+from objects.core.models import Object, ObjectType
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
@@ -33,7 +34,9 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = cast(
+            ObjectType, ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        )
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
@@ -227,14 +230,17 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         )
 
         initial_record = ObjectRecordFactory.create(
-            version=1, object__object_type=self.object_type, start_at=date.today()
+            version=1,
+            object__object_type=self.object_type,
+            start_at=date.today(),
+            data={"name": "Name", "diameter": 20},
         )
         object = initial_record.object
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
             "record": {
-                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "data": {"plantDate": "2020-04-12", "diameter": 30, "name": None},
                 "startAt": "2020-01-01",
                 "correctionFor": initial_record.index,
             },
@@ -251,8 +257,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         current_record = object.current_record
 
         self.assertEqual(current_record.version, initial_record.version)
+        # The actual behavior of the data merging is in test_merge_patch.py:
         self.assertEqual(
-            current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
+            current_record.data,
+            {"plantDate": "2020-04-12", "diameter": 30, "name": None},
         )
         self.assertEqual(current_record.start_at, date(2020, 1, 1))
         self.assertEqual(current_record.registration_at, date(2020, 8, 8))

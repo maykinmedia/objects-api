@@ -42,7 +42,8 @@ from .filters import ObjectRecordFilterSet
         description="Update the OBJECT by creating a new RECORD with the updates values."
     ),
     partial_update=extend_schema(
-        description="Update the OBJECT by creating a new RECORD with the updates values."
+        description="Update the OBJECT by creating a new RECORD with the updates values. "
+        "The provided `record.data` value will be merged recursively with the existing record data."
     ),
     destroy=extend_schema(
         description="Delete an OBJECT and all RECORDs belonging to it.",
