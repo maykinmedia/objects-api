@@ -11,7 +11,6 @@ def generate_record_uuids(apps, _):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0012_objectrecord_uuid"),
     ]

@@ -11,7 +11,6 @@ def check_objecttype(object_type, version, data):
     try:
         response = client.retrieve("objectversion", url=objecttype_version_url)
     except ClientError as exc:
-
         msg = f"Object type version can not be retrieved: {exc.args[0]}"
         raise ValidationError(msg)
 

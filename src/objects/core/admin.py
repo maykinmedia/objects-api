@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import admin
 from django.contrib.gis import forms
 from django.contrib.gis.db.models import GeometryField
@@ -7,25 +9,40 @@ from .models import Object, ObjectRecord, ObjectType
 
 @admin.register(ObjectType)
 class ObjectTypeAdmin(admin.ModelAdmin):
+    list_display = ("_name", "uuid", "get_version")
     readonly_fields = ("_name",)
+
+    def get_version(self, obj):
+        return ObjectRecord.objects.filter(object__object_type=obj).count()
+
+    get_version.short_description = "version"
 
 
 class ObjectRecordInline(admin.TabularInline):
     model = ObjectRecord
     extra = 1
-    readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
-    fields = (
+    formfield_overrides = {GeometryField: {"widget": forms.OSMWidget}}
+    readonly_fields = (
         "index",
+        "registration_at",
+        "end_at",
+        "get_corrected_by",
+        "get_data_display",
+    )
+    fields = (
         "version",
-        "data",
+        "get_data_display",
         "geometry",
         "start_at",
-        "end_at",
-        "registration_at",
-        "get_corrected_by",
         "correct",
-    )
-    formfield_overrides = {GeometryField: {"widget": forms.OSMWidget}}
+    ) + ("index", "registration_at", "end_at", "get_corrected_by")
+
+    def get_data_display(self, instance=None):
+        if instance:
+            return json.dumps(instance.data, indent=4, sort_keys=True)
+        return None
+
+    get_data_display.short_description = "data"
 
     def has_delete_permission(self, request, obj=None):
         return False

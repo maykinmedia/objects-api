@@ -8,7 +8,6 @@ def remove_objects_with_empty_object_type(apps, _):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0024_auto_20201222_1811"),
     ]
