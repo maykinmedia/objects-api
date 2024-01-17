@@ -8,15 +8,12 @@ python-decouple  # processing of envvar configs
 jsonschema
 
 # Framework libraries
-django < 3.0
+django < 3
 django-admin-index
 django-axes
 django-choices
-django-hijack
-django-hijack-admin
 django-redis
 django-rosetta
-django-sniplates
 maykin-django-two-factor-auth
 maykin-django-two-factor-auth[phonenumbers]
 mozilla-django-oidc-db
@@ -34,5 +31,5 @@ sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
 
 # Common ground libraries
-vng_api_common[markdown_docs]>=1.6.4
+vng-api-common[markdown_docs]>=1.6.4
 zgw-consumers  # external api auths

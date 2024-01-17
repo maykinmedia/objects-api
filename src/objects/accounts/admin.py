@@ -1,11 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-
-from hijack_admin.admin import HijackUserAdminMixin
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 
 from .models import User
 
 
 @admin.register(User)
-class _UserAdmin(UserAdmin, HijackUserAdminMixin):
-    list_display = UserAdmin.list_display + ("hijack_field",)
+class UserAdmin(DjangoUserAdmin):
+    list_display = DjangoUserAdmin.list_display
