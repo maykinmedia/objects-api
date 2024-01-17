@@ -140,7 +140,7 @@ class DynamicFieldsMixin:
         if not fields:
             return []
 
-        return list(set(field.strip() for field in fields.split(",")))
+        return list({field.strip() for field in fields.split(",")})
 
     def get_allowed_fields(self, instance) -> list:
         request = self.context.get("request")
