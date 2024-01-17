@@ -6,7 +6,7 @@ from django.db import models
 
 from vng_api_common.notifications.kanalen import Kanaal
 
-from objects.core.models import Object, ObjectRecord
+from objects.core.models import ObjectRecord
 
 
 class ObjectKanaal(Kanaal):

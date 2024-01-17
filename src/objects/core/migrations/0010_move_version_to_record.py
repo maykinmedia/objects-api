@@ -1,5 +1,4 @@
 from django.db import migrations
-from datetime import date
 
 
 def move_vesrion_to_record(apps, _):
