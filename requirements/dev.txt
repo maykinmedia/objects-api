@@ -6,6 +6,10 @@
 #
 alabaster==0.7.12
     # via sphinx
+asgiref==3.7.2
+    # via
+    #   -r requirements/ci.txt
+    #   django
 attrs==20.3.0
     # via
     #   -r requirements/ci.txt
@@ -77,8 +81,6 @@ django-better-admin-arrayfield==1.4.2
     # via
     #   -r requirements/ci.txt
     #   mozilla-django-oidc-db
-django-capture-on-commit-callbacks==1.5.0
-    # via -r requirements/ci.txt
 django-choices==1.7.2
     # via
     #   -r requirements/ci.txt
@@ -136,11 +138,10 @@ django-solo==1.1.5
     #   zgw-consumers
 django-webtest==1.9.7
     # via -r requirements/ci.txt
-django==2.2.28
+django==3.2.23
     # via
     #   -r requirements/ci.txt
     #   django-axes
-    #   django-capture-on-commit-callbacks
     #   django-choices
     #   django-debug-toolbar
     #   django-extensions
@@ -458,7 +459,10 @@ toml==0.10.2
 tomli==2.0.1
     # via black
 typing-extensions==4.9.0
-    # via black
+    # via
+    #   -r requirements/ci.txt
+    #   asgiref
+    #   black
 uritemplate==3.0.1
     # via
     #   -r requirements/ci.txt
