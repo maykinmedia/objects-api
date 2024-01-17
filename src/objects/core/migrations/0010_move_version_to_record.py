@@ -19,7 +19,6 @@ def move_version_from_record(apps, _):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0009_objectrecord_version"),
     ]

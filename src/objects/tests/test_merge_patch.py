@@ -5,7 +5,6 @@ from objects.api.utils import merge_patch
 
 class MergePatchTests(TestCase):
     def test_merge_patch(self):
-
         test_data = [
             ({"a": "b"}, {"a": "c"}, {"a": "c"}),
             ({"a": "b"}, {"b": "c"}, {"a": "b", "b": "c"}),

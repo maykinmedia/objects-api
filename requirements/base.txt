@@ -173,7 +173,7 @@ mozilla-django-oidc==1.2.4
     # via mozilla-django-oidc-db
 oyaml==1.0
     # via vng-api-common
-packaging==20.9
+packaging==23.2
     # via drf-yasg
 phonenumbers==8.12.29
     # via maykin-django-two-factor-auth
@@ -193,8 +193,6 @@ pyjwt==2.4.0
     #   vng-api-common
 pyopenssl==20.0.1
     # via josepy
-pyparsing==2.4.7
-    # via packaging
 pyrsistent==0.17.3
     # via jsonschema
 python-dateutil==2.8.1
@@ -253,7 +251,7 @@ sqlparse==0.4.2
     # via django
 text-unidecode==1.3
     # via faker
-typing-extensions==3.10.0.2
+typing-extensions==4.7.1
     # via importlib-metadata
 unidecode==1.2.0
     # via vng-api-common
