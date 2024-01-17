@@ -17,7 +17,7 @@ beautifulsoup4==4.9.3
     # via
     #   -r requirements/ci.txt
     #   webtest
-black==23.3.0
+black==23.12.1
     # via -r requirements/dev.in
 boltons==21.0.0
     # via
@@ -110,8 +110,6 @@ django-ipware==3.0.2
     # via
     #   -r requirements/ci.txt
     #   django-axes
-django-jenkins==0.110.0
-    # via -r requirements/ci.txt
 django-markup==1.3
     # via
     #   -r requirements/ci.txt
@@ -161,7 +159,6 @@ django==2.2.28
     #   django-filter
     #   django-formtools
     #   django-hijack
-    #   django-jenkins
     #   django-markup
     #   django-otp
     #   django-phonenumber-field
@@ -193,11 +190,12 @@ djangorestframework==3.12.4
     #   drf-spectacular
     #   drf-yasg
     #   vng-api-common
-docutils==0.16
+docutils==0.18.1
     # via
     #   recommonmark
     #   sphinx
     #   sphinx-rtd-theme
+    #   sphinx-tabs
 drf-nested-routers==0.93.3
     # via
     #   -r requirements/ci.txt
@@ -221,7 +219,7 @@ faker==8.1.0
     #   -r requirements/ci.txt
     #   factory-boy
     #   zgw-consumers
-flake8==3.9.0
+flake8==7.0.0
     # via -r requirements/dev.in
 freezegun==1.1.0
     # via -r requirements/ci.txt
@@ -230,22 +228,16 @@ gemma-zds-client==1.0.0
     #   -r requirements/ci.txt
     #   vng-api-common
     #   zgw-consumers
-glom==20.11.0
+glom==23.5.0
     # via -r requirements/ci.txt
 idna==2.10
     # via
     #   -r requirements/ci.txt
     #   requests
-imagesize==1.2.0
+imagesize==1.4.1
     # via sphinx
-importlib-metadata==4.8.1
-    # via
-    #   -r requirements/ci.txt
-    #   click
-    #   flake8
-    #   jsonschema
-    #   markdown
-    #   pep517
+importlib-metadata==7.0.1
+    # via sphinx
 inflection==0.5.1
     # via
     #   -r requirements/ci.txt
@@ -259,13 +251,13 @@ isodate==0.6.0
     # via
     #   -r requirements/ci.txt
     #   vng-api-common
-isort==5.11.5
+isort==5.13.2
     # via -r requirements/dev.in
 itypes==1.2.0
     # via
     #   -r requirements/ci.txt
     #   coreapi
-jinja2==2.11.3
+jinja2==3.1.3
     # via
     #   -r requirements/ci.txt
     #   coreschema
@@ -286,13 +278,13 @@ markdown==3.3.4
     # via
     #   -r requirements/ci.txt
     #   vng-api-common
-markupsafe==1.1.1
+markupsafe==2.1.3
     # via
     #   -r requirements/ci.txt
     #   jinja2
 maykin-django-two-factor-auth[phonenumbers]==2.0.3
     # via -r requirements/ci.txt
-mccabe==0.6.1
+mccabe==0.7.0
     # via flake8
 mozilla-django-oidc-db==0.7.2
     # via -r requirements/ci.txt
@@ -320,7 +312,7 @@ phonenumbers==8.12.29
     # via
     #   -r requirements/ci.txt
     #   maykin-django-two-factor-auth
-pillow==9.0.1
+pillow==10.2.0
     # via -r requirements/ci.txt
 pip-tools==6.0.1
     # via -r requirements/dev.in
@@ -334,15 +326,15 @@ psycopg2==2.8.6
     # via
     #   -r requirements/ci.txt
     #   mozilla-django-oidc-db
-pycodestyle==2.7.0
+pycodestyle==2.11.1
     # via flake8
 pycparser==2.20
     # via
     #   -r requirements/ci.txt
     #   cffi
-pyflakes==2.3.1
+pyflakes==3.2.0
     # via flake8
-pygments==2.8.1
+pygments==2.17.2
     # via
     #   sphinx
     #   sphinx-tabs
@@ -369,7 +361,7 @@ python-dateutil==2.8.1
     #   freezegun
 python-decouple==3.4
     # via -r requirements/ci.txt
-python-dotenv==0.17.0
+python-dotenv==1.0.0
     # via -r requirements/ci.txt
 pytz==2021.1
     # via
@@ -439,27 +431,30 @@ soupsieve==2.2.1
     # via
     #   -r requirements/ci.txt
     #   beautifulsoup4
-sphinx-rtd-theme==0.5.2
+sphinx-rtd-theme==2.0.0
     # via -r requirements/dev.in
-sphinx-tabs==2.1.0
+sphinx-tabs==3.4.4
     # via -r requirements/dev.in
-sphinx==3.5.4
+sphinx==7.1.2
     # via
     #   -r requirements/dev.in
     #   recommonmark
     #   sphinx-rtd-theme
     #   sphinx-tabs
-sphinxcontrib-applehelp==1.0.2
+    #   sphinxcontrib-jquery
+sphinxcontrib-applehelp==1.0.4
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
     # via sphinx
-sphinxcontrib-htmlhelp==1.0.3
+sphinxcontrib-htmlhelp==2.0.1
     # via sphinx
+sphinxcontrib-jquery==4.1
+    # via sphinx-rtd-theme
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
 sphinxcontrib-qthelp==1.0.3
     # via sphinx
-sphinxcontrib-serializinghtml==1.1.4
+sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 sqlparse==0.4.2
     # via
@@ -476,14 +471,8 @@ toml==0.10.2
     # via pep517
 tomli==2.0.1
     # via black
-typed-ast==1.4.3
-    # via black
 typing-extensions==4.7.1
-    # via
-    #   -r requirements/ci.txt
-    #   black
-    #   importlib-metadata
-    #   platformdirs
+    # via black
 unidecode==1.2.0
     # via
     #   -r requirements/ci.txt
@@ -518,11 +507,8 @@ webtest==2.0.35
     #   django-webtest
 zgw-consumers==0.15.2
     # via -r requirements/ci.txt
-zipp==3.5.0
-    # via
-    #   -r requirements/ci.txt
-    #   importlib-metadata
-    #   pep517
+zipp==3.17.0
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
