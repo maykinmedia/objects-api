@@ -16,7 +16,7 @@ class ObjectQuerySet(models.QuerySet):
         return (
             self.filter(records__start_at__lte=date)
             .filter(
-                models.Q(records__end_at__gte=date)
+                models.Q(records__end_at__gt=date)
                 | models.Q(records__end_at__isnull=True)
             )
             .distinct()
@@ -59,7 +59,7 @@ class ObjectRecordQuerySet(models.QuerySet):
 
         """
         return self.filter(start_at__lte=date).filter(
-            models.Q(end_at__gte=date) | models.Q(end_at__isnull=True)
+            models.Q(end_at__gt=date) | models.Q(end_at__isnull=True)
         )
 
     def filter_for_registration_date(self, date):
