@@ -16,7 +16,7 @@ jobs:
       matrix:
         version: [ 'v1', 'v2' ]
 
-    name: Run with version v${{ matrix.version }}
+    name: Run with version ${{ matrix.version }}
 
     steps:
       - uses: actions/checkout@v4
