@@ -13,21 +13,15 @@ from .utils import string_to_value
 
 class JsonSchemaValidator:
     code = "invalid-json-schema"
+    requires_context = True
 
-    def set_context(self, serializer):
-        """
-        This hook is called by the serializer instance,
-        prior to the validation call being made.
-        """
-        self.instance = getattr(serializer, "instance", None)
-
-    def __call__(self, attrs):
+    def __call__(self, attrs, serializer):
+        instance = getattr(serializer, "instance", None)
         object_type = (
-            attrs.get("object", {}).get("object_type")
-            or self.instance.object.object_type
+            attrs.get("object", {}).get("object_type") or instance.object.object_type
         )
-        version = attrs.get("version") or self.instance.version
-        data = attrs.get("data", {}) or self.instance.data
+        version = attrs.get("version") or instance.version
+        data = attrs.get("data", {}) or instance.data
 
         if not object_type or not version or not data:
             return
@@ -45,22 +39,15 @@ class IsImmutableValidator:
 
     message = _("This field can't be changed")
     code = "immutable-field"
+    requires_context = True
 
-    def set_context(self, serializer_field):
-        """
-        This hook is called by the serializer instance,
-        prior to the validation call being made.
-        """
-        # Determine the existing instance, if this is an update operation.
-        self.serializer_field = serializer_field
-        self.instance = getattr(serializer_field.parent, "instance", None)
-
-    def __call__(self, new_value):
+    def __call__(self, new_value, serializer_field):
+        instance = getattr(serializer_field.parent, "instance", None)
         # no instance -> it's not an update
-        if not self.instance:
+        if not instance:
             return
 
-        current_value = get_attribute(self.instance, self.serializer_field.source_attrs)
+        current_value = get_attribute(instance, serializer_field.source_attrs)
 
         if new_value != current_value:
             raise serializers.ValidationError(self.message, code=self.code)
@@ -94,18 +81,12 @@ def validate_data_attrs(value: str):
 class GeometryValidator:
     code = "geometry-not-allowed"
     message = _("This object type doesn't support geometry")
+    requires_context = True
 
-    def set_context(self, serializer):
-        """
-        This hook is called by the serializer instance,
-        prior to the validation call being made.
-        """
-        self.instance = getattr(serializer, "instance", None)
-
-    def __call__(self, attrs):
+    def __call__(self, attrs, serializer):
+        instance = getattr(serializer, "instance", None)
         object_type = (
-            attrs.get("object", {}).get("object_type")
-            or self.instance.object.object_type
+            attrs.get("object", {}).get("object_type") or instance.object.object_type
         )
         geometry = attrs.get("geometry")
 

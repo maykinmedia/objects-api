@@ -69,7 +69,6 @@ INSTALLED_APPS = [
     # 'django.contrib.sitemaps',
     # External applications.
     "axes",
-    "django_better_admin_arrayfield",
     "drf_spectacular",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
@@ -79,6 +78,7 @@ INSTALLED_APPS = [
     "django_markup",
     "vng_api_common",
     "vng_api_common.notifications",
+    "simple_certmanager",
     "zgw_consumers",
     # 2fa apps
     "django_otp",
