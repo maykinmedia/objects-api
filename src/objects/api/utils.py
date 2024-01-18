@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Dict, Union
+from typing import Union
 
 from djchoices import DjangoChoices
 
@@ -47,7 +47,7 @@ def display_choice_values_for_help_text(choices: DjangoChoices) -> str:
     return "\n".join(items)
 
 
-def merge_patch(target: JSONValue, patch: JSONValue) -> Dict[str, JSONValue]:
+def merge_patch(target: JSONValue, patch: JSONValue) -> dict[str, JSONValue]:
     """Merge two objects together recursively.
 
     This is inspired by https://datatracker.ietf.org/doc/html/rfc7396 - JSON Merge Patch,

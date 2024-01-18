@@ -1,6 +1,5 @@
 import logging
 from collections import defaultdict
-from typing import Dict, List, Tuple
 
 from glom import SKIP, GlomError, glom
 from rest_framework import fields, serializers
@@ -35,13 +34,13 @@ def build_spec_field(spec, name, value, ui):
         spec[name] = value if ui else spec_val
 
 
-def get_field_names(data: Dict[str, fields.Field]) -> List[str]:
+def get_field_names(data: dict[str, fields.Field]) -> list[str]:
     """return list of names for all serializer fields. Supports nesting"""
     names_and_sources = get_field_names_and_sources(data)
     return [name for name, source in names_and_sources]
 
 
-def get_field_names_and_sources(data: Dict[str, fields.Field]) -> List[Tuple[str, str]]:
+def get_field_names_and_sources(data: dict[str, fields.Field]) -> list[tuple[str, str]]:
     """return list of (name, source) for all serializer fields. Supports nesting"""
     names_and_sources = []
     for key, value in data.items():

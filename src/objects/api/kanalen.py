@@ -1,5 +1,4 @@
 from collections import defaultdict
-from typing import Dict
 
 from django.conf import settings
 from django.db import models
@@ -21,7 +20,7 @@ class ObjectKanaal(Kanaal):
         # check that we're refering to existing fields
         self.kenmerken = kenmerken or ()
 
-    def get_kenmerken(self, obj: models.Model, data: Dict = None) -> Dict:
+    def get_kenmerken(self, obj: models.Model, data: dict = None) -> dict:
         data = data or {}
         return {
             kenmerk: data.get("type") or obj.object.object_type.url

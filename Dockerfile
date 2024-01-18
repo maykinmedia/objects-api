@@ -1,5 +1,5 @@
 # Stage 1 - Compile needed python dependencies
-FROM python:3.8-buster AS build
+FROM python:3.9-buster AS build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpq-dev \
@@ -29,7 +29,7 @@ RUN npm run build
 
 
 # Stage 3 - Build docker image suitable for execution and deployment
-FROM python:3.8-buster AS production
+FROM python:3.9-buster AS production
 
 # Stage 3.1 - Set up the needed production dependencies
 # install all the dependencies for GeoDjango
