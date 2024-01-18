@@ -70,9 +70,7 @@ django-admin-index==3.1.0
 django-axes==5.41.1
     # via -r requirements/base.in
 django-choices==2.0.0
-    # via
-    #   -r requirements/base.in
-    #   vng-api-common
+    # via vng-api-common
 django-filter==2.4.0
     # via
     #   -r requirements/base.in

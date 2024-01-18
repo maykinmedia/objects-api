@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Union
 
-from djchoices import DjangoChoices
+from django.db import models
 
 from objects.typing import JSONValue
 
@@ -33,15 +33,11 @@ def is_number(value: str) -> bool:
     return True
 
 
-def display_choice_values_for_help_text(choices: DjangoChoices) -> str:
+def display_choice_values_for_help_text(Choices: type[models.TextChoices]) -> str:
     items = []
 
-    for key, value in choices.choices:
-        description = getattr(choices.get_choice(key), "description", None)
-        if description:
-            item = f"* `{key}` - ({value}) {description}"
-        else:
-            item = f"* `{key}` - {value}"
+    for key, value in Choices.choices:
+        item = f"* `{key}` - {value}"
         items.append(item)
 
     return "\n".join(items)
