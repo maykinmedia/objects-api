@@ -1,7 +1,7 @@
-from typing import Union
+from typing import TypeAlias
 
-JSONPrimitive = Union[str, int, None, float, bool]
+JSONPrimitive: TypeAlias = "str | int | float | bool | None"
 
-JSONValue = Union[JSONPrimitive, "JSONObject", list["JSONValue"]]
+JSONValue: TypeAlias = "JSONPrimitive | JSONObject | list[JSONValue]"
 
-JSONObject = dict[str, JSONValue]
+JSONObject: TypeAlias = dict[str, JSONValue]

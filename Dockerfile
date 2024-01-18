@@ -1,5 +1,5 @@
 # Stage 1 - Compile needed python dependencies
-FROM python:3.9-buster AS build
+FROM python:3.10-buster AS build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpq-dev \
@@ -20,7 +20,7 @@ WORKDIR /app
 COPY ./*.json /app/
 RUN npm ci
 
-COPY ./gulpfile.js ./webpack.config.js ./.babelrc /app/
+COPY ./webpack.config.js ./.babelrc /app/
 COPY ./build /app/build/
 
 COPY src/objects/sass/ /app/src/objects/sass/
@@ -29,7 +29,7 @@ RUN npm run build
 
 
 # Stage 3 - Build docker image suitable for execution and deployment
-FROM python:3.9-buster AS production
+FROM python:3.10-buster AS production
 
 # Stage 3.1 - Set up the needed production dependencies
 # install all the dependencies for GeoDjango
@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libproj13 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /usr/local/lib/python3.9 /usr/local/lib/python3.9
+COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
 COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
 # Stage 3.2 - Copy source code

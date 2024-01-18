@@ -1,12 +1,11 @@
 from datetime import date
-from typing import Union
 
 from django.db import models
 
 from objects.typing import JSONValue
 
 
-def string_to_value(value: str) -> Union[str, float, date]:
+def string_to_value(value: str) -> str | float | date:
     if is_number(value):
         return float(value)
     elif is_date(value):
