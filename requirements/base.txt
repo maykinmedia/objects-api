@@ -20,7 +20,7 @@ certifi==2020.12.5
     #   elastic-apm
     #   requests
     #   sentry-sdk
-cffi==1.14.6
+cffi==1.16.0
     # via cryptography
 chardet==4.0.0
     # via requests

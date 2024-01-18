@@ -2,13 +2,17 @@
 FROM python:3.10-slim-bullseye AS backend-build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        pkg-config \
+        build-essential \
+        git \
         libpq-dev \
     && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /app
 
 COPY ./requirements /app/requirements
-RUN pip install pip 'setuptools<59.0' -U
+RUN pip install pip --upgrade
 RUN pip install -r requirements/production.txt
 
 
@@ -29,15 +33,16 @@ RUN npm run build
 
 
 # Stage 3 - Build docker image suitable for execution and deployment
-FROM python:3.10-buster AS production
+FROM python:3.10-slim-bullseye AS production
 
 # Stage 3.1 - Set up the needed production dependencies
 # install all the dependencies for GeoDjango
 RUN apt-get update && apt-get install -y --no-install-recommends \
         postgresql-client \
-        libgdal20 \
-        libgeos-c1v5 \
-        libproj13 \
+        binutils \
+        libproj-dev \
+        gdal-bin \
+        libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=backend-build /usr/local/lib/python3.10 /usr/local/lib/python3.10
