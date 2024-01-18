@@ -18,7 +18,7 @@ Prerequisites
 
 You need the following libraries and/or programs:
 
-* `Python`_ 3.8 or above
+* `Python`_ 3.9 or above
 * Python `Virtualenv`_ and `Pip`_
 * `PostgreSQL`_ 12 or above with PostGIS extension
 * `Node.js`_

@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libproj13 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /usr/local/lib/python3.8 /usr/local/lib/python3.8
+COPY --from=build /usr/local/lib/python3.9 /usr/local/lib/python3.9
 COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
 # Stage 3.2 - Copy source code
