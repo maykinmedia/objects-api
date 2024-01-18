@@ -88,7 +88,7 @@ django-admin-index==3.1.0
     # via -r requirements/base.txt
 django-axes==5.41.1
     # via -r requirements/base.txt
-django-choices==1.7.2
+django-choices==2.0.0
     # via
     #   -r requirements/base.txt
     #   vng-api-common
@@ -353,7 +353,6 @@ sentry-sdk==1.0.0
 six==1.15.0
     # via
     #   -r requirements/base.txt
-    #   django-choices
     #   django-markup
     #   isodate
     #   jsonschema
