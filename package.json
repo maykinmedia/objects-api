@@ -2,18 +2,19 @@
   "name": "objects",
   "version": "2.1.1",
   "description": "objects project",
-  "main": "src/static/objects/js/objects.js",
+  "main": "src/objects/static/bundles/objects-js.js",
   "directories": {
     "doc": "doc"
   },
   "scripts": {
-    "test": "gulp test",
-    "build": "gulp build",
-    "watch": "gulp watch"
+    "build": "npm run bundle",
+    "bundle": "webpack",
+    "test": "karma start",
+    "watch": "webpack -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/maykinmedia/objects.git"
+    "url": "https://github.com/maykinmedia/objects-api.git"
   },
   "author": "Maykin Media",
   "license": "UNLICENSED",
@@ -31,22 +32,8 @@
     "autoprefixer": "^9.8.8",
     "babel-loader": "latest",
     "chai": "latest",
+    "css-loader": "latest",
     "cssnano": "latest",
-    "eyeglass": "latest",
-    "gulp": "latest",
-    "gulp-file": "latest",
-    "gulp-hub": "latest",
-    "gulp-if": "latest",
-    "gulp-jshint": "latest",
-    "gulp-jshint-jslint-file-reporter": "latest",
-    "gulp-postcss": "latest",
-    "gulp-sass": "latest",
-    "gulp-sourcemaps": "latest",
-    "istanbul-instrumenter-loader": "latest",
-    "jsdom": "latest",
-    "jsdom-global": "latest",
-    "jshint": "latest",
-    "jshint-stylish": "latest",
     "karma": "latest",
     "karma-chrome-launcher": "latest",
     "karma-coverage": "latest",
@@ -56,6 +43,7 @@
     "karma-phantomjs-launcher": "latest",
     "karma-spec-reporter": "latest",
     "karma-webpack": "latest",
+    "mini-css-extract-plugin": "latest",
     "mocha": "latest",
     "postcss-loader": "latest",
     "postcss-selector-lint": "latest",
@@ -65,6 +53,7 @@
     "sinon": "latest",
     "url-loader": "latest",
     "webpack": "latest",
+    "webpack-cli": "latest",
     "webpack-dev-server": "latest",
     "webpack-stream": "latest",
     "yargs": "latest"

@@ -23,7 +23,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '12'
+          node-version: '18'
       - name: Install spectral
         run: npm install -g @stoplight/spectral@5
       - name: Run OAS linter

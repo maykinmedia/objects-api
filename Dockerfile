@@ -1,5 +1,5 @@
 # Stage 1 - Compile needed python dependencies
-FROM python:3.10-buster AS build
+FROM python:3.10-slim-bullseye AS backend-build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpq-dev \
@@ -13,7 +13,7 @@ RUN pip install -r requirements/production.txt
 
 
 # Stage 2 - build frontend
-FROM mhart/alpine-node:12 AS frontend-build
+FROM node:18-alpine AS frontend-build
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ RUN npm ci
 COPY ./webpack.config.js ./.babelrc /app/
 COPY ./build /app/build/
 
-COPY src/objects/sass/ /app/src/objects/sass/
+COPY src/objects/scss/ /app/src/objects/scss/
 COPY src/objects/js/ /app/src/objects/js/
 RUN npm run build
 
@@ -40,16 +40,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libproj13 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
-COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
+COPY --from=backend-build /usr/local/lib/python3.10 /usr/local/lib/python3.10
+COPY --from=backend-build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
 # Stage 3.2 - Copy source code
 WORKDIR /app
 COPY ./bin/docker_start.sh /start.sh
 RUN mkdir /app/log /app/config
 
-COPY --from=frontend-build /app/src/objects/static/css /app/src/objects/static/css
-COPY --from=frontend-build /app/src/objects/static/js /app/src/objects/static/js
+# copy frontend build statics
+COPY --from=frontend-build /app/src/objects/static /app/src/objects/static
+
+# copy source code
 COPY ./src /app/src
 
 RUN useradd -M -u 1000 user

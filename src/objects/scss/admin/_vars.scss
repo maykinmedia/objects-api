@@ -1,0 +1,28 @@
+/* Colors */
+$color-primary: #04a5bb;
+$color-primary-dark: #017092;
+$color-primary-light: #c3eaef;
+
+$color-secondary: #f3f3f3;
+$color-secondary-dark: #ddd;
+$color-secondary-light: #fff;
+
+$color-link: #017092;
+$color-link-hover: #051f31;
+
+$color-darkest: #000;
+$color-dark: #333;
+$color-lightest: #fff;
+
+$color-error: #ba2121; // default django admin color
+
+$color-tooltip-background: #fffeaa;
+$color-tooltip-border: #f7f071;
+$color-tooltip-text: #000;
+
+/* Dimensions */
+$input-field-size: 20em; // django-original: 20em;
+
+/* Responsive breakpoints used int the Django admin */
+$breakpoint-tablet: 768px;
+$breakpoint-laptop: 1025px;

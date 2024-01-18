@@ -1,0 +1,237 @@
+/*
+Generic admin styling overrides.
+
+DO NOT PUT ANY TARGET APP-SPECIFIC RULES HERE.
+*/
+@import "./vars";
+
+// override django CSS variables
+// see admin/static/admin/css/base.css for a reference
+:root {
+  --primary: #{$color-primary};
+  --accent: #{$color-secondary};
+  --secondary: #{$color-primary};
+  --primary-fg: #{$color-lightest};
+
+  --header-color: #{$color-secondary-light};
+
+  --breadcrumbs-fg: #{$color-primary};
+  --breadcrumbs-link-fg: var(--body-fg);
+  --breadcrumbs-bg: #{$color-secondary};
+
+  --link-fg: #{$color-link};
+  --link-hover-color: #{$color-link-hover};
+  --link-selected-fg: #5b80b2;
+
+  // increased contrast
+  --hairline-color: #{$color-secondary-dark};
+
+  // --button-bg: var(--primary);
+  --button-fg: #{$color-lightest};
+  --button-hover-bg: #{$color-primary-dark};
+  --default-button-bg: #{$color-primary-dark};
+  --default-button-hover-bg: #{$color-darkest};
+  --close-button-bg: #{$color-primary-light};
+  --close-button-hover-bg: #{$color-dark};
+
+  --object-tools-bg: #888;
+  --object-tools-hover-bg: #{$color_dark};
+}
+
+/* Overrides */
+body {
+  &.change-form {
+    line-height: 1.15;
+  }
+}
+
+/**
+ * Branding
+ */
+#branding h1 {
+  a:link,
+  a:visited {
+    font-weight: bold;
+  }
+}
+
+#user-tools a {
+  border-bottom: none;
+  text-decoration: underline;
+
+  &:focus,
+  &:hover {
+    color: var(--header-link-color);
+  }
+}
+
+div.breadcrumbs {
+  a {
+    &:focus,
+    &:hover {
+      color: $color-darkest;
+    }
+  }
+}
+
+/* Important is used because Django templates include their own style, after ours */
+#changelist-filter {
+  a:focus,
+  a:hover {
+    color: var(--link-fg) !important;
+  }
+
+  li.selected a {
+    color: var(--link-fg) !important;
+
+    &:focus,
+    &:hover {
+      color: var(--primary) !important;
+    }
+  }
+}
+
+/* Calendar & time widget */
+.calendar caption,
+.calendarbox h2 {
+  background: $color-secondary-dark !important;
+  color: $color-dark !important;
+}
+
+.calendar td,
+.timelist {
+  a {
+    &:focus, &:hover {
+      background: $color-primary-dark !important;
+    }
+  }
+}
+
+.module.clockbox h2 {
+  /* Match the clock widget with the calendar widget */
+  background: $color-secondary-dark !important;
+  color: $color-dark !important;
+  font-weight: bold !important;
+}
+
+/* Icons */
+.addlink {
+  background: url("../img/admin/plus-square-regular.svg") 0 0/14px 14px no-repeat;
+}
+.changelink,
+.inlinechangelink {
+  background: url("../img/admin/edit-regular.svg") 0 0/14px 14px no-repeat;
+}
+.deletelink {
+  background: url("../img/admin/trash-alt-regular.svg") 0 0/14px 14px no-repeat;
+}
+.datetimeshortcuts .clock-icon {
+  background: url("../img/admin/clock-regular.svg") 0 0/14px 14px no-repeat !important;
+}
+.datetimeshortcuts .date-icon {
+  background: url("../img/admin/calendar-alt-regular.svg") 0 0/14px 14px no-repeat !important;
+}
+
+/* Footer */
+.version {
+  padding: 0 30px;
+  color: $color-secondary-dark;
+  font-size: smaller;
+
+  @at-root .login & {
+    text-align: center;
+  }
+}
+
+/**
+ * Environment banner
+ */
+.env {
+  display: block;
+  line-height: 35px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: $color-secondary;
+  background-color: $color-dark;
+  position: fixed;
+  top: 0;
+  height: 35px;
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+  z-index: 1000001;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * Django form field lengths
+ */
+.change-form {
+  .vTextField {
+    width: $input-field-size;
+  }
+}
+
+/**
+ * Django form related widget
+ */
+.related-widget-wrapper {
+  display: inline-block;
+}
+
+/**
+ * Help text mouseover
+ */
+div.help {
+  cursor: help;
+  width: 16px;
+  height: 16px;
+  background-image: url(../admin/img/icon-unknown.svg);
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: 14px;
+  margin-left: 8px !important;
+  margin-top: 6px !important;
+  position: absolute;
+  text-indent: -9999px;
+
+  &:hover {
+    text-indent: inherit;
+    width: auto;
+    background-image: none;
+    background-color: $color-tooltip-background;
+    border: 1px solid $color-tooltip-border;
+    color: $color-tooltip-text;
+    padding: 5px 5px 3px 5px !important;
+    max-width: 300px;
+    height: auto !important;
+    margin-top: 2px !important;
+    z-index: 10;
+  }
+}
+
+.related-widget-wrapper ~ div.help {
+  margin-top: 8px !important;
+
+  &:hover {
+    margin-top: 4px !important;
+  }
+}
+
+/* Overrides default Django CSS */
+.aligned label + p,
+.aligned label + div.readonly {
+  display: inline-block;
+  margin-left: inherit !important;
+}
+.aligned label + div.help {
+  margin-left: 2px !important;
+}
+
+/* Additional components seem to need the same behaviour */
+/* TODO: TinyMCE is different... */
+.aligned label + ul {
+  display: inline-block;
+  margin-left: inherit !important;
+}
