@@ -1,0 +1,17 @@
+.link {
+    text-decoration: none;
+    color: var(--color_link);
+
+    &:hover {
+        text-decoration: underline;
+        color: var(--color_link_hover);
+    }
+
+    &--muted {
+        color: var(--color_muted);
+
+        &:hover {
+            color: var(--color_muted);
+        }
+    }
+}

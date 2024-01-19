@@ -6,4 +6,4 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
-    list_display = DjangoUserAdmin.list_display
+    pass

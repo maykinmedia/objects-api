@@ -1,0 +1,24 @@
+.button {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    text-decoration: none;
+    background-color: var(--color_primary);
+    border: 1px solid var(--color_primary);
+    border-radius: 0.2rem;
+    color: var(--color_lightest);
+
+    &:hover {
+        background-color: var(--color_primary_dark);
+        border-color: var(--color_primary_dark);
+    }
+
+    &--alert {
+        background-color: var(--color_alert);
+        border-color: var(--color_alert);
+
+        &:hover {
+            background-color: var(--color_alert_dark);
+            border-color: var(--color_alert_dark);
+        }
+    }
+}
