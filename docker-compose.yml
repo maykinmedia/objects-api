@@ -17,6 +17,7 @@ services:
       - OBJECTS_SUPERUSER_USERNAME=admin
       - OBJECTS_SUPERUSER_PASSWORD=admin
       - OBJECTS_SUPERUSER_EMAIL=admin@localhost
+      - ALLOWED_HOSTS=*
     ports:
       - 8000:8000
     depends_on:
