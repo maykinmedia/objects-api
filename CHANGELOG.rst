@@ -2,6 +2,34 @@
 Change history
 ==============
 
+2.2.0 (2024-01-30)
+------------------
+
+**Component changes**
+
+* **Bugfixes and QOL**
+
+* fixed Permission form in the Admin (#309)
+* added ``ENVIRONMENT`` environment variable (#310)
+* updated python from 3.7 to 3.10 (#357)
+* bumped Django to 3.2 (#357)
+* bumped python libraries including mozilla-django-oidc, mozilla-django-oidc-db, zgw-consumers, uwsgi (#357, #338)
+* removed hijack library (#357)
+* updated base for docker image from Debian 10 to Debian 12 (#357)
+
+**API 2.2.0 changes**
+
+* **New features**
+
+  * added `typeVersion` query parameter (#306)
+  * supported JSON merge when doing a partial update on ``data`` attribute (#351)
+
+* **Bugfixes**
+
+  * added `typeVersion` query parameter (#306)
+  * fixed date-time parsing in API filtering (#308)
+
+
 2.1.1 (2022-06-24)
 ------------------
 
