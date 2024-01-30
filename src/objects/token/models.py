@@ -1,7 +1,6 @@
 import binascii
 import os
 
-from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core import exceptions
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -91,7 +90,7 @@ class Permission(models.Model):
     use_fields = models.BooleanField(
         _("use fields"), default=False, help_text=_("Use field-based authorization")
     )
-    fields = JSONField(
+    fields = models.JSONField(
         _("mode"),
         blank=True,
         null=True,

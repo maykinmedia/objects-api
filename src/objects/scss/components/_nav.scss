@@ -1,0 +1,37 @@
+.nav {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+
+    &__list {
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid var(--color-border);
+        list-style: none;
+    }
+
+    &__item {
+        display: block;
+        padding: 0.5rem 1rem;
+        border: 1px solid transparent;
+        color: var(--color_link);
+        cursor: pointer;
+
+        &:hover {
+            border-color: var(--color_secondary) var(--color_secondary) var(--color-border);
+            color: var(--color_link_hover);
+        }
+
+        &--active {
+            border-color: var(--color-border) var(--color-border) var(--color_lightest) !important;
+            margin-bottom: -1px;
+        }
+    }
+
+    &__pane {
+        display: none;
+
+        &--active {
+            display: block;
+        }
+    }
+}

@@ -16,14 +16,14 @@ jobs:
       matrix:
         version: ['v1', 'v2']
 
-    name: Run with version v${{ matrix.version }}
+    name: Run with version ${{ matrix.version }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '12'
+          node-version: '18'
       - name: Install dependencies
         run: npm install -g openapi-to-postmanv2
       - name: Create tests folder

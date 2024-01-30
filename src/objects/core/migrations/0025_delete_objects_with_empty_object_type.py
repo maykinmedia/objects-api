@@ -1,4 +1,4 @@
-from django.db import migrations, models
+from django.db import migrations
 
 
 def remove_objects_with_empty_object_type(apps, _):

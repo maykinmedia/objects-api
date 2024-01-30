@@ -1,12 +1,11 @@
 from datetime import date
-from typing import Dict, Union
 
-from djchoices import DjangoChoices
+from django.db import models
 
 from objects.typing import JSONValue
 
 
-def string_to_value(value: str) -> Union[str, float, date]:
+def string_to_value(value: str) -> str | float | date:
     if is_number(value):
         return float(value)
     elif is_date(value):
@@ -33,21 +32,17 @@ def is_number(value: str) -> bool:
     return True
 
 
-def display_choice_values_for_help_text(choices: DjangoChoices) -> str:
+def display_choice_values_for_help_text(Choices: type[models.TextChoices]) -> str:
     items = []
 
-    for key, value in choices.choices:
-        description = getattr(choices.get_choice(key), "description", None)
-        if description:
-            item = f"* `{key}` - ({value}) {description}"
-        else:
-            item = f"* `{key}` - {value}"
+    for key, value in Choices.choices:
+        item = f"* `{key}` - {value}"
         items.append(item)
 
     return "\n".join(items)
 
 
-def merge_patch(target: JSONValue, patch: JSONValue) -> Dict[str, JSONValue]:
+def merge_patch(target: JSONValue, patch: JSONValue) -> dict[str, JSONValue]:
     """Merge two objects together recursively.
 
     This is inspired by https://datatracker.ietf.org/doc/html/rfc7396 - JSON Merge Patch,
