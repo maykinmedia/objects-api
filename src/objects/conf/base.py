@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
+    "django_jsonform",
     "rest_framework",
     "rest_framework_gis",
     "solo",
