@@ -120,7 +120,7 @@ django-debug-toolbar==4.2.0
     # via -r requirements/dev.in
 django-extensions==3.2.3
     # via -r requirements/dev.in
-django-filter==2.4.0
+django-filter==23.5
     # via
     #   -r requirements/ci.txt
     #   vng-api-common
@@ -150,7 +150,7 @@ django-privates==2.0.0.post0
     # via
     #   -r requirements/ci.txt
     #   django-simple-certmanager
-django-redis==5.2.0
+django-redis==5.4.0
     # via -r requirements/ci.txt
 django-relativedelta==2.0.0
     # via
@@ -268,7 +268,7 @@ josepy==1.9.0
     # via
     #   -r requirements/ci.txt
     #   mozilla-django-oidc
-jsonschema==3.2.0
+jsonschema==4.17.3
     # via
     #   -r requirements/ci.txt
     #   drf-spectacular
@@ -414,7 +414,6 @@ six==1.15.0
     #   -r requirements/ci.txt
     #   django-markup
     #   isodate
-    #   jsonschema
     #   python-dateutil
     #   qrcode
     #   requests-mock

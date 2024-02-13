@@ -92,7 +92,7 @@ django-choices==2.0.0
     # via
     #   -r requirements/base.txt
     #   vng-api-common
-django-filter==2.4.0
+django-filter==23.5
     # via
     #   -r requirements/base.txt
     #   vng-api-common
@@ -122,7 +122,7 @@ django-privates==2.0.0.post0
     # via
     #   -r requirements/base.txt
     #   django-simple-certmanager
-django-redis==5.2.0
+django-redis==5.4.0
     # via -r requirements/base.txt
 django-relativedelta==2.0.0
     # via
@@ -227,7 +227,7 @@ josepy==1.9.0
     # via
     #   -r requirements/base.txt
     #   mozilla-django-oidc
-jsonschema==3.2.0
+jsonschema==4.17.3
     # via
     #   -r requirements/base.txt
     #   drf-spectacular
@@ -345,7 +345,6 @@ six==1.15.0
     #   -r requirements/base.txt
     #   django-markup
     #   isodate
-    #   jsonschema
     #   python-dateutil
     #   qrcode
     #   requests-mock
