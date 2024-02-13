@@ -102,8 +102,10 @@ warnings.filterwarnings(
 
 if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True
-    TWO_FACTOR_PATCH_ADMIN = False
-    TWO_FACTOR_FORCE_OTP_ADMIN = False
+
+# None of the authentication backends require two-factor authentication.
+if config("DISABLE_2FA", default=False):  # pragma: no cover
+    MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = AUTHENTICATION_BACKENDS
 
 # Override settings with local settings.
 try:

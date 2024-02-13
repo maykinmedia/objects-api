@@ -14,8 +14,7 @@ django-admin-index
 django-axes
 django-redis
 django-rosetta
-maykin-django-two-factor-auth
-maykin-django-two-factor-auth[phonenumbers]
+maykin-2fa
 mozilla-django-oidc-db
 
 # API libraries

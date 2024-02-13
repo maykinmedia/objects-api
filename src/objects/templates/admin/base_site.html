@@ -23,9 +23,9 @@
     {% if site_url %}
         <a href="{{ site_url }}">{{ settings.SITE_TITLE }}</a> /
     {% endif %}
-    {% url 'admin:two_factor:profile' as 2fa_profile_url %}
-    {% if 2fa_profile_url %}
-        <a href="{{ 2fa_profile_url }}">{% trans "View 2fa profile" %}</a> /
+    {% url 'maykin_2fa:account_security' as 2fa_account_security_url %}
+    {% if 2fa_account_security_url %}
+        <a href="{{ 2fa_account_security_url }}">{% trans "Account security" %}</a> /
     {% endif %}
     {% if user.has_usable_password %}
     <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /

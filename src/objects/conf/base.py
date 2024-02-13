@@ -82,11 +82,12 @@ INSTALLED_APPS = [
     "notifications_api_common",
     "simple_certmanager",
     "zgw_consumers",
-    # 2fa apps
+    # Two-factor authentication in the Django admin, enforced.
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
     "two_factor",
+    "maykin_2fa",
     # Project applications.
     "objects.accounts",
     "objects.api",
@@ -102,11 +103,11 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "maykin_2fa.middleware.OTPMiddleware",
     "mozilla_django_oidc_db.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
-    "django_otp.middleware.OTPMiddleware",
 ]
 
 ROOT_URLCONF = "objects.urls"
@@ -422,10 +423,18 @@ NOTIFICATIONS_KANAAL = "objecten"
 NOTIFICATIONS_DISABLED = config("NOTIFICATIONS_DISABLED", False)
 
 #
-# Maykin fork of DJANGO-TWO-FACTOR-AUTH
+# MAYKIN-2FA
+# Uses django-two-factor-auth under the hood, so relevant upstream package settings
+# apply too.
 #
-TWO_FACTOR_FORCE_OTP_ADMIN = config("TWO_FACTOR_FORCE_OTP_ADMIN", not DEBUG)
-TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
+
+# we run the admin site monkeypatch instead.
+TWO_FACTOR_PATCH_ADMIN = False
+# add entries from AUTHENTICATION_BACKENDS that already enforce their own two-factor
+# auth, avoiding having some set up MFA again in the project.
+MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = [
+    "mozilla_django_oidc_db.backends.OIDCAuthenticationBackend",
+]
 
 #
 # Mozilla Django OIDC DB settings
