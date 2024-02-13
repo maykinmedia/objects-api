@@ -79,7 +79,7 @@ INSTALLED_APPS = [
     "solo",
     "django_markup",
     "vng_api_common",
-    "vng_api_common.notifications",
+    "notifications_api_common",
     "simple_certmanager",
     "zgw_consumers",
     # 2fa apps

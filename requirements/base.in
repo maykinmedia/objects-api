@@ -1,4 +1,5 @@
 # Core python libraries
+celery
 glom # data represenation based on spec
 Pillow  # handle images
 psycopg2  # database driver
@@ -30,5 +31,6 @@ sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
 
 # Common ground libraries
-vng-api-common[markdown_docs]>=1.6.4
+notifications-api-common
+commonground-api-common[markdown_docs]
 zgw-consumers  # external api auths

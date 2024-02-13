@@ -1,5 +1,10 @@
 from django.db import models
 
+from notifications_api_common.viewsets import (
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
+    conditional_atomic,
+)
 from rest_framework.exceptions import NotAcceptable
 from rest_framework.renderers import BrowsableAPIRenderer
 from vng_api_common.exceptions import PreconditionFailed
@@ -9,11 +14,6 @@ from vng_api_common.geo import (
     HEADER_CONTENT,
     GeoMixin as _GeoMixin,
     extract_header,
-)
-from vng_api_common.notifications.viewsets import (
-    NotificationCreateMixin,
-    NotificationDestroyMixin,
-    conditional_atomic,
 )
 
 
