@@ -331,7 +331,7 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
     "objects.utils.admin_index.should_display_dropdown_menu"
 )
 
-# Django-Axes (4.0+)
+# Django-Axes
 #
 # The number of login attempts allowed before a record is created for the
 # failed logins. Default: 3
@@ -340,15 +340,11 @@ AXES_FAILURE_LIMIT = 10
 # will be forgotten. Can be set to a python timedelta object or an integer. If
 # an integer, will be interpreted as a number of hours. Default: None
 AXES_COOLOFF_TIME = 1
-# If True only locks based on user id and never locks by IP if attempts limit
-# exceed, otherwise utilize the existing IP and user locking logic Default:
-# False
-AXES_ONLY_USER_FAILURES = True
 # If set, specifies a template to render when a user is locked out. Template
 # receives cooloff_time and failure_limit as context variables. Default: None
 AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
-AXES_USE_USER_AGENT = True  # Default: False
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True  # Default: False
+AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
+AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]]
 
 # The default meta precedence order
 IPWARE_META_PRECEDENCE_ORDER = (

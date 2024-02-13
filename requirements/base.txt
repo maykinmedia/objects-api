@@ -67,7 +67,7 @@ django==3.2.23
     #   zgw-consumers
 django-admin-index==3.1.0
     # via -r requirements/base.in
-django-axes==5.41.1
+django-axes==6.3.0
     # via -r requirements/base.in
 django-choices==2.0.0
     # via vng-api-common
@@ -77,8 +77,6 @@ django-filter==2.4.0
     #   vng-api-common
 django-formtools==2.3
     # via maykin-django-two-factor-auth
-django-ipware==3.0.2
-    # via django-axes
 django-jsonform==2.21.4
     # via mozilla-django-oidc-db
 django-markup==1.3
