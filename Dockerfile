@@ -51,6 +51,7 @@ COPY --from=backend-build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 # Stage 3.2 - Copy source code
 WORKDIR /app
 COPY ./bin/docker_start.sh /start.sh
+COPY ./bin/celery_worker.sh /celery_worker.sh
 RUN mkdir /app/log /app/config
 
 # copy frontend build statics
