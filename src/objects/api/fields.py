@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
@@ -42,7 +42,7 @@ class ObjectTypeField(serializers.RelatedField):
         try:
             return self.get_queryset().get_by_url(data)
         except ObjectDoesNotExist:
-            self.fail("does_not_exist", value=smart_text(data))
+            self.fail("does_not_exist", value=smart_str(data))
         except (TypeError, ValueError):
             self.fail("invalid")
 
