@@ -288,7 +288,7 @@ kombu==5.3.5
     #   celery
 lxml==4.7.1
     # via pyquery
-markdown==3.3.4
+markdown==3.5.2
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -403,7 +403,7 @@ requests-mock==1.8.0
     #   zgw-consumers
 sentry-sdk==1.0.0
     # via -r requirements/base.txt
-six==1.15.0
+six==1.16.0
     # via
     #   -r requirements/base.txt
     #   django-markup
