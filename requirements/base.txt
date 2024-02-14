@@ -51,13 +51,9 @@ click-repl==0.3.0
 commonground-api-common[markdown-docs,markdown_docs]==1.12.1
     # via -r requirements/base.in
 coreapi==2.3.3
-    # via
-    #   commonground-api-common
-    #   drf-yasg
+    # via commonground-api-common
 coreschema==0.0.4
-    # via
-    #   coreapi
-    #   drf-yasg
+    # via coreapi
 cryptography==41.0.7
     # via
     #   django-simple-certmanager
@@ -146,7 +142,7 @@ djangorestframework==3.12.4
     #   drf-spectacular
     #   drf-yasg
     #   notifications-api-common
-djangorestframework-camel-case==1.2.0
+djangorestframework-camel-case==1.4.2
     # via
     #   commonground-api-common
     #   notifications-api-common
@@ -156,7 +152,7 @@ drf-nested-routers==0.93.3
     # via commonground-api-common
 drf-spectacular==0.16.0
     # via -r requirements/base.in
-drf-yasg==1.20.0
+drf-yasg==1.21.7
     # via commonground-api-common
 elastic-apm==6.1.1
     # via -r requirements/base.in
@@ -250,10 +246,12 @@ pytz==2021.1
     #   -r requirements/base.in
     #   celery
     #   django
+    #   drf-yasg
 pyyaml==6.0.1
     # via
     #   commonground-api-common
     #   drf-spectacular
+    #   drf-yasg
     #   gemma-zds-client
     #   oyaml
 qrcode==6.1
@@ -271,8 +269,6 @@ requests==2.25.1
     #   zgw-consumers
 requests-mock==1.8.0
     # via zgw-consumers
-ruamel-yaml==0.17.4
-    # via drf-yasg
 sentry-sdk==1.0.0
     # via -r requirements/base.in
 six==1.15.0
