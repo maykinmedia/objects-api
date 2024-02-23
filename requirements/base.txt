@@ -70,11 +70,13 @@ django==4.2.11
     # via
     #   commonground-api-common
     #   django-admin-index
+    #   django-appconf
     #   django-axes
     #   django-cors-headers
     #   django-filter
     #   django-formtools
     #   django-jsonform
+    #   django-log-outgoing-requests
     #   django-markup
     #   django-otp
     #   django-phonenumber-field
@@ -99,6 +101,8 @@ django==4.2.11
     #   zgw-consumers
 django-admin-index==3.1.0
     # via open-api-framework
+django-appconf==1.0.6
+    # via django-log-outgoing-requests
 django-axes==6.3.0
     # via open-api-framework
 django-cors-headers==4.3.1
@@ -113,6 +117,8 @@ django-jsonform==2.21.4
     # via
     #   mozilla-django-oidc-db
     #   open-api-framework
+django-log-outgoing-requests==0.6.1
+    # via -r requirements/base.in
 django-markup==1.8.1
     # via open-api-framework
 django-ordered-model==3.7.4
@@ -136,6 +142,7 @@ django-simple-certmanager==1.4.1
 django-solo==2.2.0
     # via
     #   commonground-api-common
+    #   django-log-outgoing-requests
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
@@ -276,6 +283,7 @@ requests==2.31.0
     # via
     #   commonground-api-common
     #   coreapi
+    #   django-log-outgoing-requests
     #   gemma-zds-client
     #   mozilla-django-oidc
     #   open-api-framework
