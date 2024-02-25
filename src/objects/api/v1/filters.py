@@ -75,6 +75,10 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         )
         % {"operator_choices": display_choice_values_for_help_text(Operators)},
     )
+    latest_record = filters.BooleanFilter(
+        method="filter_on_latest_record",
+        help_text=_("Search only in the latest record."),
+    )
 
     class Meta:
         model = ObjectRecord
@@ -113,3 +117,6 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
     def filter_registration_date(self, queryset, name, value: date):
         return queryset.filter_for_registration_date(value)
+
+    def filter_on_latest_record(self, queryset, name, value: bool):
+        return queryset.filter_on_latest_record(value)
