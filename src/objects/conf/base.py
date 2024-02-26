@@ -203,9 +203,6 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 
 FIXTURE_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "fixtures"),)
 
-DEFAULT_FROM_EMAIL = "objects@example.com"
-EMAIL_TIMEOUT = 10
-
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
 
 LOGGING = {
