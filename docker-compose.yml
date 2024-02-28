@@ -22,3 +22,8 @@ services:
       - 8000:8000
     depends_on:
       - db
+    volumes:
+      - media:/app/media  # Shared media volume to get access to saved OAS files
+
+volumes:
+  media:

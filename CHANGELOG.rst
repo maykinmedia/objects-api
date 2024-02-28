@@ -29,6 +29,16 @@ Change history
   * added `typeVersion` query parameter (#306)
   * fixed date-time parsing in API filtering (#308)
 
+.. warning::
+
+   Change in deployment is required. `/media/` volume should be configured to share OAS files.
+
+   Explanation:
+
+   The new version of ``zgw_consumers`` library adds ``oas_file`` filed to ``Service`` model.
+   This field saves OAS file into ``MEDIA_ROOT`` folder.
+   The deployment now should have a volume for it.
+   Please look at the example in ``docker-compose.yml``
 
 2.1.1 (2022-06-24)
 ------------------
