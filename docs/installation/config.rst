@@ -90,6 +90,11 @@ Other settings
 * ``TWO_FACTOR_PATCH_ADMIN``: Whether to use the 2 Factor Authentication login flow for
   the admin or not. Default ``True``. You'll probably want to disable this when using OIDC.
 
+* ``USE_X_FORWARDED_HOST``: whether to grab the domain/host from the ``X-Forwarded-Host``
+  header or not. This header is typically set by reverse proxies (such as nginx,
+  traefik, Apache...). Default ``False`` - this is a header that can be spoofed and you
+  need to ensure you control it before enabling this.
+
 Initial superuser creation
 --------------------------
 
