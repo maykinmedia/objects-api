@@ -43,6 +43,14 @@
             [
                 "mozilla_django_oidc_db",
                 "openidconnectconfig"
+            ],
+            [
+                "log_outgoing_requests",
+                "outgoingrequestslog"
+            ],
+            [
+                "log_outgoing_requests",
+                "outgoingrequestslogconfig"
             ]
         ]
     }

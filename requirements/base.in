@@ -11,6 +11,7 @@ jsonschema
 django~=3.2
 django-admin-index
 django-axes
+django-log-outgoing-requests
 django-redis
 django-rosetta
 maykin-django-two-factor-auth
