@@ -2,6 +2,16 @@
 Change history
 ==============
 
+2.2.1 (2024-03-02)
+------------------
+
+**Bugfixes and QOL**
+
+* fixes OIDC config page by adding ``django_jsonform`` to ``INSTALLED_APPS`` (#350)
+* added ``USE_X_FORWARDED_HOST`` environment variable (#353)
+* added email environment variables (#366)
+
+
 2.2.0 (2024-01-30)
 ------------------
 
