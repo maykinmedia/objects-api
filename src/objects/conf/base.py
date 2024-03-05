@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     "vng_api_common.notifications",
     "simple_certmanager",
     "zgw_consumers",
+    "django_setup_configuration",
     # 2fa apps
     "django_otp",
     "django_otp.plugins.otp_static",

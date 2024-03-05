@@ -16,6 +16,7 @@ django-rosetta
 maykin-django-two-factor-auth
 maykin-django-two-factor-auth[phonenumbers]
 mozilla-django-oidc-db
+git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
 
 # API libraries
 djangorestframework
