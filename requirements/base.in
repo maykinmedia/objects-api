@@ -5,5 +5,8 @@ glom # data represenation based on spec
 jsonschema
 django-log-outgoing-requests
 
+# Django libraries
+git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
+
 # Common ground libraries
 notifications-api-common

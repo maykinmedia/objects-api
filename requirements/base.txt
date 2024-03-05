@@ -85,6 +85,7 @@ django==4.2.11
     #   django-relativedelta
     #   django-rest-framework-condition
     #   django-sendfile2
+    #   django-setup-configuration
     #   django-simple-certmanager
     #   django-solo
     #   django-two-factor-auth
@@ -137,6 +138,8 @@ django-rest-framework-condition==0.1.1
     # via commonground-api-common
 django-sendfile2==0.7.0
     # via django-privates
+django-setup-configuration @ git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
+    # via -r requirements/base.in
 django-simple-certmanager==1.4.1
     # via zgw-consumers
 django-solo==2.2.0

@@ -111,6 +111,7 @@ INSTALLED_APPS = [
     "notifications_api_common",
     "simple_certmanager",
     "zgw_consumers",
+    "django_setup_configuration",
     # Two-factor authentication in the Django admin, enforced.
     "django_otp",
     "django_otp.plugins.otp_static",
