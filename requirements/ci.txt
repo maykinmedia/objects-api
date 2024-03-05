@@ -74,7 +74,7 @@ click-repl==0.3.0
     # via
     #   -r requirements/base.txt
     #   celery
-commonground-api-common[markdown-docs]==1.12.1
+commonground-api-common[markdown-docs]==1.13.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -98,7 +98,7 @@ cryptography==41.0.7
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==3.2.23
+django==4.2.11
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -198,7 +198,7 @@ django-two-factor-auth[phonenumberslite,webauthn]==1.16.0
     #   maykin-2fa
 django-webtest==1.9.7
     # via -r requirements/test-tools.in
-djangorestframework==3.12.4
+djangorestframework==3.14.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -368,12 +368,11 @@ pytz==2021.1
     # via
     #   -r requirements/base.txt
     #   celery
-    #   django
+    #   djangorestframework
     #   drf-yasg
 pyyaml==6.0.1
     # via
     #   -r requirements/base.txt
-    #   commonground-api-common
     #   drf-spectacular
     #   drf-yasg
     #   gemma-zds-client

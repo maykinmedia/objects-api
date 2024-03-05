@@ -9,7 +9,7 @@ python-decouple  # processing of envvar configs
 jsonschema
 
 # Framework libraries
-django~=3.2
+django~=4.2
 django-admin-index
 django-axes
 django-redis
