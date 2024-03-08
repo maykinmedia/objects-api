@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     # Project applications.
     "objects.accounts",
     "objects.api",
+    "objects.config",
     "objects.core",
     "objects.token",
     "objects.utils",
@@ -438,3 +439,39 @@ TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+#
+# Django setup configuration
+#
+SETUP_CONFIGURATION_STEPS = [
+    "objects.config.site.SiteConfigurationStep",
+    "objects.config.objecttypes.ObjecttypesStep",
+    "objects.config.demo.DemoUserStep",
+]
+
+
+#
+# Objecttypes settings
+#
+
+# setup_configuration command
+# sites config
+SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=True)
+OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "")
+OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "")
+# objecttypes config
+OBJECTS_OBJECTTYPES_CONFIG_ENABLE = config(
+    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=True
+)
+OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "")
+if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/"):
+    OBJECTTYPES_API_ROOT = f"{OBJECTTYPES_API_ROOT.strip()}/"
+OBJECTTYPES_API_OAS = config(
+    "OBJECTTYPES_API_OAS", default=f"{OBJECTTYPES_API_ROOT}schema/openapi.yaml"
+)
+OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "")
+# Demo User Configuration
+DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=DEBUG)
+DEMO_TOKEN = config("DEMO_TOKEN", "")
+DEMO_PERSON = config("DEMO_PERSON", "")
+DEMO_EMAIL = config("DEMO_EMAIL", "")

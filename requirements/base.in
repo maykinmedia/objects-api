@@ -6,6 +6,7 @@ pytz  # handle timezones
 python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
 jsonschema
+furl
 
 # Framework libraries
 django~=3.2
