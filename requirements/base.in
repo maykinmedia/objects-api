@@ -3,10 +3,11 @@ open-api-framework
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
-django-log-outgoing-requests
+furl
 
 # Django libraries
 git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
+django-log-outgoing-requests
 
 # Common ground libraries
 notifications-api-common
