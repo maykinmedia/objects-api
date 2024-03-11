@@ -4,6 +4,7 @@ import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from objects.core.models import ObjectType
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
@@ -375,6 +376,52 @@ class SuperUserTests(TokenAuthMixin, APITestCase):
         response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_superuser_no_service(self):
+        url = reverse("object-list")
+        data = {
+            "type": f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @requests_mock.Mocker()
+    def test_create_superuser_no_object_type(self, m):
+        objecttype_url = (
+            f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2"
+        )
+        service = ServiceFactory.create(api_root=OBJECT_TYPES_API)
+        url = reverse("object-list")
+        data = {
+            "type": objecttype_url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+        # mocks
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(objecttype_url, json=mock_objecttype(objecttype_url))
+        m.get(
+            f"{objecttype_url}/versions/1",
+            json=mock_objecttype_version(objecttype_url),
+        )
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # check created object type
+        object_type = ObjectType.objects.get()
+        self.assertEqual(object_type.service, service)
+        self.assertEqual(object_type.url, objecttype_url)
 
     @requests_mock.Mocker()
     def test_update_superuser(self, m):
