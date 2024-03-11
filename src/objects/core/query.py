@@ -30,6 +30,10 @@ class ObjectRecordQuerySet(models.QuerySet):
     def filter_for_token(self, token):
         if not token:
             return self.none()
+
+        if token.is_superuser:
+            return self.all()
+
         allowed_object_types = token.permissions.values("object_type")
         return self.filter(
             object__object_type__in=models.Subquery(allowed_object_types)

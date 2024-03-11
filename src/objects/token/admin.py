@@ -115,6 +115,7 @@ class TokenAuthAdmin(admin.ModelAdmin):
         "organization",
         "administration",
         "application",
+        "is_superuser",
     )
     readonly_fields = ("token",)
     inlines = [PermissionInline]
