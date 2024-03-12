@@ -11,19 +11,36 @@ services:
 
   web:
     build: .
-    environment:
+    environment: &app-env
       - DJANGO_SETTINGS_MODULE=objects.conf.docker
       - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
       - OBJECTS_SUPERUSER_USERNAME=admin
       - OBJECTS_SUPERUSER_PASSWORD=admin
       - OBJECTS_SUPERUSER_EMAIL=admin@localhost
       - ALLOWED_HOSTS=*
+      # setup_configuration env vars
+      - OBJECTS_DOMAIN=web:8000
+      - OBJECTS_ORGANIZATION=Objects
+      - OBJECTTYPES_API_ROOT=https://objecttypes.example.com/api/v2/
+      - OBJECTS_OBJECTTYPES_TOKEN=some-random-string
+      - DEMO_CONFIG_ENABLE=yes
+      - DEMO_TOKEN=demo-random-string
+      - DEMO_PERSON=Demo
+      - DEMO_EMAIL=demo@demo.local
     ports:
       - 8000:8000
     depends_on:
-      - db
+      web-init:
+        condition: service_completed_successfully
     volumes:
       - media:/app/media  # Shared media volume to get access to saved OAS files
+
+  web-init:
+    build: .
+    environment: *app-env
+    command: /setup_configuration.sh
+    depends_on:
+      - db
 
 volumes:
   media:

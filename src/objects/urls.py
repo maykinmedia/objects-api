@@ -43,6 +43,7 @@ urlpatterns = [
             template_name="index.html",
             extra_context={"version": api_settings.DEFAULT_VERSION},
         ),
+        name="home",
     ),
     path("ref/", include("vng_api_common.urls")),
     path("ref/", include("vng_api_common.notifications.urls")),
