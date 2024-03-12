@@ -148,6 +148,9 @@ class DynamicFieldsMixin:
         if not request:
             return ALL_FIELDS
 
+        if request.auth.is_superuser:
+            return ALL_FIELDS
+
         # use prefetch_related for DB optimization
         if getattr(instance.object.object_type, "token_permissions", None):
             permission = instance.object.object_type.token_permissions[0]

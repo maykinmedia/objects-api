@@ -46,6 +46,11 @@ class TokenAuth(models.Model):
         blank=True,
         help_text=_("Administration which has access to the API"),
     )
+    is_superuser = models.BooleanField(
+        _("is superuser"),
+        default=False,
+        help_text=_("Designates whether the user has access to all objects."),
+    )
 
     object_types = models.ManyToManyField(
         "core.ObjectType",

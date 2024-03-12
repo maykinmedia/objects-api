@@ -6,6 +6,7 @@ pytz  # handle timezones
 python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
 jsonschema
+furl
 
 # Framework libraries
 django~=3.2
@@ -16,6 +17,7 @@ django-rosetta
 maykin-django-two-factor-auth
 maykin-django-two-factor-auth[phonenumbers]
 mozilla-django-oidc-db
+git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
 
 # API libraries
 djangorestframework
