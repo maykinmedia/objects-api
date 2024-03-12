@@ -119,6 +119,14 @@ variables. The user will only be created if it doesn't exist yet.
   which means the superuser will be created _without_ password. Only has an effect
   if ``OBJECTS_SUPERUSER_USERNAME`` is set.
 
+Initial configuration
+---------------------
+
+Both Objects API and Objecttypes API support `setup_configuration` management command,
+which allows configuration via environment variables.
+All these environment variables are described at :ref:`command line <installation_config_cli>`.
+
+
 Specifying the environment variables
 =====================================
 
