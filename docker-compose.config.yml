@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+  # OBJECTTYPES API
+  db_objecttypes:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./docker-init-db-objecttypes.sql:/docker-entrypoint-initdb.d/init_db.sql
+    command: postgres -c max_connections=300 -c log_min_messages=LOG
+
+  objecttypes:
+    build: ../objecttypes
+    environment: &objecttypes-env
+      - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$15d}
+      - DB_HOST=db_objecttypes
+      - IS_HTTPS=no
+      - ALLOWED_HOSTS=*
+      - TWO_FACTOR_FORCE_OTP_ADMIN=no
+      - TWO_FACTOR_PATCH_ADMIN=no
+      # setup_configuration env vars
+      - OBJECTTYPES_DOMAIN=objecttypes:8000
+      - OBJECTTYPES_ORGANIZATION=ObjectTypes
+      - OBJECTS_OBJECTTYPES_TOKEN=objects-random-string
+      - OBJECTS_OBJECTTYPES_PERSON=Objects
+      - OBJECTS_OBJECTTYPES_EMAIL=objects@objects.local
+      - DEMO_CONFIG_ENABLE=yes
+      - DEMO_TOKEN=demo-random-string
+      - DEMO_PERSON=Demo
+      - DEMO_EMAIL=demo@demo.local
+    ports:
+      - 8001:8000
+    depends_on:
+      objecttypes-init:
+        condition: service_completed_successfully
+
+  objecttypes-init:
+    build: ../objecttypes
+    environment: *objecttypes-env
+    command: /setup_configuration.sh
+    depends_on:
+      - db_objecttypes
+
+  # OBJECTS API
+  db:
+    # NOTE: No persistance storage configured.
+    # See: https://hub.docker.com/_/postgres/
+    image: postgis/postgis:12-2.5
+    environment:
+      - POSTGRES_USER=objects
+      - POSTGRES_PASSWORD=objects
+
+  objects:
+    build: .
+    environment: &objects-env
+      - DJANGO_SETTINGS_MODULE=objects.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
+      - DB_HOST=db
+      - IS_HTTPS=no
+      - OBJECTS_SUPERUSER_USERNAME=admin
+      - OBJECTS_SUPERUSER_PASSWORD=admin
+      - OBJECTS_SUPERUSER_EMAIL=admin@localhost
+      - ALLOWED_HOSTS=*
+      - TWO_FACTOR_FORCE_OTP_ADMIN=no
+      - TWO_FACTOR_PATCH_ADMIN=no
+      - NOTIFICATIONS_DISABLED=yes
+      # setup_configuration env vars
+      - OBJECTS_DOMAIN=objects:8000
+      - OBJECTS_ORGANIZATION=Objects
+      - OBJECTTYPES_API_ROOT=http://objecttypes:8000/api/v2/
+      - OBJECTS_OBJECTTYPES_TOKEN=objects-random-string
+      - DEMO_CONFIG_ENABLE=yes
+      - DEMO_TOKEN=demo-random-string
+      - DEMO_PERSON=Demo
+      - DEMO_EMAIL=demo@demo.local
+    ports:
+      - 8000:8000
+    depends_on:
+      objects-init:
+        condition: service_completed_successfully
+    volumes:
+      - media:/app/media  # Shared media volume to get access to saved OAS files
+
+  objects-init:
+    build: .
+    environment: *objects-env
+    command: /setup_configuration.sh
+    depends_on:
+      - db
+
+volumes:
+  media:
