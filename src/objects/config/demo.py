@@ -52,7 +52,7 @@ class DemoUserStep(BaseConfigurationStep):
             response = requests.get(
                 full_url,
                 headers={
-                    "HTTP_AUTHORIZATION": f"Token {settings.OBJECTS_OBJECTTYPES_TOKEN}",
+                    "Authorization": f"Token {settings.DEMO_TOKEN}",
                     "Accept": "application/json",
                 },
             )
