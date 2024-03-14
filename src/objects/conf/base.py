@@ -433,6 +433,9 @@ MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = [
     "mozilla_django_oidc_db.backends.OIDCAuthenticationBackend",
 ]
 
+if config("DISABLE_2FA", default=False):  # pragma: no cover
+    MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = AUTHENTICATION_BACKENDS
+
 #
 # Mozilla Django OIDC DB settings
 #

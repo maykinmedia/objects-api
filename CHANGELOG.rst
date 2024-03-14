@@ -2,6 +2,14 @@
 Change history
 ==============
 
+2.3.0 (TBD)
+-----------
+
+.. warning::
+
+    Two-factor authentication is enabled by default. The ``DISABLE_2FA`` environment variable
+    can be used to disable it if needed.
+
 2.2.1 (2024-03-02)
 ------------------
 

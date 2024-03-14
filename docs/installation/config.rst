@@ -95,6 +95,9 @@ Other settings
   traefik, Apache...). Default ``False`` - this is a header that can be spoofed and you
   need to ensure you control it before enabling this.
 
+* ``DISABLE_2FA``: whether to disable two-factor authentication. Defaults to ``False``.
+  If set to ``False``, 2FA will be required if not using OIDC.
+
 Initial superuser creation
 --------------------------
 
