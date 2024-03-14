@@ -29,8 +29,8 @@ Required settings
   Defaults to ``*`` for the ``docker`` environment and defaults to
   ``127.0.0.1,localhost`` for the ``dev`` environment.
 
-Database settings
------------------
+Common settings
+---------------
 
 * ``DB_HOST``: Hostname of the PostgreSQL database. Defaults to ``db`` for the
   ``docker`` environment, otherwise defaults to ``localhost``.
@@ -42,6 +42,12 @@ Database settings
 * ``DB_NAME``: Name of the PostgreSQL database. Defaults to ``objects`` or ``objecttypes``,
 
 * ``DB_PORT``: Port number of the database. Defaults to ``5432``.
+
+* ``CELERY_BROKER_URL``: URL for the Redis task broker for Celery. Defaults
+  to ``redis://127.0.0.1:6379/1``.
+
+* ``CELERY_RESULT_BACKEND``: URL for the Redis result broker for Celery.
+  Defaults to ``redis://127.0.0.1:6379/1``.
 
 Elastic APM settings
 --------------------
