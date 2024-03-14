@@ -40,9 +40,13 @@ class AutoSchema(_AutoSchema):
             return []
         return super()._get_filter_parameters()
 
-    def _get_response_for_code(self, serializer, status_code, media_types=None):
+    def _get_response_for_code(
+        self, serializer, status_code, media_types=None, direction="response"
+    ):
         """add default description to the response"""
-        response = super()._get_response_for_code(serializer, status_code, media_types)
+        response = super()._get_response_for_code(
+            serializer, status_code, media_types, direction
+        )
 
         if not response.get("description"):
             response["description"] = HTTP_STATUS_CODE_TITLES.get(int(status_code))
@@ -149,9 +153,9 @@ class AutoSchema(_AutoSchema):
 
         return []
 
-    def _get_request_body(self):
+    def _get_request_body(self, direction="request"):
         """update search request body with filter parameters"""
-        request_body = super()._get_request_body()
+        request_body = super()._get_request_body(direction)
 
         if self.view.action == "search":
             filter_params = self.get_filter_params_for_search()

@@ -1,3 +1,5 @@
+from datetime import date as date_
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
@@ -108,8 +110,8 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 
         return queryset
 
-    def filter_date(self, queryset, name, value: date):
+    def filter_date(self, queryset, name, value: date_):
         return queryset.filter_for_date(value)
 
-    def filter_registration_date(self, queryset, name, value: date):
+    def filter_registration_date(self, queryset, name, value: date_):
         return queryset.filter_for_registration_date(value)

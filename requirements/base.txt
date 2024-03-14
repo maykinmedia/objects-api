@@ -150,7 +150,7 @@ djangorestframework-gis==1.0
     # via -r requirements/base.in
 drf-nested-routers==0.93.3
     # via commonground-api-common
-drf-spectacular==0.16.0
+drf-spectacular==0.26.5
     # via -r requirements/base.in
 drf-yasg==1.21.7
     # via commonground-api-common

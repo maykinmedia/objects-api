@@ -639,8 +639,8 @@ components:
         typeVersion:
           type: integer
           maximum: 32767
-          description: Version of the OBJECTTYPE for data in the object record
           minimum: 0
+          description: Version of the OBJECTTYPE for data in the object record
         data:
           type: object
           additionalProperties: {}
@@ -661,6 +661,7 @@ components:
           type: string
           format: date
           readOnly: true
+          nullable: true
           description: Legal end date of the object record
         registrationAt:
           type: string
@@ -668,13 +669,17 @@ components:
           readOnly: true
           description: The date when the record was registered in the system
         correctionFor:
-          type: string
-          readOnly: true
+          type: integer
+          maximum: 2147483647
+          minimum: 0
           description: Index of the record corrected by the current record
-        correctedBy:
-          type: string
           readOnly: true
+        correctedBy:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
           description: Index of the record, which corrects the current record
+          readOnly: true
       required:
       - startAt
       - typeVersion
@@ -786,8 +791,8 @@ components:
         typeVersion:
           type: integer
           maximum: 32767
-          description: Version of the OBJECTTYPE for data in the object record
           minimum: 0
+          description: Version of the OBJECTTYPE for data in the object record
         data:
           type: object
           additionalProperties: {}
@@ -808,6 +813,7 @@ components:
           type: string
           format: date
           readOnly: true
+          nullable: true
           description: Legal end date of the object record
         registrationAt:
           type: string
@@ -815,12 +821,16 @@ components:
           readOnly: true
           description: The date when the record was registered in the system
         correctionFor:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: 0
           description: Index of the record corrected by the current record
         correctedBy:
-          type: string
-          readOnly: true
+          type: integer
+          maximum: 2147483647
+          minimum: 0
           description: Index of the record, which corrects the current record
+          readOnly: true
       required:
       - startAt
       - typeVersion
