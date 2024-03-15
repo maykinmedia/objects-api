@@ -2,10 +2,14 @@
 Change history
 ==============
 
-2.3.0 (TBD)
+2.3.0 (2024-03-15)
 -----------
 
+* Update to Django 4.2.
+
 .. warning::
+
+    Celery (and thus Redis) is now a required dependency.
 
     Two-factor authentication is enabled by default. The ``DISABLE_2FA`` environment variable
     can be used to disable it if needed.
