@@ -4,9 +4,9 @@ from django.test import override_settings
 
 import requests_mock
 from freezegun import freeze_time
+from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
 from rest_framework.test import APITestCase
-from vng_api_common.notifications.models import NotificationsConfig
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
@@ -20,12 +20,7 @@ from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
-from ..utils import (
-    mock_objecttype,
-    mock_objecttype_version,
-    mock_service_oas_get,
-    notifications_client_mock,
-)
+from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
@@ -49,9 +44,8 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     def setUp(self):
         super().setUp()
 
-        config = NotificationsConfig.get_solo()
-        Service.objects.update_or_create(
-            api_root=config.api_root,
+        service, _ = Service.objects.update_or_create(
+            api_root="https://notificaties-api.vng.cloud/api/v1/",
             defaults=dict(
                 api_type=APITypes.nrc,
                 client_id="test",
@@ -60,13 +54,15 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 user_representation="Test",
             ),
         )
+        config = NotificationsConfig.get_solo()
+        config.notifications_api_service = service
+        config.save()
 
-    @patch("zds_client.Client.from_url", side_effect=notifications_client_mock)
-    def test_send_notif_create_object(self, mocker, mock_client):
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_create_object(self, mocker, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        client = mock_client.return_value
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -95,8 +91,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
 
         data = response.json()
 
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "objecten",
                 "hoofdObject": data["url"],
@@ -110,12 +105,11 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         )
 
-    @patch("zds_client.Client.from_url", side_effect=notifications_client_mock)
-    def test_send_notif_update_object(self, mocker, mock_client):
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_update_object(self, mocker, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        client = mock_client.return_value
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -147,8 +141,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
 
         data = response.json()
 
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "objecten",
                 "hoofdObject": data["url"],
@@ -162,12 +155,11 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         )
 
-    @patch("zds_client.Client.from_url", side_effect=notifications_client_mock)
-    def test_send_notif_partial_update_object(self, mocker, mock_client):
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_partial_update_object(self, mocker, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        client = mock_client.return_value
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -199,8 +191,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
 
         data = response.json()
 
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "objecten",
                 "hoofdObject": data["url"],
@@ -214,12 +205,11 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         )
 
-    @patch("zds_client.Client.from_url", side_effect=notifications_client_mock)
-    def test_send_notif_delete_object(self, mocker, mock_client):
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_send_notif_delete_object(self, mocker, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        client = mock_client.return_value
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -238,8 +228,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             response.status_code, status.HTTP_204_NO_CONTENT, response.data
         )
 
-        client.create.assert_called_once_with(
-            "notificaties",
+        mock_task.assert_called_once_with(
             {
                 "kanaal": "objecten",
                 "hoofdObject": full_url,

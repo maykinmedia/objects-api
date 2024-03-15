@@ -1,4 +1,6 @@
 import os
+import secrets
+import string
 
 from django.conf import settings
 from django.contrib.auth.management.commands.createsuperuser import (
@@ -50,7 +52,8 @@ class Command(BaseCommand):
         user = qs.get()
 
         if not password and options["generate_password"]:
-            password = self.UserModel.objects.make_random_password(length=20)
+            alphabet = string.ascii_letters + string.digits
+            password = "".join(secrets.choice(alphabet) for _ in range(20))
 
         if password:
             self.stdout.write("Setting user password...")

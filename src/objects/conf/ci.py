@@ -29,9 +29,3 @@ logging.disable(logging.CRITICAL)
 AXES_BEHIND_REVERSE_PROXY = False
 
 NOTIFICATIONS_DISABLED = True
-
-
-#
-# Maykin fork of django-two-factor-auth
-#
-TWO_FACTOR_FORCE_OTP_ADMIN = False

@@ -79,14 +79,15 @@ INSTALLED_APPS = [
     "solo",
     "django_markup",
     "vng_api_common",
-    "vng_api_common.notifications",
+    "notifications_api_common",
     "simple_certmanager",
     "zgw_consumers",
-    # 2fa apps
+    # Two-factor authentication in the Django admin, enforced.
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
     "two_factor",
+    "maykin_2fa",
     # Project applications.
     "objects.accounts",
     "objects.api",
@@ -102,11 +103,11 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "maykin_2fa.middleware.OTPMiddleware",
     "mozilla_django_oidc_db.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
-    "django_otp.middleware.OTPMiddleware",
 ]
 
 ROOT_URLCONF = "objects.urls"
@@ -170,8 +171,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Europe/Amsterdam"
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
@@ -331,7 +330,7 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
     "objects.utils.admin_index.should_display_dropdown_menu"
 )
 
-# Django-Axes (4.0+)
+# Django-Axes
 #
 # The number of login attempts allowed before a record is created for the
 # failed logins. Default: 3
@@ -340,15 +339,10 @@ AXES_FAILURE_LIMIT = 10
 # will be forgotten. Can be set to a python timedelta object or an integer. If
 # an integer, will be interpreted as a number of hours. Default: None
 AXES_COOLOFF_TIME = 1
-# If True only locks based on user id and never locks by IP if attempts limit
-# exceed, otherwise utilize the existing IP and user locking logic Default:
-# False
-AXES_ONLY_USER_FAILURES = True
 # If set, specifies a template to render when a user is locked out. Template
 # receives cooloff_time and failure_limit as context variables. Default: None
 AXES_LOCKOUT_TEMPLATE = "account_blocked.html"
-AXES_USE_USER_AGENT = True  # Default: False
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True  # Default: False
+AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]]
 
 # The default meta precedence order
 IPWARE_META_PRECEDENCE_ORDER = (
@@ -426,10 +420,21 @@ NOTIFICATIONS_KANAAL = "objecten"
 NOTIFICATIONS_DISABLED = config("NOTIFICATIONS_DISABLED", False)
 
 #
-# Maykin fork of DJANGO-TWO-FACTOR-AUTH
+# MAYKIN-2FA
+# Uses django-two-factor-auth under the hood, so relevant upstream package settings
+# apply too.
 #
-TWO_FACTOR_FORCE_OTP_ADMIN = config("TWO_FACTOR_FORCE_OTP_ADMIN", not DEBUG)
-TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
+
+# we run the admin site monkeypatch instead.
+TWO_FACTOR_PATCH_ADMIN = False
+# add entries from AUTHENTICATION_BACKENDS that already enforce their own two-factor
+# auth, avoiding having some set up MFA again in the project.
+MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = [
+    "mozilla_django_oidc_db.backends.OIDCAuthenticationBackend",
+]
+
+if config("DISABLE_2FA", default=False):  # pragma: no cover
+    MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = AUTHENTICATION_BACKENDS
 
 #
 # Mozilla Django OIDC DB settings
@@ -437,3 +442,15 @@ TWO_FACTOR_PATCH_ADMIN = config("TWO_FACTOR_PATCH_ADMIN", True)
 OIDC_AUTHENTICATE_CLASS = "mozilla_django_oidc_db.views.OIDCAuthenticationRequestView"
 MOZILLA_DJANGO_OIDC_DB_CACHE = "oidc"
 MOZILLA_DJANGO_OIDC_DB_CACHE_TIMEOUT = 5 * 60
+
+#
+# CELERY - async task queue
+#
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
+
+# Add (by default) 5 (soft), 15 (hard) minute timeouts to all Celery tasks.
+CELERY_TASK_TIME_LIMIT = config("CELERY_TASK_HARD_TIME_LIMIT", default=15 * 60)  # hard
+CELERY_TASK_SOFT_TIME_LIMIT = config(
+    "CELERY_TASK_SOFT_TIME_LIMIT", default=5 * 60
+)  # soft

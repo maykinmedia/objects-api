@@ -29,8 +29,8 @@ Required settings
   Defaults to ``*`` for the ``docker`` environment and defaults to
   ``127.0.0.1,localhost`` for the ``dev`` environment.
 
-Database settings
------------------
+Common settings
+---------------
 
 * ``DB_HOST``: Hostname of the PostgreSQL database. Defaults to ``db`` for the
   ``docker`` environment, otherwise defaults to ``localhost``.
@@ -42,6 +42,12 @@ Database settings
 * ``DB_NAME``: Name of the PostgreSQL database. Defaults to ``objects`` or ``objecttypes``,
 
 * ``DB_PORT``: Port number of the database. Defaults to ``5432``.
+
+* ``CELERY_BROKER_URL``: URL for the Redis task broker for Celery. Defaults
+  to ``redis://127.0.0.1:6379/1``.
+
+* ``CELERY_RESULT_BACKEND``: URL for the Redis result broker for Celery.
+  Defaults to ``redis://127.0.0.1:6379/1``.
 
 Elastic APM settings
 --------------------
@@ -84,16 +90,13 @@ Other settings
   sent to the Notificaties API for operations on the Object endpoint.
   Defaults to ``True`` for the ``dev`` environment, otherwise defaults to ``False``.
 
-* ``TWO_FACTOR_FORCE_OTP_ADMIN``: Enforce 2 Factor Authentication in the admin or not.
-  Default ``True``. You'll probably want to disable this when using OIDC.
-
-* ``TWO_FACTOR_PATCH_ADMIN``: Whether to use the 2 Factor Authentication login flow for
-  the admin or not. Default ``True``. You'll probably want to disable this when using OIDC.
-
 * ``USE_X_FORWARDED_HOST``: whether to grab the domain/host from the ``X-Forwarded-Host``
   header or not. This header is typically set by reverse proxies (such as nginx,
   traefik, Apache...). Default ``False`` - this is a header that can be spoofed and you
   need to ensure you control it before enabling this.
+
+* ``DISABLE_2FA``: whether to disable two-factor authentication. Defaults to ``False``.
+  If set to ``False``, 2FA will be required if not using OIDC.
 
 Initial superuser creation
 --------------------------

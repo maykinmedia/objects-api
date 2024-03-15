@@ -7,12 +7,16 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views.generic.base import TemplateView
 
+from maykin_2fa import monkeypatch_admin
+from maykin_2fa.urls import urlpatterns as maykin_2fa_urlpatterns
 from rest_framework.settings import api_settings
 
 handler500 = "objects.utils.views.server_error"
 admin.site.site_header = "objects admin"
 admin.site.site_title = "objects admin"
 admin.site.index_title = "Welcome to the objects admin"
+
+monkeypatch_admin()
 
 urlpatterns = [
     path(
@@ -25,6 +29,7 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_done",
     ),
+    path("admin/", include((maykin_2fa_urlpatterns, "maykin_2fa"))),
     path("admin/", admin.site.urls),
     path(
         "reset/<uidb64>/<token>/",
@@ -45,7 +50,7 @@ urlpatterns = [
         ),
     ),
     path("ref/", include("vng_api_common.urls")),
-    path("ref/", include("vng_api_common.notifications.urls")),
+    path("ref/", include("notifications_api_common.urls")),
     path("oidc/", include("mozilla_django_oidc.urls")),
     path("api/", include("objects.api.urls")),
 ]

@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 
 from django_webtest import WebTest
+from maykin_2fa.test import disable_admin_mfa
 from requests_mock import Mocker
 
 from objects.accounts.tests.factories import UserFactory
@@ -11,6 +12,7 @@ from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_g
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
+@disable_admin_mfa()
 class AddPermissionTests(WebTest):
     url = reverse_lazy("admin:token_permission_add")
 
