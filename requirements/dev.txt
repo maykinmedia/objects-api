@@ -53,6 +53,7 @@ cbor2==5.6.1
 celery==5.2.2
     # via
     #   -r requirements/ci.txt
+    #   flower
     #   notifications-api-common
 certifi==2020.12.5
     # via
@@ -269,6 +270,8 @@ faker==8.1.0
     #   zgw-consumers
 flake8==7.0.0
     # via -r requirements/dev.in
+flower==2.0.1
+    # via -r requirements/ci.txt
 freezegun==1.1.0
     # via -r requirements/ci.txt
 gemma-zds-client==1.0.1
@@ -281,6 +284,10 @@ glom==23.5.0
     # via
     #   -r requirements/ci.txt
     #   mozilla-django-oidc-db
+humanize==4.9.0
+    # via
+    #   -r requirements/ci.txt
+    #   flower
 idna==2.10
     # via
     #   -r requirements/ci.txt
@@ -376,6 +383,10 @@ polib==1.1.1
     # via
     #   -r requirements/ci.txt
     #   django-rosetta
+prometheus-client==0.20.0
+    # via
+    #   -r requirements/ci.txt
+    #   flower
 prompt-toolkit==3.0.43
     # via
     #   -r requirements/ci.txt
@@ -431,6 +442,7 @@ pytz==2021.1
     #   celery
     #   djangorestframework
     #   drf-yasg
+    #   flower
 pyyaml==6.0.1
     # via
     #   -r requirements/ci.txt
@@ -522,6 +534,10 @@ tomli==2.0.1
     #   build
     #   pip-tools
     #   pyproject-hooks
+tornado==6.4
+    # via
+    #   -r requirements/ci.txt
+    #   flower
 typing-extensions==4.9.0
     # via
     #   -r requirements/ci.txt

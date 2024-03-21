@@ -39,6 +39,7 @@ cbor2==5.6.1
 celery==5.2.2
     # via
     #   -r requirements/base.txt
+    #   flower
     #   notifications-api-common
 certifi==2020.12.5
     # via
@@ -237,6 +238,8 @@ faker==8.1.0
     #   -r requirements/base.txt
     #   factory-boy
     #   zgw-consumers
+flower==2.0.1
+    # via -r requirements/base.txt
 freezegun==1.1.0
     # via -r requirements/test-tools.in
 gemma-zds-client==1.0.1
@@ -249,6 +252,10 @@ glom==23.5.0
     # via
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+humanize==4.9.0
+    # via
+    #   -r requirements/base.txt
+    #   flower
 idna==2.10
     # via
     #   -r requirements/base.txt
@@ -326,6 +333,10 @@ polib==1.1.1
     # via
     #   -r requirements/base.txt
     #   django-rosetta
+prometheus-client==0.20.0
+    # via
+    #   -r requirements/base.txt
+    #   flower
 prompt-toolkit==3.0.43
     # via
     #   -r requirements/base.txt
@@ -370,6 +381,7 @@ pytz==2021.1
     #   celery
     #   djangorestframework
     #   drf-yasg
+    #   flower
 pyyaml==6.0.1
     # via
     #   -r requirements/base.txt
@@ -423,6 +435,10 @@ text-unidecode==1.3
     # via
     #   -r requirements/base.txt
     #   faker
+tornado==6.4
+    # via
+    #   -r requirements/base.txt
+    #   flower
 typing-extensions==4.9.0
     # via
     #   -r requirements/base.txt

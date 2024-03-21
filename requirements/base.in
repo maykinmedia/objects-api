@@ -28,6 +28,7 @@ drf-spectacular  # api documentation
 uwsgi
 sentry-sdk  # error monitoring
 elastic-apm  # Elastic APM integration
+flower # task monitoring
 
 # Common ground libraries
 notifications-api-common
