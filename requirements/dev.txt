@@ -380,7 +380,7 @@ prompt-toolkit==3.0.43
     # via
     #   -r requirements/ci.txt
     #   click-repl
-psycopg2==2.8.6
+psycopg2==2.9.9
     # via -r requirements/ci.txt
 pycodestyle==2.11.1
     # via flake8
