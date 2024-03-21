@@ -47,11 +47,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=backend-build /usr/local/lib/python3.10 /usr/local/lib/python3.10
 COPY --from=backend-build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
+COPY --from=backend-build /usr/local/bin/celery /usr/local/bin/celery
 
 # Stage 3.2 - Copy source code
 WORKDIR /app
 COPY ./bin/docker_start.sh /start.sh
 COPY ./bin/celery_worker.sh /celery_worker.sh
+COPY ./bin/check_celery_worker_liveness.py ./bin/
 RUN mkdir /app/log /app/config
 
 # copy frontend build statics
