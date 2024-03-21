@@ -53,7 +53,7 @@ class ObjectRecordInline(admin.TabularInline):
 @admin.register(Object)
 class ObjectAdmin(admin.ModelAdmin):
     list_display = ("id", "object_type", "current_record")
-    search_fields = ("uuid",)
+    search_fields = ("uuid", "records__data")
     inlines = (ObjectRecordInline,)
     list_filter = ("object_type",)
 
