@@ -53,6 +53,7 @@ COPY --from=backend-build /usr/local/bin/celery /usr/local/bin/celery
 WORKDIR /app
 COPY ./bin/docker_start.sh /start.sh
 COPY ./bin/celery_worker.sh /celery_worker.sh
+COPY ./bin/celery_flower.sh /celery_flower.sh
 COPY ./bin/check_celery_worker_liveness.py ./bin/
 RUN mkdir /app/log /app/config
 

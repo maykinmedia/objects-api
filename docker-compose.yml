@@ -22,7 +22,14 @@ services:
       - OBJECTS_SUPERUSER_USERNAME=admin
       - OBJECTS_SUPERUSER_PASSWORD=admin
       - OBJECTS_SUPERUSER_EMAIL=admin@localhost
+      - IS_HTTPS=no
       - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=redis:6379/0
+      - CACHE_AXES=redis:6379/0
+      - CACHE_OIDC=redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - CELERY_LOGLEVEL=DEBUG
     ports:
       - 8000:8000
     depends_on:
@@ -39,6 +46,16 @@ services:
       - db
       - redis
     volumes: *web_volumes
+
+  celery-flower:
+    build: *web_build
+    environment: *web_env
+    command: /celery_flower.sh
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+      - celery
 
 volumes:
   media:
