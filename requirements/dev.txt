@@ -137,7 +137,6 @@ django==4.2.11
     #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
-    #   django-rosetta
     #   django-sendfile2
     #   django-simple-certmanager
     #   django-solo
@@ -199,8 +198,6 @@ django-rest-framework-condition==0.1.1
     # via
     #   -r requirements/ci.txt
     #   commonground-api-common
-django-rosetta==0.9.8
-    # via -r requirements/ci.txt
 django-sendfile2==0.7.0
     # via
     #   -r requirements/ci.txt
@@ -373,16 +370,10 @@ phonenumberslite==8.13.30
     # via
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pillow==10.2.0
-    # via -r requirements/ci.txt
 pip-tools==7.3.0
     # via -r requirements/dev.in
 platformdirs==4.0.0
     # via black
-polib==1.1.1
-    # via
-    #   -r requirements/ci.txt
-    #   django-rosetta
 prometheus-client==0.20.0
     # via
     #   -r requirements/ci.txt
@@ -465,7 +456,6 @@ requests==2.25.1
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   coreapi
-    #   django-rosetta
     #   gemma-zds-client
     #   mozilla-django-oidc
     #   requests-mock

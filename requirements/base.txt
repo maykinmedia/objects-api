@@ -78,7 +78,6 @@ django==4.2.11
     #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
-    #   django-rosetta
     #   django-sendfile2
     #   django-simple-certmanager
     #   django-solo
@@ -120,8 +119,6 @@ django-relativedelta==2.0.0
     # via zgw-consumers
 django-rest-framework-condition==0.1.1
     # via commonground-api-common
-django-rosetta==0.9.8
-    # via -r requirements/base.in
 django-sendfile2==0.7.0
     # via django-privates
 django-simple-certmanager==1.4.1
@@ -216,10 +213,6 @@ packaging==23.2
     # via drf-yasg
 phonenumberslite==8.13.30
     # via django-two-factor-auth
-pillow==10.2.0
-    # via -r requirements/base.in
-polib==1.1.1
-    # via django-rosetta
 prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.43
@@ -250,7 +243,6 @@ python-dotenv==1.0.0
     # via -r requirements/base.in
 pytz==2021.1
     # via
-    #   -r requirements/base.in
     #   celery
     #   djangorestframework
     #   drf-yasg
@@ -269,7 +261,6 @@ requests==2.25.1
     # via
     #   commonground-api-common
     #   coreapi
-    #   django-rosetta
     #   gemma-zds-client
     #   mozilla-django-oidc
     #   requests-mock

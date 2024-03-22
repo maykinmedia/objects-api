@@ -1,9 +1,7 @@
 # Core python libraries
 celery
 glom # data represenation based on spec
-Pillow  # handle images
 psycopg2  # database driver
-pytz  # handle timezones
 python-dotenv  # environment variables for secrets
 python-decouple  # processing of envvar configs
 jsonschema
@@ -13,7 +11,6 @@ django~=4.2
 django-admin-index
 django-axes
 django-redis
-django-rosetta
 maykin-2fa
 mozilla-django-oidc-db
 
