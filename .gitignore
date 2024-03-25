@@ -48,3 +48,7 @@ openapitools.json
 # Auto generated files
 src/resources.md
 src/swagger2.0.json
+
+# Helm
+**/charts/*.tgz
+**/Chart.lock
