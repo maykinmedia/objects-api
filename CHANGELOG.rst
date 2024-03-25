@@ -2,10 +2,25 @@
 Change history
 ==============
 
-2.3.0 (2024-03-15)
------------
+2.3.1 (2024-03-22)
+------------------
 
-* Update to Django 4.2.
+**Bugfixes and QOL**
+
+* fixed celery docker container (#376)
+* configured caches with redis (#377)
+* added flower to monitor celery tasks (#378)
+
+.. note::
+
+    Flower is added to the docker, so now flower container could be deployed for monitoring
+    purposes.
+
+
+2.3.0 (2024-03-15)
+------------------
+
+* Updated to Django 4.2.
 
 .. warning::
 
