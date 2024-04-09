@@ -233,6 +233,8 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 FIXTURE_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "fixtures"),)
 
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
+LOG_REQUESTS = config("LOG_REQUESTS", default=False)
+LOG_OUTGOING_REQUESTS_DB_SAVE = config("LOG_OUTGOING_REQUESTS_DB_SAVE", default=True)
 
 LOGGING = {
     "version": 1,
@@ -321,7 +323,9 @@ LOGGING = {
             "level": "DEBUG",
         },
         "log_outgoing_requests": {
-            "handlers": ["log_outgoing_requests", "save_outgoing_requests"],
+            "handlers": ["log_outgoing_requests", "save_outgoing_requests"]
+            if LOG_REQUESTS
+            else [],
             "level": "DEBUG",
             "propagate": True,
         },
