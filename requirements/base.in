@@ -1,36 +1,8 @@
+open-api-framework
+
 # Core python libraries
-celery
 glom # data represenation based on spec
-Pillow  # handle images
-psycopg2  # database driver
-pytz  # handle timezones
-python-dotenv  # environment variables for secrets
-python-decouple  # processing of envvar configs
 jsonschema
-
-# Framework libraries
-django~=4.2
-django-admin-index
-django-axes
-django-redis
-django-rosetta
-maykin-2fa
-mozilla-django-oidc-db
-
-# API libraries
-djangorestframework
-djangorestframework-gis
-# django-extra-fields
-django-filter
-drf-spectacular  # api documentation
-
-# WSGI servers & monitoring - production oriented
-uwsgi
-sentry-sdk  # error monitoring
-elastic-apm  # Elastic APM integration
-flower # task monitoring
 
 # Common ground libraries
 notifications-api-common
-commonground-api-common[markdown_docs]
-zgw-consumers  # external api auths
