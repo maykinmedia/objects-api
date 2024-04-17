@@ -44,7 +44,7 @@ class ObjectTypeField(serializers.RelatedField):
         try:
             return self.get_queryset().get_by_url(data)
         except ObjectDoesNotExist:
-            # if service is configured, but objec_type is missing
+            # if service is configured, but object_type is missing
             # let's try to create an ObjectType
             service = Service.get_service(data)
             if not service:
