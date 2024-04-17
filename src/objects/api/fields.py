@@ -1,8 +1,10 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
+from vng_api_common.utils import get_uuid_from_path
+from zgw_consumers.models import Service
 
 from objects.core.models import ObjectRecord
 
@@ -42,7 +44,23 @@ class ObjectTypeField(serializers.RelatedField):
         try:
             return self.get_queryset().get_by_url(data)
         except ObjectDoesNotExist:
-            self.fail("does_not_exist", value=smart_str(data))
+            # if service is configured, but object_type is missing
+            # let's try to create an ObjectType
+            service = Service.get_service(data)
+            if not service:
+                self.fail("does_not_exist", value=smart_str(data))
+
+            uuid = get_uuid_from_path(data)
+            object_type = self.get_queryset().model(service=service, uuid=uuid)
+
+            try:
+                object_type.clean()
+            except ValidationError:
+                self.fail("does_not_exist", value=smart_str(data))
+
+            object_type.save()
+            return object_type
+
         except (TypeError, ValueError):
             self.fail("invalid")
 

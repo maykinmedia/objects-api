@@ -14,6 +14,9 @@ class ObjectTypeBasedPermission(BasePermission):
         if not request.auth:
             return False
 
+        if request.auth.is_superuser:
+            return True
+
         # detail actions are processed in has_object_permission method
         if view.action != "create":
             return True
@@ -37,6 +40,9 @@ class ObjectTypeBasedPermission(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if bypass_permissions(request):
+            return True
+
+        if request.auth.is_superuser:
             return True
 
         object_permission = request.auth.get_permission_for_object_type(

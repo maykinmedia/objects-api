@@ -88,3 +88,19 @@ fields you can submit the form.
 Now the client who has this token can access the objects with the "Boom" object type.
 
 If you want to know how to use Objects API you can follow :ref:`api_usage`
+
+
+Superuser permissions
+----------------------
+
+It's possible to set up superuser permissions in Objects API. A client with such permissions
+is able to request objects for all objecttypes.
+
+In the admin page of the Objects API go to the "Token authorizations" resource and click on
+a token, which should have superuser permissions. Check "is superuser" field. Now this token
+has read and write permissions for all objects.
+
+.. warning::
+
+   Tokens with superuser permissions are not recommended for production. They should be used
+   only for test and development purposes.
