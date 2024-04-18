@@ -7,7 +7,12 @@ from .models import Object, ObjectRecord, ObjectType
 
 @admin.register(ObjectType)
 class ObjectTypeAdmin(admin.ModelAdmin):
-    readonly_fields = ("_name",)
+    list_display = ("_name", "uuid", "get_version")
+    readonly_fields = ("_name", "get_version")
+
+    def get_version(self, obj):
+        if obj:
+            return obj.version
 
 
 class ObjectRecordInline(admin.TabularInline):

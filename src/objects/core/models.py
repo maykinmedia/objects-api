@@ -40,6 +40,17 @@ class ObjectType(models.Model):
         # zds_client.get_operation_url() can be used here but it increases HTTP overhead
         return f"{self.service.api_root}objecttypes/{self.uuid}"
 
+    @property
+    def version(self):
+        client = self.service.build_client()
+        try:
+            object_type_data = client.retrieve("objecttype", url=self.url)
+        except (ClientError, ConnectionError, ValueError) as exc:
+            return None
+
+        if recent_version := object_type_data["versions"][-1]:
+            return recent_version.split("/versions/")[-1]
+
     def clean(self):
         client = self.service.build_client()
         try:
