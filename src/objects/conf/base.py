@@ -234,7 +234,7 @@ FIXTURE_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "fixtures"),)
 
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
 LOG_REQUESTS = config("LOG_REQUESTS", default=False)
-LOG_OUTGOING_REQUESTS_DB_SAVE = config("LOG_OUTGOING_REQUESTS_DB_SAVE", default=True)
+LOG_OUTGOING_REQUESTS_DB_SAVE = config("LOG_OUTGOING_REQUESTS_DB_SAVE", default=False)
 
 LOGGING = {
     "version": 1,

@@ -98,6 +98,10 @@ Other settings
 * ``DISABLE_2FA``: whether to disable two-factor authentication. Defaults to ``False``.
   If set to ``False``, 2FA will be required if not using OIDC.
 
+* ``LOG_REQUESTS``: whether to enable logging of outgoing HTTP requests. Defaults to ``False``.
+
+* ``LOG_OUTGOING_REQUESTS_DB_SAVE``: whether to save logged requests to the database. Defaults to ``False``.
+
 Initial superuser creation
 --------------------------
 
