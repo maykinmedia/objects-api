@@ -27,7 +27,7 @@ class ObjecttypesStep(BaseConfigurationStep):
         return Service.objects.filter(api_root=settings.OBJECTTYPES_API_ROOT).exists()
 
     def configure(self) -> None:
-        service, created = Service.objects.update_or_create(
+        Service.objects.update_or_create(
             api_root=settings.OBJECTTYPES_API_ROOT,
             defaults={
                 "label": "Objecttypes API",
@@ -38,10 +38,6 @@ class ObjecttypesStep(BaseConfigurationStep):
                 "header_value": f"Token {settings.OBJECTS_OBJECTTYPES_TOKEN}",
             },
         )
-        if not created:
-            service.oas = settings.OBJECTTYPES_API_OAS
-            service.header_value = f"Token {settings.OBJECTS_OBJECTTYPES_TOKEN}"
-            service.save(update_fields=["oas", "header_value"])
 
     def test_configuration(self) -> None:
         """
