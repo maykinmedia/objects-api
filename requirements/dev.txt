@@ -234,7 +234,7 @@ django-sendfile2==0.7.0
     # via
     #   -r requirements/ci.txt
     #   django-privates
-django-setup-configuration @ git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
+django-setup-configuration==0.1.0
     # via -r requirements/ci.txt
 django-simple-certmanager==1.4.1
     # via
@@ -412,6 +412,10 @@ notifications-api-common==0.2.2
     #   commonground-api-common
 open-api-framework==0.2.0
     # via -r requirements/ci.txt
+orderedmultidict==1.0.1
+    # via
+    #   -r requirements/ci.txt
+    #   furl
 oyaml==1.0
     # via
     #   -r requirements/ci.txt
@@ -540,7 +544,9 @@ six==1.16.0
     # via
     #   -r requirements/ci.txt
     #   bleach
+    #   furl
     #   isodate
+    #   orderedmultidict
     #   python-dateutil
     #   qrcode
     #   requests-mock

@@ -138,7 +138,7 @@ django-rest-framework-condition==0.1.1
     # via commonground-api-common
 django-sendfile2==0.7.0
     # via django-privates
-django-setup-configuration @ git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
+django-setup-configuration==0.1.0
     # via -r requirements/base.in
 django-simple-certmanager==1.4.1
     # via zgw-consumers
@@ -302,16 +302,10 @@ sentry-sdk==1.39.2
     # via open-api-framework
 six==1.16.0
     # via
-<<<<<<< HEAD
     #   bleach
-    #   isodate
-=======
-    #   django-markup
     #   furl
     #   isodate
-    #   jsonschema
     #   orderedmultidict
->>>>>>> 6096ba9 (:sparkles: [https://github.com/maykinmedia/django-setup-configuration/issues/1] add configuration steps)
     #   python-dateutil
     #   qrcode
     #   requests-mock

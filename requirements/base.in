@@ -6,8 +6,8 @@ jsonschema
 furl
 
 # Django libraries
-git+https://github.com/maykinmedia/django-setup-configuration.git@feature/1-config-command
 django-log-outgoing-requests
+django-setup-configuration
 
 # Common ground libraries
 notifications-api-common
