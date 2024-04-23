@@ -3,6 +3,7 @@ open-api-framework
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
+django-log-outgoing-requests
 
 # Common ground libraries
 notifications-api-common

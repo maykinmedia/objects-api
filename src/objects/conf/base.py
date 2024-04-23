@@ -2,6 +2,7 @@ import os
 
 from django.urls import reverse_lazy
 
+from log_outgoing_requests.formatters import HttpFormatter
 from sentry_sdk.integrations import django, redis
 
 from .api import *  # noqa
@@ -98,6 +99,7 @@ INSTALLED_APPS = [
     # External applications.
     "axes",
     "drf_spectacular",
+    "log_outgoing_requests",
     "mozilla_django_oidc",
     "mozilla_django_oidc_db",
     "django_jsonform",
@@ -231,6 +233,8 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 FIXTURE_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "fixtures"),)
 
 LOGGING_DIR = os.path.join(BASE_DIR, "log")
+LOG_REQUESTS = config("LOG_REQUESTS", default=False)
+LOG_OUTGOING_REQUESTS_DB_SAVE = config("LOG_OUTGOING_REQUESTS_DB_SAVE", default=False)
 
 LOGGING = {
     "version": 1,
@@ -244,6 +248,7 @@ LOGGING = {
         "performance": {
             "format": "%(asctime)s %(process)d | %(thread)d | %(message)s",
         },
+        "outgoing_requests": {"()": HttpFormatter},
     },
     "filters": {
         "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
@@ -287,6 +292,15 @@ LOGGING = {
             "maxBytes": 1024 * 1024 * 10,  # 10 MB
             "backupCount": 10,
         },
+        "log_outgoing_requests": {
+            "level": "DEBUG",
+            "formatter": "outgoing_requests",
+            "class": "logging.StreamHandler",
+        },
+        "save_outgoing_requests": {
+            "level": "DEBUG",
+            "class": "log_outgoing_requests.handlers.DatabaseOutgoingRequestsHandler",
+        },
     },
     "loggers": {
         "objects": {
@@ -307,6 +321,13 @@ LOGGING = {
         "mozilla_django_oidc": {
             "handlers": ["project"],
             "level": "DEBUG",
+        },
+        "log_outgoing_requests": {
+            "handlers": ["log_outgoing_requests", "save_outgoing_requests"]
+            if LOG_REQUESTS
+            else [],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
