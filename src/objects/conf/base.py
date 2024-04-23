@@ -111,6 +111,7 @@ INSTALLED_APPS = [
     "notifications_api_common",
     "simple_certmanager",
     "zgw_consumers",
+    "django_setup_configuration",
     # Two-factor authentication in the Django admin, enforced.
     "django_otp",
     "django_otp.plugins.otp_static",
@@ -120,6 +121,7 @@ INSTALLED_APPS = [
     # Project applications.
     "objects.accounts",
     "objects.api",
+    "objects.config",
     "objects.core",
     "objects.token",
     "objects.utils",
@@ -502,3 +504,39 @@ CELERY_TASK_TIME_LIMIT = config("CELERY_TASK_HARD_TIME_LIMIT", default=15 * 60) 
 CELERY_TASK_SOFT_TIME_LIMIT = config(
     "CELERY_TASK_SOFT_TIME_LIMIT", default=5 * 60
 )  # soft
+
+#
+# Django setup configuration
+#
+SETUP_CONFIGURATION_STEPS = [
+    "objects.config.site.SiteConfigurationStep",
+    "objects.config.objecttypes.ObjecttypesStep",
+    "objects.config.demo.DemoUserStep",
+]
+
+
+#
+# Objecttypes settings
+#
+
+# setup_configuration command
+# sites config
+SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=True)
+OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "")
+OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "")
+# objecttypes config
+OBJECTS_OBJECTTYPES_CONFIG_ENABLE = config(
+    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=True
+)
+OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "")
+if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/"):
+    OBJECTTYPES_API_ROOT = f"{OBJECTTYPES_API_ROOT.strip()}/"
+OBJECTTYPES_API_OAS = config(
+    "OBJECTTYPES_API_OAS", default=f"{OBJECTTYPES_API_ROOT}schema/openapi.yaml"
+)
+OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "")
+# Demo User Configuration
+DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=DEBUG)
+DEMO_TOKEN = config("DEMO_TOKEN", "")
+DEMO_PERSON = config("DEMO_PERSON", "")
+DEMO_EMAIL = config("DEMO_EMAIL", "")

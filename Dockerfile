@@ -51,10 +51,12 @@ COPY --from=backend-build /usr/local/bin/celery /usr/local/bin/celery
 
 # Stage 3.2 - Copy source code
 WORKDIR /app
+COPY ./bin/wait_for_db.sh /wait_for_db.sh
 COPY ./bin/docker_start.sh /start.sh
 COPY ./bin/celery_worker.sh /celery_worker.sh
 COPY ./bin/celery_flower.sh /celery_flower.sh
 COPY ./bin/check_celery_worker_liveness.py ./bin/
+COPY ./bin/setup_configuration.sh /setup_configuration.sh
 RUN mkdir /app/log /app/config
 
 # copy frontend build statics

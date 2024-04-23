@@ -16,5 +16,6 @@ this.
 
    quickstart
    config
+   config_cli
    deployment/index
    oidc

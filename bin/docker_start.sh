@@ -15,10 +15,8 @@ uwsgi_threads=${UWSGI_THREADS:-2}
 
 mountpoint=${SUBPATH:-/}
 
-until pg_isready; do
-  >&2 echo "Waiting for database connection..."
-  sleep 1
-done
+# wait for required services
+${SCRIPTPATH}/wait_for_db.sh
 
 >&2 echo "Database is up."
 
