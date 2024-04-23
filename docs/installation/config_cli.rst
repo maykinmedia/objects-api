@@ -6,7 +6,7 @@ Configuration (CLI)
 ===================
 
 After deploying Objecttypes API and Objects API, they need to be configured to be fully functional. The
-command line tool ``setup_configuration`` assist with this configuration:
+command line tool `setup_configuration`_ assist with this configuration:
 
 * It uses environment variables for all configuration choices, therefore you can integrate this with your
   infrastructure tooling such as init containers and/or Kubernetes Jobs.
@@ -21,6 +21,8 @@ You can get the full command documentation with:
 .. warning:: This command is declarative - if configuration is manually changed after
    running the command and you then run the exact same command again, the manual
    changes will be reverted.
+
+.. _`setup_configuration`: https://github.com/maykinmedia/django-setup-configuration/
 
 Preparation
 ===========
