@@ -20,24 +20,11 @@ class PermissionAdmin(admin.ModelAdmin):
         "mode",
         "use_fields",
         "get_uuid",
-        "get_version",
-    )
-    readonly_fields = (
-        "get_uuid",
-        "get_version",
     )
 
+    @admin.display(description="Object type UUID")
     def get_uuid(self, obj):
-        if obj:
-            return obj.object_type.uuid
-
-    def get_version(self, obj):
-        if obj:
-            if object_type := obj.object_type:
-                return object_type.version
-
-    get_version.short_description = "Version"
-    get_uuid.short_description = "UUID"
+        return obj.object_type.uuid
 
     def get_object_fields(self):
         object_serializer = ObjectSerializer()
@@ -133,21 +120,11 @@ class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
         "use_fields",
         "fields",
         "get_uuid",
-        "get_version",
     )
 
+    @admin.display(description="Object type UUID")
     def get_uuid(self, obj):
-        if obj:
-            if object_type := obj.object_type:
-                return object_type.uuid
-
-    def get_version(self, obj):
-        if obj:
-            if object_type := obj.object_type:
-                return object_type.version
-
-    get_version.short_description = "Version"
-    get_uuid.short_description = "UUID"
+        return obj.object_type.uuid
 
 
 @admin.register(TokenAuth)
