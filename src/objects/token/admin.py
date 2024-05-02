@@ -103,7 +103,6 @@ class PermissionAdmin(admin.ModelAdmin):
 
 class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
     model = Permission
-    fk_name = "token_auth"
     fields = ("object_type", "mode", "use_fields", "fields")
 
 
