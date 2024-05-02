@@ -11,7 +11,7 @@ from .constants import PermissionModes
 
 
 class TokenAuth(models.Model):
-    token = models.CharField(_("token"), max_length=40, db_index=True)
+    token = models.CharField(_("token"), max_length=40, unique=True)
     contact_person = models.CharField(
         _("contact person"),
         max_length=200,

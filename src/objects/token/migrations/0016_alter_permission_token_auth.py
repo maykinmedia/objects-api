@@ -22,6 +22,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="tokenauth",
             name="token",
-            field=models.CharField(db_index=True, max_length=40, verbose_name="token"),
+            field=models.CharField(max_length=40, unique=True, verbose_name="token"),
         ),
     ]
