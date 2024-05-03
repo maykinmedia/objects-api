@@ -772,20 +772,21 @@
 },
 {
     "model": "token.tokenauth",
-    "pk": "cd63e158f3aca276ef284e3033d020a22899c728",
+    "pk": 1,
     "fields": {
         "contact_person": "test",
         "email": "let@me.test",
         "organization": "",
         "last_modified": "2020-12-23T11:43:16.820Z",
-        "created": "2020-12-22T16:27:00.751Z"
+        "created": "2020-12-22T16:27:00.751Z",
+        "token": "cd63e158f3aca276ef284e3033d020a22899c728"
     }
 },
 {
     "model": "token.permission",
     "pk": 1,
     "fields": {
-        "token_auth": "cd63e158f3aca276ef284e3033d020a22899c728",
+        "token_auth": 1,
         "object_type": 2,
         "mode": "read_and_write"
     }
@@ -794,7 +795,7 @@
     "model": "token.permission",
     "pk": 2,
     "fields": {
-        "token_auth": "cd63e158f3aca276ef284e3033d020a22899c728",
+        "token_auth": 1,
         "object_type": 1,
         "mode": "read_and_write"
     }
