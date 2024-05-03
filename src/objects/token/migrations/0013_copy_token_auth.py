@@ -16,7 +16,6 @@ def switch_to_new_token_model(apps, _):
                 "created": old_token.created,
                 "application": old_token.application,
                 "administration": old_token.administration,
-                "is_superuser": old_token.is_superuser,
             },
         )
 
@@ -41,7 +40,6 @@ def switch_to_old_token_model(apps, _):
                 "created": token.created,
                 "application": token.application,
                 "administration": token.administration,
-                "is_superuser": token.is_superuser,
             },
         )
 

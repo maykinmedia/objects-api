@@ -84,14 +84,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "is_superuser",
-                    models.BooleanField(
-                        default=False,
-                        help_text="Designates whether the user has access to all objects.",
-                        verbose_name="is superuser",
-                    ),
-                ),
-                (
                     "object_types",
                     models.ManyToManyField(
                         help_text="Object types which can be accessed",

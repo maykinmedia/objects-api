@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
     dependencies = [
         ("core", "0028_alter_objectrecord_data"),
-        ("token", "0010_tokenauth_is_superuser"),
+        ("token", "0009_alter_permission_fields"),
     ]
 
     operations = [
