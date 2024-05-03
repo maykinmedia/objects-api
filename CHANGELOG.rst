@@ -2,6 +2,16 @@
 Change history
 ==============
 
+2.3.2 (2024-05-03)
+------------------
+
+Bugfix release
+
+This release addresses a security weakness.
+
+* [GHSA-3wcp-29hm-g82c] replaced PK for Token model.
+
+
 2.3.1 (2024-03-22)
 ------------------
 
