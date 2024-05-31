@@ -3,7 +3,7 @@
 Quickstart
 ==========
 
-A simple ``docker-compose-quickstart.yml`` file is available to get the APIs
+A simple ``docker-compose.yml`` file is available to get the APIs
 up and running in minutes. This file has some convenience settings to get
 started quickly and these should never be used for anything besides testing:
 
@@ -31,31 +31,31 @@ Objecttypes API
 
          .. code:: shell
 
-            $  wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
+            $  wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose.yml
 
       .. tab:: Windows Powershell 3
 
          .. code:: shell
 
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
+            PS> wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose.yml
 
 3. Start the Docker containers:
 
    .. code:: shell
 
-      $ docker-compose -f docker-compose-qs.yml up -d
+      $ docker compose up -d --no-build
 
 4. Import a demo set of objecttypes:
 
    .. code:: shell
 
-      $ docker-compose exec web src/manage.py loaddata demodata
+      $ docker compose exec web src/manage.py loaddata demodata
 
 5. Create a superuser
 
    .. code:: shell
 
-      $ docker-compose exec web src/manage.py createsuperuser
+      $ docker compose exec web src/manage.py createsuperuser
 
 
 Objects API
@@ -76,32 +76,32 @@ Objects API
 
          .. code:: shell
 
-            $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
+            $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
 
       .. tab:: Windows Powershell 3
 
          .. code:: shell
 
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
+            PS> wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
 
 3. Start the Docker containers:
 
    .. code:: shell
 
-      $ docker-compose -f docker-compose-qs.yml up -d
+      $ docker compose -f docker-compose-qs.yml up -d --no-build
 
 4. Import a demo set of objects (linking to the demo objecttypes):
 
    .. code:: shell
 
-      $ docker-compose exec web src/manage.py loaddata demodata
+      $ docker compose exec web src/manage.py loaddata demodata
 
 
 5. Create a superuser
 
    .. code:: shell
 
-      $ docker-compose exec web src/manage.py createsuperuser
+      $ docker compose exec web src/manage.py createsuperuser
 
 
 6. Retrieve an object via the Objects API in your webbrowser:
