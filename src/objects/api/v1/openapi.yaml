@@ -642,8 +642,6 @@ components:
           minimum: 0
           description: Version of the OBJECTTYPE for data in the object record
         data:
-          type: object
-          additionalProperties: {}
           description: Object data, based on OBJECTTYPE
         geometry:
           allOf:
@@ -794,8 +792,6 @@ components:
           minimum: 0
           description: Version of the OBJECTTYPE for data in the object record
         data:
-          type: object
-          additionalProperties: {}
           description: Object data, based on OBJECTTYPE
         geometry:
           allOf:
@@ -825,6 +821,7 @@ components:
           maximum: 2147483647
           minimum: 0
           description: Index of the record corrected by the current record
+          nullable: true
         correctedBy:
           type: integer
           maximum: 2147483647

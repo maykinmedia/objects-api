@@ -327,8 +327,8 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             ],
         )
 
-    # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we descovered that updating an object \
-    # where the startAt value has been moddified with an earlier date causes an 500 response.
+    # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we discovered that updating an object \
+    # where the startAt value has been modified with an earlier date causes an 500 response.
     def test_updating_object_after_changing_the_startAt_value_returns_200(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(
@@ -388,3 +388,40 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             response_updating_data_after_startAt_modification.status_code,
             status.HTTP_200_OK,
         )
+
+    # regression test for https://github.com/maykinmedia/objects-api/issues/268
+    def test_update_object_correctionFor(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        initial_record = ObjectRecordFactory.create(
+            object__object_type=self.object_type, version=1
+        )
+        object = initial_record.object
+        # correction record
+        ObjectRecordFactory.create(object=object, version=1, correct=initial_record)
+
+        url = reverse("object-detail", args=[object.uuid])
+        modified_data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2024-01-01",
+                "correctionFor": None,
+            },
+        }
+
+        response = self.client.put(url, data=modified_data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, 200)
+
+        object.refresh_from_db()
+        self.assertEqual(object.records.count(), 3)
+
+        last_record = object.last_record
+        self.assertIsNone(last_record.correct)

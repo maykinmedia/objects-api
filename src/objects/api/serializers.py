@@ -18,6 +18,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
         source="correct",
         slug_field="index",
         required=False,
+        allow_null=True,
         help_text=_("Index of the record corrected by the current record"),
     )
     correctedBy = serializers.SlugRelatedField(
