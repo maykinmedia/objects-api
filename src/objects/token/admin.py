@@ -14,7 +14,17 @@ EMPTY_FIELD_CHOICE = ("", "---------")
 
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
-    list_display = ("token_auth", "object_type", "mode", "use_fields")
+    list_display = (
+        "token_auth",
+        "object_type",
+        "mode",
+        "use_fields",
+        "get_uuid",
+    )
+
+    @admin.display(description="Object type UUID")
+    def get_uuid(self, obj):
+        return obj.object_type.uuid
 
     def get_object_fields(self):
         object_serializer = ObjectSerializer()
@@ -103,7 +113,18 @@ class PermissionAdmin(admin.ModelAdmin):
 
 class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
     model = Permission
-    fields = ("object_type", "mode", "use_fields", "fields")
+    fk_name = "token_auth"
+    fields = (
+        "object_type",
+        "mode",
+        "use_fields",
+        "fields",
+        "get_uuid",
+    )
+
+    @admin.display(description="Object type UUID")
+    def get_uuid(self, obj):
+        return obj.object_type.uuid
 
 
 @admin.register(TokenAuth)

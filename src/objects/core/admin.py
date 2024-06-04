@@ -7,6 +7,10 @@ from .models import Object, ObjectRecord, ObjectType
 
 @admin.register(ObjectType)
 class ObjectTypeAdmin(admin.ModelAdmin):
+    list_display = (
+        "_name",
+        "uuid",
+    )
     readonly_fields = ("_name",)
 
 
@@ -52,15 +56,29 @@ class ObjectRecordInline(admin.TabularInline):
 
 @admin.register(Object)
 class ObjectAdmin(admin.ModelAdmin):
-    list_display = ("id", "object_type", "current_record")
+    list_display = (
+        "id",
+        "object_type",
+        "current_record",
+        "uuid",
+        "get_object_type_uuid",
+    )
     search_fields = ("uuid", "records__data")
     inlines = (ObjectRecordInline,)
     list_filter = ("object_type",)
+
+    @admin.display(description="Object type UUID")
+    def get_object_type_uuid(self, obj):
+        return obj.object_type.uuid
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = super().get_readonly_fields(request, obj)
 
         if obj:
-            readonly_fields = ("uuid", "object_type") + readonly_fields
+            readonly_fields = (
+                "uuid",
+                "get_object_type_uuid",
+                "object_type",
+            ) + readonly_fields
 
         return readonly_fields
