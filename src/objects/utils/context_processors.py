@@ -6,7 +6,9 @@ def settings(request):
         "GOOGLE_ANALYTICS_ID",
         "ENVIRONMENT",
         "SHOW_ALERT",
+        "ENVIRONMENT_SHOWN_IN_ADMIN",
         "SITE_TITLE",
+        "RELEASE",
         "PROJECT_NAME",
     )
 

@@ -44,6 +44,14 @@
 
 {% block footer %}
     {{ block.super }}
+
+    {% url 'admin:login' as admin_login_url %}
+    {% if request.path != admin_login_url %}
+        <div class="version" title="Git SHA: {{ settings.GIT_SHA|default:'' }}">
+        {% blocktrans with version=settings.RELEASE %}version {{ version }}{% endblocktrans %}
+    </div>
+    {% endif %}
+
     {# Load the custom JS #}
     <script src="{% static 'bundles/objects-js.js' %}"></script>
 {% endblock %}
