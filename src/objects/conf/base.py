@@ -367,7 +367,24 @@ CSRF_COOKIE_SECURE = IS_HTTPS
 PROJECT_NAME = "Objects"
 SITE_TITLE = "Starting point"
 ENVIRONMENT = config("ENVIRONMENT", "")
+ENVIRONMENT_SHOWN_IN_ADMIN = True
 SHOW_ALERT = True
+
+if "GIT_SHA" in os.environ:
+    GIT_SHA = config("GIT_SHA", "")
+# in docker (build) context, there is no .git directory
+elif os.path.exists(os.path.join(BASE_DIR, ".git")):
+    try:
+        import git
+    except ImportError:
+        GIT_SHA = None
+    else:
+        repo = git.Repo(search_parent_directories=True)
+        GIT_SHA = repo.head.object.hexsha
+else:
+    GIT_SHA = None
+
+RELEASE = config("RELEASE", GIT_SHA)
 
 #
 # Library settings
