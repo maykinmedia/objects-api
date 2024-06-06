@@ -2,6 +2,23 @@
 Change history
 ==============
 
+2.4.0 (WIP)
+-----------
+**Bugfixes and QOL**
+
+* changed caching backend from LocMem to Redis
+* Elastic APM service name can now be configured with ``ELASTIC_APM_SERVICE_NAME`` envvar
+
+.. warning::
+
+    Because the caching backend was changed to Redis, existing deployments must add a Redis container or Redis instance
+    (see ``Installation > Environment configuration reference`` in the documentation on how to configure) the connection with Redis
+
+.. warning::
+
+    The service name for Elastic APM is now configurable via the ``ELASTIC_APM_SERVICE_NAME`` environment variable.
+    The default value changed from ``Objects API`` to ``objects - <ENVIRONMENT>``
+
 2.3.1 (2024-03-22)
 ------------------
 
