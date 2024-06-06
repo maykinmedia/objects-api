@@ -171,7 +171,9 @@ django-jsonform==2.21.4
     #   mozilla-django-oidc-db
     #   open-api-framework
 django-log-outgoing-requests==0.6.1
-    # via -r requirements/base.txt
+    # via
+    #   -r requirements/base.txt
+    #   open-api-framework
 django-markup==1.8.1
     # via
     #   -r requirements/base.txt
@@ -209,7 +211,9 @@ django-sendfile2==0.7.0
     #   -r requirements/base.txt
     #   django-privates
 django-setup-configuration==0.1.0
-    # via -r requirements/base.txt
+    # via
+    #   -r requirements/base.txt
+    #   open-api-framework
 django-simple-certmanager==1.4.1
     # via
     #   -r requirements/base.txt
@@ -365,7 +369,7 @@ notifications-api-common==0.2.2
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.2.0
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@main
     # via -r requirements/base.txt
 orderedmultidict==1.0.1
     # via

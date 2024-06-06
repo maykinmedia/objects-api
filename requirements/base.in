@@ -1,13 +1,9 @@
-open-api-framework
+git+https://github.com/maykinmedia/open-api-framework.git@main
 
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
 furl
-
-# Django libraries
-django-log-outgoing-requests
-django-setup-configuration
 
 # Common ground libraries
 notifications-api-common
