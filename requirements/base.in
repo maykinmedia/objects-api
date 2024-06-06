@@ -1,4 +1,4 @@
-git+https://github.com/maykinmedia/open-api-framework.git@main
+open-api-framework
 
 # Core python libraries
 glom # data represenation based on spec
