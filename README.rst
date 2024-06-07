@@ -92,10 +92,10 @@ Quickstart
 
    .. code:: bash
 
-      $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
-      $ docker compose up -d --no-build
-      $ docker compose exec web src/manage.py loaddata demodata
-      $ docker compose exec web src/manage.py createsuperuser
+      wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
+      docker compose up -d --no-build
+      docker compose exec web src/manage.py loaddata demodata
+      docker compose exec web src/manage.py createsuperuser
 
 2. In the browser, navigate to ``http://localhost:8000/`` to access the admin
    and the API.
