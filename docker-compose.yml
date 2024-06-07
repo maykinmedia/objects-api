@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   db:
     # NOTE: No persistance storage configured.
@@ -14,14 +12,12 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
 
   web:
+    image: maykinmedia/objects-api:latest
     build: &web_build
       context: .
     environment: &web_env
       - DJANGO_SETTINGS_MODULE=objects.conf.docker
       - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
-      - OBJECTS_SUPERUSER_USERNAME=admin
-      - OBJECTS_SUPERUSER_PASSWORD=admin
-      - OBJECTS_SUPERUSER_EMAIL=admin@localhost
       - IS_HTTPS=no
       - ALLOWED_HOSTS=*
       - CACHE_DEFAULT=redis:6379/0
@@ -48,6 +44,7 @@ services:
       - media:/app/media  # Shared media volume to get access to saved OAS files
 
   web-init:
+    image: maykinmedia/objects-api:latest
     build: *web_build
     environment: *web_env
     command: /setup_configuration.sh
@@ -57,6 +54,7 @@ services:
     volumes: *web_volumes
 
   celery:
+    image: maykinmedia/objects-api:latest
     build: *web_build
     environment: *web_env
     command: /celery_worker.sh
@@ -66,6 +64,7 @@ services:
     volumes: *web_volumes
 
   celery-flower:
+    image: maykinmedia/objects-api:latest
     build: *web_build
     environment: *web_env
     command: /celery_flower.sh

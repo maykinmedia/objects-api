@@ -6,19 +6,15 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Download docker-compose file
-        run: wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose-quickstart.yml -O docker-compose-qs.yml
-      - name: Overwrite the docker-compose file to get the "current" one
-        run: cp docker-compose-quickstart.yml docker-compose-qs.yml
+        # todo replace branch name with master after the change is merge
+        run: wget https://raw.githubusercontent.com/maykinmedia/objects-api/feature/merge-docker-composes/docker-compose.yml
       - name: Start docker containers
-        run: docker-compose -f docker-compose-qs.yml up -d
-      - name: Wait until DB container starts
-        run: sleep 10
+        run: docker compose up -d --no-build
       - name: Load fixtures
-        run: docker-compose -f docker-compose-qs.yml exec -T web src/manage.py loaddata demodata
+        run: docker compose exec -T web src/manage.py loaddata demodata
       - name: Create superuser
-        run: docker-compose -f docker-compose-qs.yml exec -T web src/manage.py createsuperuser --username admin --email admin@admin.nl --no-input
+        run: docker compose exec -T web src/manage.py createsuperuser --username admin --email admin@admin.nl --no-input
       - name: Check main page
         run: |
           curl_status=$(curl -w '%{http_code}' -o /dev/null  -s http://localhost:8000/)
