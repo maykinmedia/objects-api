@@ -63,7 +63,7 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
                 name="use_fields"
                 id="id_use_fields"
                 label="Use field-based authorization"
-                disabled={mode === "read_and_write"}
+                disabled={mode === "read_and_write" || Object.keys(dataFieldChoices).length === 0}
                 value={useFields}
                 onChange={(value) => {setUseFields(value)}}
             />

@@ -1,8 +1,10 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin.utils import unquote
+from django.utils.translation import gettext_lazy as _
 
 from objects.api.serializers import ObjectSerializer
 from objects.core.models import ObjectType
+from objects.core.utils import can_connect_to_objecttypes
 from objects.utils.admin import EditInlineAdminMixin
 from objects.utils.serializers import build_spec, get_field_names
 
@@ -56,9 +58,7 @@ class PermissionAdmin(admin.ModelAdmin):
         if request.method == "POST":
             form = ModelForm(request.POST, request.FILES, instance=obj)
         else:
-            form = ModelForm(
-                instance=obj, initial={"token_auth": request.GET.get("token_auth")}
-            )
+            form = ModelForm(instance=obj)
         form.is_valid()
 
         values = {field.name: field.value() for field in form}
@@ -83,19 +83,32 @@ class PermissionAdmin(admin.ModelAdmin):
             (object_type.pk, str(object_type))
             for object_type in ObjectType.objects.all()
         ]
+        objecttypes_available = can_connect_to_objecttypes()
+        data_field_choices = (
+            self.get_data_field_choices() if objecttypes_available else {}
+        )
 
-        return {
+        context = {
             "object_fields": self.get_object_fields(),
-            "data_field_choices": self.get_data_field_choices(),
+            "data_field_choices": data_field_choices,
             "token_auth_choices": token_auth_choices,
             "object_type_choices": object_type_choices,
             "mode_choices": mode_choices,
             "form_data": self.get_form_data(request, object_id),
+            "objecttypes_available": objecttypes_available,
         }
+        print(context)
+        return context
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         extra_context = extra_context or {}
         extra_context.update(self.get_extra_context(request, object_id))
+
+        if extra_context["objecttypes_available"] is False:
+            msg = _(
+                "ObjectTypes API is not reachable. Field-based authorization is impossible"
+            )
+            self.message_user(request, msg, messages.WARNING)
 
         return super().change_view(
             request,
@@ -107,6 +120,12 @@ class PermissionAdmin(admin.ModelAdmin):
     def add_view(self, request, form_url="", extra_context=None):
         extra_context = extra_context or {}
         extra_context.update(self.get_extra_context(request, object_id=None))
+
+        if extra_context["objecttypes_available"] is False:
+            msg = _(
+                "ObjectTypes API is not reachable. Field-based authorization is impossible"
+            )
+            self.message_user(request, msg, messages.WARNING)
 
         return super().add_view(request, form_url, extra_context)
 
