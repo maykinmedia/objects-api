@@ -17,13 +17,24 @@ class JsonSchemaValidator:
 
     def __call__(self, attrs, serializer):
         instance = getattr(serializer, "instance", None)
-        object_type = (
-            attrs.get("object", {}).get("object_type") or instance.object.object_type
-        )
-        version = attrs.get("version") or instance.version
-        data = attrs.get("data", {}) or instance.data
 
-        if not object_type or not version or not data:
+        # create
+        if not instance:
+            object_type = attrs.get("object", {}).get("object_type")
+            version = attrs.get("version")
+            data = attrs.get("data", {})
+
+        # update
+        else:
+            object_type = (
+                attrs.get("object", {}).get("object_type")
+                if "object" in attrs
+                else instance.object.object_type
+            )
+            version = attrs.get("version") if "version" in attrs else instance.version
+            data = attrs.get("data", {}) if "data" in attrs else instance.data
+
+        if not object_type or not version:
             return
 
         try:
