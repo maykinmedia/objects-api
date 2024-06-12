@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy
 
+import requests_mock
 from django_webtest import WebTest
 from maykin_2fa.test import disable_admin_mfa
-from requests_mock import Mocker
+from requests.exceptions import ConnectionError
 
 from objects.accounts.tests.factories import UserFactory
 from objects.token.tests.factories import ObjectTypeFactory, TokenAuthFactory
@@ -13,13 +14,15 @@ OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 @disable_admin_mfa()
+@requests_mock.Mocker()
 class AddPermissionTests(WebTest):
     url = reverse_lazy("admin:token_permission_add")
 
-    @Mocker()
-    def test_add_permission_choices_without_properties(self, m):
+    def setUp(self):
         user = UserFactory(is_superuser=True, is_staff=True)
         self.app.set_user(user)
+
+    def test_add_permission_choices_without_properties(self, m):
         object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         TokenAuthFactory.create()
 
@@ -45,3 +48,17 @@ class AddPermissionTests(WebTest):
                 }
             },
         )
+
+    def test_get_permission_with_unavailable_objecttypes(self, m):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/373
+        """
+        object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        # mock objecttypes api
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(f"{OBJECT_TYPES_API}objecttypes", exc=ConnectionError)
+        m.get(f"{object_type.url}/versions", exc=ConnectionError)
+
+        response = self.app.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
