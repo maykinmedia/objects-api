@@ -28,6 +28,7 @@ class AddPermissionTests(WebTest):
 
         # mock objecttypes api
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(f"{OBJECT_TYPES_API}objecttypes", json=[])
         m.get(object_type.url, json=mock_objecttype(object_type.url))
         version1 = mock_objecttype_version(object_type.url, attrs={"jsonSchema": {}})
         version2 = mock_objecttype_version(object_type.url, attrs={"version": 2})
