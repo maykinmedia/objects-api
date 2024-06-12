@@ -236,6 +236,58 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    def test_create_object_with_empty_data_valid(self, m):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/371
+        """
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        objecttype_version_response = mock_objecttype_version(self.object_type.url)
+        objecttype_version_response["jsonSchema"]["required"] = []
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=objecttype_version_response,
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {},
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_object_with_empty_data_invalid(self, m):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/371
+        """
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {},
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_update_object_with_correction_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(
