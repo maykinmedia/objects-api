@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 
 import jsonschema
+from requests.exceptions import RequestException
 from zds_client.client import ClientError
 
 
@@ -26,3 +27,21 @@ def check_objecttype(object_type, version, data):
         jsonschema.validate(data, schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise ValidationError(exc.args[0]) from exc
+
+
+def can_connect_to_objecttypes() -> bool:
+    """
+    check that all services of objecttypes are available
+    """
+    from zgw_consumers.models import Service
+
+    objecttypes_services = Service.objects.filter(object_types__isnull=False).distinct()
+    for service in objecttypes_services:
+        client = service.build_client()
+
+        try:
+            client.request("objecttypes", "objecttype_list")
+        except (ClientError, RequestException):
+            return False
+
+    return True
