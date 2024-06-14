@@ -88,7 +88,7 @@ class PermissionAdmin(admin.ModelAdmin):
             self.get_data_field_choices() if objecttypes_available else {}
         )
 
-        context = {
+        return {
             "object_fields": self.get_object_fields(),
             "data_field_choices": data_field_choices,
             "token_auth_choices": token_auth_choices,
@@ -97,8 +97,6 @@ class PermissionAdmin(admin.ModelAdmin):
             "form_data": self.get_form_data(request, object_id),
             "objecttypes_available": objecttypes_available,
         }
-        print(context)
-        return context
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         extra_context = extra_context or {}
