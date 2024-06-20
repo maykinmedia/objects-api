@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     "simple_certmanager",
     "zgw_consumers",
     "django_setup_configuration",
+    "open_api_framework",
     # Two-factor authentication in the Django admin, enforced.
     "django_otp",
     "django_otp.plugins.otp_static",
@@ -163,6 +164,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "open_api_framework.context_processors.project",
                 "objects.utils.context_processors.settings",
             ],
             "loaders": RAW_TEMPLATE_LOADERS,

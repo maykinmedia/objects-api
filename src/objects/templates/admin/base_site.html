@@ -1,10 +1,11 @@
-{% extends "admin/base.html" %}
+{% extends "open_api_framework/admin/base_site.html" %}
 {% load i18n static %}
 
 {% block title %}{{ title }} | {{ settings.PROJECT_NAME }}{% endblock %}
 
 {% block extrastyle %}
     {{ block.super }}
+
     <link rel="stylesheet" type="text/css" href="{% static 'bundles/admin_overrides.css' %}">
 
     <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
@@ -35,22 +36,8 @@
 
 {% block nav-global %}{% endblock %}
 
-{% block messages %}
-    {% if settings.ENVIRONMENT_SHOWN_IN_ADMIN %}
-        <div class="env env-{{ settings.ENVIRONMENT }}">{{ settings.ENVIRONMENT }}</div>
-    {% endif %}
-    {{ block.super }}
-{% endblock %}
-
 {% block footer %}
     {{ block.super }}
-
-    {% url 'admin:login' as admin_login_url %}
-    {% if request.path != admin_login_url %}
-        <div class="version" title="Git SHA: {{ settings.GIT_SHA|default:'' }}">
-        {% blocktrans with version=settings.RELEASE %}version {{ version }}{% endblocktrans %}
-    </div>
-    {% endif %}
 
     {# Load the custom JS #}
     <script src="{% static 'bundles/objects-js.js' %}"></script>
