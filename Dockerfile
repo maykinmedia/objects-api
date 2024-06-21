@@ -45,7 +45,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=backend-build /usr/local/lib/python3.10 /usr/local/lib/python3.10
+COPY --from=backend-build /usr/local/lib/python3.11 /usr/local/lib/python3.11
 COPY --from=backend-build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 COPY --from=backend-build /usr/local/bin/celery /usr/local/bin/celery
 
