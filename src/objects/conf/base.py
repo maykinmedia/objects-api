@@ -3,8 +3,8 @@ import os
 from django.urls import reverse_lazy
 
 from log_outgoing_requests.formatters import HttpFormatter
-from sentry_sdk.integrations import django, redis
 from open_api_framework.conf.base import TEMPLATE_LOADERS  # noqa
+from sentry_sdk.integrations import django, redis
 
 from .api import *  # noqa
 from .utils import config
