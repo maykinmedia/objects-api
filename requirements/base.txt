@@ -232,7 +232,7 @@ notifications-api-common==0.2.2
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework @ git+https://github.com/maykinmedia/open-api-framework@bd51d3f592b4f1088e2233f98c90c6fd67c60e0c
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework@b6164c606e3f7a6dd4d5a47a5b0e6ab486707d36
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
