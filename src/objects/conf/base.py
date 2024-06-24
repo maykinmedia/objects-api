@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 
 from log_outgoing_requests.formatters import HttpFormatter
 from sentry_sdk.integrations import django, redis
+from open_api_framework.conf.base import TEMPLATE_LOADERS  # noqa
 
 from .api import *  # noqa
 from .utils import config
@@ -144,13 +145,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "objects.urls"
 
-# List of callables that know how to import templates from various sources.
-RAW_TEMPLATE_LOADERS = (
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-    # 'admin_tools.template_loaders.Loader',
-)
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -164,10 +158,10 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "open_api_framework.context_processors.project",
+                "open_api_framework.context_processors.admin_settings",
                 "objects.utils.context_processors.settings",
             ],
-            "loaders": RAW_TEMPLATE_LOADERS,
+            "loaders": TEMPLATE_LOADERS,
         },
     },
 ]
