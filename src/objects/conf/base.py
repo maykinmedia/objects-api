@@ -3,6 +3,7 @@ import os
 from django.urls import reverse_lazy
 
 from log_outgoing_requests.formatters import HttpFormatter
+from open_api_framework.conf.base import TEMPLATE_LOADERS  # noqa
 from sentry_sdk.integrations import django, redis
 
 from .api import *  # noqa
@@ -112,6 +113,7 @@ INSTALLED_APPS = [
     "simple_certmanager",
     "zgw_consumers",
     "django_setup_configuration",
+    "open_api_framework",
     # Two-factor authentication in the Django admin, enforced.
     "django_otp",
     "django_otp.plugins.otp_static",
@@ -143,13 +145,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "objects.urls"
 
-# List of callables that know how to import templates from various sources.
-RAW_TEMPLATE_LOADERS = (
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-    # 'admin_tools.template_loaders.Loader',
-)
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -163,9 +158,10 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "open_api_framework.context_processors.admin_settings",
                 "objects.utils.context_processors.settings",
             ],
-            "loaders": RAW_TEMPLATE_LOADERS,
+            "loaders": TEMPLATE_LOADERS,
         },
     },
 ]
@@ -367,7 +363,24 @@ CSRF_COOKIE_SECURE = IS_HTTPS
 PROJECT_NAME = "Objects"
 SITE_TITLE = "Starting point"
 ENVIRONMENT = config("ENVIRONMENT", "")
+ENVIRONMENT_SHOWN_IN_ADMIN = True
 SHOW_ALERT = True
+
+if "GIT_SHA" in os.environ:
+    GIT_SHA = config("GIT_SHA", "")
+# in docker (build) context, there is no .git directory
+elif os.path.exists(os.path.join(BASE_DIR, ".git")):
+    try:
+        import git
+    except ImportError:
+        GIT_SHA = None
+    else:
+        repo = git.Repo(search_parent_directories=True)
+        GIT_SHA = repo.head.object.hexsha
+else:
+    GIT_SHA = None
+
+RELEASE = config("RELEASE", GIT_SHA)
 
 #
 # Library settings
