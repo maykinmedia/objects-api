@@ -5,9 +5,5 @@ glom # data represenation based on spec
 jsonschema
 furl
 
-# Django libraries
-django-log-outgoing-requests
-django-setup-configuration
-
 # Common ground libraries
 notifications-api-common

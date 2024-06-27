@@ -8,7 +8,7 @@ from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from maykin_2fa import monkeypatch_admin
-from maykin_2fa.urls import urlpatterns as maykin_2fa_urlpatterns
+from maykin_2fa.urls import urlpatterns as maykin_2fa_urlpatterns, webauthn_urlpatterns
 from rest_framework.settings import api_settings
 
 handler500 = "objects.utils.views.server_error"
@@ -30,6 +30,7 @@ urlpatterns = [
         name="password_reset_done",
     ),
     path("admin/", include((maykin_2fa_urlpatterns, "maykin_2fa"))),
+    path("admin/", include((webauthn_urlpatterns, "two_factor"))),
     path("admin/", admin.site.urls),
     path(
         "reset/<uidb64>/<token>/",
