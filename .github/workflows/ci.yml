@@ -92,7 +92,7 @@ jobs:
         run: ./bin/generate_schema.sh ${{ matrix.version }} openapi-${{ matrix.version }}.yaml
 
       - name: Store generated OAS files
-        uses: actions/upload-artifact@4
+        uses: actions/upload-artifact@v4
         with:
           name: objects-api-${{ matrix.version }}-oas
           path: openapi-${{ matrix.component }}.yaml
