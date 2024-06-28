@@ -98,7 +98,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: objects-api-${{ matrix.version }}-oas
-          path: openapi-${{ matrix.component }}.yaml
+          path: openapi-${{ matrix.version }}.yaml
           retention-days: 1
 
   oas-up-to-date:
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        component: ['v1', 'v2']
+        version: ['v1', 'v2']
     steps:
       - uses: actions/checkout@v4
       - name: Download generated OAS
@@ -116,7 +116,7 @@ jobs:
           name: objects-api-${{ matrix.version }}-oas
       - name: Check for OAS changes
         run: |
-          diff openapi-${{ matrix.component }}.yaml src/objects/api/${{ matrix.version }}/openapi.yaml
+          diff openapi-${{ matrix.version }}.yaml src/objects/api/${{ matrix.version }}/openapi.yaml
       - name: Write failure markdown
         if: ${{ failure() }}
         run: |
