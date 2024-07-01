@@ -386,7 +386,7 @@ kombu==5.3.5
     # via
     #   -r requirements/ci.txt
     #   celery
-lxml==4.7.1
+lxml==4.9.4
     # via
     #   -r requirements/ci.txt
     #   pyquery
