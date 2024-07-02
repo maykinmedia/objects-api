@@ -193,7 +193,7 @@ div.help {
   background-size: 14px;
   margin-left: 8px !important;
   margin-top: 6px !important;
-  position: absolute;
+  position: relative;
   text-indent: -9999px;
 
   &:hover {
@@ -234,4 +234,8 @@ div.help {
 .aligned label + ul {
   display: inline-block;
   margin-left: inherit !important;
+}
+
+div:has(> div.help ) {
+  display: flex;
 }
