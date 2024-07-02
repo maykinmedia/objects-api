@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.test import TestCase
 
 from ..models import User
@@ -20,3 +21,15 @@ class UserManagerTests(TestCase):
         self.assertFalse(user.is_superuser)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.has_usable_password())
+
+    def test_create_users_with_same_email(self):
+        User.objects.create(username="AAA", email="aaa@aaa.aaa", password="aaa!")
+
+        with self.assertRaises(IntegrityError):
+            User.objects.create(username="BBB", email="aaa@aaa.aaa", password="bbb!")
+
+    def test_create_user_with_blank_emails(self):
+        User.objects.create(username="AAA", email="", password="aaa!")
+        User.objects.create(username="BBB", email="", password="bbb!")
+
+        self.assertEqual(User.objects.count(), 2)
