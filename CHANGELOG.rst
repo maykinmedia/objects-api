@@ -2,12 +2,42 @@
 Change history
 ==============
 
-2.4.0 (WIP)
------------
+2.4.0 (2024-07-05)
+------------------
+
+**New features**
+
+* added superuser permissions to API (#369)
+* added `setup_configuration` management command which can configure API with environment variables (#368)
+* added `Record.data` as a search filter in the Admin (#381)
+* displayed `Objecttype.uuid` in the Objecttype and Object admin pages (#315)
+
 **Bugfixes and QOL**
 
+* supported `correctionFor` = `null` in POST/PUT requests (#268)
+* added tests for `additionalProperties` keyword in JSON schema (#330)
+* fixed creating objects with empty data (#371)
+* fixed displaying the Token admin page if Object Types API is unavailable (#373)
+* fixed styling of OIDC login page (#392)
+* fixed styling of the help text icon in the Admin (#421)
+* updated demo data used in quick start process (#398, #400)
+
+**Project maintance**
+
+* updated Python to 3.11 (#379)
+* added `open-api-framework` dependency (#358)
+* refactored settings using `open-api-framework` (#413)
+* added logging of outgoind requests (#344)
+* added Trivy into the CI as an docker image scaner (#402)
+* added GitHub issue templates (#389)
+* merged quick start and regular docker compose files into one (#408)
 * changed caching backend from LocMem to Redis
 * Elastic APM service name can now be configured with ``ELASTIC_APM_SERVICE_NAME`` envvar
+
+** Documentation**
+
+* added security policy (#390)
+* updated Quick start documentation (#348)
 
 .. warning::
 
@@ -18,6 +48,17 @@ Change history
 
     The service name for Elastic APM is now configurable via the ``ELASTIC_APM_SERVICE_NAME`` environment variable.
     The default value changed from ``Objects API`` to ``objects - <ENVIRONMENT>``
+
+
+2.3.2 (2024-05-03)
+------------------
+
+Bugfix release
+
+This release addresses a security weakness.
+
+* [GHSA-3wcp-29hm-g82c] replaced PK for Token model.
+
 
 2.3.1 (2024-03-22)
 ------------------
