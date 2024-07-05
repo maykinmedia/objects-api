@@ -2,6 +2,18 @@
 Change history
 ==============
 
+
+2.4.x (TBD)
+------------------
+
+**New features**
+
+* made user emails unique to prevent two users logging in with the same email, causing an error
+
+.. warning::
+    User email addresses will now be unique on a database level. The database migration will fail if there are already
+    two or more users with the same email address. You must ensure this is not the case before upgrading.
+
 2.4.0 (2024-07-05)
 ------------------
 
