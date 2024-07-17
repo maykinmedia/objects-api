@@ -34,8 +34,8 @@ jobs:
         run: |
           black --check src docs
 
-  generate-oas-files:
-    name: Generate and upload OAS files for all versions
+  oas-up-to-date:
+    name: Check for unexepected OAS changes
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
@@ -64,26 +64,6 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
 
-      - name: Store generated OAS files
-        uses: actions/upload-artifact@v4
-        with:
-          name: objects-api-${{ matrix.version }}-oas
-          path: openapi-${{ matrix.version }}.yaml
-          retention-days: 1
-
-  oas-up-to-date:
-    name: Check for unexepected OAS changes
-    needs: generate-oas-files
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: ['v1', 'v2']
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download generated OAS
-        uses: actions/download-artifact@v4
-        with:
-          name: objects-api-${{ matrix.version }}-oas
       - name: Check for OAS changes
         run: |
           diff openapi-${{ matrix.version }}.yaml src/objects/api/${{ matrix.version }}/openapi.yaml
@@ -95,4 +75,3 @@ jobs:
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo './bin/generate_schema.sh ${{ matrix.version }}' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-
