@@ -29,7 +29,7 @@ from .filters import ObjectRecordFilterSet
 
 @extend_schema_view(
     list=extend_schema(
-        description="Retrieve a list of OBJECTs and their actual RECORD. "
+        description=" actual RECORD. "
         "The actual record is defined as if the query parameter `date=<today>` was given."
     ),
     retrieve=extend_schema(
