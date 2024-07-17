@@ -16,4 +16,6 @@ fi
 
 export SCHEMA_PATH=src/objects/api/$1/openapi.yaml
 
-src/manage.py spectacular --file $SCHEMA_PATH --validate --api-version $1
+OUTPUT_FILE=$2
+
+src/manage.py spectacular --file ${OUTPUT_FILE:-$SCHEMA_PATH} --validate --api-version $1
