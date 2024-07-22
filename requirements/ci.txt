@@ -234,6 +234,7 @@ django-solo==2.2.0
 django-two-factor-auth[phonenumberslite,webauthn]==1.17.0
     # via
     #   -r requirements/base.txt
+    #   django-two-factor-auth
     #   maykin-2fa
 django-webtest==1.9.7
     # via -r requirements/test-tools.in
@@ -375,7 +376,7 @@ notifications-api-common==0.2.2
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.6.1
+open-api-framework==0.7.1
     # via -r requirements/base.txt
 orderedmultidict==1.0.1
     # via
