@@ -5,17 +5,7 @@ from .api import *  # noqa
 
 init_sentry()
 
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": config("DB_NAME", "objects"),
-        "USER": config("DB_USER", "objects"),
-        "PASSWORD": config("DB_PASSWORD", "objects"),
-        "HOST": config("DB_HOST", "localhost"),
-        "PORT": config("DB_PORT", 5432),
-    }
-}
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 
 # Application definition
@@ -82,14 +72,17 @@ CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
 
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
-NOTIFICATIONS_DISABLED = config("NOTIFICATIONS_DISABLED", False)
 
-# TODO should this be moved to open-api-framework?
 # Add (by default) 5 (soft), 15 (hard) minute timeouts to all Celery tasks.
-CELERY_TASK_TIME_LIMIT = config("CELERY_TASK_HARD_TIME_LIMIT", default=15 * 60)  # hard
-CELERY_TASK_SOFT_TIME_LIMIT = config(
-    "CELERY_TASK_SOFT_TIME_LIMIT", default=5 * 60
-)  # soft
+CELERY_TASK_TIME_LIMIT = config(
+    "CELERY_TASK_HARD_TIME_LIMIT",
+    default=15 * 60,
+    help_text=(
+        "Task hard time limit in seconds. The worker processing the task will be "
+        "killed and replaced with a new one when this is exceeded."
+    ),
+    group="Celery",
+)  # hard
 
 #
 # Django setup configuration
@@ -107,22 +100,24 @@ SETUP_CONFIGURATION_STEPS = [
 
 # setup_configuration command
 # sites config
-SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=True)
-OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "")
-OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "")
+SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=True, add_to_docs=False)
+OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "", add_to_docs=False)
+OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "", add_to_docs=False)
 # objecttypes config
 OBJECTS_OBJECTTYPES_CONFIG_ENABLE = config(
-    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=True
+    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=True, add_to_docs=False
 )
-OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "")
-if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/"):
+OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "", add_to_docs=False)
+if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/", add_to_docs=False):
     OBJECTTYPES_API_ROOT = f"{OBJECTTYPES_API_ROOT.strip()}/"
 OBJECTTYPES_API_OAS = config(
-    "OBJECTTYPES_API_OAS", default=f"{OBJECTTYPES_API_ROOT}schema/openapi.yaml"
+    "OBJECTTYPES_API_OAS",
+    default=f"{OBJECTTYPES_API_ROOT}schema/openapi.yaml",
+    add_to_docs=False,
 )
-OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "")
+OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "", add_to_docs=False)
 # Demo User Configuration
-DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=DEBUG)
-DEMO_TOKEN = config("DEMO_TOKEN", "")
-DEMO_PERSON = config("DEMO_PERSON", "")
-DEMO_EMAIL = config("DEMO_EMAIL", "")
+DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=DEBUG, add_to_docs=False)
+DEMO_TOKEN = config("DEMO_TOKEN", "", add_to_docs=False)
+DEMO_PERSON = config("DEMO_PERSON", "", add_to_docs=False)
+DEMO_EMAIL = config("DEMO_EMAIL", "", add_to_docs=False)
