@@ -15,9 +15,11 @@ if [[ "$ENABLE_COVERAGE" ]]; then
 fi
 
 echo "Starting celery worker $WORKER_NAME with queue $QUEUE"
-exec $_binary --workdir src --app objects.celery worker \
+exec $_binary --workdir src --app "objects.celery" worker \
     -Q $QUEUE \
     -n $WORKER_NAME \
     -l $LOGLEVEL \
     -O fair \
-    -c $CONCURRENCY
+    -c $CONCURRENCY \
+    -E \
+    --max-tasks-per-child=50
