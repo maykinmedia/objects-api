@@ -76,12 +76,6 @@ services:
       start_period: 10s    
     depends_on:
       web:
-        # This health check condition is needed because Celery Beat will 
-        # try to convert the CELERY_BEAT_SCHEDULE into database entries. For 
-        # this, migrations need to be finished. If Celery tasks were still 
-        # pending, the database also needs to be ready for Celery itself. We 
-        # therefore have the health check here, and make Celery beat and 
-        # monitor containers depend on the celery container.
         condition: service_healthy
     volumes: *web_volumes
 
