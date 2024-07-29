@@ -36,6 +36,15 @@ services:
       - DEMO_TOKEN=demo-random-string
       - DEMO_PERSON=Demo
       - DEMO_EMAIL=demo@demo.local
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # This should allow for enough time for migrations to run before the max
+      # retries have passed. This healthcheck in turn allows other containers
+      # to wait for the database migrations.
+      start_period: 30s      
     ports:
       - 8000:8000
     depends_on:
@@ -59,9 +68,15 @@ services:
     build: *web_build
     environment: *web_env
     command: /celery_worker.sh
+    healthcheck:
+      test: ["CMD", "python", "/app/bin/check_celery_worker_liveness.py"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s    
     depends_on:
-      - db
-      - redis
+      web:
+        condition: service_healthy
     volumes: *web_volumes
 
   celery-flower:
