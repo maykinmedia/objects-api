@@ -66,6 +66,16 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
     "objects.utils.admin_index.should_display_dropdown_menu"
 )
 
+#
+# MAYKIN-2FA
+#
+# It uses django-two-factor-auth under the hood so you can configure
+# those settings too.
+#
+# we run the admin site monkeypatch instead.
+# Relying Party name for WebAuthn (hardware tokens)
+TWO_FACTOR_WEBAUTHN_RP_NAME = "objects api"
+
 
 # VNG API Common
 CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
