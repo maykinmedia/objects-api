@@ -129,7 +129,7 @@ class ObjectViewSet(
         detail=True,
         methods=["get"],
         url_path=r"(?P<index>\d+)",
-        serializer_class=HistoryRecordSerializer
+        serializer_class=HistoryRecordSerializer,
     )
     def history_detail(self, request, uuid=None, index=None):
         """Retrieve a RECORD of an OBJECT."""
