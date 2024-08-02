@@ -1,6 +1,7 @@
 """
 Continuous integration settings module.
 """
+
 import logging
 import os
 
