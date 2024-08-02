@@ -6,6 +6,7 @@ from django.db import models
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from vng_api_common.filters import Backend as FilterBackend
 from vng_api_common.search import SearchMixin
@@ -118,6 +119,23 @@ class ObjectViewSet(
         """Retrieve all RECORDs of an OBJECT."""
         records = self.get_object().object.records.order_by("id")
         serializer = self.get_serializer(records, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        description="Retrieve the specified OBJECT given an UUID and INDEX.",
+        responses={"200": HistoryRecordSerializer()},
+    )
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path=r"(?P<index>\d+)",
+        serializer_class=HistoryRecordSerializer
+    )
+    def history_detail(self, request, uuid=None, index=None):
+        """Retrieve a RECORD of an OBJECT."""
+        queryset = self.get_queryset()
+        record = get_object_or_404(queryset, object__uuid=uuid, index=index)
+        serializer = self.get_serializer(record)
         return Response(serializer.data)
 
     @extend_schema(
