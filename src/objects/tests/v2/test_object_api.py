@@ -123,6 +123,68 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             },
         )
 
+    def test_retrieve_by_index(self, m):
+        record1 = ObjectRecordFactory.create(
+            object__object_type=self.object_type,
+            start_at=date(2020, 1, 1),
+            geometry="POINT (4.910649523925713 52.37240093589432)",
+            index=1,
+        )
+
+        object = record1.object
+
+        record2 = ObjectRecordFactory.create(
+            object=object, start_at=date.today(), correct=record1, index=2
+        )
+
+        with self.subTest(record=record1):
+            url = reverse("object-history-detail", args=[object.uuid, 1])
+
+            response = self.client.get(url)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()
+
+            self.assertEqual(
+                data,
+                {
+                    "index": 1,
+                    "typeVersion": record1.version,
+                    "data": record1.data,
+                    "geometry": json.loads(record1.geometry.json),
+                    "startAt": record1.start_at.isoformat(),
+                    "endAt": record2.start_at.isoformat(),
+                    "registrationAt": record1.registration_at.isoformat(),
+                    "correctionFor": None,
+                    "correctedBy": 2,
+                },
+            )
+
+        with self.subTest(record=record2):
+            url = reverse("object-history-detail", args=[object.uuid, 2])
+
+            response = self.client.get(url)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            data = response.json()
+
+            self.assertEqual(
+                data,
+                {
+                    "index": 2,
+                    "typeVersion": record2.version,
+                    "data": record2.data,
+                    "geometry": json.loads(record2.geometry.json),
+                    "startAt": record2.start_at.isoformat(),
+                    "endAt": None,
+                    "registrationAt": record2.registration_at.isoformat(),
+                    "correctionFor": 1,
+                    "correctedBy": None,
+                },
+            )
+
     def test_create_object(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
         m.get(
