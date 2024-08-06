@@ -1,0 +1,1 @@
+git log $1...$2 --date=format:"%Y-%m-%d" --cherry --decorate=auto --pretty=format:"* %s %d"
