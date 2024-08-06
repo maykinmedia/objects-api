@@ -10,6 +10,7 @@ os.environ.setdefault(
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("ENVIRONMENT", "development")
+os.environ.setdefault("DISABLE_2FA", "True")
 
 os.environ.setdefault("DB_NAME", "objects"),
 os.environ.setdefault("DB_USER", "objects"),
@@ -103,10 +104,6 @@ warnings.filterwarnings(
 
 if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True
-
-# None of the authentication backends require two-factor authentication.
-if config("DISABLE_2FA", default=True):  # pragma: no cover
-    MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = AUTHENTICATION_BACKENDS
 
 # Override settings with local settings.
 try:
