@@ -126,7 +126,7 @@ cssselect==1.1.0
     # via
     #   -r requirements/ci.txt
     #   pyquery
-django==4.2.14
+django==4.2.15
     # via
     #   -r requirements/ci.txt
     #   commonground-api-common

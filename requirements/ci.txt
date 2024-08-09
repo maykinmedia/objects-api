@@ -106,7 +106,7 @@ cryptography==41.0.7
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==4.2.14
+django==4.2.15
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
