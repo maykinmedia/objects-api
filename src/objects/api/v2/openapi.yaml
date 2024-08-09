@@ -934,6 +934,9 @@ components:
           $ref: '#/components/schemas/GeoWithin'
     PaginatedHistoryRecordList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -954,6 +957,9 @@ components:
             $ref: '#/components/schemas/HistoryRecord'
     PaginatedObjectList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -974,6 +980,9 @@ components:
             $ref: '#/components/schemas/Object'
     PaginatedPermissionList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer

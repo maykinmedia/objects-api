@@ -23,9 +23,11 @@ class ObjectKanaal(Kanaal):
     def get_kenmerken(self, obj: models.Model, data: dict = None) -> dict:
         data = data or {}
         return {
-            kenmerk: data.get("type") or obj.object.object_type.url
-            if kenmerk == "object_type"
-            else data.get(kenmerk, getattr(obj, kenmerk))
+            kenmerk: (
+                data.get("type") or obj.object.object_type.url
+                if kenmerk == "object_type"
+                else data.get(kenmerk, getattr(obj, kenmerk))
+            )
             for kenmerk in self.kenmerken
         }
 

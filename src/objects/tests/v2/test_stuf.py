@@ -3,6 +3,7 @@ This test suite asserts that the Objects API implementation supports
 material and formal history defined in the StUF 03.01 (Standaard Uitwisseling Formaat)
 https://www.gemmaonline.nl/images/gemmaonline/f/fa/Stuf0301.pdf
 """
+
 from datetime import date
 
 from rest_framework import status

@@ -147,13 +147,13 @@ class ObjectViewSet(
 
         if serializer and response.status_code == 200:
             if self.action == "retrieve" and serializer.not_allowed:
-                self.headers[
-                    settings.UNAUTHORIZED_FIELDS_HEADER
-                ] = serializer.not_allowed.pretty()
+                self.headers[settings.UNAUTHORIZED_FIELDS_HEADER] = (
+                    serializer.not_allowed.pretty()
+                )
 
             elif self.action in ("list", "search") and serializer.child.not_allowed:
-                self.headers[
-                    settings.UNAUTHORIZED_FIELDS_HEADER
-                ] = serializer.child.not_allowed.pretty()
+                self.headers[settings.UNAUTHORIZED_FIELDS_HEADER] = (
+                    serializer.child.not_allowed.pretty()
+                )
 
         return super().finalize_response(request, response, *args, **kwargs)
