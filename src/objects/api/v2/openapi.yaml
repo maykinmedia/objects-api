@@ -457,6 +457,53 @@ paths:
       responses:
         '204':
           description: No response body
+  /objects/{uuid}/{index}:
+    get:
+      operationId: object_history_detail
+      description: Retrieve the specified OBJECT given an UUID and INDEX.
+      parameters:
+      - in: header
+        name: Accept-Crs
+        schema:
+          type: string
+          enum:
+          - EPSG:4326
+        description: 'The desired ''Coordinate Reference System'' (CRS) of the response
+          data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326 is
+          the same as WGS84).'
+      - in: path
+        name: index
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        required: true
+      tags:
+      - objects
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            Content-Crs:
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
+              description: 'The ''Coordinate Reference System'' (CRS) of the request
+                data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
+                is the same as WGS84).'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryRecord'
+          description: OK
   /objects/{uuid}/history:
     get:
       operationId: object_history
