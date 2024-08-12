@@ -58,6 +58,7 @@ class Object(models.Model):
     object_type = models.ForeignKey(
         ObjectType,
         on_delete=models.PROTECT,
+        help_text=_("OBJECTTYPE in Objecttypes API"),
     )
 
     objects = ObjectQuerySet.as_manager()
