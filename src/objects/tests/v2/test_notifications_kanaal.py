@@ -1,16 +1,17 @@
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 from django.contrib.sites.models import Site
 from django.core.management import call_command
 from django.test import override_settings
 
-from notifications_api_common.kanalen import KANAAL_REGISTRY, Kanaal
+from notifications_api_common.kanalen import KANAAL_REGISTRY
 from notifications_api_common.models import NotificationsConfig
 from rest_framework.test import APITestCase
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
+from objects.api.kanalen import ObjectKanaal
 from objects.core.models import Object
 
 
@@ -23,7 +24,7 @@ class CreateNotifKanaalTestCase(APITestCase):
         site.domain = "example.com"
         site.save()
 
-        kanaal = Kanaal(label="kanaal_test", main_resource=Object)
+        kanaal = ObjectKanaal(label="kanaal_test", main_resource=Object)
         cls.addClassCleanup(lambda: KANAAL_REGISTRY.remove(kanaal))
 
         service, _ = Service.objects.update_or_create(
@@ -79,11 +80,23 @@ class CreateNotifKanaalTestCase(APITestCase):
             stdout=stdout,
         )
 
-        client.create.assert_called_once_with(
-            "kanaal",
-            {
-                "naam": "kanaal_test",
-                "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
-                "filters": [],
-            },
+        client.create.assert_has_calls(
+            [
+                call(
+                    "kanaal",
+                    {
+                        "naam": "kanaal_test",
+                        "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
+                        "filters": [],
+                    },
+                ),
+                call(
+                    "kanaal",
+                    {
+                        "naam": "objecten",
+                        "documentatieLink": "https://example.com/ref/kanalen/#objecten",
+                        "filters": ["object_type"],
+                    },
+                ),
+            ]
         )

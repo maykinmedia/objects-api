@@ -3,7 +3,7 @@ from collections import defaultdict
 from django.conf import settings
 from django.db import models
 
-from notifications_api_common.kanalen import Kanaal
+from notifications_api_common.kanalen import KANAAL_REGISTRY, Kanaal
 
 from objects.core.models import ObjectRecord
 
@@ -20,6 +20,8 @@ class ObjectKanaal(Kanaal):
         # check that we're refering to existing fields
         self.kenmerken = kenmerken or ()
 
+        KANAAL_REGISTRY.add(self)
+
     def get_kenmerken(self, obj: models.Model, data: dict = None) -> dict:
         data = data or {}
         return {
@@ -30,6 +32,28 @@ class ObjectKanaal(Kanaal):
             )
             for kenmerk in self.kenmerken
         }
+
+    @property
+    def description(self):
+        """For Objects endpoint main resource is ObjectRecord, so adjust info here"""
+        kenmerk_template = "* `{kenmerk}`: {help_text}"
+        main_resource = self.main_resource.object.field.related_model
+        kenmerken = [
+            kenmerk_template.format(
+                kenmerk=kenmerk,
+                help_text=main_resource._meta.get_field(kenmerk).help_text,
+            )
+            for kenmerk in self.kenmerken
+        ]
+
+        description = (
+            "**Main resource**\n\n"
+            "`{options.model_name}`\n\n\n\n"
+            "**Kenmerken**\n\n"
+            "{kenmerken}"
+        ).format(options=main_resource._meta, kenmerken="\n".join(kenmerken))
+
+        return description
 
 
 KANAAL_OBJECTEN = ObjectKanaal(
