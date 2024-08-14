@@ -101,7 +101,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["non_field_errors"], ["Object type version can not be retrieved: None"]
+            data["non_field_errors"], ["Object type doesn't have retrievable data"]
         )
 
     def test_create_object_schema_invalid(self, m):

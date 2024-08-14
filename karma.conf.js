@@ -57,8 +57,6 @@ var configuration = function (config) {
           outputFile: 'junit.xml',
           useBrowserName: false,
         },
-
-        // browsers: ['Chromium', 'Firefox', 'PhantomJS'],
         browsers: ['Chromium'],
     });
 };

@@ -7,8 +7,9 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import requests
 from requests.exceptions import ConnectionError
-from zds_client.client import ClientError
+from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
 
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
@@ -41,11 +42,16 @@ class ObjectType(models.Model):
         return f"{self.service.api_root}objecttypes/{self.uuid}"
 
     def clean(self):
-        client = self.service.build_client()
+        client = build_client(self.service)
         try:
-            object_type_data = client.retrieve("objecttype", url=self.url)
-        except (ClientError, ConnectionError, ValueError) as exc:
+            response = client.get(url=self.url)
+        except (requests.RequestException, ConnectionError, ValueError) as exc:
             raise ValidationError(f"Objecttype can't be requested: {exc}")
+
+        try:
+            object_type_data = response.json()
+        except requests.exceptions.JSONDecodeError:
+            ValidationError(f"Object type version didn't have any data")
 
         if not self._name:
             self._name = object_type_data["name"]

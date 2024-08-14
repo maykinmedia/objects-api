@@ -8,6 +8,10 @@ amqp==5.2.0
     # via
     #   -r requirements/base.txt
     #   kombu
+ape-pie==0.2.0
+    # via
+    #   -r requirements/base.txt
+    #   zgw-consumers
 asgiref==3.7.2
     # via
     #   -r requirements/base.txt
@@ -48,7 +52,7 @@ celery==5.4.0
     #   flower
     #   notifications-api-common
     #   open-api-framework
-certifi==2023.7.22
+certifi==2024.7.4
     # via
     #   -r requirements/base.txt
     #   django-simple-certmanager
@@ -96,7 +100,7 @@ coreschema==0.0.4
     #   coreapi
 coverage==4.5.4
     # via -r requirements/test-tools.in
-cryptography==41.0.7
+cryptography==42.0.4
     # via
     #   -r requirements/base.txt
     #   django-simple-certmanager
@@ -227,7 +231,7 @@ django-solo==2.2.0
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
-django-two-factor-auth[phonenumberslite,webauthn]==1.16.0
+django-two-factor-auth[phonenumberslite,webauthn]==1.17.0
     # via
     #   -r requirements/base.txt
     #   maykin-2fa
@@ -284,10 +288,7 @@ face==20.1.1
 factory-boy==3.2.0
     # via -r requirements/test-tools.in
 faker==8.1.0
-    # via
-    #   -r requirements/base.txt
-    #   factory-boy
-    #   zgw-consumers
+    # via factory-boy
 flower==2.0.1
     # via
     #   -r requirements/base.txt
@@ -295,8 +296,10 @@ flower==2.0.1
 freezegun==1.1.0
     # via -r requirements/test-tools.in
 furl==2.1.3
-    # via -r requirements/base.txt
-gemma-zds-client==1.0.1
+    # via
+    #   -r requirements/base.txt
+    #   ape-pie
+gemma-zds-client==2.0.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -411,7 +414,7 @@ pyjwt==2.4.0
     #   -r requirements/base.txt
     #   commonground-api-common
     #   gemma-zds-client
-pyopenssl==23.3.0
+pyopenssl==24.0.0
     # via
     #   -r requirements/base.txt
     #   django-simple-certmanager
@@ -463,6 +466,7 @@ redis==3.5.3
 requests==2.32.3
     # via
     #   -r requirements/base.txt
+    #   ape-pie
     #   commonground-api-common
     #   coreapi
     #   django-log-outgoing-requests
@@ -472,10 +476,7 @@ requests==2.32.3
     #   requests-mock
     #   zgw-consumers
 requests-mock==1.8.0
-    # via
-    #   -r requirements/base.txt
-    #   -r requirements/test-tools.in
-    #   zgw-consumers
+    # via -r requirements/test-tools.in
 sentry-sdk==2.12.0
     # via
     #   -r requirements/base.txt
@@ -500,9 +501,7 @@ sqlparse==0.5.0
 tblib==1.7.0
     # via -r requirements/test-tools.in
 text-unidecode==1.3
-    # via
-    #   -r requirements/base.txt
-    #   faker
+    # via faker
 tornado==6.4.1
     # via
     #   -r requirements/base.txt
@@ -553,7 +552,7 @@ webencodings==0.5.1
     # via
     #   -r requirements/base.txt
     #   bleach
-webob==1.8.7
+webob==1.8.8
     # via webtest
 webtest==2.0.35
     # via django-webtest
@@ -564,7 +563,7 @@ wrapt==1.14.1
     #   vcrpy
 yarl==1.9.4
     # via vcrpy
-zgw-consumers==0.27.0
+zgw-consumers==0.29.0
     # via
     #   -r requirements/base.txt
     #   notifications-api-common

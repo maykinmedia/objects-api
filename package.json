@@ -22,14 +22,15 @@
   "dependencies": {
     "microscope-sass": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "tough-cookie": "^4.1.4"
   },
   "devDependencies": {
     "@babel/core": "latest",
     "@babel/polyfill": "latest",
     "@babel/preset-env": "latest",
     "@babel/preset-react": "^7.16.7",
-    "autoprefixer": "^9.8.8",
+    "autoprefixer": "^10.4.20",
     "babel-loader": "latest",
     "chai": "latest",
     "css-loader": "latest",
@@ -40,7 +41,6 @@
     "karma-firefox-launcher": "latest",
     "karma-junit-reporter": "latest",
     "karma-mocha": "latest",
-    "karma-phantomjs-launcher": "latest",
     "karma-spec-reporter": "latest",
     "karma-webpack": "latest",
     "mini-css-extract-plugin": "latest",

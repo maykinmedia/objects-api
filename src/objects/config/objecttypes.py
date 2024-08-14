@@ -3,7 +3,7 @@ from django.conf import settings
 import requests
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import SelfTestFailed
-from zds_client.client import ClientError
+from zgw_consumers.client import build_client
 from zgw_consumers.constants import APITypes, AuthTypes
 from zgw_consumers.models import Service
 
@@ -43,12 +43,17 @@ class ObjecttypesStep(BaseConfigurationStep):
         """
         This check depends on the configuration in Objecttypes
         """
-        client = Service.objects.get(
-            api_root=settings.OBJECTTYPES_API_ROOT
-        ).build_client()
+        client = build_client(
+            Service.objects.get(api_root=settings.OBJECTTYPES_API_ROOT)
+        )
         try:
-            client.list("objecttype")
-        except (requests.RequestException, ClientError) as exc:
+            response = client.get("objecttypes")
+        except requests.RequestException as exc:
             raise SelfTestFailed(
                 "Could not Could not retrieve list of objecttypes from Objecttypes API."
             ) from exc
+
+        try:
+            response.json()
+        except requests.exceptions.JSONDecodeError:
+            raise SelfTestFailed(f"Object type version didn't have any data")
