@@ -2,6 +2,9 @@ from django.contrib import admin, messages
 from django.contrib.admin.utils import unquote
 from django.utils.translation import gettext_lazy as _
 
+import requests
+from zgw_consumers.client import build_client
+
 from objects.api.serializers import ObjectSerializer
 from objects.core.models import ObjectType
 from objects.core.utils import can_connect_to_objecttypes
@@ -36,11 +39,18 @@ class PermissionAdmin(admin.ModelAdmin):
     def get_data_field_choices(self):
         data_fields = {}
         for object_type in ObjectType.objects.all():
-            client = object_type.service.build_client()
+            client = build_client(object_type.service)
             url = f"{object_type.url}/versions"
-            response = client.request(url, "objectversion_list")
-            if isinstance(response, dict):
-                response = response["results"]
+
+            try:
+                response = client.get(url)
+            except requests.RequestException:
+                continue
+
+            try:
+                response_data = response.json()
+            except requests.JSONDecodeError:
+                continue
 
             # use only first level of properties
             data_fields[object_type.id] = {
@@ -48,8 +58,9 @@ class PermissionAdmin(admin.ModelAdmin):
                     prop: f"record__data__{prop}"
                     for prop in list(version["jsonSchema"].get("properties", {}).keys())
                 }
-                for version in response
+                for version in response_data
             }
+
         return data_fields
 
     def get_form_data(self, request, object_id) -> dict:

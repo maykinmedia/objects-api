@@ -1,22 +1,27 @@
 from django.core.exceptions import ValidationError
 
 import jsonschema
-from requests.exceptions import RequestException
-from zds_client.client import ClientError
+import requests
+from zgw_consumers.client import build_client
 
 
 def check_objecttype(object_type, version, data):
-    client = object_type.service.build_client()
+    client = build_client(object_type.service)
     objecttype_version_url = f"{object_type.url}/versions/{version}"
 
     try:
-        response = client.retrieve("objectversion", url=objecttype_version_url)
-    except ClientError as exc:
-        msg = f"Object type version can not be retrieved: {exc.args[0]}"
+        response = client.get(objecttype_version_url)
+    except requests.RequestException:
+        msg = "Object type version can not be retrieved."
         raise ValidationError(msg)
 
     try:
-        schema = response["jsonSchema"]
+        response_data = response.json()
+    except requests.JSONDecodeError:
+        raise ValidationError("Object type doesn't have retrievable data.")
+
+    try:
+        schema = response_data["jsonSchema"]
     except KeyError:
         msg = f"{objecttype_version_url} does not appear to be a valid objecttype."
         raise ValidationError(msg)
@@ -37,11 +42,11 @@ def can_connect_to_objecttypes() -> bool:
 
     objecttypes_services = Service.objects.filter(object_types__isnull=False).distinct()
     for service in objecttypes_services:
-        client = service.build_client()
+        client = build_client(service)
 
         try:
-            client.request("objecttypes", "objecttype_list")
-        except (ClientError, RequestException):
+            client.get("objecttypes")
+        except requests.RequestException:
             return False
 
     return True

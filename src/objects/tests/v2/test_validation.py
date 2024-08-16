@@ -1,5 +1,6 @@
 import uuid
 
+import requests
 import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -101,7 +102,62 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["non_field_errors"], ["Object type version can not be retrieved: None"]
+            data["non_field_errors"], ["Object type doesn't have retrievable data."]
+        )
+
+    def test_create_object_objecttype_request_error(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(f"{self.object_type.url}/versions/10", exc=requests.HTTPError)
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 10,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Object.objects.count(), 0)
+
+        data = response.json()
+        self.assertEqual(
+            data["non_field_errors"], ["Object type version can not be retrieved."]
+        )
+
+    def test_create_object_objecttype_with_no_jsonSchema(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/10",
+            status_code=200,
+            json={"key": "value"},
+        )
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 10,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Object.objects.count(), 0)
+
+        data = response.json()
+        self.assertEqual(
+            data["non_field_errors"],
+            [
+                f"{self.object_type.url}/versions/10 does not appear to be a valid objecttype."
+            ],
         )
 
     def test_create_object_schema_invalid(self, m):
