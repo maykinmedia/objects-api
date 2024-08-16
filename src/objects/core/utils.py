@@ -11,17 +11,17 @@ def check_objecttype(object_type, version, data):
 
     try:
         response = client.get(objecttype_version_url)
-    except requests.RequestException as exc:
-        msg = f"Object type version can not be retrieved: {exc.args[0]}"
+    except requests.RequestException:
+        msg = "Object type version can not be retrieved."
         raise ValidationError(msg)
 
     try:
         response_data = response.json()
     except requests.JSONDecodeError:
-        raise ValidationError("Object type doesn't have retrievable data")
+        raise ValidationError("Object type doesn't have retrievable data.")
 
     try:
-        schema = response_data.get("jsonSchema")
+        schema = response_data["jsonSchema"]
     except KeyError:
         msg = f"{objecttype_version_url} does not appear to be a valid objecttype."
         raise ValidationError(msg)
