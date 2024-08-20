@@ -301,30 +301,35 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(
             data,
-            [
-                {
-                    "index": 1,
-                    "typeVersion": record1.version,
-                    "data": record1.data,
-                    "geometry": json.loads(record1.geometry.json),
-                    "startAt": record1.start_at.isoformat(),
-                    "endAt": record2.start_at.isoformat(),
-                    "registrationAt": record1.registration_at.isoformat(),
-                    "correctionFor": None,
-                    "correctedBy": 2,
-                },
-                {
-                    "index": 2,
-                    "typeVersion": record2.version,
-                    "data": record2.data,
-                    "geometry": json.loads(record2.geometry.json),
-                    "startAt": record2.start_at.isoformat(),
-                    "endAt": None,
-                    "registrationAt": date.today().isoformat(),
-                    "correctionFor": 1,
-                    "correctedBy": None,
-                },
-            ],
+            {
+                "count": 2,
+                "next": None,
+                "previous": None,
+                "results": [
+                    {
+                        "index": 1,
+                        "typeVersion": record1.version,
+                        "data": record1.data,
+                        "geometry": json.loads(record1.geometry.json),
+                        "startAt": record1.start_at.isoformat(),
+                        "endAt": record2.start_at.isoformat(),
+                        "registrationAt": record1.registration_at.isoformat(),
+                        "correctionFor": None,
+                        "correctedBy": 2,
+                    },
+                    {
+                        "index": 2,
+                        "typeVersion": record2.version,
+                        "data": record2.data,
+                        "geometry": json.loads(record2.geometry.json),
+                        "startAt": record2.start_at.isoformat(),
+                        "endAt": None,
+                        "registrationAt": date.today().isoformat(),
+                        "correctionFor": 1,
+                        "correctedBy": None,
+                    },
+                ],
+            },
         )
 
     # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we discovered that updating an object \
