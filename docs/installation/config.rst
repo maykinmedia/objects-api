@@ -29,6 +29,8 @@ Required settings
   Defaults to ``*`` for the ``docker`` environment and defaults to
   ``127.0.0.1,localhost`` for the ``dev`` environment.
 
+* ``CACHE_DEFAULT``: A Redis cache driver is required. Defaults to ``redis:6379/0``.
+
 Common settings
 ---------------
 
