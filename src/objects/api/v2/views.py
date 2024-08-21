@@ -117,6 +117,12 @@ class ObjectViewSet(
     def history(self, request, uuid=None):
         """Retrieve all RECORDs of an OBJECT."""
         records = self.get_object().object.records.order_by("id")
+
+        page = self.paginate_queryset(records)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = self.get_serializer(records, many=True)
         return Response(serializer.data)
 
