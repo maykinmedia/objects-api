@@ -63,6 +63,37 @@ jobs:
       - name: Publish coverage report
         uses: codecov/codecov-action@v3
 
+  docs:
+    runs-on: ubuntu-latest
+    name: Documentation build
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'requirements/*.txt'
+      - name: Install system packages
+        run: |
+          sudo apt-get update \
+          && sudo apt-get install -y --no-install-recommends \
+            libgdal-dev \
+            gdal-bin
+      - name: Install dependencies
+        run: pip install -r requirements/ci.txt pytest
+      - name: Generate environment variable documentation using OAf and check if it was updated
+        run: |
+          bin/generate_envvar_docs.sh
+          changes=$(git diff docs/installation/config.rst)
+          if [ ! -z "$changes" ]; then
+              echo $changes
+              echo "Please update the environment documentation by running \`bin/generate_envvar_docs.sh\`"
+              exit 1
+          fi
+        env:
+          DJANGO_SETTINGS_MODULE: objects.conf.ci
+
   docker:
     needs: tests
 
