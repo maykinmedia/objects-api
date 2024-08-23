@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Download docker-compose file
         # todo replace branch name with master after the change is merge
-        run: wget https://raw.githubusercontent.com/maykinmedia/objects-api/feature/merge-docker-composes/docker-compose.yml
+        run: wget https://raw.githubusercontent.com/maykinmedia/objects-api/deps/oaf-0.8.0/docker-compose.yml
       - name: Start docker containers
         run: docker compose up -d --no-build
       - name: Load fixtures

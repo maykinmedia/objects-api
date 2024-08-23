@@ -30,7 +30,8 @@ services:
       # setup_configuration env vars
       - OBJECTS_DOMAIN=web:8000
       - OBJECTS_ORGANIZATION=Objects
-      - OBJECTTYPES_API_ROOT=https://objecttypes.example.com/api/v2/
+      - OBJECTS_OBJECTTYPES_CONFIG_ENABLE=false
+      # - OBJECTTYPES_API_ROOT=https://objecttypes.example.com/api/v2/
       - OBJECTS_OBJECTTYPES_TOKEN=some-random-string
       - DEMO_CONFIG_ENABLE=yes
       - DEMO_TOKEN=demo-random-string
