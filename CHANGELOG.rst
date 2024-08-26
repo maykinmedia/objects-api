@@ -2,6 +2,33 @@
 Change history
 ==============
 
+2.4.2 (2024-08-26)
+------------------
+
+**New features**
+
+* updated open-api-framework to 0.8.0, which includes adding CSRF, CSP and HSTS settings (#438).
+  All new environment variables are added to the `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html>`_
+
+.. warning::
+
+    ``SECURE_HSTS_SECONDS`` has been added with a default of 31536000 seconds, ensure that
+    before upgrading to this version of open-api-framework, your entire application is served
+    over HTTPS, otherwise this setting can break parts of your application (see https://docs.djangoproject.com/en/4.2/ref/middleware/#http-strict-transport-security)
+
+**Bugfixes and QOL**
+
+* bumped python dependencies due to security issues: django, celery, certifi, maykin-2fa, mozilla-django-oidc-db,
+  sentry-sdk, webob and others (#428)
+* bumped ``zgw-consumers`` to 0.29.0 and updated a code for clients, because of zgw-consumers breaking change.
+* paginated ``/api/v2/objects/{uuid}/history``endpoint (#329)
+* fixed ``"register_kanalen`` command (#426)
+* fixed notification page link (open-zaak/open-notificaties#171)
+
+** Documentation**
+
+* updated the documentation of environment variables using open-api-framework (open-zaak/open-zaak#1649)
+
 
 2.4.1 (2024-08-06)
 ------------------
