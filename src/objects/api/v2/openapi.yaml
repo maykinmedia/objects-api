@@ -106,6 +106,7 @@ paths:
           * `lt` - lower than
           * `lte` - lower than or equal to
           * `icontains` - case-insensitive partial match
+          * `in` - in a list of values seperated by `|`
 
           `value` may not contain double underscore or comma characters.
           `key` may not contain comma characters and includes double underscore only if it indicates nested attributes.
@@ -587,6 +588,7 @@ paths:
                       * `lt` - lower than
                       * `lte` - lower than or equal to
                       * `icontains` - case-insensitive partial match
+                      * `in` - in a list of values seperated by `|`
 
                       `value` may not contain double underscore or comma characters.
                       `key` may not contain comma characters and includes double underscore only if it indicates nested attributes.
