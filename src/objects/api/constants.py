@@ -9,3 +9,4 @@ class Operators(models.TextChoices):
     lt = "lt", _("lower than")
     lte = "lte", _("lower than or equal to")
     icontains = "icontains", _("case-insensitive partial match")
+    in_list = "in", _("contains")
