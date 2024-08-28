@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 COPY ./requirements /app/requirements
-RUN pip install pip --upgrade
+RUN pip install pip "setuptools>=70.0.0"
 RUN pip install -r requirements/production.txt
 
 
@@ -44,6 +44,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gdal-bin \
         libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install pip "setuptools>=70.0.0"
 
 COPY --from=backend-build /usr/local/lib/python3.11 /usr/local/lib/python3.11
 COPY --from=backend-build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
