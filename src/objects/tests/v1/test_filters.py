@@ -328,6 +328,31 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         data = response.json()
         self.assertEqual(len(data), 0)
 
+    def test_filter_in_string(self):
+        record = ObjectRecordFactory.create(
+            data={"name": "demo1"}, object__object_type=self.object_type
+        )
+        record2 = ObjectRecordFactory.create(
+            data={"name": "demo2"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"name": "demo3"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(self.url, {"data_attrs": "name__in__demo1|demo2"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+        self.assertEqual(len(data), 2)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record2.object.uuid])}",
+        )
+        self.assertEqual(
+            data[1]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
 
 class FilterDateTests(TokenAuthMixin, APITestCase):
     @classmethod

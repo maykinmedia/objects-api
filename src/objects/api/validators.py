@@ -81,9 +81,11 @@ def validate_data_attrs(value: str):
             }
             raise serializers.ValidationError(message, code=code)
 
-        if operator not in (Operators.exact, Operators.icontains) and isinstance(
-            string_to_value(val), str
-        ):
+        if operator not in (
+            Operators.exact,
+            Operators.icontains,
+            Operators.in_list,
+        ) and isinstance(string_to_value(val), str):
             message = _(
                 "Operator `%(operator)s` supports only dates and/or numeric values"
             ) % {"operator": operator}

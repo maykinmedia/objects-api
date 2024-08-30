@@ -109,6 +109,10 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
                 queryset = queryset.filter(
                     **{f"data__{variable}__icontains": str_value}
                 )
+            elif operator == "in":
+                # in must be a list
+                values = str_value.split("|")
+                queryset = queryset.filter(**{f"data__{variable}__in": values})
 
             else:
                 # gt, gte, lt, lte operators
