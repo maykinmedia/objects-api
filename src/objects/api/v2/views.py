@@ -3,7 +3,8 @@ import datetime
 from django.conf import settings
 from django.db import models
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -124,6 +125,20 @@ class ObjectViewSet(
     @extend_schema(
         description="Retrieve the specified OBJECT given an UUID and INDEX.",
         responses={"200": HistoryRecordSerializer()},
+        parameters=[
+            OpenApiParameter(
+                name="index",
+                location=OpenApiParameter.PATH,
+                required=True,
+                type=OpenApiTypes.NUMBER,
+            ),
+            OpenApiParameter(
+                name="uuid",
+                location=OpenApiParameter.PATH,
+                required=True,
+                type=OpenApiTypes.UUID,
+            ),
+        ]
     )
     @action(
         detail=True,

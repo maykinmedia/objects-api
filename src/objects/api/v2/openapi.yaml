@@ -474,15 +474,13 @@ paths:
       - in: path
         name: index
         schema:
-          type: string
-          pattern: ^\d+$
+          type: number
         required: true
       - in: path
         name: uuid
         schema:
           type: string
           format: uuid
-          description: Unique identifier (UUID4)
         required: true
       tags:
       - objects
