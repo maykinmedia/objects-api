@@ -138,7 +138,7 @@ class ObjectViewSet(
                 required=True,
                 type=OpenApiTypes.UUID,
             ),
-        ]
+        ],
     )
     @action(
         detail=True,
