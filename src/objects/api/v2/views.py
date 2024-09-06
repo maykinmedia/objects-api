@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.db import models
+from django.utils.dateparse import parse_date
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
@@ -24,6 +25,7 @@ from ..serializers import (
     ObjectSerializer,
     PermissionSerializer,
 )
+from ..utils import is_date
 from .filters import ObjectRecordFilterSet
 
 
@@ -89,22 +91,30 @@ class ObjectViewSet(
 
         # show only allowed objects
         base = base.filter_for_token(token_auth)
-
-        # show only actual objects
-        date = getattr(self.request, "query_params", {}).get("date", None)
-        registration_date = getattr(self.request, "query_params", {}).get(
-            "registrationDate", None
-        )
-        if not date and not registration_date:
-            base = base.filter_for_date(datetime.date.today())
-
         return base
 
     def filter_queryset(self, queryset):
-        queryset = super().filter_queryset(queryset)
+        # show only actual objects
+        if self.action in ("list", "search", "retrieve"):
+            date = getattr(self.request, "query_params", {}).get("date", None)
+            registration_date = getattr(self.request, "query_params", {}).get(
+                "registrationDate", None
+            )
+
+            if date and is_date(date):
+                queryset = queryset.filter_for_date(parse_date(date))
+            elif registration_date and is_date(registration_date):
+                queryset = queryset.filter_for_registration_date(
+                    parse_date(registration_date)
+                )
+            else:
+                queryset = queryset.filter_for_date(datetime.date.today())
 
         # keep only records with max index per object
-        return queryset.keep_max_record_per_object()
+        queryset = queryset.keep_max_record_per_object()
+
+        # filter on the rest of query params
+        return super().filter_queryset(queryset)
 
     def perform_destroy(self, instance):
         instance.object.delete()
