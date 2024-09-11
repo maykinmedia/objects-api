@@ -100,12 +100,12 @@ SETUP_CONFIGURATION_STEPS = [
 
 # setup_configuration command
 # sites config
-SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=True, add_to_docs=False)
+SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=False, add_to_docs=False)
 OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "", add_to_docs=False)
 OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "", add_to_docs=False)
 # objecttypes config
 OBJECTS_OBJECTTYPES_CONFIG_ENABLE = config(
-    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=True, add_to_docs=False
+    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=False, add_to_docs=False
 )
 OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "", add_to_docs=False)
 if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/"):
@@ -117,7 +117,7 @@ OBJECTTYPES_API_OAS = config(
 )
 OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "", add_to_docs=False)
 # Demo User Configuration
-DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=DEBUG, add_to_docs=False)
+DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=False, add_to_docs=False)
 DEMO_TOKEN = config("DEMO_TOKEN", "", add_to_docs=False)
 DEMO_PERSON = config("DEMO_PERSON", "", add_to_docs=False)
 DEMO_EMAIL = config("DEMO_EMAIL", "", add_to_docs=False)
