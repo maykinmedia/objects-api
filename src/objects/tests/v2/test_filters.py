@@ -377,6 +377,24 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         data = response.json()["results"]
         self.assertEqual(len(data), 0)
 
+    def test_filter_exclude_old_records_same_day_regression_test(self):
+        record_old = ObjectRecordFactory.create(
+            data={"diameter": 45},
+            object__object_type=self.object_type,
+            start_at=date.today() - timedelta(days=10),
+            end_at=date.today(),
+        )
+        record_new = ObjectRecordFactory.create(
+            data={"diameter": 50}, object=record_old.object, start_at=record_old.end_at
+        )
+
+        response = self.client.get(self.url, {"data_attrs": "diameter__exact__45"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+
     def test_filter_date_field_gte(self):
         record = ObjectRecordFactory.create(
             data={"dateField": "2000-10-10"}, object__object_type=self.object_type
@@ -679,3 +697,66 @@ class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
 
         data = response.json()["results"]
         self.assertEqual(len(data), 0)
+
+
+class FilterLatestVersionTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("object-list")
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
+        )
+
+    def test_filter_latest_version_true(self):
+        record_old = ObjectRecordFactory.create(
+            data={"diameter": 45},
+            object__object_type=self.object_type,
+            start_at=date.today() - timedelta(days=10),
+            end_at=date.today(),
+        )
+        record_new = ObjectRecordFactory.create(
+            data={"diameter": 50},
+            object=record_old.object,
+            start_at=record_old.end_at,
+        )
+        record_new.correct = record_old
+        record_new.save()
+
+        response = self.client.get(
+            self.url, {"data_attrs": "diameter__exact__45", "latest_record": True}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
+
+    def test_filter_latest_version_false(self):
+        record_old = ObjectRecordFactory.create(
+            data={"diameter": 45},
+            object__object_type=self.object_type,
+            start_at=date.today() - timedelta(days=10),
+            end_at=date.today(),
+        )
+        record_new = ObjectRecordFactory.create(
+            data={"diameter": 50},
+            object=record_old.object,
+            start_at=record_old.end_at,
+        )
+        record_new.correct = record_old
+        record_new.save()
+
+        response = self.client.get(
+            self.url, {"data_attrs": "diameter__exact__45", "latest_version": False}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)

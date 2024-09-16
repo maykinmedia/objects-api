@@ -72,3 +72,13 @@ class ObjectRecordQuerySet(models.QuerySet):
         perspective.
         """
         return self.filter(registration_at__lte=date)
+
+    def filter_on_latest_record(self, value: bool):
+        """
+        Filter only on data in latest record if True.
+
+        """
+        if not value:
+            return self
+        else:
+            return self.filter(corrected__isnull=True)
