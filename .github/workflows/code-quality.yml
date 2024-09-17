@@ -1,74 +1,25 @@
 name: code-quality
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**.py'
+      - '**.yml'
+  pull_request:
+    paths:
+      - '**.py'
+      - '**.yml'
+  workflow_dispatch:
 
 jobs:
-  isort:
-    name: Check import sorting
-    runs-on: ubuntu-latest
+  open-api-workflow-code-quality:
+    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@initial-setup
+    with:
+      apt-packages: 'libgdal-dev gdal-bin'
+      python-version: '3.11'
+      node-version: '18'
+      postgres-image: 'postgis/postgis:12-2.5'
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - uses: isort/isort-action@v1
-        with:
-          requirementsFiles: requirements/dev.txt
-          sortPaths: "src docs"
-          configuration: '--check-only --diff'
-
-  black:
-    name: Check code formatting with black
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: |
-          pip install -r requirements/dev.txt
-      - name: Run black
-        run: |
-          black --check src docs
-
-  oas-up-to-date:
-    name: Check for unexpected OAS changes
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install system packages
-        run: |
-          sudo apt-get update \
-          && sudo apt-get install -y --no-install-recommends \
-            libgdal-dev \
-            gdal-bin
-
-      - name: Install dependencies
-        run: pip install -r requirements/ci.txt
-
-      - name: Generate OAS files
-        run: ./bin/generate_schema.sh openapi.yaml
-        env:
-          DJANGO_SETTINGS_MODULE: objects.conf.ci
-
-      - name: Check for OAS changes
-        run: |
-          diff openapi.yaml src/objects/api/v2/openapi.yaml
-      - name: Write failure markdown
-        if: ${{ failure() }}
-        run: |
-          echo 'Run the following command locally and commit the changes' >> $GITHUB_STEP_SUMMARY
-          echo '' >> $GITHUB_STEP_SUMMARY
-          echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo './bin/generate_schema.sh' >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+      django-settings-module: 'objects.conf.ci'
