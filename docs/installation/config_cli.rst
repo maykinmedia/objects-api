@@ -82,7 +82,7 @@ Sites configuration
 
 Configure the domain where Objects API is hosted
 
-* ``SITES_CONFIG_ENABLE``: enable Site configuration. Defaults to ``True``.
+* ``SITES_CONFIG_ENABLE``: enable Site configuration. Defaults to ``False``.
 * ``OBJECTTYPES_DOMAIN``:  a ``[host]:[port]`` or ``[host]`` value. Required.
 * ``OBJECTTYPES_ORGANIZATION``: name of Objecttypes API organization. Required.
 
@@ -93,7 +93,7 @@ Objects API uses Objecttypes API to validate data against JSON schemas, therefor
 it should be able to request Objecttypes API.
 
 * ``OBJECTS_OBJECTTYPES_CONFIG_ENABLE``: enable Objecttypes configuration. Defaults
-  to ``True``.
+  to ``False``.
 * ``OBJECTTYPES_API_ROOT``: full URL to the Objecttypes API root, for example
   ``https://objecttypes.gemeente.local/api/v1/``. Required.
 * ``OBJECTTYPES_API_OAS``: full URL to the Objecttypes OpenAPI specification.
@@ -104,7 +104,7 @@ Demo user configuration
 
 The similar configuration as in Objects API.
 
-* ``DEMO_CONFIG_ENABLE``: enable demo user configuration. Defaults to the value of the ``DEBUG`` setting.
+* ``DEMO_CONFIG_ENABLE``: enable demo user configuration. Defaults to ``False``.
 * ``DEMO_PERSON``: demo user contact person. Required.
 * ``DEMO_EMAIL``: demo user email. Required.
 * ``DEMO_TOKEN``: demo token. Required.
