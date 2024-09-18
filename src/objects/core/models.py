@@ -51,7 +51,7 @@ class ObjectType(models.Model):
         try:
             object_type_data = response.json()
         except requests.exceptions.JSONDecodeError:
-            ValidationError(f"Object type version didn't have any data")
+            ValidationError("Object type version didn't have any data")
 
         if not self._name:
             self._name = object_type_data["name"]
