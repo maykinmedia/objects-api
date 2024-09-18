@@ -10,8 +10,8 @@ export PGPORT=${DB_PORT:-5432}
 fixtures_dir=${FIXTURES_DIR:-/app/fixtures}
 
 uwsgi_port=${UWSGI_PORT:-8000}
-uwsgi_processes=${UWSGI_PROCESSES:-2}
-uwsgi_threads=${UWSGI_THREADS:-2}
+uwsgi_processes=${UWSGI_PROCESSES:-8}
+uwsgi_threads=${UWSGI_THREADS:-4}
 
 mountpoint=${SUBPATH:-/}
 
