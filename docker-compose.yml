@@ -28,6 +28,7 @@ services:
       - DISABLE_2FA=${DISABLE_2FA:-yes}
       - SUBPATH=${SUBPATH}
       # setup_configuration env vars
+      - SITES_CONFIG_ENABLE=yes
       - OBJECTS_DOMAIN=web:8000
       - OBJECTS_ORGANIZATION=Objects
       - OBJECTS_OBJECTTYPES_CONFIG_ENABLE=false

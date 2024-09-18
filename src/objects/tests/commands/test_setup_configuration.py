@@ -17,8 +17,10 @@ from ..utils import mock_service_oas_get
 
 
 @override_settings(
+    SITES_CONFIG_ENABLE=True,
     OBJECTS_DOMAIN="objects.example.com",
     OBJECTS_ORGANIZATION="ACME",
+    OBJECTS_OBJECTTYPES_CONFIG_ENABLE=True,
     OBJECTTYPES_API_ROOT="https://objecttypes.example.com/api/v2/",
     OBJECTTYPES_API_OAS="https://objecttypes.example.com/api/v2/schema/openapi.yaml",
     OBJECTS_OBJECTTYPES_TOKEN="some-random-string",
