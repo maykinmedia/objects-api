@@ -128,7 +128,9 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         return queryset.extra(where=[where_str], params=[value])
 
     def filter_date(self, queryset, name, value: date_):
-        return queryset.filter_for_date(value)
+        """actual filtering is performed in the viewset"""
+        return queryset
 
     def filter_registration_date(self, queryset, name, value: date_):
-        return queryset.filter_for_registration_date(value)
+        """actual filtering is performed in the viewset"""
+        return queryset

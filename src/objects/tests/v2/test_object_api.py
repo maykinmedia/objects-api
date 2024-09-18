@@ -20,7 +20,7 @@ from objects.utils.test import TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
 from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
-from .utils import reverse
+from .utils import reverse, reverse_lazy
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
@@ -492,3 +492,134 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         last_record = object.last_record
         self.assertIsNone(last_record.correct)
+
+
+@freeze_time("2024-08-31")
+class ObjectsAvailableRecordsTests(TokenAuthMixin, APITestCase):
+    """
+    tests for https://github.com/maykinmedia/objects-api/issues/324
+
+    today = 31.08
+
+    Object X
+      record 1: startAt=01.08 endAt=31.08 attr=A
+      record 2: startAt=31.08 endAt=31.08 attr=B
+
+    if filter records on attr=A, no record should be shown
+    if no filter records on attr=A, record 2 should be shown
+    """
+
+    url = reverse_lazy("object-list")
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_and_write,
+            token_auth=cls.token_auth,
+        )
+
+        cls.object = ObjectFactory.create(object_type=cls.object_type)
+        ObjectRecordFactory.create(
+            object=cls.object,
+            data={"name": "old"},
+            start_at="2024-08-01",
+            end_at="2024-08-31",
+            registration_at="2024-08-02",
+        )
+        ObjectRecordFactory.create(
+            object=cls.object,
+            data={"name": "new"},
+            start_at="2024-08-31",
+            end_at="2024-08-31",
+            registration_at="2024-08-30",
+        )
+
+    @freeze_time("2024-08-31")
+    def test_list_available_today(self):
+        with self.subTest("filter on old name"):
+            response = self.client.get(self.url, {"data_attrs": "name__exact__old"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("without filter on old name"):
+            response = self.client.get(self.url)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 1)
+            object_data = response.json()["results"][0]
+            self.assertEqual(object_data["uuid"], str(self.object.uuid))
+            self.assertEqual(object_data["record"]["data"], {"name": "new"})
+
+    def test_list_available_for_date(self):
+        with self.subTest("filter on old name"):
+            response = self.client.get(
+                self.url, {"data_attrs": "name__exact__old", "date": "2024-08-31"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("filter on old name and old date"):
+            response = self.client.get(
+                self.url, {"data_attrs": "name__exact__old", "date": "2024-08-30"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 1)
+            object_data = response.json()["results"][0]
+            self.assertEqual(object_data["uuid"], str(self.object.uuid))
+            self.assertEqual(object_data["record"]["data"], {"name": "old"})
+
+        with self.subTest("without filter on old name"):
+            response = self.client.get(self.url, {"date": "2024-08-31"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 1)
+            object_data = response.json()["results"][0]
+            self.assertEqual(object_data["uuid"], str(self.object.uuid))
+            self.assertEqual(object_data["record"]["data"], {"name": "new"})
+
+    def test_list_incorrect_date(self):
+        response = self.client.get(self.url, {"date": "2024-31-08"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json(), {"date": ["Enter a valid date."]})
+
+    def test_list_available_for_registration_date(self):
+        with self.subTest("filter on old name"):
+            response = self.client.get(
+                self.url,
+                {"data_attrs": "name__exact__old", "registrationDate": "2024-08-31"},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 0)
+
+        with self.subTest("filter on old name and old date"):
+            response = self.client.get(self.url, {"registrationDate": "2024-08-29"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 1)
+            object_data = response.json()["results"][0]
+            self.assertEqual(object_data["uuid"], str(self.object.uuid))
+            self.assertEqual(object_data["record"]["data"], {"name": "old"})
+
+        with self.subTest("without filter on old name"):
+            response = self.client.get(self.url, {"registrationDate": "2024-08-31"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["count"], 1)
+            object_data = response.json()["results"][0]
+            self.assertEqual(object_data["uuid"], str(self.object.uuid))
+            self.assertEqual(object_data["record"]["data"], {"name": "new"})
+
+    def test_list_incorrect_registration_date(self):
+        response = self.client.get(self.url, {"registrationDate": "2024-31-08"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json(), {"registrationDate": ["Enter a valid date."]})
