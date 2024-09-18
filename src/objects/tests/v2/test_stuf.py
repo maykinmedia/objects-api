@@ -24,7 +24,7 @@ OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 class Stuf21Tests(TokenAuthMixin, APITestCase):
-    """ # noqa
+    """# noqa
     Test cases based on the Table 2.1 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|
@@ -274,7 +274,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
 
 
 class Stuf22Tests(TokenAuthMixin, APITestCase):
-    """ # noqa
+    """# noqa
     Test cases based on the Table 2.2 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|tijdstipRegistratie|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|-------------------|
@@ -403,7 +403,7 @@ class Stuf22Tests(TokenAuthMixin, APITestCase):
 
 
 class Stuf23Tests(TokenAuthMixin, APITestCase):
-    """ # noqa
+    """# noqa
     Test cases based on the Table 2.2 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|tijdstipRegistratie|volgnrNaCorrectie|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|-------------------|-----------------|

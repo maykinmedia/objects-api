@@ -498,9 +498,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
             object=object,
             registration_at="2020-01-01",
         )
-        ObjectRecordFactory.create(
-            object=object, registration_at="2021-01-01"
-        )
+        ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
 
@@ -528,9 +526,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         record11 = ObjectRecordFactory.create(
             object=object1, registration_at="2020-01-01"
         )
-        ObjectRecordFactory.create(
-            object=object1, registration_at="2021-01-01"
-        )
+        ObjectRecordFactory.create(object=object1, registration_at="2021-01-01")
         # object 2 - don't show
         ObjectRecordFactory.create(
             object__object_type=self.object_type, registration_at="2021-01-01"
