@@ -2,6 +2,30 @@
 Change history
 ==============
 
+2.4.3 (2024-09-18)
+------------------
+
+**New features**
+
+* supported the `in` operator in `data_attrs` to match one element (#414)
+
+**Bugfixes and QOL**
+
+* hid previous records available on particular date even if they match search parameters (#324)
+* fixed 2FA app title (#442)
+* bumped setuptools and npm dependencies (#441)
+
+**Project maintaince**
+
+* disabled cofiguration steps by default (#446)
+* increase default values for uwsgi processes and threads (#448)
+
+.. warning::
+
+    All configuration steps are now disabled by default. To enable them use the correspondent
+    environment variables
+
+
 2.4.2 (2024-08-26)
 ------------------
 
