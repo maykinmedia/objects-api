@@ -52,6 +52,9 @@ class PermissionAdmin(admin.ModelAdmin):
             except requests.JSONDecodeError:
                 continue
 
+            if "results" in response_data:
+                response_data = response_data["results"]
+
             # use only first level of properties
             data_fields[object_type.id] = {
                 version["version"]: {
