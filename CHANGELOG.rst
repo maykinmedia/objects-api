@@ -7,6 +7,7 @@ Change history
 
 **New features**
 
+* added an endpoint to retrieve a specific object version (#328)
 * supported the `in` operator in `data_attrs` to match one element (#414)
 
 **Bugfixes and QOL**
@@ -15,9 +16,9 @@ Change history
 * fixed 2FA app title (#442)
 * bumped setuptools and npm dependencies (#441)
 
-**Project maintaince**
+**Project maintenance**
 
-* disabled cofiguration steps by default (#446)
+* disabled configuration steps by default (#446)
 * increase default values for uwsgi processes and threads (#448)
 
 .. warning::
