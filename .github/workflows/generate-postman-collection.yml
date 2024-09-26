@@ -12,11 +12,7 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: ['v1', 'v2']
-
-    name: Run with version ${{ matrix.version }}
+    name: Generate Postman collection
 
     steps:
       - uses: actions/checkout@v4
@@ -29,4 +25,4 @@ jobs:
       - name: Create tests folder
         run: mkdir -p ./tests/postman
       - name: Generate Postman collection
-        run: openapi2postmanv2 -s ./src/objects/api/${{ matrix.version }}/openapi.yaml -o ./tests/postman/collection.json --pretty
+        run: openapi2postmanv2 -s ./src/objects/api/v2/openapi.yaml -o ./tests/postman/collection.json --pretty

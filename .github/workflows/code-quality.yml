@@ -35,11 +35,8 @@ jobs:
           black --check src docs
 
   oas-up-to-date:
-    name: Check for unexepected OAS changes
+    name: Check for unexpected OAS changes
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: ['v1', 'v2']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -60,18 +57,18 @@ jobs:
         run: pip install -r requirements/ci.txt
 
       - name: Generate OAS files
-        run: ./bin/generate_schema.sh ${{ matrix.version }} openapi-${{ matrix.version }}.yaml
+        run: ./bin/generate_schema.sh openapi.yaml
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
 
       - name: Check for OAS changes
         run: |
-          diff openapi-${{ matrix.version }}.yaml src/objects/api/${{ matrix.version }}/openapi.yaml
+          diff openapi.yaml src/objects/api/v2/openapi.yaml
       - name: Write failure markdown
         if: ${{ failure() }}
         run: |
           echo 'Run the following command locally and commit the changes' >> $GITHUB_STEP_SUMMARY
           echo '' >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo './bin/generate_schema.sh ${{ matrix.version }}' >> $GITHUB_STEP_SUMMARY
+          echo './bin/generate_schema.sh' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
