@@ -87,8 +87,6 @@ these operations are published to the configured Notifications API in the
 """
 
 SPECTACULAR_SETTINGS = {
-    "SWAGGER_UI_DIST": "SIDECAR",
-    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
     "SCHEMA_PATH_PREFIX": r"/api/v[1-9]+",
     "SCHEMA_PATH_PREFIX_TRIM": True,
