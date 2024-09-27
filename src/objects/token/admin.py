@@ -52,6 +52,10 @@ class PermissionAdmin(admin.ModelAdmin):
             except requests.JSONDecodeError:
                 continue
 
+            # TODO: remove check once API V1 is removed
+            if "results" in response_data:
+                response_data = response_data["results"]
+
             # use only first level of properties
             data_fields[object_type.id] = {
                 version["version"]: {
