@@ -40,18 +40,24 @@ class PermissionAdminTests(VCRMixin, TestCase):
             header_key="Authorization",
             header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
         )
-        ObjectTypeFactory(
+        object_type = ObjectTypeFactory(
             service=v1_service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
 
         response = self.client.get(self.url)
 
-        print(response)
         self.assertEqual(response.status_code, 200)
 
+        form = response.context["adminform"].form
+        choices = list(form.fields["object_type"].choices)
+
         self.assertEqual(
-            self.cassette.requests[1].uri,
-            "http://127.0.0.1:8008/api/v1/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions",
+            choices[1][0].value,
+            object_type.id,
+        )
+        self.assertEqual(
+            choices[1][1],
+            f"{v1_service.label}: {object_type._name}",
         )
 
     @tag("#449")
@@ -66,14 +72,21 @@ class PermissionAdminTests(VCRMixin, TestCase):
             header_key="Authorization",
             header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
         )
-        ObjectTypeFactory(
+        object_type = ObjectTypeFactory(
             service=v2_service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
+        form = response.context["adminform"].form
+        choices = list(form.fields["object_type"].choices)
+
         self.assertEqual(
-            self.cassette.requests[1].uri,
-            "http://127.0.0.1:8008/api/v2/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions",
+            choices[1][0].value,
+            object_type.id,
+        )
+        self.assertEqual(
+            choices[1][1],
+            f"{v2_service.label}: {object_type._name}",
         )
