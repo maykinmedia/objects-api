@@ -88,11 +88,19 @@ jobs:
   open-api-ci:
     uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@initial-setup
     needs:
-      - tests
       - store-reusable-workflow-vars
     with:
       main-branch: 'master'
       python-version: '3.11'
+      docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
+
+  open-api-publish:
+    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@initial-setup
+    needs:
+      - store-reusable-workflow-vars
+      - open-api-ci
+      - tests
+    with:
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
       repository-owner: 'maykinmedia'
     secrets:
