@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Objects API
-  version: 2.4.3 (v2)
+  version: 2.4.3
   description: |
     An API to manage Objects.
 
@@ -1148,10 +1148,10 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+servers:
+- url: /api/v2
 tags:
 - name: objects
 - name: permissions
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/
-servers:
-- url: /api/v2

@@ -1,5 +1,4 @@
 API_VERSION = "2.4.3"
-VERSIONS = {"v1": "1.3.0", "v2": "2.4.3"}
 
 # api settings
 REST_FRAMEWORK = {
@@ -12,7 +11,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_VERSION": "v2",  # NOT to be confused with API_VERSION - it's the major version part
-    "ALLOWED_VERSIONS": ("v1", "v2"),
+    "ALLOWED_VERSIONS": ("v2",),
     "VERSION_PARAM": "version",
     "EXCEPTION_HANDLER": "objects.utils.views.exception_handler",
     # test
@@ -99,16 +98,13 @@ SPECTACULAR_SETTINGS = {
     "EXTERNAL_DOCS": {
         "url": "https://objects-and-objecttypes-api.readthedocs.io/",
     },
-    "VERSION": None,
+    "VERSION": API_VERSION,
     "COMPONENT_NO_READ_ONLY_REQUIRED": True,
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
-        "objects.utils.hooks.postprocess_servers",
-        "objects.utils.hooks.postprocess_versions",
     ],
     "TAGS": [{"name": "objects"}, {"name": "permissions"}],
+    "SERVERS": [{"url": "/api/v2"}],
 }
-
-OAS_SERVERS = {"v1": [{"url": "/api/v1"}], "v2": [{"url": "/api/v2"}]}
 
 UNAUTHORIZED_FIELDS_HEADER = "X-Unauthorized-Fields"
