@@ -302,10 +302,11 @@ drf-nested-routers==0.93.3
 drf-spectacular[sidecar]==0.27.2
     # via
     #   -r requirements/base.txt
+    #   drf-spectacular
     #   open-api-framework
 drf-spectacular-sidecar==2024.7.1
     # via
-    #   -r requirements/ci.txt
+    #   -r requirements/base.txt
     #   drf-spectacular
 drf-yasg==1.21.7
     # via
