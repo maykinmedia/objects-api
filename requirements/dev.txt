@@ -266,7 +266,6 @@ django-solo==2.2.0
 django-two-factor-auth[phonenumberslite,webauthn]==1.17.0
     # via
     #   -r requirements/ci.txt
-    #   django-two-factor-auth
     #   maykin-2fa
 django-webtest==1.9.7
     # via -r requirements/ci.txt
@@ -307,7 +306,6 @@ drf-nested-routers==0.93.3
 drf-spectacular[sidecar]==0.27.2
     # via
     #   -r requirements/ci.txt
-    #   drf-spectacular
     #   open-api-framework
 drf-spectacular-sidecar==2024.7.1
     # via
@@ -459,7 +457,7 @@ phonenumberslite==8.13.30
     # via
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pip-tools==7.3.0
+pip-tools==7.4.1
     # via -r requirements/dev.in
 platformdirs==4.0.0
     # via black
@@ -500,7 +498,9 @@ pyopenssl==24.0.0
     #   webauthn
     #   zgw-consumers
 pyproject-hooks==1.0.0
-    # via build
+    # via
+    #   build
+    #   pip-tools
 pyquery==1.4.3
     # via -r requirements/ci.txt
 pyrsistent==0.17.3
