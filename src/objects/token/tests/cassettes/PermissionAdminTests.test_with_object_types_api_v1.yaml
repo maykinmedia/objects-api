@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://127.0.0.1:8008/api/v1/objecttypes
+  response:
+    body:
+      string: '[{"url":"http://127.0.0.1:8008/api/v1/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e","uuid":"71a2452a-66c3-4030-b5ec-a06035102e9e","name":"Garry","namePlural":"Garrys","description":"","dataClassification":"open","maintainerOrganization":"","maintainerDepartment":"","contactPerson":"","contactEmail":"","source":"","updateFrequency":"unknown","providerOrganization":"","documentationUrl":"","labels":{},"createdAt":"2024-09-24","modifiedAt":"2024-09-24","allowGeometry":true,"versions":["http://127.0.0.1:8008/api/v1/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions/1"]}]'
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '584'
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Tue, 24 Sep 2024 14:49:45 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.11.10
+      Server-Timing:
+      - TimerPanel_utime;dur=66.08599999999998;desc="User CPU time", TimerPanel_stime;dur=41.489;desc="System
+        CPU time", TimerPanel_total;dur=107.57499999999999;desc="Total CPU time",
+        TimerPanel_total_time;dur=109.82951400001184;desc="Elapsed time", SQLPanel_sql_time;dur=2.634805998241063;desc="SQL
+        3 queries", CachePanel_total_time;dur=0;desc="Cache 0 Calls"
+      Vary:
+      - origin, Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      djdt-store-id:
+      - 011b401c548140e393c17931b9eed7e2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://127.0.0.1:8008/api/v1/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions
+  response:
+    body:
+      string: '[{"url":"http://127.0.0.1:8008/api/v1/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions/1","version":1,"objectType":"http://127.0.0.1:8008/api/v1/objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e","status":"draft","jsonSchema":{"string":"value"},"createdAt":"2024-09-24","modifiedAt":"2024-09-24","publishedAt":null}]'
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '324'
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Tue, 24 Sep 2024 14:49:45 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.11.10
+      Server-Timing:
+      - TimerPanel_utime;dur=26.51400000000004;desc="User CPU time", TimerPanel_stime;dur=8.871000000000018;desc="System
+        CPU time", TimerPanel_total;dur=35.385000000000055;desc="Total CPU time",
+        TimerPanel_total_time;dur=29.870047997974325;desc="Elapsed time", SQLPanel_sql_time;dur=3.140712000458734;desc="SQL
+        3 queries", CachePanel_total_time;dur=0;desc="Cache 0 Calls"
+      Vary:
+      - origin, Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      djdt-store-id:
+      - 58b76bf29d284ba694ccdabb76919aa7
+    status:
+      code: 200
+      message: OK
+version: 1

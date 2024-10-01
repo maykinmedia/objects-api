@@ -2,11 +2,35 @@
 Change history
 ==============
 
+3.0.0 (WIP)
+-----------
+
+**Breaking changes**
+
+* dropped support for v1 endpoints (#453)
+
+
+2.4.4 (2024-10-01)
+------------------
+
+**Bugfixes and QOL**
+
+* fixed CSP errors on the OAS page (#458)
+* fixed OIDC login by making SameSite setting lax (#458)
+* fixed adding permissions in the Admin (#449)
+* fixed ``NOTIFICATIONS_DISABLED`` setting (#452)
+
+**Project maintenance**
+
+* added CI action to check if OAF is up-to-date (#443)
+
+
 2.4.3 (2024-09-18)
 ------------------
 
 **New features**
 
+* added an endpoint to retrieve a specific object version (#328)
 * supported the `in` operator in `data_attrs` to match one element (#414)
 
 **Bugfixes and QOL**
@@ -15,9 +39,9 @@ Change history
 * fixed 2FA app title (#442)
 * bumped setuptools and npm dependencies (#441)
 
-**Project maintaince**
+**Project maintenance**
 
-* disabled cofiguration steps by default (#446)
+* disabled configuration steps by default (#446)
 * increase default values for uwsgi processes and threads (#448)
 
 .. warning::
