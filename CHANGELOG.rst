@@ -2,6 +2,29 @@
 Change history
 ==============
 
+3.0.0 (WIP)
+-----------
+
+**Breaking changes**
+
+* dropped support for v1 endpoints (#453)
+
+
+2.4.4 (2024-10-01)
+------------------
+
+**Bugfixes and QOL**
+
+* fixed CSP errors on the OAS page (#458)
+* fixed OIDC login by making SameSite setting lax (#458)
+* fixed adding permissions in the Admin (#449)
+* fixed ``NOTIFICATIONS_DISABLED`` setting (#452)
+
+**Project maintenance**
+
+* added CI action to check if OAF is up-to-date (#443)
+
+
 2.4.3 (2024-09-18)
 ------------------
 
