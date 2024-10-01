@@ -1,9 +1,15 @@
 name: Check Open API Framework Version
 
 on:
+  push:
+    branches:
+      - master
+    tags:
+      - '**'
+  pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '36 0 * * 0'
+    - cron: '00 7 * * 1'
 
 jobs:
   run:
