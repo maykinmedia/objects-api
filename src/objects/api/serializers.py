@@ -126,7 +126,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
     @transaction.atomic
     def update(self, instance, validated_data):
         # object_data is not used since all object attributes are immutable
-        object_data = validated_data.pop("object", None)
+        validated_data.pop("object", None)
         validated_data["object"] = instance.object
         # version should be set
         if "version" not in validated_data:

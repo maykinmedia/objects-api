@@ -1,0 +1,24 @@
+name: check-oas
+
+on:
+  push:
+    paths:
+      - "src/objects/api/*/openapi.yaml"
+      - .github/workflows/oas-check.yml
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  open-api-workflow-check-oas:
+    uses: maykinmedia/open-api-workflows/.github/workflows/oas-check.yml@v1
+    strategy:
+      matrix:
+        version:
+          - v2
+    with:
+      schema-path: 'src/objects/api/${{ matrix.version }}/openapi.yaml'
+      schema-options: "--api-version ${{ matrix.version }}"
+      python-version: '3.11'
+      django-settings-module: 'objects.conf.ci'
+      apt-packages: 'libgdal-dev gdal-bin'
