@@ -1,5 +1,6 @@
 tags:
   postgresql: true
+  redis: true
 
 replicaCount: 1
 
@@ -12,12 +13,16 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+existingSecret: null
+
 serviceAccount:
   create: true
   annotations: {}
   name: ""
 
 podAnnotations: {}
+
+podLabels: {}
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -74,7 +79,15 @@ affinity: {}
 
 settings:
   secretKey: NOT-SO-SECRET
-  allowedHosts: "*"
+  allowedHosts: "objects"
+  admins: ""
+  siteId: ""
+  debug: "False"
+  isHttps: "True"
+  subPath: ""
+  notificationsDisabled: "False"
+  twoFactorForceOtpAdmin: "True"
+  twoFactorPatchAdmin: "True"
 
   database:
     host: objects-postgresql
@@ -82,7 +95,14 @@ settings:
     username: postgres
     password: objects
     name: postgres
+    sslmode: prefer
+  
+  cache:
+    default: open-zaak-redis-master:6379/0
+    axes: open-zaak-redis-master:6379/0
 
+  sentry:
+    dsn: ""
 
 #########################
 ## PostgreSQL subchart ##
@@ -91,3 +111,22 @@ postgresql:
   postgresqlPassword: objects
   postgresqlPostgresPassword: objects
   image.tag: 12.8.0
+
+
+##################
+# Redis subchart #
+##################
+
+redis:
+  usePassword: false
+
+  cluster:
+    enabled: false
+
+  persistence:
+    existingClaim: null
+
+  master:
+    persistence:
+      enabled: false
+      size: 1Gi
