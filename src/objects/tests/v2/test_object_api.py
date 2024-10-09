@@ -333,6 +333,42 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
+    def test_patch_validates_merged_object_rather_than_partial_object(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        initial_record = ObjectRecordFactory.create(
+            version=1,
+            object__object_type=self.object_type,
+            start_at=date.today(),
+            data={"name": "Name", "diameter": 20},
+        )
+
+        url = reverse("object-detail", args=[initial_record.object.uuid])
+        data = {
+            "record": {
+                "data": {
+                    # Note the required fields are missing, and that should be fine:
+                    # the _merged_ object should be valid according to the schema, not
+                    # the partial.
+                    "plantDate": "2024-10-09"
+                },
+            },
+        }
+
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        initial_record.refresh_from_db()
+        self.assertEqual(
+            initial_record.data,
+            {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},
+        )
+
+
     def test_delete_object(self, m):
         record = ObjectRecordFactory.create(object__object_type=self.object_type)
         object = record.object
