@@ -179,7 +179,9 @@ djangorestframework-inclusions==1.2.0
 drf-nested-routers==0.93.3
     # via commonground-api-common
 drf-spectacular[sidecar]==0.27.2
-    # via open-api-framework
+    # via
+    #   drf-spectacular
+    #   open-api-framework
 drf-spectacular-sidecar==2024.7.1
     # via drf-spectacular
 drf-yasg==1.21.7

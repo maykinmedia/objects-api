@@ -262,6 +262,7 @@ django-solo==2.2.0
 django-two-factor-auth[phonenumberslite,webauthn]==1.17.0
     # via
     #   -r requirements/base.txt
+    #   django-two-factor-auth
     #   maykin-2fa
 django-webtest==1.9.7
     # via -r requirements/test-tools.in
