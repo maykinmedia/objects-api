@@ -7,3 +7,8 @@ pyquery  # integrates with webtest
 requests-mock
 tblib
 vcrpy
+
+# Code formatting
+black
+isort
+flake8
