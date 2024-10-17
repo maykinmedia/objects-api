@@ -56,4 +56,4 @@ class ObjecttypesStep(BaseConfigurationStep):
         try:
             response.json()
         except requests.exceptions.JSONDecodeError:
-            raise SelfTestFailed(f"Object type version didn't have any data")
+            raise SelfTestFailed("Object type version didn't have any data")

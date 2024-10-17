@@ -48,7 +48,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             object__object_type=self.object_type,
             start_at=date.today(),
         )
-        object_record2 = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date.today() - timedelta(days=10),
             end_at=date.today() - timedelta(days=1),

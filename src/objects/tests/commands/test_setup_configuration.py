@@ -59,7 +59,7 @@ class SetupConfigurationTests(TestCase):
                 f"{ObjecttypesStep()} is successfully configured",
                 f"Configuring {DemoUserStep()}...",
                 f"{DemoUserStep()} is successfully configured",
-                f"Instance configuration completed.",
+                "Instance configuration completed.",
             ]
 
             self.assertEqual(command_output, expected_output)
