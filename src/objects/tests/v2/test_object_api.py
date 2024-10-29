@@ -361,13 +361,16 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        initial_record.refresh_from_db()
         self.assertEqual(
-            initial_record.data,
+            response.json()["record"]["data"],
             {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},
         )
 
+        last_record = initial_record.object.last_record
+        self.assertEqual(
+            last_record.data,
+            {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},
+        )
 
     def test_delete_object(self, m):
         record = ObjectRecordFactory.create(object__object_type=self.object_type)
