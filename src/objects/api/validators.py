@@ -9,7 +9,7 @@ from zgw_consumers.client import build_client
 from objects.core.utils import check_objecttype
 
 from .constants import Operators
-from .utils import string_to_value
+from .utils import merge_patch, string_to_value
 
 
 class JsonSchemaValidator:
@@ -34,6 +34,9 @@ class JsonSchemaValidator:
             )
             version = attrs.get("version") if "version" in attrs else instance.version
             data = attrs.get("data", {}) if "data" in attrs else instance.data
+            if serializer.partial and "data" in attrs:
+                # Apply JSON Merge Patch for record data
+                data = merge_patch(instance.data, attrs["data"])
 
         if not object_type or not version:
             return
