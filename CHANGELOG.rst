@@ -2,27 +2,13 @@
 Change history
 ==============
 
-3.0.0 (WIP)
------------
+2.x.x
+=====
+*TBD*
 
-**Breaking changes**
+**New features**
 
-* dropped support for v1 endpoints (#453)
-
-
-2.4.4 (2024-10-01)
-------------------
-
-**Bugfixes and QOL**
-
-* fixed CSP errors on the OAS page (#458)
-* fixed OIDC login by making SameSite setting lax (#458)
-* fixed adding permissions in the Admin (#449)
-* fixed ``NOTIFICATIONS_DISABLED`` setting (#452)
-
-**Project maintenance**
-
-* added CI action to check if OAF is up-to-date (#443)
+* Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
 
 
 2.4.3 (2024-09-18)
@@ -84,7 +70,7 @@ Change history
 **Bugfixes and QOL**
 
 * added Celery healthcheck
-* made user emails unique to prevent two users logging in with the same email, 
+* made user emails unique to prevent two users logging in with the same email,
   causing an error
 
 **Project maintenance**
@@ -93,8 +79,8 @@ Change history
 
 .. warning::
 
-    User email addresses will now be unique on a database level. The database 
-    migration will fail if there are already two or more users with the same 
+    User email addresses will now be unique on a database level. The database
+    migration will fail if there are already two or more users with the same
     email address. You must ensure this is not the case before upgrading.
 
 2.4.0 (2024-07-05)
@@ -103,7 +89,7 @@ Change history
 **New features**
 
 * added superuser permissions to API (#369)
-* added `setup_configuration` management command which can configure API with 
+* added `setup_configuration` management command which can configure API with
   environment variables (#368)
 * added `Record.data` as a search filter in the Admin (#381)
 * displayed `Objecttype.uuid` in the Objecttype and Object admin pages (#315)
