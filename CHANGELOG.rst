@@ -2,6 +2,15 @@
 Change history
 ==============
 
+2.x.x
+=====
+*TBD*
+
+**New features**
+
+* Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
+
+
 2.4.3 (2024-09-18)
 ------------------
 
@@ -61,7 +70,7 @@ Change history
 **Bugfixes and QOL**
 
 * added Celery healthcheck
-* made user emails unique to prevent two users logging in with the same email, 
+* made user emails unique to prevent two users logging in with the same email,
   causing an error
 
 **Project maintenance**
@@ -70,8 +79,8 @@ Change history
 
 .. warning::
 
-    User email addresses will now be unique on a database level. The database 
-    migration will fail if there are already two or more users with the same 
+    User email addresses will now be unique on a database level. The database
+    migration will fail if there are already two or more users with the same
     email address. You must ensure this is not the case before upgrading.
 
 2.4.0 (2024-07-05)
@@ -80,7 +89,7 @@ Change history
 **New features**
 
 * added superuser permissions to API (#369)
-* added `setup_configuration` management command which can configure API with 
+* added `setup_configuration` management command which can configure API with
   environment variables (#368)
 * added `Record.data` as a search filter in the Admin (#381)
 * displayed `Objecttype.uuid` in the Objecttype and Object admin pages (#315)
