@@ -805,6 +805,7 @@
     "pk": 1,
     "fields": {
         "label": "Objecttypen API",
+        "slug": "objecttypen-api",
         "api_type": "orc",
         "api_root": "http://localhost:8001/api/v1/",
         "client_id": "",
