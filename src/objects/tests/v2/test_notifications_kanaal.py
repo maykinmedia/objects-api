@@ -47,7 +47,7 @@ class CreateNotifKanaalTestCase(APITestCase):
         Test is request to create kanaal is send with specified kanaal name
         """
         client = mock_get_client.return_value
-        client.list.return_value = []
+        client.get.return_value = []
 
         stdout = StringIO()
         call_command(
@@ -56,9 +56,9 @@ class CreateNotifKanaalTestCase(APITestCase):
             stdout=stdout,
         )
 
-        client.create.assert_called_once_with(
+        client.post.assert_called_once_with(
             "kanaal",
-            {
+            json={
                 "naam": "kanaal_test",
                 "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
                 "filters": [],
@@ -72,7 +72,7 @@ class CreateNotifKanaalTestCase(APITestCase):
         Test is request to create kanaal is send with default kanaal name
         """
         client = mock_get_client.return_value
-        client.list.return_value = []
+        client.get.return_value = []
 
         stdout = StringIO()
         call_command(
@@ -80,11 +80,11 @@ class CreateNotifKanaalTestCase(APITestCase):
             stdout=stdout,
         )
 
-        client.create.assert_has_calls(
+        client.post.assert_has_calls(
             [
                 call(
                     "kanaal",
-                    {
+                    json={
                         "naam": "kanaal_test",
                         "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
                         "filters": [],
@@ -92,7 +92,7 @@ class CreateNotifKanaalTestCase(APITestCase):
                 ),
                 call(
                     "kanaal",
-                    {
+                    json={
                         "naam": "objecten",
                         "documentatieLink": "https://example.com/ref/kanalen/#objecten",
                         "filters": ["object_type"],

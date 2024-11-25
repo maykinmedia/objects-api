@@ -66,10 +66,6 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
 # Relying Party name for WebAuthn (hardware tokens)
 TWO_FACTOR_WEBAUTHN_RP_NAME = "objects api"
 
-
-# VNG API Common
-CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
-
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
 
