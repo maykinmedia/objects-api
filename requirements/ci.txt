@@ -11,6 +11,8 @@ amqp==5.2.0
 ape-pie==0.2.0
     # via
     #   -r requirements/base.txt
+    #   commonground-api-common
+    #   notifications-api-common
     #   zgw-consumers
 asgiref==3.7.2
     # via
@@ -91,7 +93,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/ci.in
-commonground-api-common==1.13.0
+commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@issue/44-migration-error
     # via
     #   -r requirements/base.txt
     #   open-api-framework
@@ -279,7 +281,7 @@ djangorestframework-inclusions==1.2.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
-drf-nested-routers==0.93.3
+drf-nested-routers==0.94.1
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -323,12 +325,6 @@ furl==2.1.3
     # via
     #   -r requirements/base.txt
     #   ape-pie
-gemma-zds-client==2.0.0
-    # via
-    #   -r requirements/base.txt
-    #   commonground-api-common
-    #   notifications-api-common
-    #   zgw-consumers
 glom==23.5.0
     # via
     #   -r requirements/base.txt
@@ -403,7 +399,7 @@ multidict==6.0.5
     # via yarl
 mypy-extensions==1.0.0
     # via black
-notifications-api-common==0.2.2
+notifications-api-common==0.3.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -457,14 +453,13 @@ pyjwt==2.4.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
-    #   gemma-zds-client
+    #   zgw-consumers
 pyopenssl==24.0.0
     # via
     #   -r requirements/base.txt
     #   django-simple-certmanager
     #   josepy
     #   webauthn
-    #   zgw-consumers
 pyquery==1.4.3
     # via -r requirements/test-tools.in
 pyrsistent==0.17.3
@@ -498,7 +493,6 @@ pyyaml==6.0.1
     #   -r requirements/base.txt
     #   drf-spectacular
     #   drf-yasg
-    #   gemma-zds-client
     #   oyaml
     #   vcrpy
 qrcode==6.1
@@ -517,13 +511,15 @@ requests==2.32.3
     #   commonground-api-common
     #   coreapi
     #   django-log-outgoing-requests
-    #   gemma-zds-client
     #   mozilla-django-oidc
     #   open-api-framework
     #   requests-mock
     #   zgw-consumers
-requests-mock==1.8.0
-    # via -r requirements/test-tools.in
+requests-mock==1.12.1
+    # via
+    #   -r requirements/base.txt
+    #   -r requirements/test-tools.in
+    #   commonground-api-common
 sentry-sdk==2.12.0
     # via
     #   -r requirements/base.txt
@@ -537,7 +533,6 @@ six==1.16.0
     #   orderedmultidict
     #   python-dateutil
     #   qrcode
-    #   requests-mock
     #   webtest
 soupsieve==2.2.1
     # via beautifulsoup4
@@ -557,6 +552,7 @@ typing-extensions==4.9.0
     # via
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   zgw-consumers
 tzdata==2024.1
     # via
     #   -r requirements/base.txt
@@ -610,9 +606,10 @@ wrapt==1.14.1
     #   vcrpy
 yarl==1.9.4
     # via vcrpy
-zgw-consumers==0.29.0
+zgw-consumers==0.35.1
     # via
     #   -r requirements/base.txt
+    #   commonground-api-common
     #   notifications-api-common
     #   open-api-framework
 
