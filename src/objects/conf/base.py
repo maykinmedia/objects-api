@@ -88,6 +88,7 @@ CELERY_TASK_TIME_LIMIT = config(
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = [
+    "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
     "objects.config.site.SiteConfigurationStep",
     "objects.config.objecttypes.ObjecttypesStep",
     "objects.config.demo.DemoUserStep",
