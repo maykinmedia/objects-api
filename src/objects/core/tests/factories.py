@@ -6,20 +6,9 @@ from django.contrib.gis.geos import Point
 
 import factory
 from factory.fuzzy import BaseFuzzyAttribute
-from zgw_consumers.constants import APITypes, AuthTypes
-from zgw_consumers.models import Service
+from zgw_consumers.test.factories import ServiceFactory
 
 from ..models import Object, ObjectRecord, ObjectType
-
-
-class ServiceFactory(factory.django.DjangoModelFactory):
-    label = factory.Faker("word")
-    api_root = factory.Faker("url")
-    api_type = APITypes.orc
-    auth_type = AuthTypes.no_auth
-
-    class Meta:
-        model = Service
 
 
 class ObjectTypeFactory(factory.django.DjangoModelFactory):

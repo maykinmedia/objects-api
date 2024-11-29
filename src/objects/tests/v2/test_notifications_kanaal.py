@@ -1,10 +1,10 @@
 from io import StringIO
-from unittest.mock import call, patch
 
 from django.contrib.sites.models import Site
 from django.core.management import call_command
 from django.test import override_settings
 
+import requests_mock
 from notifications_api_common.kanalen import KANAAL_REGISTRY
 from notifications_api_common.models import NotificationsConfig
 from rest_framework.test import APITestCase
@@ -13,6 +13,8 @@ from zgw_consumers.models import Service
 
 from objects.api.kanalen import ObjectKanaal
 from objects.core.models import Object
+
+NOTIFICATIONS_API_ROOT = "https://notificaties-api.vng.cloud/api/v1/"
 
 
 @override_settings(IS_HTTPS=True)
@@ -28,7 +30,7 @@ class CreateNotifKanaalTestCase(APITestCase):
         cls.addClassCleanup(lambda: KANAAL_REGISTRY.remove(kanaal))
 
         service, _ = Service.objects.update_or_create(
-            api_root="https://notificaties-api.vng.cloud/api/v1/",
+            api_root=NOTIFICATIONS_API_ROOT,
             defaults=dict(
                 api_type=APITypes.nrc,
                 client_id="test",
@@ -41,13 +43,13 @@ class CreateNotifKanaalTestCase(APITestCase):
         config.notifications_api_service = service
         config.save()
 
-    @patch("notifications_api_common.models.NotificationsConfig.get_client")
-    def test_kanaal_create_with_name(self, mock_get_client):
+    @requests_mock.Mocker()
+    def test_kanaal_create_with_name(self, m):
         """
         Test is request to create kanaal is send with specified kanaal name
         """
-        client = mock_get_client.return_value
-        client.list.return_value = []
+        m.get(f"{NOTIFICATIONS_API_ROOT}kanaal?naam=kanaal_test", json=[])
+        m.post(f"{NOTIFICATIONS_API_ROOT}kanaal")
 
         stdout = StringIO()
         call_command(
@@ -56,8 +58,10 @@ class CreateNotifKanaalTestCase(APITestCase):
             stdout=stdout,
         )
 
-        client.create.assert_called_once_with(
-            "kanaal",
+        self.assertEqual(m.last_request.url, f"{NOTIFICATIONS_API_ROOT}kanaal")
+        self.assertEqual(m.last_request.method, "POST")
+        self.assertEqual(
+            m.last_request.json(),
             {
                 "naam": "kanaal_test",
                 "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
@@ -65,14 +69,14 @@ class CreateNotifKanaalTestCase(APITestCase):
             },
         )
 
-    @patch("notifications_api_common.models.NotificationsConfig.get_client")
     @override_settings(NOTIFICATIONS_KANAAL="dummy-kanaal")
-    def test_kanaal_create_without_name(self, mock_get_client):
+    @requests_mock.Mocker()
+    def test_kanaal_create_without_name(self, m):
         """
         Test is request to create kanaal is send with default kanaal name
         """
-        client = mock_get_client.return_value
-        client.list.return_value = []
+        m.get(f"{NOTIFICATIONS_API_ROOT}kanaal", json=[])
+        m.post(f"{NOTIFICATIONS_API_ROOT}kanaal")
 
         stdout = StringIO()
         call_command(
@@ -80,23 +84,24 @@ class CreateNotifKanaalTestCase(APITestCase):
             stdout=stdout,
         )
 
-        client.create.assert_has_calls(
-            [
-                call(
-                    "kanaal",
-                    {
-                        "naam": "kanaal_test",
-                        "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
-                        "filters": [],
-                    },
-                ),
-                call(
-                    "kanaal",
-                    {
-                        "naam": "objecten",
-                        "documentatieLink": "https://example.com/ref/kanalen/#objecten",
-                        "filters": ["object_type"],
-                    },
-                ),
-            ]
+        post_req1, post_req2 = [
+            req
+            for req in m.request_history
+            if req.method == "POST" and req.url == f"{NOTIFICATIONS_API_ROOT}kanaal"
+        ]
+        self.assertEqual(
+            post_req1.json(),
+            {
+                "naam": "kanaal_test",
+                "documentatieLink": "https://example.com/ref/kanalen/#kanaal_test",
+                "filters": [],
+            },
+        )
+        self.assertEqual(
+            post_req2.json(),
+            {
+                "naam": "objecten",
+                "documentatieLink": "https://example.com/ref/kanalen/#objecten",
+                "filters": ["object_type"],
+            },
         )

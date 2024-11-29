@@ -7,6 +7,7 @@ from django.urls import reverse
 
 import requests_mock
 from rest_framework import status
+from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
 
 from objects.config.demo import DemoUserStep
@@ -70,10 +71,13 @@ class SetupConfigurationTests(TestCase):
             self.assertEqual(site.name, "Objects ACME")
 
         with self.subTest("Objects can query Objecttypes API"):
-            client = Service.get_client("https://objecttypes.example.com/api/v2/")
+            client = build_client(
+                Service.objects.get(api_root="https://objecttypes.example.com/api/v2/")
+            )
+
             self.assertIsNotNone(client)
 
-            client.list("objecttype")
+            client.get("objecttypes")
 
             list_call = m.last_request
             self.assertEqual(
