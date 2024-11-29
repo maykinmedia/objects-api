@@ -1,5 +1,4 @@
 open-api-framework
-git+https://github.com/maykinmedia/commonground-api-common.git@issue/44-migration-error
 
 # Core python libraries
 glom # data represenation based on spec
