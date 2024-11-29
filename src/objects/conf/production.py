@@ -4,6 +4,7 @@ os.environ.setdefault("ENVIRONMENT", "production")
 
 from .base import *  # noqa isort:skip
 
+os.environ.setdefault("RELEASE", API_VERSION)
 #
 # Standard Django settings.
 #
