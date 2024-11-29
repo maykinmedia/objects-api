@@ -59,10 +59,8 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@issue/44-migration-error
-    # via
-    #   -r requirements/base.in
-    #   open-api-framework
+commonground-api-common==2.1.0
+    # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
@@ -240,7 +238,7 @@ mozilla-django-oidc==4.0.0
     # via mozilla-django-oidc-db
 mozilla-django-oidc-db==0.19.0
     # via open-api-framework
-notifications-api-common==0.3.0
+notifications-api-common==0.3.1
     # via
     #   -r requirements/base.in
     #   commonground-api-common

@@ -93,7 +93,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/ci.in
-commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@issue/44-migration-error
+commonground-api-common==2.1.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
@@ -399,7 +399,7 @@ multidict==6.0.5
     # via yarl
 mypy-extensions==1.0.0
     # via black
-notifications-api-common==0.3.0
+notifications-api-common==0.3.1
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
