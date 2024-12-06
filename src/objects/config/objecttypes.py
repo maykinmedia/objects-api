@@ -2,14 +2,12 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
-from zgw_consumers.contrib.setup_configuration.models import SingleServiceConfigurationModel
 from zgw_consumers.models import Service
 
 from objects.config.models import ObjectTypesConfigurationModel
 from objects.core.models import ObjectType
 
 
-# TODO: remove previously used django settings?
 class ObjectTypesConfigurationStep(BaseConfigurationStep):
     config_model = ObjectTypesConfigurationModel
     verbose_name = "Objecttypes Configuration"
