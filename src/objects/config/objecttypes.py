@@ -10,7 +10,6 @@ from objects.core.models import ObjectType
 
 
 # TODO: remove previously used django settings?
-# TODO: update documenation
 class ObjectTypesConfigurationStep(BaseConfigurationStep):
     config_model = ObjectTypesConfigurationModel
     verbose_name = "Objecttypes Configuration"
