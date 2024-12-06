@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from django.db.models import QuerySet
-from django.test import TestCase, override_settings
+from django.test import TestCase
 
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 from django_setup_configuration.test_utils import execute_single_step
@@ -15,7 +15,6 @@ from objects.setup_configuration.steps.objecttypes import ObjectTypesConfigurati
 TEST_FILES = (Path(__file__).parent / "files").resolve()
 
 
-@override_settings(ZGW_CONSUMERS_IGNORE_OAS_FIELDS=True)
 class ObjectTypesConfigurationStepTests(TestCase):
     def test_empty_database(self):
         service_1 = ServiceFactory(slug="service-1")
