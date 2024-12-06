@@ -6,6 +6,8 @@
 #
 amqp==5.2.0
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 ape-pie==0.2.0
     # via
     #   commonground-api-common
@@ -151,7 +153,7 @@ django-sendfile2==0.7.0
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.1.0
+django-setup-configuration==0.4.0
     # via open-api-framework
 django-simple-certmanager==1.4.1
     # via zgw-consumers
@@ -260,6 +262,14 @@ psycopg2==2.9.9
     # via open-api-framework
 pycparser==2.20
     # via cffi
+pydantic==2.9.2
+    # via
+    #   django-setup-configuration
+    #   pydantic-settings
+pydantic-core==2.23.4
+    # via pydantic
+pydantic-settings[yaml]==2.6.1
+    # via django-setup-configuration
 pyjwt==2.4.0
     # via
     #   commonground-api-common
@@ -278,7 +288,9 @@ python-dateutil==2.9.0.post0
 python-decouple==3.8
     # via open-api-framework
 python-dotenv==1.0.0
-    # via open-api-framework
+    # via
+    #   open-api-framework
+    #   pydantic-settings
 pytz==2024.1
     # via
     #   drf-yasg
@@ -288,6 +300,7 @@ pyyaml==6.0.1
     #   drf-spectacular
     #   drf-yasg
     #   oyaml
+    #   pydantic-settings
 qrcode==6.1
     # via django-two-factor-auth
 redis==3.5.3
@@ -321,6 +334,8 @@ tornado==6.4.1
 typing-extensions==4.9.0
     # via
     #   mozilla-django-oidc-db
+    #   pydantic
+    #   pydantic-core
     #   zgw-consumers
 tzdata==2024.1
     # via celery
@@ -349,7 +364,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.14.1
     # via elastic-apm
-zgw-consumers==0.35.1
+zgw-consumers==0.36.1
     # via
     #   commonground-api-common
     #   notifications-api-common
