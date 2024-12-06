@@ -4,7 +4,7 @@ from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 from zgw_consumers.models import Service
 
-from objects.config.models import ObjectTypesConfigurationModel
+from objects.setup_configuration.models.objecttypes import ObjectTypesConfigurationModel
 from objects.core.models import ObjectType
 
 

@@ -18,7 +18,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     # Project applications.
     "objects.accounts",
     "objects.api",
-    "objects.config",
+    "objects.setup_configuration",
     "objects.core",
     "objects.token",
     "objects.utils",
@@ -85,5 +85,5 @@ CELERY_TASK_TIME_LIMIT = config(
 #
 SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
-    "objects.config.objecttypes.ObjectTypesConfigurationStep",
+    "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
 )

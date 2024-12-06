@@ -10,7 +10,7 @@ from zgw_consumers.test.factories import ServiceFactory
 
 from objects.core.models import ObjectType
 from objects.core.tests.factories import ObjectTypeFactory
-from objects.config.objecttypes import ObjectTypesConfigurationStep
+from objects.setup_configuration.steps.objecttypes import ObjectTypesConfigurationStep
 
 TEST_FILES = (Path(__file__).parent / "files").resolve()
 
