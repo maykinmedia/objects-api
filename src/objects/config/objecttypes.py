@@ -1,59 +1,60 @@
-from django.conf import settings
-
-import requests
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django_setup_configuration.configuration import BaseConfigurationStep
-from django_setup_configuration.exceptions import SelfTestFailed
-from zgw_consumers.client import build_client
-from zgw_consumers.constants import APITypes, AuthTypes
+from django_setup_configuration.exceptions import ConfigurationRunFailed
+from zgw_consumers.contrib.setup_configuration.models import SingleServiceConfigurationModel
 from zgw_consumers.models import Service
 
+from objects.config.models import ObjectTypesConfigurationModel
+from objects.core.models import ObjectType
 
-class ObjecttypesStep(BaseConfigurationStep):
-    """
-    Configure credentials for Objects API to request Objecttypes API
 
-    Normal mode doesn't change the token after its initial creation.
-    If the token is changed, run this command with 'overwrite' flag
-    """
-
+# TODO: remove previously used django settings?
+# TODO: update documenation
+class ObjectTypesConfigurationStep(BaseConfigurationStep):
+    config_model = ObjectTypesConfigurationModel
     verbose_name = "Objecttypes Configuration"
-    required_settings = [
-        "OBJECTTYPES_API_ROOT",
-        "OBJECTS_OBJECTTYPES_TOKEN",
-    ]
-    enable_setting = "OBJECTS_OBJECTTYPES_CONFIG_ENABLE"
 
-    def is_configured(self) -> bool:
-        return Service.objects.filter(api_root=settings.OBJECTTYPES_API_ROOT).exists()
+    namespace = "objecttypes"
+    enable_setting = "objecttypes_config_enable"
 
-    def configure(self) -> None:
-        Service.objects.update_or_create(
-            api_root=settings.OBJECTTYPES_API_ROOT,
-            defaults={
-                "label": "Objecttypes API",
-                "api_type": APITypes.orc,
-                "oas": settings.OBJECTTYPES_API_OAS,
-                "auth_type": AuthTypes.api_key,
-                "header_key": "Authorization",
-                "header_value": f"Token {settings.OBJECTS_OBJECTTYPES_TOKEN}",
-            },
-        )
+    def execute(self, model: ObjectTypesConfigurationModel) -> None:
+        for item in model.items:
+            try:
+                service = Service.objects.get(slug=item.service_identifier)
+            except Service.DoesNotExist:
+                raise ConfigurationRunFailed(
+                    f"No service found with identifier {item.service_identifier}"
+                )
 
-    def test_configuration(self) -> None:
-        """
-        This check depends on the configuration in Objecttypes
-        """
-        client = build_client(
-            Service.objects.get(api_root=settings.OBJECTTYPES_API_ROOT)
-        )
-        try:
-            response = client.get("objecttypes")
-        except requests.RequestException as exc:
-            raise SelfTestFailed(
-                "Could not Could not retrieve list of objecttypes from Objecttypes API."
-            ) from exc
+            objecttype_kwargs = dict(
+                service=service,
+                uuid=item.uuid,
+                _name=item.name,
+            )
 
-        try:
-            response.json()
-        except requests.exceptions.JSONDecodeError:
-            raise SelfTestFailed("Object type version didn't have any data")
+            objecttype_instance = ObjectType(**objecttype_kwargs)
+
+            try:
+                objecttype_instance.full_clean(
+                    exclude=("id", "service"), validate_unique=False
+                )
+            except ValidationError as exception:
+                exception_message = (
+                    f"Validation error(s) occured for objecttype {item.uuid}."
+                )
+                raise ConfigurationRunFailed(exception_message) from exception
+
+            try:
+                ObjectType.objects.update_or_create(
+                    uuid=item.uuid,
+                    defaults={
+                        key: value for key, value in objecttype_kwargs.items()
+                        if key != "uuid"
+                    }
+                )
+            except IntegrityError as exception:
+                exception_message = (
+                    f"Failed configuring ObjectType {item.uuid}."
+                )
+                raise ConfigurationRunFailed(exception_message) from exception

@@ -83,11 +83,10 @@ CELERY_TASK_TIME_LIMIT = config(
 #
 # Django setup configuration
 #
-SETUP_CONFIGURATION_STEPS = [
-    "objects.config.site.SiteConfigurationStep",
-    "objects.config.objecttypes.ObjecttypesStep",
-    "objects.config.demo.DemoUserStep",
-]
+SETUP_CONFIGURATION_STEPS = (
+    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "objects.config.objecttypes.ObjectTypesStep",
+)
 
 
 #
