@@ -70,9 +70,16 @@ class IsImmutableValidator:
 
 def validate_data_attrs(value: str):
     code = "invalid-data-attrs-query"
+
+    # temporarily replace escaped comma
+    comma_replace = "*COMMA*"
+    value = value.replace("\\,", comma_replace)
+
     parts = value.split(",")
 
     for value_part in parts:
+        # replace to comma back after splitting
+        value_part = value_part.replace(comma_replace, ",")
         try:
             variable, operator, val = value_part.rsplit("__", 2)
         except ValueError as exc:
