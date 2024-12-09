@@ -363,17 +363,16 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         """
         regression test for https://github.com/maykinmedia/objects-api/issues/472
         """
-        record = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             data={"name": "Something important"}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(
+        record = ObjectRecordFactory.create(
             data={"name": "Advies, support en kennis om te weten"},
             object__object_type=self.object_type,
         )
-        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(
-            self.url, {"data_attrs": "name__icontains__Advies, support en kennis"}
+            self.url, {"data_attrs": "name__icontains__Advies\\, support en kennis"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -390,19 +389,18 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         """
         regression test for https://github.com/maykinmedia/objects-api/issues/472
         """
-        record = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             data={"name": "Something important"}, object__object_type=self.object_type
         )
-        ObjectRecordFactory.create(
+        record = ObjectRecordFactory.create(
             data={"name": "Advies, support en kennis om te weten"},
             object__object_type=self.object_type,
         )
-        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(
             self.url,
             {
-                "data_attrs": "name__icontains__Advies, support en kennis,name__icontains__om"
+                "data_attrs": "name__icontains__Advies\\, support en kennis,name__icontains__om"
             },
         )
 

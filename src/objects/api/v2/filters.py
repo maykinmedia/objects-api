@@ -92,9 +92,14 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
         form = ObjectRecordFilterForm
 
     def filter_data_attrs(self, queryset, name, value: str):
+        # temporarily replace escaped comma
+        comma_replace = "*COMMA*"
+        value = value.replace("\\,", comma_replace)
         parts = value.split(",")
 
         for value_part in parts:
+            # replace to comma back after splitting
+            value_part = value_part.replace(comma_replace, ",")
             variable, operator, str_value = value_part.rsplit("__", 2)
             real_value = string_to_value(str_value)
 
