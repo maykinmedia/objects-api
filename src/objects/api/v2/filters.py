@@ -77,6 +77,9 @@ Valid operator values are:
 Example: in order to display only objects with `height` equal to 100, query `data_attrs=height__exact__100`
 should be used. If `height` is nested inside `dimensions` attribute, query should look like
 `data_attrs=dimensions__height__exact__100`
+
+If you want to include comma to value part, use `\\,` to escape it, for example (with percentage encoding):
+`data_attrs=naam__icontains__Advies%%5C, support en kennis`
 """
         )
         % {"operator_choices": display_choice_values_for_help_text(Operators)},
