@@ -1,0 +1,8 @@
+sites_config_enable: true
+sites:
+  items:
+    - domain: example.com
+      name: Example site
+
+    - domain: foobar whitespace.com
+      name: Invalid site

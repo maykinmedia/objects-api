@@ -35,16 +35,29 @@ Objects API
 Sites configuration
 -------------------
 
-..
-  _TODO:
+Create or update a (single) YAML configuration file with your settings:
 
+.. code-block:: yaml
+   ...
+    sites_config_enable: true
+    sites:
+      items:
+        - domain: example.com
+          name: Example site
+
+        - domain: test.example.com
+          name: Test site
+   ...
+
+.. note:: The ``domain`` field will be used to lookup existing ``Site``'s.
 
 Objecttypes configuration
 -------------------------
 
-Create a (single) YAML configuration file with your settings:
+Create or update a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
+   ...
    objecttypes_config_enable: true
    objecttypes:
      items:
@@ -55,6 +68,7 @@ Create a (single) YAML configuration file with your settings:
        - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
          name: Object Type 2
          service_identifier: service-2
+   ...
 
 .. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
 
@@ -65,22 +79,9 @@ Demo user configuration
   _TODO:
 
 
-Sites configuration
--------------------
-
-..
-  _TODO:
-
 
 Objects configuration
 ---------------------
-
-..
-  _TODO:
-
-
-Demo user configuration
------------------------
 
 ..
   _TODO:

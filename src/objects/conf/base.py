@@ -85,5 +85,6 @@ CELERY_TASK_TIME_LIMIT = config(
 #
 SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "objects.setup_configuration.steps.sites.SitesConfigurationStep",
     "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
 )
