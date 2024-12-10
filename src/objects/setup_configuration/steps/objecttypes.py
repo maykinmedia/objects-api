@@ -1,11 +1,12 @@
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 from zgw_consumers.models import Service
 
-from objects.setup_configuration.models.objecttypes import ObjectTypesConfigurationModel
 from objects.core.models import ObjectType
+from objects.setup_configuration.models.objecttypes import ObjectTypesConfigurationModel
 
 
 class ObjectTypesConfigurationStep(BaseConfigurationStep):
@@ -46,12 +47,11 @@ class ObjectTypesConfigurationStep(BaseConfigurationStep):
                 ObjectType.objects.update_or_create(
                     uuid=item.uuid,
                     defaults={
-                        key: value for key, value in objecttype_kwargs.items()
+                        key: value
+                        for key, value in objecttype_kwargs.items()
                         if key != "uuid"
-                    }
+                    },
                 )
             except IntegrityError as exception:
-                exception_message = (
-                    f"Failed configuring ObjectType {item.uuid}."
-                )
+                exception_message = f"Failed configuring ObjectType {item.uuid}."
                 raise ConfigurationRunFailed(exception_message) from exception

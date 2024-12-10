@@ -1,7 +1,7 @@
 from django_setup_configuration.fields import DjangoModelRef
 from django_setup_configuration.models import ConfigurationModel
-from zgw_consumers.models import Service
 from pydantic import Field
+from zgw_consumers.models import Service
 
 from objects.core.models import ObjectType
 
@@ -11,11 +11,7 @@ class ObjectTypeConfigurationModel(ConfigurationModel):
     name: str = DjangoModelRef(ObjectType, "_name")
 
     class Meta:
-        django_model_refs = {
-            ObjectType: (
-                "uuid",
-            )
-        }
+        django_model_refs = {ObjectType: ("uuid",)}
 
 
 class ObjectTypesConfigurationModel(ConfigurationModel):

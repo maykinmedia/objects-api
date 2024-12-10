@@ -30,17 +30,13 @@ class ObjectTypesConfigurationStepTests(TestCase):
 
         objecttype_1: ObjectType = objecttypes.first()
 
-        self.assertEqual(
-            str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281"
-        )
+        self.assertEqual(str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
         self.assertEqual(objecttype_1._name, "Object Type 1")
         self.assertEqual(objecttype_1.service, service_1)
 
         objecttype_2: ObjectType = objecttypes.last()
 
-        self.assertEqual(
-            str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2"
-        )
+        self.assertEqual(str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2")
         self.assertEqual(objecttype_2._name, "Object Type 2")
         self.assertEqual(objecttype_2.service, service_2)
 
@@ -53,12 +49,12 @@ class ObjectTypesConfigurationStepTests(TestCase):
         objecttype_1: ObjectType = ObjectTypeFactory(
             service=service_1,
             uuid="b427ef84-189d-43aa-9efd-7bb2c459e281",
-            _name="Object Type 001"
+            _name="Object Type 001",
         )
         objecttype_2: ObjectType = ObjectTypeFactory(
             service=service_2,
             uuid="b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2",
-            _name="Object Type 002"
+            _name="Object Type 002",
         )
 
         execute_single_step(ObjectTypesConfigurationStep, yaml_source=test_file_path)
@@ -67,17 +63,13 @@ class ObjectTypesConfigurationStepTests(TestCase):
 
         objecttype_1.refresh_from_db()
 
-        self.assertEqual(
-            str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281"
-        )
+        self.assertEqual(str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
         self.assertEqual(objecttype_1._name, "Object Type 1")
         self.assertEqual(objecttype_1.service, service_1)
 
         objecttype_2.refresh_from_db()
 
-        self.assertEqual(
-            str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2"
-        )
+        self.assertEqual(str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2")
         self.assertEqual(objecttype_2._name, "Object Type 002")
         self.assertEqual(objecttype_2.service, service_2)
 
@@ -85,9 +77,7 @@ class ObjectTypesConfigurationStepTests(TestCase):
             uuid="7229549b-7b41-47d1-8106-414b2a69751b"
         )
 
-        self.assertEqual(
-            str(objecttype_3.uuid), "7229549b-7b41-47d1-8106-414b2a69751b"
-        )
+        self.assertEqual(str(objecttype_3.uuid), "7229549b-7b41-47d1-8106-414b2a69751b")
         self.assertEqual(objecttype_3._name, "Object Type 3")
         self.assertEqual(objecttype_3.service, service_2)
 
@@ -97,21 +87,21 @@ class ObjectTypesConfigurationStepTests(TestCase):
         objecttype: ObjectType = ObjectTypeFactory(
             uuid="b427ef84-189d-43aa-9efd-7bb2c459e281",
             _name="Object Type 001",
-            service=service
+            service=service,
         )
 
         test_file_path = str(TEST_FILES / "objecttypes_unknown_service.yaml")
 
         with self.assertRaises(ConfigurationRunFailed):
-            execute_single_step(ObjectTypesConfigurationStep, yaml_source=test_file_path)
+            execute_single_step(
+                ObjectTypesConfigurationStep, yaml_source=test_file_path
+            )
 
         self.assertEqual(ObjectType.objects.count(), 1)
 
         objecttype.refresh_from_db()
 
-        self.assertEqual(
-            str(objecttype.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281"
-        )
+        self.assertEqual(str(objecttype.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
         self.assertEqual(objecttype._name, "Object Type 001")
         self.assertEqual(objecttype.service, service)
 
@@ -123,19 +113,19 @@ class ObjectTypesConfigurationStepTests(TestCase):
         objecttype: ObjectType = ObjectTypeFactory(
             service=service,
             uuid="b427ef84-189d-43aa-9efd-7bb2c459e281",
-            _name="Object Type 001"
+            _name="Object Type 001",
         )
 
         with self.assertRaises(ConfigurationRunFailed):
-            execute_single_step(ObjectTypesConfigurationStep, yaml_source=test_file_path)
+            execute_single_step(
+                ObjectTypesConfigurationStep, yaml_source=test_file_path
+            )
 
         self.assertEqual(ObjectType.objects.count(), 1)
 
         objecttype.refresh_from_db()
 
-        self.assertEqual(
-            str(objecttype.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281"
-        )
+        self.assertEqual(str(objecttype.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
         self.assertEqual(objecttype._name, "Object Type 1")
         self.assertEqual(objecttype.service, service)
 
@@ -153,17 +143,13 @@ class ObjectTypesConfigurationStepTests(TestCase):
 
         objecttype_1: ObjectType = objecttypes.first()
 
-        self.assertEqual(
-            str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281"
-        )
+        self.assertEqual(str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
         self.assertEqual(objecttype_1._name, "Object Type 1")
         self.assertEqual(objecttype_1.service, service_1)
 
         objecttype_2: ObjectType = objecttypes.last()
 
-        self.assertEqual(
-            str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2"
-        )
+        self.assertEqual(str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2")
         self.assertEqual(objecttype_2._name, "Object Type 2")
         self.assertEqual(objecttype_2.service, service_2)
 
@@ -176,15 +162,11 @@ class ObjectTypesConfigurationStepTests(TestCase):
         self.assertEqual(ObjectType.objects.count(), 2)
 
         # objecttype 1
-        self.assertEqual(
-            str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281"
-        )
+        self.assertEqual(str(objecttype_1.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
         self.assertEqual(objecttype_1._name, "Object Type 1")
         self.assertEqual(objecttype_1.service, service_1)
 
         # objecttype 2
-        self.assertEqual(
-            str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2"
-        )
+        self.assertEqual(str(objecttype_2.uuid), "b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2")
         self.assertEqual(objecttype_2._name, "Object Type 2")
         self.assertEqual(objecttype_2.service, service_2)

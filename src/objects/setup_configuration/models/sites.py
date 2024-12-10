@@ -1,4 +1,5 @@
 from django.contrib.sites.models import Site
+
 from django_setup_configuration.models import ConfigurationModel
 from pydantic import Field
 

@@ -32,8 +32,7 @@ class SitesConfigurationStepTests(TestCase):
         test_file_path = str(TEST_FILES / "sites_existing_sites.yaml")
 
         example_site, _ = Site.objects.get_or_create(
-            domain="example.com",
-            defaults=dict(name="Example site")
+            domain="example.com", defaults=dict(name="Example site")
         )
 
         alternative_site = Site.objects.create(

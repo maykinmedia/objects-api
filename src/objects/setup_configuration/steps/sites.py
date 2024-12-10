@@ -1,7 +1,7 @@
 from django.contrib.sites.models import Site
-
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 
@@ -30,11 +30,8 @@ class SitesConfigurationStep(BaseConfigurationStep):
 
             try:
                 Site.objects.update_or_create(
-                    domain=item.domain,
-                    defaults=dict(name=item.name)
+                    domain=item.domain, defaults=dict(name=item.name)
                 )
             except IntegrityError as exception:
-                exception_message = (
-                    f"Failed configuring site {item.domain}."
-                )
+                exception_message = f"Failed configuring site {item.domain}."
                 raise ConfigurationRunFailed(exception_message) from exception
