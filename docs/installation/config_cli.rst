@@ -73,20 +73,6 @@ Create or update a (single) YAML configuration file with your settings:
 .. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
 
 
-Demo user configuration
------------------------
-..
-  _TODO:
-
-
-
-Objects configuration
----------------------
-
-..
-  _TODO:
-
-
 Execution
 =========
 
