@@ -1,5 +1,6 @@
 import datetime
 import uuid
+from typing import Iterable, Optional
 
 from django.contrib.gis.db.models import GeometryField
 from django.core.exceptions import ValidationError
@@ -41,8 +42,14 @@ class ObjectType(models.Model):
         # zds_client.get_operation_url() can be used here but it increases HTTP overhead
         return f"{self.service.api_root}objecttypes/{self.uuid}"
 
-    def clean(self):
+    def clean_fields(self, exclude: Optional[Iterable[str]] = None) -> None:
+        super().clean_fields(exclude=exclude)
+
+        if exclude and "service" in exclude:
+            return
+
         client = build_client(self.service)
+
         try:
             response = client.get(url=self.url)
         except (requests.RequestException, ConnectionError, ValueError) as exc:
@@ -51,7 +58,7 @@ class ObjectType(models.Model):
         try:
             object_type_data = response.json()
         except requests.exceptions.JSONDecodeError:
-            ValidationError("Object type version didn't have any data")
+            raise ValidationError("Object type version didn't have any data")
 
         if not self._name:
             self._name = object_type_data["name"]

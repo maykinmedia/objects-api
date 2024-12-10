@@ -8,10 +8,6 @@ Configuration (CLI)
 After deploying Objecttypes API and Objects API, they need to be configured to be fully functional. The
 command line tool `setup_configuration`_ assist with this configuration:
 
-* It uses environment variables for all configuration choices, therefore you can integrate this with your
-  infrastructure tooling such as init containers and/or Kubernetes Jobs.
-* The command can self-test the configuration to detect problems early on
-
 You can get the full command documentation with:
 
 .. code-block:: bash
@@ -28,9 +24,9 @@ Preparation
 ===========
 
 The command executes the list of pluggable configuration steps, and each step
-required specific environment variables, that should be prepared.
-Here is the description of all available configuration steps and the environment variables,
-use by each step for both APIs.
+requires specific configuration information, that should be prepared.
+Here is the description of all available configuration steps and the configuration
+format, use by each step.
 
 
 Objects API
@@ -39,75 +35,60 @@ Objects API
 Sites configuration
 -------------------
 
-Configure the domain where Objects API is hosted
+Create or update a (single) YAML configuration file with your settings:
 
-* ``SITES_CONFIG_ENABLE``: enable Site configuration. Defaults to ``False``.
-* ``OBJECTS_DOMAIN``:  a ``[host]:[port]`` or ``[host]`` value. Required.
-* ``OBJECTS_ORGANIZATION``: name of Objects API organization. Required.
+.. code-block:: yaml
+   ...
+    sites_config_enable: true
+    sites:
+      items:
+        - domain: example.com
+          name: Example site
+
+        - domain: test.example.com
+          name: Test site
+   ...
+
+.. note:: The ``domain`` field will be used to lookup existing ``Site``'s.
 
 Objecttypes configuration
 -------------------------
 
-Objects API uses Objecttypes API to validate data against JSON schemas, therefore
-it should be able to request Objecttypes API.
+Create or update a (single) YAML configuration file with your settings:
 
-* ``OBJECTS_OBJECTTYPES_CONFIG_ENABLE``: enable Objecttypes configuration. Defaults
-  to ``False``.
-* ``OBJECTTYPES_API_ROOT``: full URL to the Objecttypes API root, for example
-  ``https://objecttypes.gemeente.local/api/v1/``. Required.
-* ``OBJECTTYPES_API_OAS``: full URL to the Objecttypes OpenAPI specification.
-* ``OBJECTS_OBJECTTYPES_TOKEN``: authorization token. Required.
-* ``OBJECTS_OBJECTTYPES_PERSON``: Objects API contact person. Required.
-* ``OBJECTS_OBJECTTYPES_EMAIL``: Objects API contact email. Required.
+.. code-block:: yaml
+   ...
+   zgw_consumers_config_enable: true
+   zgw_consumers:
+   services:
+     - identifier: objecttypen-foo
+       label: Objecttypen API Foo
+       api_root: http://objecttypen.foo/api/v1/
+       api_type: orc
+       auth_type: api_key
+     - identifier: objecttypen-bar
+       label: Objecttypen API Bar
+       api_root: http://objecttypen.bar/api/v1/
+       api_type: orc
+       auth_type: api_key
 
-Demo user configuration
------------------------
+   objecttypes_config_enable: true
+   objecttypes:
+     items:
+       - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
+         name: Object Type 1
+         service_identifier: objecttypen-foo
 
-Demo user can be created to check if Objects API work. It has superuser permissions,
-so its creation is not recommended on production environment.
+       - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+         name: Object Type 2
+         service_identifier: objecttypen-bar
+   ...
 
-* ``DEMO_CONFIG_ENABLE``: enable demo user configuration. Defaults to ``False``.
-* ``DEMO_PERSON``: demo user contact person. Required.
-* ``DEMO_EMAIL``: demo user email. Required.
-* ``DEMO_TOKEN``: demo token. Required.
+.. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
 
-
-Objecttypes API
-===============
-
-ObjectTypes API has similar configuration steps as the Objects API.
-
-Sites configuration
--------------------
-
-Configure the domain where Objects API is hosted
-
-* ``SITES_CONFIG_ENABLE``: enable Site configuration. Defaults to ``False``.
-* ``OBJECTTYPES_DOMAIN``:  a ``[host]:[port]`` or ``[host]`` value. Required.
-* ``OBJECTTYPES_ORGANIZATION``: name of Objecttypes API organization. Required.
-
-Objects configuration
----------------------
-
-Objects API uses Objecttypes API to validate data against JSON schemas, therefore
-it should be able to request Objecttypes API.
-
-* ``OBJECTS_OBJECTTYPES_CONFIG_ENABLE``: enable Objecttypes configuration. Defaults
-  to ``False``.
-* ``OBJECTTYPES_API_ROOT``: full URL to the Objecttypes API root, for example
-  ``https://objecttypes.gemeente.local/api/v1/``. Required.
-* ``OBJECTTYPES_API_OAS``: full URL to the Objecttypes OpenAPI specification.
-* ``OBJECTS_OBJECTTYPES_TOKEN``: authorization token. Required.
-
-Demo user configuration
------------------------
-
-The similar configuration as in Objects API.
-
-* ``DEMO_CONFIG_ENABLE``: enable demo user configuration. Defaults to ``False``.
-* ``DEMO_PERSON``: demo user contact person. Required.
-* ``DEMO_EMAIL``: demo user email. Required.
-* ``DEMO_TOKEN``: demo token. Required.
+Objecttypes require a corresponding ``Service`` to work correctly. Creating
+these ``Service``'s can be done by defining these in the same yaml file. ``Service``
+instances will be created before the ``ObjectType``'s are created.
 
 
 Execution
@@ -119,19 +100,4 @@ tested.
 
 .. code-block:: bash
 
-    src/manage.py setup_configuration
-
-
-You can skip the self-tests by using the ``--no-selftest`` flag.
-
-.. code-block:: bash
-
-    src/manage.py setup_configuration --no-self-test
-
-
-``setup_configuration`` command checks if the configuration already exists before changing it.
-If you want to change some of the values of the existing configuration you can use ``--overwrite`` flag.
-
-.. code-block:: bash
-
-    src/manage.py setup_configuration --overwrite
+    src/manage.py setup_configuration --yaml-file /path/to/config.yaml
