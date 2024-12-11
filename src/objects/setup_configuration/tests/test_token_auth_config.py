@@ -10,7 +10,7 @@ from django_setup_configuration.test_utils import execute_single_step
 
 from objects.setup_configuration.steps.token_auth import TokenAuthConfigurationStep
 from objects.token.models import TokenAuth
-from objects.token.tests.factories.token import TokenAuthFactory
+from objects.token.tests.factories import TokenAuthFactory
 
 DIR_FILES = (Path(__file__).parent / "files").resolve()
 

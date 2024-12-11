@@ -6,10 +6,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from objects.core.models import ObjectType
+from objects.token.validators import validate_whitespace
 
 from .constants import PermissionModes
-
-from objects.token.validators import validate_whitespace
 
 
 class TokenAuth(models.Model):
