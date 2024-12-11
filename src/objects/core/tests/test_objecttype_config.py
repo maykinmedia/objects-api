@@ -2,6 +2,7 @@ from pathlib import Path
 
 from django.test import TestCase
 
+from django_setup_configuration.exceptions import PrerequisiteFailed
 from django_setup_configuration.test_utils import execute_single_step
 from zgw_consumers.constants import APITypes, AuthTypes
 from zgw_consumers.models import Service
@@ -80,12 +81,13 @@ class ObjectTypesConnectionConfigurationStepTests(TestCase):
         self.assertEqual(service.user_representation, "Objects API")
         self.assertEqual(service.timeout, 60)
 
-    def test_invalid_identifier(self):
+    def test_invalid_connection(self):
         test_file_path = str(TEST_FILES / "objecttypes_connection_invalid.yaml")
 
-        execute_single_step(
-            ObjectTypesConnectionConfigurationStep, yaml_source=test_file_path
-        )
+        with self.assertRaises(PrerequisiteFailed):
+            execute_single_step(
+                ObjectTypesConnectionConfigurationStep, yaml_source=test_file_path
+            )
 
         self.assertEqual(Service.objects.count(), 0)
 

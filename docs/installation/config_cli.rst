@@ -58,7 +58,7 @@ Create or update a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
    objects_api_objecttypes_connection_config_enable: true
-   objects_api_objecttypes_connection":
+   objects_api_objecttypes_connection:
      identifier: objecttypen
      label: ObjectTypen API
      api_root: http://objecttypen.nl/api/v1/
