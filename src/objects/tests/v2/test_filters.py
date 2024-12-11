@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from django.db.utils import ProgrammingError
 
+from furl import furl
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -359,63 +360,6 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
-    def test_filter_icontains_string_with_comma(self):
-        """
-        regression test for https://github.com/maykinmedia/objects-api/issues/472
-        """
-        record = ObjectRecordFactory.create(
-            data={"name": "Something important"}, object__object_type=self.object_type
-        )
-        ObjectRecordFactory.create(
-            data={"name": "Advies, support en kennis om te weten"},
-            object__object_type=self.object_type,
-        )
-        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
-
-        response = self.client.get(
-            self.url, {"data_attrs": "name__icontains__Advies, support en kennis"}
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        data = response.json()["results"]
-
-        self.assertEqual(len(data), 1)
-        self.assertEqual(
-            data[0]["url"],
-            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
-        )
-
-    def test_filter_two_icontains_with_comma(self):
-        """
-        regression test for https://github.com/maykinmedia/objects-api/issues/472
-        """
-        record = ObjectRecordFactory.create(
-            data={"name": "Something important"}, object__object_type=self.object_type
-        )
-        ObjectRecordFactory.create(
-            data={"name": "Advies, support en kennis om te weten"},
-            object__object_type=self.object_type,
-        )
-        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
-
-        response = self.client.get(
-            self.url,
-            {
-                "data_attrs": "name__icontains__Advies, support en kennis,name__icontains__om"
-            },
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        data = response.json()["results"]
-
-        self.assertEqual(len(data), 1)
-        self.assertEqual(
-            data[0]["url"],
-            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
-        )
-
     def test_filter_exclude_old_records(self):
         record_old = ObjectRecordFactory.create(
             data={"diameter": 45},
@@ -483,6 +427,78 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             data[1]["url"],
             f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
+
+
+class FilterDataAttrTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("object-list")
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
+        )
+
+    def test_filter_icontains_string_with_comma(self):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/472
+        """
+        ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        record = ObjectRecordFactory.create(
+            data={"name": "Advies, support en kennis om te weten"},
+            object__object_type=self.object_type,
+        )
+
+        response = self.client.get(
+            self.url, {"data_attr": "name__icontains__Advies, support en kennis"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_two_icontains_with_comma(self):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/472
+        """
+        ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        record = ObjectRecordFactory.create(
+            data={"name": "Advies, support en kennis om te weten"},
+            object__object_type=self.object_type,
+        )
+        url = (
+            furl(self.url)
+            .add({"data_attr": "name__icontains__Advies, support en kennis"})
+            .add({"data_attr": "name__icontains__om"})
+            .url
+        )
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
 
 
 class FilterDateTests(TokenAuthMixin, APITestCase):
