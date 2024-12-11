@@ -7,4 +7,5 @@ furl
 
 # Common ground libraries
 notifications-api-common
+django-setup-configuration>=0.4.0
 zgw-consumers[setup-configuration]

@@ -21,4 +21,4 @@ class TokenAuthConfigurationModel(ConfigurationModel):
 
 
 class TokenAuthGroupConfigurationModel(ConfigurationModel):
-    items: list[TokenAuthConfigurationModel] = Field()
+    items: list[TokenAuthConfigurationModel]

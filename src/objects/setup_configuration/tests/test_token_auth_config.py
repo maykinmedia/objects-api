@@ -32,6 +32,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.organization, "")
         self.assertEqual(token.application, "")
         self.assertEqual(token.administration, "")
+        self.assertFalse(token.is_superuser)
 
         token = tokens.get(identifier="token-2")
         self.assertEqual(token.contact_person, "Person 2")
@@ -40,6 +41,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.organization, "")
         self.assertEqual(token.application, "")
         self.assertEqual(token.administration, "")
+        self.assertFalse(token.is_superuser)
 
     def test_valid_setup_complete(self):
         execute_single_step(
@@ -58,6 +60,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.organization, "Organization 1")
         self.assertEqual(token.application, "Application 1")
         self.assertEqual(token.administration, "Administration 1")
+        self.assertTrue(token.is_superuser)
 
         # Token data updated
         token = tokens.get(identifier="token-2")
@@ -67,6 +70,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.organization, "Organization 2")
         self.assertEqual(token.application, "Application 2")
         self.assertEqual(token.administration, "Administration 2")
+        self.assertTrue(token.is_superuser)
 
         self.assertNotEqual(token.token, "1cad42916dfa439af8c69000bf7b6af6a66782af")
         self.assertNotEqual(token.contact_person, "Person 3")
@@ -105,6 +109,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.organization, "Organization 1")
         self.assertEqual(token.application, "Application 1")
         self.assertEqual(token.administration, "Administration 1")
+        self.assertTrue(token.is_superuser)
 
         # Token data updated
         token = tokens.get(identifier="token-2")
@@ -114,6 +119,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.organization, "Organization 2")
         self.assertEqual(token.application, "Application 2")
         self.assertEqual(token.administration, "Administration 2")
+        self.assertTrue(token.is_superuser)
 
         self.assertNotEqual(token.token, "1cad42916dfa439af8c69000bf7b6af6a66782af")
         self.assertNotEqual(token.contact_person, "Person 3")
@@ -136,6 +142,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(old_token_a.organization, "Organization 1")
         self.assertEqual(old_token_a.application, "Application 1")
         self.assertEqual(old_token_a.administration, "Administration 1")
+        self.assertTrue(old_token_a.is_superuser)
 
         old_token_b = tokens.get(identifier="token-2")
         self.assertEqual(old_token_b.identifier, "token-2")
@@ -145,6 +152,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(old_token_b.organization, "Organization 2")
         self.assertEqual(old_token_b.application, "Application 2")
         self.assertEqual(old_token_b.administration, "Administration 2")
+        self.assertTrue(old_token_b.is_superuser)
 
         execute_single_step(
             TokenAuthConfigurationStep,

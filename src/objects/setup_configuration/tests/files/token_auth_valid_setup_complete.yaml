@@ -8,6 +8,7 @@ token_tokenauth:
       organization: Organization 1
       application: Application 1
       administration: Administration 1
+      is_superuser: True
 
     - identifier: token-2
       token: e882642bd0ec2482adcdc97258c2e6f98cb06d85
@@ -16,3 +17,4 @@ token_tokenauth:
       organization: Organization 2
       application: Application 2
       administration: Administration 2
+      is_superuser: True
