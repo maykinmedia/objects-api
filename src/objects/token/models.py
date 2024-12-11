@@ -9,9 +9,20 @@ from objects.core.models import ObjectType
 
 from .constants import PermissionModes
 
+from objects.token.validators import validate_whitespace
+
 
 class TokenAuth(models.Model):
-    token = models.CharField(_("token"), max_length=40, unique=True)
+    identifier = models.SlugField(
+        unique=True,
+        help_text=_("A human-friendly label to refer to this token"),
+    )
+    token = models.CharField(
+        _("token"),
+        max_length=40,
+        unique=True,
+        validators=[validate_whitespace],
+    )
     contact_person = models.CharField(
         _("contact person"),
         max_length=200,
