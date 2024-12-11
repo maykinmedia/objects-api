@@ -12,7 +12,7 @@ class SitesConfigurationStep(BaseConfigurationStep):
     config_model = SitesConfigurationModel
     verbose_name = "Sites configuration"
 
-    namespace = "sites"
+    namespace = "sites_config"
     enable_setting = "sites_config_enable"
 
     def execute(self, model: SitesConfigurationModel) -> None:

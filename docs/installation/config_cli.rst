@@ -40,7 +40,7 @@ Create or update a (single) YAML configuration file with your settings:
 .. code-block:: yaml
    ...
     sites_config_enable: true
-    sites:
+    sites_config:
       items:
         - domain: example.com
           name: Example site

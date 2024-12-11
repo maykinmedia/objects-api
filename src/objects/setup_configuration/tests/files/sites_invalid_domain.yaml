@@ -1,5 +1,5 @@
 sites_config_enable: true
-sites:
+sites_config:
   items:
     - domain: example.com
       name: Example site
