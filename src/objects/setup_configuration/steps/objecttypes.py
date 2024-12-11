@@ -14,8 +14,8 @@ class ObjectTypesConnectionConfigurationStep(
     config_model = SingleServiceConfigurationModel
     verbose_name = "Objecttypes connection configuration"
 
-    namespace = "objecttypes_connection"
-    enable_setting = "objecttypes_connection_config_enable"
+    namespace = "objects_api_objecttypes_connection"
+    enable_setting = "objects_api_objecttypes_connection_config_enable"
 
     def execute(self, model: SingleServiceConfigurationModel) -> None:
         service_kwargs = dict(

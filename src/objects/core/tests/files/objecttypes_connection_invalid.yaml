@@ -1,5 +1,5 @@
-objecttypes_connection_config_enable: true
-objecttypes_connection:
+objects_api_objecttypes_connection_config_enable: true
+objects_api_objecttypes_connection:
   identifier: identifier with whitespace in between
   label: Objecttypen API
   api_root: https://objecttypes.nl/api/v1/
