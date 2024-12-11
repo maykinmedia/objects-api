@@ -51,44 +51,23 @@ Create or update a (single) YAML configuration file with your settings:
 
 .. note:: The ``domain`` field will be used to lookup existing ``Site``'s.
 
-Objecttypes configuration
+Objecttypes connection configuration
 -------------------------
 
 Create or update a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
+   objecttypes_connection_config_enable: true
+   objecttypes_connection:
+     identifier: objecttypen
+     label: ObjectTypen API
+     api_root: http://objecttypen.nl/api/v1/
+     api_connection_check_path: objecttypes
+     api_type: orc
+     auth_type: api_key
+     header_key: Authorization
+     header_value: Token foo
    ...
-   zgw_consumers_config_enable: true
-   zgw_consumers:
-   services:
-     - identifier: objecttypen-foo
-       label: Objecttypen API Foo
-       api_root: http://objecttypen.foo/api/v1/
-       api_type: orc
-       auth_type: api_key
-     - identifier: objecttypen-bar
-       label: Objecttypen API Bar
-       api_root: http://objecttypen.bar/api/v1/
-       api_type: orc
-       auth_type: api_key
-
-   objecttypes_config_enable: true
-   objecttypes:
-     items:
-       - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
-         name: Object Type 1
-         service_identifier: objecttypen-foo
-
-       - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
-         name: Object Type 2
-         service_identifier: objecttypen-bar
-   ...
-
-.. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
-
-Objecttypes require a corresponding ``Service`` to work correctly. Creating
-these ``Service``'s can be done by defining these in the same yaml file. ``Service``
-instances will be created before the ``ObjectType``'s are created.
 
 
 Execution
