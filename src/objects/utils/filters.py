@@ -1,3 +1,4 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -48,3 +49,24 @@ class ObjectTypeField(filters.ModelChoiceField):
 
 class ObjectTypeFilter(URLModelChoiceFilter):
     field_class = ObjectTypeField
+
+
+class ManyWidget(forms.Widget):
+    def value_from_datadict(self, data, files, name):
+        return data.getlist(name)
+
+
+class ManyCharField(forms.CharField):
+    widget = ManyWidget
+
+    def to_python(self, value):
+        if not value:
+            return []
+
+        #  todo validator if it's list
+        return value
+
+
+class ManyCharFilter(filters.CharFilter):
+    # django-filter doesn't support several uses of the same query param out of the box
+    field_class = ManyCharField
