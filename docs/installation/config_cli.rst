@@ -39,8 +39,8 @@ Create or update a (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
    ...
-    objects_api_sites_config_enable: true
-    objects_api_sites_config:
+    sites_config_enable: true
+    sites_config:
       items:
         - domain: example.com
           name: Example site

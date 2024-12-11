@@ -12,8 +12,8 @@ class SitesConfigurationStep(BaseConfigurationStep):
     config_model = SitesConfigurationModel
     verbose_name = "Sites configuration"
 
-    namespace = "objects_api_sites_config"
-    enable_setting = "objects_api_config_enable"
+    namespace = "sites_config"
+    enable_setting = "sites_config_enable"
 
     def execute(self, model: SitesConfigurationModel) -> None:
         for item in model.items:
