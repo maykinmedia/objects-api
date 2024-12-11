@@ -21,8 +21,8 @@ class TokenAuthConfigurationStep(
     Configure tokens for other applications to access Objects API
     """
 
-    namespace = "objects_tokens"
-    enable_setting = "objects_tokens_config_enable"
+    namespace = "token_tokenauth"
+    enable_setting = "token_tokenauth_config_enable"
 
     verbose_name = "Configuration to set up authentication tokens for objects"
     config_model = TokenAuthGroupConfigurationModel

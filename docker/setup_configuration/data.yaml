@@ -1,5 +1,5 @@
-objects_tokens_config_enable: true
-objects_tokens:
+token_tokenauth_config_enable: true
+token_tokenauth:
   items:
     - identifier: token-1
       token: 18b2b74ef994314b84021d47b9422e82b685d82f
@@ -25,3 +25,4 @@ objecttypes:
     - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
       name: Object Type 1
       service_identifier: objecttypen-test
+
