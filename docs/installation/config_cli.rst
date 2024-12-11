@@ -46,6 +46,35 @@ Mozilla-django-oidc-db
 Sites configuration
 -------------------
 
+Notifications configuration
+-------------------------
+
+To configure sending notifications for the application ensure there is a ``services``
+item present that matches the ``notifications_api_service_identifier`` in the
+``notifications_config`` namespace:
+
+.. code-block:: yaml
+   ...
+
+    zgw_consumers_config_enable: true
+    zgw_consumers:
+      services:
+      - identifier: notifications-api
+        label: Notificaties API
+        api_root: http://notificaties.local/api/v1/
+        api_connection_check_path: notificaties
+        api_type: nrc
+        auth_type: api_key
+
+    notifications_config_enable: true
+    notifications_config:
+      notifications_api_service_identifier: notifications-api
+      notification_delivery_max_retries: 1
+      notification_delivery_retry_backoff: 2
+      notification_delivery_retry_backoff_max: 3
+   ....
+
+
 Execution
 =========
 

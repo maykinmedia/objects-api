@@ -84,4 +84,5 @@ CELERY_TASK_TIME_LIMIT = config(
 #
 SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
 )

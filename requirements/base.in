@@ -6,5 +6,5 @@ jsonschema
 furl
 
 # Common ground libraries
-notifications-api-common
+notifications-api-common[setup-configuration]
 zgw-consumers[setup-configuration]
