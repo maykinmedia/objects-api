@@ -13,4 +13,4 @@ objects_api_objecttypes_connection:
   nlx: http://some-outway-adress.local:8080/
   user_id: objects-api
   user_representation: Objects API
-  timeout: 60
+  timeout: foobar
