@@ -26,8 +26,7 @@ Preparation
 The command executes the list of pluggable configuration steps, and each step
 requires specific configuration information, that should be prepared.
 Here is the description of all available configuration steps and the configuration
-format, use by each step.
-
+format, used by each step.
 
 Objects API
 ===========
@@ -69,14 +68,38 @@ Create or update a (single) YAML configuration file with your settings:
      header_value: Token foo
    ...
 
+TokenAuth configuration
+-------------------------
+
+Create or update a (single) YAML configuration file with your settings:
+
+.. code-block:: yaml
+    token_tokenauth_config_enable: true
+    token_tokenauth:
+      items:
+        - identifier: token-1
+          token: 18b2b74ef994314b84021d47b9422e82b685d82f
+          contact_person: Person 1
+          email: person-1@example.com
+          organization: Organization XYZ
+          application: Application XYZ
+          administration: Administration XYZ
+        
+        - identifier: token-2
+          token: e882642bd0ec2482adcdc97258c2e6f98cb06d85
+          contact_person: Person 2
+          email: person-2@example.com
+   ...
+
 
 Execution
 =========
 
 
-With the full command invocation, everything is configured at once and immediately
-tested.
+With the full command invocation, everything is configured at once.
+Each configuration step is idempotent, so any manual changes made via the admin interface
+will be updated if the command is run afterwards.
 
 .. code-block:: bash
 
-    src/manage.py setup_configuration --yaml-file /path/to/config.yaml
+    python ./src/manage.py setup_configuration --yaml-file /path/to/config.yaml
