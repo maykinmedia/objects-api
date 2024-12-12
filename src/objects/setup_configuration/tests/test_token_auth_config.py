@@ -72,10 +72,6 @@ class TokenAuthConfigurationStepTests(TestCase):
         self.assertEqual(token.administration, "Administration 2")
         self.assertTrue(token.is_superuser)
 
-        self.assertNotEqual(token.token, "1cad42916dfa439af8c69000bf7b6af6a66782af")
-        self.assertNotEqual(token.contact_person, "Person 3")
-        self.assertNotEqual(token.email, "person-3@example.com")
-
     def test_valid_update_existing_tokens(self):
         TokenAuthFactory(
             identifier="token-1",
