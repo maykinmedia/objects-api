@@ -53,6 +53,9 @@ class ObjectTypeFilter(URLModelChoiceFilter):
 
 class ManyWidget(forms.Widget):
     def value_from_datadict(self, data, files, name):
+        if name not in data:
+            return []
+
         return data.getlist(name)
 
 
@@ -69,4 +72,5 @@ class ManyCharField(forms.CharField):
 
 class ManyCharFilter(filters.CharFilter):
     # django-filter doesn't support several uses of the same query param out of the box
+    # so we need to do it ourselves
     field_class = ManyCharField
