@@ -10,6 +10,10 @@ amqp==5.2.0
     # via
     #   -r requirements/base.txt
     #   kombu
+annotated-types==0.7.0
+    # via
+    #   -r requirements/base.txt
+    #   pydantic
 ape-pie==0.2.0
     # via
     #   -r requirements/base.txt
@@ -250,7 +254,7 @@ django-sessionprofile==3.0.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.1.0
+django-setup-configuration==0.4.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
@@ -470,6 +474,19 @@ pycparser==2.20
     # via
     #   -r requirements/base.txt
     #   cffi
+pydantic==2.9.2
+    # via
+    #   -r requirements/base.txt
+    #   django-setup-configuration
+    #   pydantic-settings
+pydantic-core==2.23.4
+    # via
+    #   -r requirements/base.txt
+    #   pydantic
+pydantic-settings[yaml]==2.6.1
+    # via
+    #   -r requirements/base.txt
+    #   django-setup-configuration
 pyflakes==3.2.0
     # via flake8
 pygments==2.17.2
@@ -512,6 +529,7 @@ python-dotenv==1.0.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
+    #   pydantic-settings
 pytz==2024.1
     # via
     #   -r requirements/base.txt
@@ -524,6 +542,7 @@ pyyaml==6.0.1
     #   drf-spectacular
     #   drf-yasg
     #   oyaml
+    #   pydantic-settings
     #   vcrpy
 qrcode==6.1
     # via
@@ -612,6 +631,8 @@ typing-extensions==4.9.0
     # via
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   pydantic
+    #   pydantic-core
     #   zgw-consumers
 tzdata==2024.1
     # via

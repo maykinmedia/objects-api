@@ -18,7 +18,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     # Project applications.
     "objects.accounts",
     "objects.api",
-    "objects.config",
     "objects.core",
     "objects.token",
     "objects.utils",
@@ -83,37 +82,4 @@ CELERY_TASK_TIME_LIMIT = config(
 #
 # Django setup configuration
 #
-SETUP_CONFIGURATION_STEPS = [
-    "objects.config.site.SiteConfigurationStep",
-    "objects.config.objecttypes.ObjecttypesStep",
-    "objects.config.demo.DemoUserStep",
-]
-
-
-#
-# Objecttypes settings
-#
-
-# setup_configuration command
-# sites config
-SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=False, add_to_docs=False)
-OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "", add_to_docs=False)
-OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "", add_to_docs=False)
-# objecttypes config
-OBJECTS_OBJECTTYPES_CONFIG_ENABLE = config(
-    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=False, add_to_docs=False
-)
-OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "", add_to_docs=False)
-if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/"):
-    OBJECTTYPES_API_ROOT = f"{OBJECTTYPES_API_ROOT.strip()}/"
-OBJECTTYPES_API_OAS = config(
-    "OBJECTTYPES_API_OAS",
-    default=f"{OBJECTTYPES_API_ROOT}schema/openapi.yaml",
-    add_to_docs=False,
-)
-OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "", add_to_docs=False)
-# Demo User Configuration
-DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=False, add_to_docs=False)
-DEMO_TOKEN = config("DEMO_TOKEN", "", add_to_docs=False)
-DEMO_PERSON = config("DEMO_PERSON", "", add_to_docs=False)
-DEMO_EMAIL = config("DEMO_EMAIL", "", add_to_docs=False)
+SETUP_CONFIGURATION_STEPS = tuple()
