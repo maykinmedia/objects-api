@@ -13,7 +13,7 @@ from objects.utils.filters import ManyCharFilter, ObjectTypeFilter
 
 from ..constants import Operators
 from ..utils import display_choice_values_for_help_text, string_to_value
-from ..validators import validate_data_attrs
+from ..validators import validate_data_attr, validate_data_attrs
 
 DATA_ATTR_VALUE_HELP_TEXT = f"""A valid parameter value has the form `key__operator__value`.
 `key` is the attribute name, `operator` is the comparison operator to be used and `value` is the attribute value.
@@ -102,7 +102,8 @@ class ObjectRecordFilterSet(FilterSet):
         method="filter_data_attrs",
         validators=[validate_data_attrs],
         help_text=_(
-            """**DEPRECATED**: Only include objects that have attributes with certain values.
+            """**DEPRECATED: Use 'data_attr' instead**.
+Only include objects that have attributes with certain values.
 Data filtering expressions are comma-separated and are structured as follows:
 
 %(value_part_help_text)s
@@ -120,7 +121,7 @@ If you want to use commas in `value` you can use `data_attr` query parameter.
 
     data_attr = ManyCharFilter(
         method="filter_data_attr",
-        # validators=[validate_data_attrs],
+        validators=[validate_data_attr],
         help_text=_(
             """Only include objects that have attributes with certain values.
 
