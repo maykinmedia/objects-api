@@ -66,7 +66,6 @@ class ManyCharField(forms.CharField):
         if not value:
             return []
 
-        #  todo validator if it's list
         return value
 
 

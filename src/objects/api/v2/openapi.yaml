@@ -129,7 +129,8 @@ paths:
         schema:
           type: string
         description: |
-          **DEPRECATED**: Only include objects that have attributes with certain values.
+          **DEPRECATED: Use 'data_attr' instead**.
+          Only include objects that have attributes with certain values.
           Data filtering expressions are comma-separated and are structured as follows:
 
           A valid parameter value has the form `key__operator__value`.
@@ -662,7 +663,8 @@ paths:
                   data_attrs:
                     type: string
                     description: |
-                      **DEPRECATED**: Only include objects that have attributes with certain values.
+                      **DEPRECATED: Use 'data_attr' instead**.
+                      Only include objects that have attributes with certain values.
                       Data filtering expressions are comma-separated and are structured as follows:
 
                       A valid parameter value has the form `key__operator__value`.
