@@ -110,6 +110,24 @@ Tokens configuration
 Mozilla-django-oidc-db
 ----------------------
 
+Create or update the (single) YAML configuration file with your settings:
+
+.. code-block:: yaml
+
+   ...
+    oidc_db_config_enable: true
+    oidc_db_config_admin_auth:
+    items:
+      - identifier: admin-oidc
+        oidc_rp_client_id: client-id
+        oidc_rp_client_secret: secret
+        endpoint_config:
+          oidc_op_discovery_endpoint: https://keycloak.local/protocol/openid-connect/
+   ...
+
+More details about configuring mozilla-django-oidc-db through ``setup_configuration``
+can be found at the _`documentation`: https://mozilla-django-oidc-db.readthedocs.io/en/latest/setup_configuration.html.
+
 Sites configuration
 -------------------
 
