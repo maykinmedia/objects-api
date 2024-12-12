@@ -154,7 +154,9 @@ django-sendfile2==0.7.0
 django-sessionprofile==3.0.0
     # via open-api-framework
 django-setup-configuration==0.4.0
-    # via open-api-framework
+    # via
+    #   open-api-framework
+    #   zgw-consumers
 django-simple-certmanager==1.4.1
     # via zgw-consumers
 django-solo==2.2.0
@@ -364,8 +366,9 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.14.1
     # via elastic-apm
-zgw-consumers==0.35.1
+zgw-consumers[setup-configuration]==0.36.1
     # via
+    #   -r requirements/base.in
     #   commonground-api-common
     #   notifications-api-common
     #   open-api-framework

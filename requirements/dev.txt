@@ -258,6 +258,7 @@ django-setup-configuration==0.4.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
+    #   zgw-consumers
 django-simple-certmanager==1.4.1
     # via
     #   -r requirements/base.txt
@@ -689,7 +690,7 @@ wrapt==1.14.1
     #   vcrpy
 yarl==1.9.4
     # via vcrpy
-zgw-consumers==0.35.1
+zgw-consumers[setup-configuration]==0.36.1
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
