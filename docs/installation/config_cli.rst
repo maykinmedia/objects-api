@@ -34,6 +34,29 @@ Objects API
 Objecttypes connection configuration
 ------------------------------------
 
+In order to be able to retrieve objecttypes, a corresponding ``Service`` should be
+created. An example of a configuration could be seen below:
+
+.. code-block:: yaml
+   ...
+
+    zgw_consumers_config_enable: true
+    zgw_consumers:
+      services:
+      - identifier: objecttypes-api-1
+        label: Objecttypes API 1
+        api_root: http://objecttypes-1.local/api/v1/
+        api_connection_check_path: objecttypes
+        api_type: orc
+        auth_type: api_key
+      - identifier: objecttypes-api-2
+        label: Objecttypes API 2
+        api_root: http://objecttypes-2.local/api/v1/
+        api_connection_check_path: objecttypes
+        api_type: orc
+        auth_type: api_key
+   ....
+
 Tokens configuration
 -------------------
 

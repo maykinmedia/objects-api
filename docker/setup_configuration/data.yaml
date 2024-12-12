@@ -1,6 +1,13 @@
 zgw_consumers_config_enable: true
 zgw_consumers:
   services:
+  - identifier: objecttypes-api
+    label: Objecttypes API
+    api_root: http://objecttypes.local/api/v1/
+    api_connection_check_path: objecttypes
+    api_type: orc
+    auth_type: api_key
+
   - identifier: notifications-api
     label: Notificaties API
     api_root: http://notificaties.local/api/v1/
