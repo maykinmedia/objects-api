@@ -500,7 +500,6 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
         )
 
 
-
 class FilterDateTests(TokenAuthMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
