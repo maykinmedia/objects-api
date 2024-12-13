@@ -8,6 +8,10 @@ amqp==5.2.0
     # via
     #   -r requirements/base.txt
     #   kombu
+annotated-types==0.7.0
+    # via
+    #   -r requirements/base.txt
+    #   pydantic
 ape-pie==0.2.0
     # via
     #   -r requirements/base.txt
@@ -235,10 +239,12 @@ django-sessionprofile==3.0.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.1.0
+django-setup-configuration==0.4.0
     # via
     #   -r requirements/base.txt
+    #   notifications-api-common
     #   open-api-framework
+    #   zgw-consumers
 django-simple-certmanager==1.4.1
     # via
     #   -r requirements/base.txt
@@ -325,6 +331,7 @@ furl==2.1.3
     # via
     #   -r requirements/base.txt
     #   ape-pie
+    #   notifications-api-common
 glom==23.5.0
     # via
     #   -r requirements/base.txt
@@ -399,7 +406,7 @@ multidict==6.0.5
     # via yarl
 mypy-extensions==1.0.0
     # via black
-notifications-api-common==0.3.1
+notifications-api-common[setup-configuration]==0.4.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -447,6 +454,19 @@ pycparser==2.20
     # via
     #   -r requirements/base.txt
     #   cffi
+pydantic==2.9.2
+    # via
+    #   -r requirements/base.txt
+    #   django-setup-configuration
+    #   pydantic-settings
+pydantic-core==2.23.4
+    # via
+    #   -r requirements/base.txt
+    #   pydantic
+pydantic-settings[yaml]==2.6.1
+    # via
+    #   -r requirements/base.txt
+    #   django-setup-configuration
 pyflakes==3.2.0
     # via flake8
 pyjwt==2.4.0
@@ -483,6 +503,7 @@ python-dotenv==1.0.0
     # via
     #   -r requirements/base.txt
     #   open-api-framework
+    #   pydantic-settings
 pytz==2024.1
     # via
     #   -r requirements/base.txt
@@ -494,6 +515,7 @@ pyyaml==6.0.1
     #   drf-spectacular
     #   drf-yasg
     #   oyaml
+    #   pydantic-settings
     #   vcrpy
 qrcode==6.1
     # via
@@ -552,6 +574,8 @@ typing-extensions==4.9.0
     # via
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   pydantic
+    #   pydantic-core
     #   zgw-consumers
 tzdata==2024.1
     # via
@@ -606,7 +630,7 @@ wrapt==1.14.1
     #   vcrpy
 yarl==1.9.4
     # via vcrpy
-zgw-consumers==0.35.1
+zgw-consumers[setup-configuration]==0.36.1
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
