@@ -17,6 +17,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "rest_framework_gis",
     # Project applications.
     "objects.accounts",
+    "objects.setup_configuration",
     "objects.api",
     "objects.core",
     "objects.token",
@@ -85,4 +86,5 @@ CELERY_TASK_TIME_LIMIT = config(
 SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
+    "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
 )

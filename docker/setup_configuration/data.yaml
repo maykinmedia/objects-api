@@ -1,6 +1,15 @@
 zgw_consumers_config_enable: true
 zgw_consumers:
   services:
+  - identifier: objecttypes-api
+    label: Objecttypes API
+    api_root: http://objecttypes.local/api/v1/
+    api_connection_check_path: objecttypes
+    api_type: orc
+    auth_type: api_key
+    header_key: Authorization
+    header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
+
   - identifier: notifications-api
     label: Notificaties API
     api_root: http://notificaties.local/api/v1/
@@ -16,3 +25,10 @@ notifications_config:
   notification_delivery_max_retries: 1
   notification_delivery_retry_backoff: 2
   notification_delivery_retry_backoff_max: 3
+
+objecttypes_config_enable: true
+objecttypes:
+  items:
+    - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
+      name: Object Type 1
+      service_identifier: objecttypes-api
