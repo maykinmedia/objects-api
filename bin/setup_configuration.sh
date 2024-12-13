@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# setup initial configuration using an yaml file
+# setup initial configuration using a yaml file
 # Run this script from the root of the repository
 
 set -e

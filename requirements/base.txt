@@ -155,6 +155,7 @@ django-sessionprofile==3.0.0
     # via open-api-framework
 django-setup-configuration==0.4.0
     # via
+    #   mozilla-django-oidc-db
     #   notifications-api-common
     #   open-api-framework
     #   zgw-consumers
@@ -242,8 +243,10 @@ maykin-2fa==1.0.1
     # via open-api-framework
 mozilla-django-oidc==4.0.0
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==0.19.0
-    # via open-api-framework
+mozilla-django-oidc-db[setup-configuration]==0.21.1
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 notifications-api-common[setup-configuration]==0.4.0
     # via
     #   -r requirements/base.in
