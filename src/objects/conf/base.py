@@ -89,4 +89,3 @@ SETUP_CONFIGURATION_STEPS = (
     "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
 )
-
