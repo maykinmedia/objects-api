@@ -7,6 +7,8 @@ zgw_consumers:
     api_connection_check_path: objecttypes
     api_type: orc
     auth_type: api_key
+    header_key: Authorization
+    header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
 
   - identifier: notifications-api
     label: Notificaties API

@@ -49,12 +49,16 @@ created. An example of a configuration could be seen below:
         api_connection_check_path: objecttypes
         api_type: orc
         auth_type: api_key
+        header_key: Authorization
+        header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
       - identifier: objecttypes-api-2
         label: Objecttypes API 2
         api_root: http://objecttypes-2.local/api/v1/
         api_connection_check_path: objecttypes
         api_type: orc
         auth_type: api_key
+        header_key: Authorization
+        header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
    ....
 
 Tokens configuration
