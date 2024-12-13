@@ -43,3 +43,6 @@ oidc_db_config_admin_auth:
         oidc_op_authorization_endpoint: https://example.com/realms/test/protocol/openid-connect/auth
         oidc_op_token_endpoint: https://example.com/realms/test/protocol/openid-connect/token
         oidc_op_user_endpoint: https://example.com/realms/test/protocol/openid-connect/userinfo
+
+      # workaround for https://github.com/maykinmedia/django-setup-configuration/issues/27
+      userinfo_claims_source: id_token

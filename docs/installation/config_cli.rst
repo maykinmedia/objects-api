@@ -125,6 +125,9 @@ Create or update the (single) YAML configuration file with your settings:
           oidc_op_authorization_endpoint: https://example.com/realms/test/protocol/openid-connect/auth
           oidc_op_token_endpoint: https://example.com/realms/test/protocol/openid-connect/token
           oidc_op_user_endpoint: https://example.com/realms/test/protocol/openid-connect/userinfo
+
+      # workaround for https://github.com/maykinmedia/django-setup-configuration/issues/27
+      userinfo_claims_source: id_token
    ...
 
 More details about configuring mozilla-django-oidc-db through ``setup_configuration``
