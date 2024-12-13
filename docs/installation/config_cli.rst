@@ -107,9 +107,6 @@ created. An example of a configuration could be seen below:
 Tokens configuration
 --------------------
 
-Notifications configuration
----------------------------
-
 Mozilla-django-oidc-db
 ----------------------
 
