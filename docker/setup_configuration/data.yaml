@@ -15,19 +15,12 @@ sites_config:
     - domain: example.com
       name: Example site
 
-objects_api_objecttypes_connection_config_enable: true
-objects_api_objecttypes_connection:
-  identifier: objecttypes-api
-  label: Objecttypen API
-  api_root: https://objecttypes.nl/api/v1/
-  api_connection_check_path: objecttypes
-  api_type: orc
-  auth_type: zgw
-  header_key: Authorization
-  header_value: Token foo
-  client_id: client
-  secret: secret
-  nlx: http://some-outway-adress.local:8080/
-  user_id: objects-api
-  user_representation: Objects API
-  timeout: 60
+zgw_consumers_config_enable: true
+zgw_consumers:
+  services:
+  - identifier: objecttypes-api
+    label: Objecttypes API
+    api_root: http://objecttypes.local/api/v1/
+    api_connection_check_path: objecttypes
+    api_type: orc
+    auth_type: api_key
