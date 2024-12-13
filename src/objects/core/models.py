@@ -42,7 +42,7 @@ class ObjectType(models.Model):
         # zds_client.get_operation_url() can be used here but it increases HTTP overhead
         return f"{self.service.api_root}objecttypes/{self.uuid}"
 
-    def clean_fields(self, exclude: Optional[Iterable[str]] = None) -> None:
+    def clean_fields(self, exclude: Iterable[str] | None = None) -> None:
         super().clean_fields(exclude=exclude)
 
         if exclude and "service" in exclude:
