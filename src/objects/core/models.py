@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from typing import Iterable, Optional
+from typing import Iterable
 
 from django.contrib.gis.db.models import GeometryField
 from django.core.exceptions import ValidationError
