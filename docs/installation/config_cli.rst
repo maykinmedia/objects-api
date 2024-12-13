@@ -31,14 +31,81 @@ format, use by each step.
 Objects API
 ===========
 
+Objecttypes configuration
+-------------------------
+
+To configure objecttypes the following configuration could be used:
+
+.. code-block:: yaml
+   ...
+   zgw_consumers_config_enable: true
+   zgw_consumers:
+   services:
+     - identifier: objecttypen-foo
+       label: Objecttypen API Foo
+       api_root: http://objecttypen.foo/api/v1/
+       api_type: orc
+       auth_type: api_key
+       header_key: Authorization
+       header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
+
+     - identifier: objecttypen-bar
+       label: Objecttypen API Bar
+       api_root: http://objecttypen.bar/api/v1/
+       api_type: orc
+       auth_type: api_key
+       header_key: Authorization
+       header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
+
+   objecttypes_config_enable: true
+   objecttypes:
+     items:
+       - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
+         name: Object Type 1
+         service_identifier: objecttypen-foo
+
+       - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+         name: Object Type 2
+         service_identifier: objecttypen-bar
+   ...
+.. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
+
+Objecttypes require a corresponding ``Service`` to work correctly. Creating
+these ``Service``'s can be done by defining these in the same yaml file. ``Service``
+instances will be created before the ``ObjectType``'s are created.
+
 Objecttypes connection configuration
 ------------------------------------
 
-Tokens configuration
--------------------
+In order to be able to retrieve objecttypes, a corresponding ``Service`` should be
+created. An example of a configuration could be seen below:
 
-Notifications configuration
--------------------------
+.. code-block:: yaml
+   ...
+
+    zgw_consumers_config_enable: true
+    zgw_consumers:
+      services:
+      - identifier: objecttypes-api-1
+        label: Objecttypes API 1
+        api_root: http://objecttypes-1.local/api/v1/
+        api_connection_check_path: objecttypes
+        api_type: orc
+        auth_type: api_key
+        header_key: Authorization
+        header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
+      - identifier: objecttypes-api-2
+        label: Objecttypes API 2
+        api_root: http://objecttypes-2.local/api/v1/
+        api_connection_check_path: objecttypes
+        api_type: orc
+        auth_type: api_key
+        header_key: Authorization
+        header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
+   ....
+
+Tokens configuration
+--------------------
 
 Mozilla-django-oidc-db
 ----------------------
