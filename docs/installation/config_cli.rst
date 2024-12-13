@@ -122,7 +122,9 @@ Create or update the (single) YAML configuration file with your settings:
         oidc_rp_client_id: client-id
         oidc_rp_client_secret: secret
         endpoint_config:
-          oidc_op_discovery_endpoint: https://keycloak.local/protocol/openid-connect/
+          oidc_op_authorization_endpoint: https://example.com/realms/test/protocol/openid-connect/auth
+          oidc_op_token_endpoint: https://example.com/realms/test/protocol/openid-connect/token
+          oidc_op_user_endpoint: https://example.com/realms/test/protocol/openid-connect/userinfo
    ...
 
 More details about configuring mozilla-django-oidc-db through ``setup_configuration``
