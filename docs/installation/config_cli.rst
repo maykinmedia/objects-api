@@ -32,7 +32,7 @@ Objects API
 ===========
 
 Objecttypes configuration
-------------------------------------
+-------------------------
 
 To configure objecttypes the following configuration could be used:
 
@@ -105,10 +105,10 @@ created. An example of a configuration could be seen below:
    ....
 
 Tokens configuration
--------------------
+--------------------
 
 Notifications configuration
--------------------------
+---------------------------
 
 Mozilla-django-oidc-db
 ----------------------
