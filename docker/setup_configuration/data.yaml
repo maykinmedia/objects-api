@@ -36,8 +36,8 @@ objecttypes:
       service_identifier: objecttypes-api
 
 
-token_tokenauth_config_enable: true
-token_tokenauth:
+tokenauth_config_enable: true
+tokenauth:
   items:
     - identifier: token-1
       token: 18b2b74ef994314b84021d47b9422e82b685d82f

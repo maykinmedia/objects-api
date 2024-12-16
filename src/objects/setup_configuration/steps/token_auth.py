@@ -21,13 +21,16 @@ class TokenAuthConfigurationStep(
     Configure tokens for other applications to access Objects API
     """
 
-    namespace = "token_tokenauth"
-    enable_setting = "token_tokenauth_config_enable"
+    namespace = "tokenauth"
+    enable_setting = "tokenauth_config_enable"
 
     verbose_name = "Configuration to set up authentication tokens for objects"
     config_model = TokenAuthGroupConfigurationModel
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
+        if len(model.items) == 0:
+            logger.warning("No tokens provided for configuration")
+
         for item in model.items:
             logger.info(f"Configuring {item.identifier}")
 

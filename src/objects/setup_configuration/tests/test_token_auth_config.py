@@ -12,14 +12,14 @@ from objects.setup_configuration.steps.token_auth import TokenAuthConfigurationS
 from objects.token.models import TokenAuth
 from objects.token.tests.factories import TokenAuthFactory
 
-DIR_FILES = (Path(__file__).parent / "files").resolve()
+DIR_FILES = (Path(__file__).parent / "files/auth_token").resolve()
 
 
 class TokenAuthConfigurationStepTests(TestCase):
     def test_valid_setup_default(self):
         execute_single_step(
             TokenAuthConfigurationStep,
-            yaml_source=str(DIR_FILES / "token_auth_valid_setup_default.yaml"),
+            yaml_source=str(DIR_FILES / "valid_setup_default.yaml"),
         )
 
         tokens = TokenAuth.objects.all()
@@ -46,7 +46,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_valid_setup_complete(self):
         execute_single_step(
             TokenAuthConfigurationStep,
-            yaml_source=str(DIR_FILES / "token_auth_valid_setup_complete.yaml"),
+            yaml_source=str(DIR_FILES / "valid_setup_complete.yaml"),
         )
 
         tokens = TokenAuth.objects.all()
@@ -91,7 +91,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         )
         execute_single_step(
             TokenAuthConfigurationStep,
-            yaml_source=str(DIR_FILES / "token_auth_valid_setup_complete.yaml"),
+            yaml_source=str(DIR_FILES / "valid_setup_complete.yaml"),
         )
 
         tokens = TokenAuth.objects.all()
@@ -124,7 +124,7 @@ class TokenAuthConfigurationStepTests(TestCase):
     def test_valid_idempotent_step(self):
         execute_single_step(
             TokenAuthConfigurationStep,
-            yaml_source=str(DIR_FILES / "token_auth_valid_setup_complete.yaml"),
+            yaml_source=str(DIR_FILES / "valid_setup_complete.yaml"),
         )
 
         tokens = TokenAuth.objects.all()
@@ -152,7 +152,7 @@ class TokenAuthConfigurationStepTests(TestCase):
 
         execute_single_step(
             TokenAuthConfigurationStep,
-            yaml_source=str(DIR_FILES / "token_auth_valid_setup_complete.yaml"),
+            yaml_source=str(DIR_FILES / "valid_setup_complete.yaml"),
         )
 
         tokens = TokenAuth.objects.all()
@@ -180,7 +180,7 @@ class TokenAuthConfigurationStepTests(TestCase):
         with self.assertRaises(PrerequisiteFailed) as command_error:
             execute_single_step(
                 TokenAuthConfigurationStep,
-                yaml_source=str(DIR_FILES / "token_auth_invalid_setup.yaml"),
+                yaml_source=str(DIR_FILES / "invalid_setup.yaml"),
             )
 
         self.assertTrue("Input should be a valid list" in str(command_error.exception))
@@ -188,8 +188,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_setup_email(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "token-1",
@@ -213,8 +213,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_setup_token(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "token-1",
@@ -238,8 +238,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_empty_token(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "token-1",
@@ -263,8 +263,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_setup_token_missing(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "token-1",
@@ -285,8 +285,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_setup_token_unique(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "token-1",
@@ -319,8 +319,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_setup_contact_person(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "token-1",
@@ -344,8 +344,8 @@ class TokenAuthConfigurationStepTests(TestCase):
 
     def test_invalid_setup_identifier(self):
         object_source = {
-            "token_tokenauth_config_enable": True,
-            "token_tokenauth": {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
                 "items": [
                     {
                         "identifier": "invalid identifier",
