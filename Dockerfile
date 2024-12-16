@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libproj-dev \
         gdal-bin \
         libgdal-dev \
+        gettext \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install pip "setuptools>=70.0.0"
