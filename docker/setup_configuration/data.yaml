@@ -42,18 +42,29 @@ objecttypes:
       name: Object Type 1
       service_identifier: objecttypes-api
 
+    - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+      name: Object Type 2
+      service_identifier: objecttypes-api
+
 
 tokenauth_config_enable: true
 tokenauth:
   items:
     - identifier: token-1
-      token: 18b2b74ef994314b84021d47b9422e82b685d82f
+      token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
       contact_person: Person 1
       email: person-1@example.com
       organization: Organization 1
       application: Application 1
       administration: Administration 1
-      is_superuser: true
+      permissions:
+        - object_type: b427ef84-189d-43aa-9efd-7bb2c459e281
+          mode: read_and_write
+        - object_type: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+          mode: read_only
+          use_fields: true
+          fields:
+            key1: value1
 
 
 oidc_db_config_enable: true
