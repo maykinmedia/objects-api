@@ -14,6 +14,7 @@ class TokenAuth(models.Model):
     identifier = models.SlugField(
         unique=True,
         help_text=_("A human-friendly label to refer to this token"),
+        validators=[validate_no_empty],
     )
     token = models.CharField(
         _("token"),

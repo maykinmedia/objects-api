@@ -55,6 +55,7 @@ class Migration(migrations.Migration):
             field=models.SlugField(
                 help_text="A human-friendly label to refer to this token",
                 unique=True,
+                validators=[objects.token.validators.validate_no_empty],
             ),
         ),
         migrations.AlterField(
