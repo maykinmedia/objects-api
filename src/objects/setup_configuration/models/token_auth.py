@@ -1,5 +1,4 @@
 from django_setup_configuration.models import ConfigurationModel
-from pydantic import Field
 
 from objects.token.models import TokenAuth
 

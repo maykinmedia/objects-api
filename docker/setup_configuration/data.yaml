@@ -1,20 +1,3 @@
-token_tokenauth_config_enable: true
-token_tokenauth:
-  items:
-    - identifier: token-1
-      token: 18b2b74ef994314b84021d47b9422e82b685d82f
-      contact_person: Person 1
-      email: person-1@example.com
-      organization: Organization 1
-      application: Application 1
-      administration: Administration 1
-      
-sites_config_enable: true
-sites_config:
-  items:
-    - domain: example.com
-      name: Example site
-
 zgw_consumers_config_enable: true
 zgw_consumers:
   services:
@@ -36,6 +19,7 @@ zgw_consumers:
     header_key: Authorization
     header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
 
+
 notifications_config_enable: true
 notifications_config:
   notifications_api_service_identifier: notifications-api
@@ -43,12 +27,27 @@ notifications_config:
   notification_delivery_retry_backoff: 2
   notification_delivery_retry_backoff_max: 3
 
+
 objecttypes_config_enable: true
 objecttypes:
   items:
     - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
       name: Object Type 1
       service_identifier: objecttypes-api
+
+
+token_tokenauth_config_enable: true
+token_tokenauth:
+  items:
+    - identifier: token-1
+      token: 18b2b74ef994314b84021d47b9422e82b685d82f
+      contact_person: Person 1
+      email: person-1@example.com
+      organization: Organization 1
+      application: Application 1
+      administration: Administration 1
+      is_superuser: true
+
 
 oidc_db_config_enable: true
 oidc_db_config_admin_auth:
