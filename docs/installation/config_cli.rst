@@ -121,6 +121,7 @@ Create or update the (single) YAML configuration file with your settings:
           organization: Organization XYZ # optional
           application: Application XYZ # optional
           administration: Administration XYZ # optional
+          is_superuser: true # optional
 
         - identifier: token-2
           token: 7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799
