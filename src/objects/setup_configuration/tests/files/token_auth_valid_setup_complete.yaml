@@ -1,0 +1,20 @@
+token_tokenauth_config_enable: true
+token_tokenauth:
+  items:
+    - identifier: token-1
+      token: 18b2b74ef994314b84021d47b9422e82b685d82f
+      contact_person: Person 1
+      email: person-1@example.com
+      organization: Organization 1
+      application: Application 1
+      administration: Administration 1
+      is_superuser: True
+
+    - identifier: token-2
+      token: e882642bd0ec2482adcdc97258c2e6f98cb06d85
+      contact_person: Person 2
+      email: person-2@example.com
+      organization: Organization 2
+      application: Application 2
+      administration: Administration 2
+      is_superuser: True
