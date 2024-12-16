@@ -6,6 +6,7 @@ jsonschema
 furl
 
 # Common ground libraries
-notifications-api-common
 django-setup-configuration>=0.4.0
+notifications-api-common[setup-configuration]
 zgw-consumers[setup-configuration]
+mozilla-django-oidc-db[setup-configuration]

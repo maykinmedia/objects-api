@@ -17,8 +17,8 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "rest_framework_gis",
     # Project applications.
     "objects.accounts",
-    "objects.api",
     "objects.setup_configuration",
+    "objects.api",
     "objects.core",
     "objects.token",
     "objects.utils",
@@ -84,7 +84,8 @@ CELERY_TASK_TIME_LIMIT = config(
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
-    "objects.setup_configuration.steps.token_auth.TokenAuthConfigurationStep",
-    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep"
-    "objects.setup_configuration.steps.sites.SitesConfigurationStep",
+    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
+    "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
+    "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
 )
