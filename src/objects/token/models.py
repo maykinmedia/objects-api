@@ -1,5 +1,4 @@
-import binascii
-import os
+import secrets
 
 from django.core import exceptions
 from django.db import models
@@ -81,7 +80,7 @@ class TokenAuth(models.Model):
         return super().save(*args, **kwargs)
 
     def generate_token(self):
-        return binascii.hexlify(os.urandom(20)).decode()
+        return secrets.token_hex(20)
 
     def get_permission_for_object_type(self, object_type: ObjectType):
         if not self.permissions.filter(object_type=object_type).exists():
