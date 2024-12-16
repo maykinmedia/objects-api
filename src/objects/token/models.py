@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from objects.core.models import ObjectType
-from objects.token.validators import validate_no_whitespace, validate_no_empty
+from objects.token.validators import validate_no_empty, validate_no_whitespace
 
 from .constants import PermissionModes
 
