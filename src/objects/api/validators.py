@@ -110,7 +110,8 @@ def validate_data_attr(value: list):
         # check that comma can be only in the value part
         if "," in value_part.rsplit("__", 1)[0]:
             message = _(
-                "Filter expression '%(value_part)s' doesn't have the shape 'key__operator__value'"
+                "Filter expression '%(value_part)s' must have the shape 'key__operator__value', "
+                "commas can only be present in the 'value'"
             ) % {"value_part": value_part}
             raise serializers.ValidationError(message, code=code)
 
