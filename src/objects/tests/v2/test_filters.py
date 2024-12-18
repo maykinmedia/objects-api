@@ -492,6 +492,10 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
         record = ObjectRecordFactory.create(
             data={"date": "2000-11-01"}, object__object_type=self.object_type
         )
+        ObjectRecordFactory.create(
+            data={"date": "2020-11-01"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
         response = self.client.get(self.url, {"data_attr": "date__exact__2000-11-01"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -814,7 +818,8 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
             response.json(),
             [
                 "Filter expression 'dimensions__diameter__exact__4,name__exact__demo' "
-                "doesn't have the shape 'key__operator__value'"
+                "must have the shape 'key__operator__value', commas can only be present in "
+                "the 'value'"
             ],
         )
 
