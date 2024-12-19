@@ -54,7 +54,9 @@ class TokenAuthConfigurationStep(
                     "fields": permission.fields,
                 }
             except ObjectDoesNotExist as exception:
-                raise PrerequisiteFailed(step=self, validation_error=exception)
+                raise ConfigurationRunFailed(
+                    ("Object type with %s does not exist" % permission.object_type)
+                ) from exception
 
             permission_instance = Permission(**permission_kwargs)
             self._full_clean(permission_instance)
