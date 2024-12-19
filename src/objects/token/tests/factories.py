@@ -7,6 +7,7 @@ from ..constants import PermissionModes
 
 
 class TokenAuthFactory(factory.django.DjangoModelFactory):
+    identifier = factory.Sequence(lambda sequence: f"token-{sequence}")
     contact_person = factory.Faker("name")
     email = factory.Faker("email")
 
