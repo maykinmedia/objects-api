@@ -73,7 +73,10 @@ class TokenAuthConfigurationStep(
                 )
             except IntegrityError as exception:
                 raise ConfigurationRunFailed(
-                    ("Failed configuring permission for token %s" % token.identifier)
+                    (
+                        "Failed configuring permission for token %s and object type %s"
+                        % (token.identifier, permission.object_type)
+                    )
                 ) from exception
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
