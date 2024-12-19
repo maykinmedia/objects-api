@@ -30,9 +30,9 @@ changing the material history.
 Links
 =====
 
-* `Enterprise Architect (lite) <https://www.sparxsystems.eu/enterprise-architect/ea-lite-edition/>`__
+* `Enterprise Architect (lite) <https://sparxsystems.com/products/ea/trial/request.html>`__
 * :download:`Object and Objecttypes information model <_assets/information-model.zip>`
 * `MIM-files <https://register.geostandaarden.nl/informatiemodel/mim/>`__
 
 .. _`Metamodel Informatiemodellering`: https://www.geonovum.nl/geo-standaarden/metamodel-informatiemodellering-mim
-.. _`StUF`: https://www.gemmaonline.nl/images/gemmaonline/f/fa/Stuf0301.pdf
+.. _`StUF`: https://vng-realisatie.github.io/StUF-onderlaag/documenten/Stuf0301.pdf

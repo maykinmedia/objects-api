@@ -5,12 +5,12 @@ VNG compliancy
 ==============
 
 The Objects and Objecttypes API specifications are proposed by the `municipality
-of Utrecht`_ and submitted to the `VNG`_ for to become a Dutch national 
-standard. The VNG (Vereniging van Nederlandse Gemeenten) is the Association of 
+of Utrecht`_ and submitted to the `VNG`_ for to become a Dutch national
+standard. The VNG (Vereniging van Nederlandse Gemeenten) is the Association of
 Dutch Municipalities.
 
-The VNG has drafted an initial checklist for new API standards which is shown 
-in the table below. The table below also shows the compliancy to this checklist 
+The VNG has drafted an initial checklist for new API standards which is shown
+in the table below. The table below also shows the compliancy to this checklist
 for both APIs. This checklist is only available in Dutch.
 
 .. csv-table:: 1. Stakeholder documentatie
@@ -58,7 +58,7 @@ for both APIs. This checklist is only available in Dutch.
    1;Opgesteld in Open API Specification 3.x;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/index.html>`__;
    2;Gepubliceerd op VNG-Realisatie Github omgeving en beschikbaar via Redoc en Swagger;No [1]_;
    3;Ontwerpbeslissing zijn vertaald naar (aanvullende) specificaties;`Yes <https://github.com/maykinmedia/objects-api/issues>`_;
-   4;Voldoet aan landelijke API strategie, in het bijzonder de core design rules;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/principles.html>`__;
+   4;Voldoet aan landelijke API strategie, in het bijzonder de core design rules;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/compliancy/api-strategy.html>`__;
    5;Informatiebeveiliging en privacy best practices (IBD) worden gevolgd;No;Unclear
    6;Aanvullende specificaties die het gedrag van de API specificeren voor de provider.;No;TODO
    7;De OAS3-specificatie is getest voor toepasbaarheid in de mainstream code-generatoren;Yes (`1 <https://github.com/maykinmedia/objects-api/actions?query=workflow%3Agenerate-sdks>`__, `2 <https://github.com/maykinmedia/objecttypes-api/actions?query=workflow%3Agenerate-sdks>`__);
@@ -70,7 +70,7 @@ for both APIs. This checklist is only available in Dutch.
    :delim: ;
 
    1;API-standaard is geïmplementeerd in een referentieimplementatie indien voor de standaard meerdere providers van toepassing kunnen zijn;Yes (`1 <https://github.com/maykinmedia/objects-api/>`__, `2 <https://github.com/maykinmedia/objecttypes-api/>`__);
-   2;Testgevallen zijn beschreven voor elke service/operatie en aanvullende specificaties, zowel voor de happy als de unhappy flows;Yes (`1 <https://travis-ci.com/maykinmedia/objects-api>`__, `2 <https://travis-ci.com/maykinmedia/objecttypes-api>`__); 
+   2;Testgevallen zijn beschreven voor elke service/operatie en aanvullende specificaties, zowel voor de happy als de unhappy flows;Yes (`1 <https://github.com/maykinmedia/objects-api/actions>`__, `2 <https://github.com/maykinmedia/objecttypes-api/actions>`__);
    3;Elk testgeval beschrijft het logische testgeval, de teststap(pen) (wat wordt gedaan) en het verwachte resultaat;No;Unclear
    4;Er zijn compliancy tests beschikbaar voor elke referentie-component (consumers en providers) en alle betreffende services en operaties, zodat leveranciers kunnen testen en aantonen dat hun applicatie voldoet aan de standaard;No;TODO
    5;Voor zover nodig is ook de testdata beschreven die wordt gebruikt in de testgevallen;No;See 5.4.
