@@ -5,10 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
 
 from django_setup_configuration.configuration import BaseConfigurationStep
-from django_setup_configuration.exceptions import (
-    ConfigurationRunFailed,
-    PrerequisiteFailed,
-)
+from django_setup_configuration.exceptions import ConfigurationRunFailed
 
 from objects.core.models import ObjectType
 from objects.setup_configuration.models.token_auth import (
