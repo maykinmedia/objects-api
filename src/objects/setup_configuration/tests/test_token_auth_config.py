@@ -766,3 +766,41 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         )
         self.assertEqual(TokenAuth.objects.count(), 0)
         self.assertEqual(Permission.objects.count(), 0)
+
+    def test_invalid_permissions_field_based_authorization(self):
+        object_source = {
+            "tokenauth_config_enable": True,
+            "tokenauth": {
+                "items": [
+                    {
+                        "identifier": "token-1",
+                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
+                        "contact_person": "Person 1",
+                        "email": "person-1@example.com",
+                        "organization": "Organization 1",
+                        "application": "Application 1",
+                        "administration": "Administration 1",
+                        "permissions": [
+                            {
+                                "object_type": "3a82fb7f-fc9b-4104-9804-993f639d6d0d",
+                                "mode": "read_and_write",
+                                "use_fields": True,
+                                "fields": {
+                                    "1": [
+                                        "record__data__leeftijd",
+                                        "record__data__kiemjaar",
+                                    ]
+                                },
+                            },
+                        ],
+                    },
+                ],
+            },
+        }
+        with self.assertRaises(ConfigurationRunFailed) as command_error:
+            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
+
+        self.assertTrue(
+            "Validation error(s) during instance cleaning"
+            in str(command_error.exception)
+        )
