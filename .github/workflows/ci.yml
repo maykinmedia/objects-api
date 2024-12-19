@@ -98,7 +98,12 @@ jobs:
     uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v1
     needs:
       - store-reusable-workflow-vars
-      - open-api-ci
+      # TODO: We explicitly specify the jobs to depend on here, to avoid depending on
+      # docs, which will be skipped by default (thus not fulfilling the dependency for
+      # the push), but can't be enabled because the docs build is currently broken.
+      - open-api-ci/check-requirements
+      - open-api-ci/docker-build
+      - open-api-ci/image-scan
       - tests
     with:
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
