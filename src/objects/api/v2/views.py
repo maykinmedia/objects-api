@@ -4,8 +4,12 @@ from django.conf import settings
 from django.db import models
 from django.utils.dateparse import parse_date
 
-from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiTypes,
+    extend_schema,
+    extend_schema_view,
+)
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -28,13 +32,32 @@ from ..serializers import (
     PermissionSerializer,
 )
 from ..utils import is_date
-from .filters import ObjectRecordFilterSet
+from .filters import DATA_ATTR_HELP_TEXT, DATA_ATTRS_HELP_TEXT, ObjectRecordFilterSet
+
+# manually override OAS because of "deprecated" attribute
+data_attrs_parameter = OpenApiParameter(
+    name="data_attrs",
+    type=OpenApiTypes.STR,
+    location=OpenApiParameter.QUERY,
+    description=DATA_ATTRS_HELP_TEXT,
+    deprecated=True,
+)
+
+# manually override OAS because of "explode" attribute
+data_attr_parameter = OpenApiParameter(
+    name="data_attr",
+    location=OpenApiParameter.QUERY,
+    type=OpenApiTypes.STR,
+    description=DATA_ATTR_HELP_TEXT,
+    explode=True,
+)
 
 
 @extend_schema_view(
     list=extend_schema(
         description="Retrieve a list of OBJECTs and their actual RECORD. "
-        "The actual record is defined as if the query parameter `date=<today>` was given."
+        "The actual record is defined as if the query parameter `date=<today>` was given.",
+        parameters=[data_attrs_parameter, data_attr_parameter],
     ),
     retrieve=extend_schema(
         description="Retrieve a single OBJECT and its actual RECORD. "
