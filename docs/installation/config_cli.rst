@@ -37,6 +37,7 @@ Objecttypes configuration
 To configure objecttypes the following configuration could be used:
 
 .. code-block:: yaml
+  
    ...
    zgw_consumers_config_enable: true
    zgw_consumers:
@@ -68,6 +69,7 @@ To configure objecttypes the following configuration could be used:
          name: Object Type 2
          service_identifier: objecttypen-bar
    ...
+
 .. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
 
 Objecttypes require a corresponding ``Service`` to work correctly. Creating
@@ -81,8 +83,8 @@ In order to be able to retrieve objecttypes, a corresponding ``Service`` should 
 created. An example of a configuration could be seen below:
 
 .. code-block:: yaml
-   ...
 
+   ...
     zgw_consumers_config_enable: true
     zgw_consumers:
       services:
@@ -102,7 +104,8 @@ created. An example of a configuration could be seen below:
         auth_type: api_key
         header_key: Authorization
         header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
-   ....
+   ...
+
 
 Tokens configuration
 --------------------
@@ -121,13 +124,27 @@ Create or update the (single) YAML configuration file with your settings:
           organization: Organization XYZ # optional
           application: Application XYZ # optional
           administration: Administration XYZ # optional
-          is_superuser: true # optional
+          permissions:
+            - object_type: b427ef84-189d-43aa-9efd-7bb2c459e281
+              mode: read_and_write
 
         - identifier: token-2
           token: 7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799
           contact_person: Person 2
           email: person-2@example.com
+          permissions:
+            - object_type: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+              mode: read_only
+              use_fields: true
+              fields:
+                '1':
+                  - record__data__leeftijd
+                  - record__data__kiemjaar
    ...
+
+.. note:: To ensure the proper functioning of the tokens, it is essential to first configure the ``objecttypes``.
+          Then, the token configuration must be completed to guarantee the correct configuration of the ``Permissions``.
+
 
 Mozilla-django-oidc-db
 ----------------------
@@ -158,16 +175,32 @@ can be found at the _`documentation`: https://mozilla-django-oidc-db.readthedocs
 Sites configuration
 -------------------
 
+.. code-block:: yaml
+
+   ...
+    sites_config_enable: true
+    sites_config:
+      items:
+      - domain: example.com
+        name: Example site
+      - domain: test.example.com
+        name: Test site
+   ...
+
+More details about sites configuration through ``setup_configuration``
+can be found at the _`site documentation`: https://github.com/maykinmedia/django-setup-configuration/blob/main/docs/sites_config.rst
+
+
 Notifications configuration
--------------------------
+---------------------------
 
 To configure sending notifications for the application ensure there is a ``services``
 item present that matches the ``notifications_api_service_identifier`` in the
 ``notifications_config`` namespace:
 
 .. code-block:: yaml
-   ...
 
+   ...
     zgw_consumers_config_enable: true
     zgw_consumers:
       services:
@@ -184,7 +217,7 @@ item present that matches the ``notifications_api_service_identifier`` in the
       notification_delivery_max_retries: 1
       notification_delivery_retry_backoff: 2
       notification_delivery_retry_backoff_max: 3
-   ....
+   ...
 
 
 Execution
