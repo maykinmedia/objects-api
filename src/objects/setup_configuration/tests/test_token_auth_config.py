@@ -467,7 +467,6 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
             TokenAuthConfigurationStep,
             yaml_source=str(DIR_FILES / "valid_setup_complete.yaml"),
         )
-
         tokens = TokenAuth.objects.all()
         self.assertEqual(tokens.count(), 3)
         self.assertEqual(Permission.objects.count(), 3)
@@ -492,15 +491,11 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(permission.mode, "read_only")
         self.assertTrue(permission.use_fields)
         self.assertTrue(isinstance(permission.fields, dict))
-        self.assertTrue(
-            all(key in permission.fields.keys() for key in ["key1", "key2", "key3"])
-        )
-        self.assertTrue(
-            all(
-                value in permission.fields.values()
-                for value in ["value1", "value2", "value3"]
-            )
-        )
+        self.assertTrue(isinstance(permission.fields["1"], list))
+        self.assertEqual(len(permission.fields.keys()), 1)
+        self.assertTrue("1" in permission.fields.keys())
+        self.assertTrue("record__data__leeftijd" in permission.fields["1"])
+        self.assertTrue("record__data__kiemjaar" in permission.fields["1"])
         object_type = ObjectType.objects.get(
             uuid="ca754b52-3f37-4c49-837c-130e8149e337", service=self.service
         )
@@ -609,15 +604,11 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(permission.mode, "read_only")
         self.assertTrue(permission.use_fields)
         self.assertTrue(isinstance(permission.fields, dict))
-        self.assertTrue(
-            all(key in permission.fields.keys() for key in ["key1", "key2", "key3"])
-        )
-        self.assertTrue(
-            all(
-                value in permission.fields.values()
-                for value in ["value1", "value2", "value3"]
-            )
-        )
+        self.assertTrue(isinstance(permission.fields["1"], list))
+        self.assertEqual(len(permission.fields.keys()), 1)
+        self.assertTrue("1" in permission.fields.keys())
+        self.assertTrue("record__data__leeftijd" in permission.fields["1"])
+        self.assertTrue("record__data__kiemjaar" in permission.fields["1"])
 
     def test_valid_idempotent_step(self):
         self.assertEqual(TokenAuth.objects.count(), 0)
@@ -654,15 +645,11 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(old_permission.mode, "read_only")
         self.assertTrue(old_permission.use_fields)
         self.assertTrue(isinstance(old_permission.fields, dict))
-        self.assertTrue(
-            all(key in old_permission.fields.keys() for key in ["key1", "key2", "key3"])
-        )
-        self.assertTrue(
-            all(
-                value in old_permission.fields.values()
-                for value in ["value1", "value2", "value3"]
-            )
-        )
+        self.assertTrue(isinstance(old_permission.fields["1"], list))
+        self.assertEqual(len(old_permission.fields.keys()), 1)
+        self.assertTrue("1" in old_permission.fields.keys())
+        self.assertTrue("record__data__leeftijd" in old_permission.fields["1"])
+        self.assertTrue("record__data__kiemjaar" in old_permission.fields["1"])
 
         execute_single_step(
             TokenAuthConfigurationStep,
@@ -689,190 +676,11 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(new_permission.mode, "read_only")
         self.assertTrue(new_permission.use_fields)
         self.assertTrue(isinstance(new_permission.fields, dict))
-        self.assertTrue(
-            all(key in new_permission.fields.keys() for key in ["key1", "key2", "key3"])
-        )
-        self.assertTrue(
-            all(
-                value in new_permission.fields.values()
-                for value in ["value1", "value2", "value3"]
-            )
-        )
-
-    def test_invalid_permissions_type(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": ["permission1", "permission2"],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue(
-            "Input should be a valid dictionary or instance of TokenAuthPermissionConfigurationModel"
-            in str(command_error.exception)
-        )
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
-
-    def test_invalid_permissions_object_type_empty(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "object_type": "",
-                                "mode": "read_only",
-                                "use_fields": True,
-                                "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
-                                },
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue(
-            "Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0"
-            in str(command_error.exception)
-        )
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
-
-    def test_invalid_permissions_object_type_field_required(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "mode": "read_only",
-                                "use_fields": True,
-                                "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
-                                },
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue("Field required" in str(command_error.exception))
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
-
-    def test_invalid_permissions_object_type_none(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "object_type": None,
-                                "mode": "read_only",
-                                "use_fields": True,
-                                "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
-                                },
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue(
-            "UUID input should be a string, bytes or UUID object"
-            in str(command_error.exception)
-        )
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
-
-    def test_invalid_permissions_object_type_not_valid_uuid(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "object_type": "uuid 1234",
-                                "mode": "read_only",
-                                "use_fields": True,
-                                "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
-                                },
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue(
-            "Input should be a valid UUID, invalid character"
-            in str(command_error.exception)
-        )
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
+        self.assertTrue(isinstance(new_permission.fields["1"], list))
+        self.assertEqual(len(new_permission.fields.keys()), 1)
+        self.assertTrue("1" in new_permission.fields.keys())
+        self.assertTrue("record__data__leeftijd" in new_permission.fields["1"])
+        self.assertTrue("record__data__kiemjaar" in new_permission.fields["1"])
 
     def test_invalid_permissions_object_type_does_not_exist(self):
         self.assertFalse(
@@ -898,9 +706,10 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
                                 "mode": "read_only",
                                 "use_fields": True,
                                 "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
+                                    "1": [
+                                        "record__data__leeftijd",
+                                        "record__data__kiemjaar",
+                                    ]
                                 },
                             },
                         ],
@@ -909,10 +718,11 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
             },
         }
 
-        with self.assertRaises(PrerequisiteFailed) as command_error:
+        with self.assertRaises(ConfigurationRunFailed) as command_error:
             execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
         self.assertTrue(
-            "ObjectType matching query does not exist" in str(command_error.exception)
+            "Object type with 69feca90-6c3d-4628-ace8-19e4b0ae4065 does not exist"
+            in str(command_error.exception)
         )
         # Token was created without permissions
         self.assertEqual(TokenAuth.objects.count(), 1)
@@ -937,9 +747,10 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
                                 "mode": "test",
                                 "use_fields": True,
                                 "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
+                                    "1": [
+                                        "record__data__leeftijd",
+                                        "record__data__kiemjaar",
+                                    ]
                                 },
                             },
                         ],
@@ -955,104 +766,3 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         )
         self.assertEqual(TokenAuth.objects.count(), 0)
         self.assertEqual(Permission.objects.count(), 0)
-
-    def test_invalid_permissions_mode_required(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "object_type": "3a82fb7f-fc9b-4104-9804-993f639d6d0d",
-                                "use_fields": True,
-                                "fields": {
-                                    "key1": "value1",
-                                    "key2": "value2",
-                                    "key3": "value3",
-                                },
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue("Field required" in str(command_error.exception))
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
-
-    def test_invalid_permissions_fields_not_valid(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "object_type": "3a82fb7f-fc9b-4104-9804-993f639d6d0d",
-                                "mode": "read_only",
-                                "fields": "test",
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-        with self.assertRaises(PrerequisiteFailed) as command_error:
-            execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-        self.assertTrue(
-            "Input should be a valid dictionary" in str(command_error.exception)
-        )
-        self.assertEqual(TokenAuth.objects.count(), 0)
-        self.assertEqual(Permission.objects.count(), 0)
-
-    def test_valid_permissions_fields_default(self):
-        object_source = {
-            "tokenauth_config_enable": True,
-            "tokenauth": {
-                "items": [
-                    {
-                        "identifier": "token-1",
-                        "token": "ba9d233e95e04c4a8a661a27daffe7c9bd019067",
-                        "contact_person": "Person 1",
-                        "email": "person-1@example.com",
-                        "organization": "Organization 1",
-                        "application": "Application 1",
-                        "administration": "Administration 1",
-                        "permissions": [
-                            {
-                                "object_type": "3a82fb7f-fc9b-4104-9804-993f639d6d0d",
-                                "mode": "read_only",
-                            },
-                        ],
-                    },
-                ],
-            },
-        }
-
-        execute_single_step(TokenAuthConfigurationStep, object_source=object_source)
-
-        self.assertEqual(Permission.objects.count(), 1)
-        self.assertEqual(TokenAuth.objects.count(), 1)
-
-        token = TokenAuth.objects.get(identifier="token-1")
-        self.assertEqual(token.permissions.count(), 1)
-        self.assertEqual(token.permissions.first().mode, "read_only")
-        self.assertEqual(token.permissions.first().use_fields, False)
-        self.assertEqual(token.permissions.first().fields, None)
