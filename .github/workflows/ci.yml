@@ -8,6 +8,12 @@ on:
       - '**'
   pull_request:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Check requirements files
+      - Docker image build
+    types:
+      - completed
 
 env:
   IMAGE_NAME: maykinmedia/objects-api
@@ -95,15 +101,10 @@ jobs:
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
 
   open-api-publish:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v1
     needs:
       - store-reusable-workflow-vars
-      # TODO: We explicitly specify the jobs to depend on here, to avoid depending on
-      # docs, which will be skipped by default (thus not fulfilling the dependency for
-      # the push), but can't be enabled because the docs build is currently broken.
-      - open-api-ci/check-requirements
-      - open-api-ci/docker-build
-      - open-api-ci/image-scan
       - tests
     with:
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
