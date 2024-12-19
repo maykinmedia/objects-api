@@ -93,6 +93,7 @@ jobs:
       main-branch: 'master'
       python-version: '3.11'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
+      run-docs: true
 
   open-api-publish:
     uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v1

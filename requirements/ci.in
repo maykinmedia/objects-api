@@ -1,2 +1,8 @@
 codecov
 pytest
+
+# Documentation
+sphinx
+sphinx-rtd-theme
+sphinx-tabs
+recommonmark
