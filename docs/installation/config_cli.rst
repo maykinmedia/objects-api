@@ -106,6 +106,28 @@ created. An example of a configuration could be seen below:
 
 Tokens configuration
 --------------------
+Create or update the (single) YAML configuration file with your settings:
+
+.. code-block:: yaml
+   
+   ...
+    tokenauth_config_enable: true
+    tokenauth:
+      items:
+        - identifier: token-1
+          token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
+          contact_person: Person 1
+          email: person-1@example.com
+          organization: Organization XYZ # optional
+          application: Application XYZ # optional
+          administration: Administration XYZ # optional
+          is_superuser: true # optional
+
+        - identifier: token-2
+          token: 7b2b212d9f16d171a70a1d927cdcfbd5ca7a4799
+          contact_person: Person 2
+          email: person-2@example.com
+   ...
 
 Mozilla-django-oidc-db
 ----------------------

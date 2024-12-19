@@ -1,17 +1,27 @@
-import binascii
-import os
+import secrets
 
 from django.core import exceptions
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from objects.core.models import ObjectType
+from objects.token.validators import validate_no_empty, validate_no_whitespace
 
 from .constants import PermissionModes
 
 
 class TokenAuth(models.Model):
-    token = models.CharField(_("token"), max_length=40, unique=True)
+    identifier = models.SlugField(
+        unique=True,
+        help_text=_("A human-friendly label to refer to this token"),
+        validators=[validate_no_empty],
+    )
+    token = models.CharField(
+        _("token"),
+        max_length=40,
+        unique=True,
+        validators=[validate_no_empty, validate_no_whitespace],
+    )
     contact_person = models.CharField(
         _("contact person"),
         max_length=200,
@@ -71,7 +81,7 @@ class TokenAuth(models.Model):
         return super().save(*args, **kwargs)
 
     def generate_token(self):
-        return binascii.hexlify(os.urandom(20)).decode()
+        return secrets.token_hex(20)
 
     def get_permission_for_object_type(self, object_type: ObjectType):
         if not self.permissions.filter(object_type=object_type).exists():
