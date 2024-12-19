@@ -37,38 +37,37 @@ Objecttypes configuration
 To configure objecttypes the following configuration could be used:
 
 .. code-block:: yaml
-  
-   ...
-   zgw_consumers_config_enable: true
-   zgw_consumers:
-   services:
-     - identifier: objecttypen-foo
-       label: Objecttypen API Foo
-       api_root: http://objecttypen.foo/api/v1/
-       api_type: orc
-       auth_type: api_key
-       header_key: Authorization
-       header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
 
-     - identifier: objecttypen-bar
-       label: Objecttypen API Bar
-       api_root: http://objecttypen.bar/api/v1/
-       api_type: orc
-       auth_type: api_key
-       header_key: Authorization
-       header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
+    zgw_consumers_config_enable: true
+    zgw_consumers:
+    services:
+      - identifier: objecttypen-foo
+        label: Objecttypen API Foo
+        api_root: http://objecttypen.foo/api/v1/
+        api_type: orc
+        auth_type: api_key
+        header_key: Authorization
+        header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
 
-   objecttypes_config_enable: true
-   objecttypes:
-     items:
-       - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
-         name: Object Type 1
-         service_identifier: objecttypen-foo
+      - identifier: objecttypen-bar
+        label: Objecttypen API Bar
+        api_root: http://objecttypen.bar/api/v1/
+        api_type: orc
+        auth_type: api_key
+        header_key: Authorization
+        header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
 
-       - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
-         name: Object Type 2
-         service_identifier: objecttypen-bar
-   ...
+    objecttypes_config_enable: true
+    objecttypes:
+      items:
+        - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
+          name: Object Type 1
+          service_identifier: objecttypen-foo
+
+        - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+          name: Object Type 2
+          service_identifier: objecttypen-bar
+    ...
 
 .. note:: The ``uuid`` field will be used to lookup existing ``ObjectType``'s.
 
@@ -84,7 +83,6 @@ created. An example of a configuration could be seen below:
 
 .. code-block:: yaml
 
-   ...
     zgw_consumers_config_enable: true
     zgw_consumers:
       services:
@@ -104,7 +102,6 @@ created. An example of a configuration could be seen below:
         auth_type: api_key
         header_key: Authorization
         header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
-   ...
 
 
 Tokens configuration
@@ -112,8 +109,7 @@ Tokens configuration
 Create or update the (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
-   
-   ...
+
     tokenauth_config_enable: true
     tokenauth:
       items:
@@ -140,7 +136,6 @@ Create or update the (single) YAML configuration file with your settings:
                 '1':
                   - record__data__leeftijd
                   - record__data__kiemjaar
-   ...
 
 .. note:: To ensure the proper functioning of the tokens, it is essential to first configure the ``objecttypes``.
           Then, the token configuration must be completed to guarantee the correct configuration of the ``Permissions``.
@@ -153,7 +148,6 @@ Create or update the (single) YAML configuration file with your settings:
 
 .. code-block:: yaml
 
-   ...
     oidc_db_config_enable: true
     oidc_db_config_admin_auth:
     items:
@@ -167,7 +161,6 @@ Create or update the (single) YAML configuration file with your settings:
 
       # workaround for https://github.com/maykinmedia/django-setup-configuration/issues/27
       userinfo_claims_source: id_token
-   ...
 
 More details about configuring mozilla-django-oidc-db through ``setup_configuration``
 can be found at the _`documentation`: https://mozilla-django-oidc-db.readthedocs.io/en/latest/setup_configuration.html.
@@ -177,7 +170,6 @@ Sites configuration
 
 .. code-block:: yaml
 
-   ...
     sites_config_enable: true
     sites_config:
       items:
@@ -185,7 +177,6 @@ Sites configuration
         name: Example site
       - domain: test.example.com
         name: Test site
-   ...
 
 More details about sites configuration through ``setup_configuration``
 can be found at the _`site documentation`: https://github.com/maykinmedia/django-setup-configuration/blob/main/docs/sites_config.rst
@@ -200,7 +191,6 @@ item present that matches the ``notifications_api_service_identifier`` in the
 
 .. code-block:: yaml
 
-   ...
     zgw_consumers_config_enable: true
     zgw_consumers:
       services:
@@ -217,8 +207,6 @@ item present that matches the ``notifications_api_service_identifier`` in the
       notification_delivery_max_retries: 1
       notification_delivery_retry_backoff: 2
       notification_delivery_retry_backoff_max: 3
-   ...
-
 
 Execution
 =========
