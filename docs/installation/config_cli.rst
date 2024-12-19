@@ -137,7 +137,9 @@ Create or update the (single) YAML configuration file with your settings:
               mode: read_only
               use_fields: true
               fields:
-                key1: value1
+                '1':
+                  - record__data__leeftijd
+                  - record__data__kiemjaar
    ...
 
 .. note:: To ensure the proper functioning of the tokens, it is essential to first configure the ``objecttypes``.

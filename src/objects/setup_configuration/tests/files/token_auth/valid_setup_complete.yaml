@@ -13,9 +13,10 @@ tokenauth:
           mode: read_only
           use_fields: true
           fields:
-            key1: value1
-            key2: value2
-            key3: value3
+            '1':
+              - record__data__leeftijd
+              - record__data__kiemjaar
+
         - object_type: ca754b52-3f37-4c49-837c-130e8149e337
           mode: read_and_write
 

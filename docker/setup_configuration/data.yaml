@@ -64,9 +64,11 @@ tokenauth:
           mode: read_only
           use_fields: true
           fields:
-            key1: value1
-
-
+            '1':
+              - record__data__leeftijd
+              - record__data__kiemjaar
+                                    
+                                    
 oidc_db_config_enable: true
 oidc_db_config_admin_auth:
   items:
