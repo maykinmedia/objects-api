@@ -86,17 +86,18 @@ jobs:
         id: image-name
 
   open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v1
+    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v3.0.2
     needs:
       - store-reusable-workflow-vars
     with:
       main-branch: 'master'
       run-docs: true
+      django-settings-module: objects.conf.ci
       python-version: '3.11'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
 
   open-api-publish:
-    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v3.0.1
+    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v3.0.2
     needs:
       - store-reusable-workflow-vars
       - open-api-ci
