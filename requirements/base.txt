@@ -74,7 +74,7 @@ cryptography==42.0.4
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.15
+django==4.2.17
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -228,7 +228,7 @@ isodate==0.6.0
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
-jinja2==3.1.4
+jinja2==3.1.5
     # via coreschema
 josepy==1.9.0
     # via mozilla-django-oidc
@@ -252,7 +252,7 @@ notifications-api-common[setup-configuration]==0.4.0
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.9.1
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@issue/93-security-patches
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -337,7 +337,7 @@ six==1.16.0
     #   qrcode
 sqlparse==0.5.0
     # via django
-tornado==6.4.1
+tornado==6.4.2
     # via flower
 typing-extensions==4.9.0
     # via
