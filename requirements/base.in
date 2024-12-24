@@ -1,4 +1,4 @@
-open-api-framework
+git+https://github.com/maykinmedia/open-api-framework.git@issue/93-security-patches
 
 # Core python libraries
 glom # data represenation based on spec

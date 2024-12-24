@@ -132,7 +132,7 @@ cryptography==42.0.4
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==4.2.15
+django==4.2.17
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
@@ -388,7 +388,7 @@ itypes==1.2.0
     # via
     #   -r requirements/base.txt
     #   coreapi
-jinja2==3.1.4
+jinja2==3.1.5
     # via
     #   -r requirements/base.txt
     #   coreschema
@@ -433,7 +433,7 @@ notifications-api-common[setup-configuration]==0.4.0
     # via
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.9.1
+open-api-framework @ git+https://github.com/maykinmedia/open-api-framework.git@issue/93-security-patches
     # via -r requirements/base.txt
 orderedmultidict==1.0.1
     # via
@@ -627,7 +627,7 @@ tblib==1.7.0
     # via -r requirements/test-tools.in
 text-unidecode==1.3
     # via faker
-tornado==6.4.1
+tornado==6.4.2
     # via
     #   -r requirements/base.txt
     #   flower
@@ -666,7 +666,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-waitress==2.1.2
+waitress==3.0.1
     # via webtest
 wcwidth==0.2.13
     # via
