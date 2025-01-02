@@ -80,6 +80,7 @@ class AdminVersionTests(WebTest):
         response = self.app.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(os.environ["ENVIRONMENT"], "dev")
+        self.assertEqual(os.environ["TEST_MAYKIN"], "CIAO")
         if os.environ["ENVIRONMENT"] == "development":
             self.assertEqual(os.environ["RELEASE"], "dev")
         else:
