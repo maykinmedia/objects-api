@@ -61,14 +61,6 @@ const authFields = (object_fields, dataFields, fields, setFields) => {
 };
 
 const versionAuthFields = (objectType, objectFields, dataFieldChoices, fields, setFields) => {
-    if (Object.keys(dataFieldChoices).length === 0) {
-        return (
-            <div className="errornote">
-                <p>ObjectTypes API is not reachable. Field-based authorization is impossible</p>
-            </div>
-        );
-    }
-
     if (!(objectType in dataFieldChoices)) {
         return (
             <div className="errornote">
