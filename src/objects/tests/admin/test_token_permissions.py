@@ -82,6 +82,7 @@ class AdminVersionTests(WebTest):
         self.assertEqual(
             str(os.environ.get("TEST_MAYKIN", "-"))
             + str(os.environ.get("RELEASE", "-"))
+            + str(os.environ.get("DJANGO_SETTINGS_MODULE", "-"))
             + str(os.environ.get("COMMIT_HASH", "-")),
             "ciao",
         )
