@@ -79,9 +79,17 @@ class AdminVersionTests(WebTest):
     def test_version(self, m):
         response = self.app.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(os.environ["ENVIRONMENT"], "dev")
-        self.assertEqual(os.environ["TEST_MAYKIN"], "CIAO")
+        self.assertEqual(
+            str(os.environ.get("TEST_MAYKIN", "-"))
+            + str(os.environ.get("RELEASE", "-"))
+            + str(os.environ.get("COMMIT_HASH", "-")),
+            "ciao",
+        )
+        self.assertEqual(os.environ["RELEASE"], "CIAO")
+        self.assertEqual(os.environ["COMMIT_HASH"], "CIAO")
         if os.environ["ENVIRONMENT"] == "development":
             self.assertEqual(os.environ["RELEASE"], "dev")
         else:
             self.assertEqual(os.environ["RELEASE"], "prod")
+
+        self.assertEqual(os.environ["ENVIRONMENT"], "dev")
