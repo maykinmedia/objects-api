@@ -42,6 +42,7 @@ jobs:
           coverage run src/manage.py test src
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
+          RELEASE: ${{ steps.vars.outputs.tag }}
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''
