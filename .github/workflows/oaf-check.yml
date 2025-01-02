@@ -23,7 +23,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'requirements/dev.txt'
       - name: Install dependencies
-        run: pip install $(grep "pip-tools==" requirements/dev.txt)
+        run: pip install uv
       - name: Run compile dependencies
         run: ./bin/compile_dependencies.sh --upgrade-package open-api-framework
 

@@ -1,4 +1,9 @@
+-c base.txt
+-r base.txt
+
 # Dependencies only relevant for (unit) testing
+codecov
+pytest
 coverage < 5.0
 django-webtest
 factory-boy
