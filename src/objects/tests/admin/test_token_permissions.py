@@ -70,31 +70,6 @@ class ChangePermissionTests(WebTest):
         self.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         self.token_auth = TokenAuthFactory.create()
 
-    def test_change_permission_data_field_choices_disabled(self, m):
-        url = reverse_lazy("admin:token_permission_change")
-        # use_fields disabled
-        permission = PermissionFactory.create(
-            object_type=self.object_type,
-            mode=PermissionModes.read_only,
-            token_auth=self.token_auth,
-        )
-
-        url = reverse_lazy("admin:token_permission_change", args=(permission.id,))
-
-        # mock objecttypes api
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(f"{OBJECT_TYPES_API}objecttypes", json=[])
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-        version1 = mock_objecttype_version(
-            self.object_type.url, attrs={"jsonSchema": {}}
-        )
-        version2 = mock_objecttype_version(self.object_type.url, attrs={"version": 2})
-        m.get(f"{self.object_type.url}/versions", json=[version1, version2])
-
-        response = self.app.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["data_field_choices"], {})
-
     def test_change_permission_data_field_choices_enabled(self, m):
         url = reverse_lazy("admin:token_permission_change")
         # use_fields enabled

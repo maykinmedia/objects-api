@@ -99,7 +99,7 @@ class PermissionAdmin(admin.ModelAdmin):
         objecttypes_available = can_connect_to_objecttypes()
         data_field_choices = {}
         obj = self.get_object(request, unquote(object_id)) if object_id else None
-        if objecttypes_available and obj and obj.object_type and obj.use_fields:
+        if objecttypes_available and obj and obj.object_type:
             data_field_choices = self.get_data_field_choices(obj.object_type.id)
 
         return {
