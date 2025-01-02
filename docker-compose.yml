@@ -27,9 +27,6 @@ services:
       CELERY_LOGLEVEL: DEBUG
       DISABLE_2FA: ${DISABLE_2FA:-yes}
       SUBPATH: ${SUBPATH}
-    command: >
-      sh -c "echo 'COMMIT_HASH: $COMMIT_HASH';  echo 'TEST_MAYKIN: $TEST_MAYKIN'; 
-             echo 'RELEASE: $RELEASE'; "
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
       interval: 30s

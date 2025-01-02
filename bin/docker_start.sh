@@ -20,6 +20,12 @@ ${SCRIPTPATH}/wait_for_db.sh
 
 >&2 echo "Database is up."
 
+>&2 echo "---------------"
+>&2 echo "COMMIT_HASH: $COMMIT_HASH"
+>&2 echo "TEST_MAYK: $TEST_MAYK"
+>&2 echo "RELEASE: $RELEASE"
+>&2 echo "---------------"
+
 # Apply database migrations
 >&2 echo "Apply database migrations"
 python src/manage.py migrate
