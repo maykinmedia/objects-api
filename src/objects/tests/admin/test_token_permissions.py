@@ -79,6 +79,7 @@ class AdminVersionTests(WebTest):
     def test_version(self, m):
         response = self.app.get(self.url)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(os.environ["ENVIRONMENT"], "dev")
         if os.environ["ENVIRONMENT"] == "development":
             self.assertEqual(os.environ["RELEASE"], "dev")
         else:
