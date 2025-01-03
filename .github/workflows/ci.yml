@@ -42,6 +42,7 @@ jobs:
           coverage run src/manage.py test src
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
+          RELEASE: test1
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''
@@ -73,6 +74,7 @@ jobs:
           fi
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
+          RELEASE: test2
 
   store-reusable-workflow-vars:
     name: create values which can be passed through a reusable workflow

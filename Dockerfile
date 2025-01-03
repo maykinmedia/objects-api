@@ -76,8 +76,20 @@ USER user
 
 ARG COMMIT_HASH
 ARG RELEASE
-ENV GIT_SHA=${COMMIT_HASH}
-ENV RELEASE=${RELEASE}
+ARG TEST_MAYK
+
+ENV COMMIT_HASH='1234'
+ENV RELEASE='1112222'
+
+ENV TEST_MAYK='daniel'
+
+RUN echo "----- ENV VARIABLES -----" \
+    && echo "COMMIT_HASH: $COMMIT_HASH" \
+    && echo "RELEASE: $RELEASE" \
+    && echo "----- END -----"
+
+ENV VAR1=value1
+ENV VAR2=value2
 
 ENV DJANGO_SETTINGS_MODULE=objects.conf.docker
 

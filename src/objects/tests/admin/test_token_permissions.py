@@ -1,3 +1,5 @@
+import os
+
 from django.urls import reverse_lazy
 
 import requests_mock
@@ -63,3 +65,32 @@ class AddPermissionTests(WebTest):
         response = self.app.get(self.url)
 
         self.assertEqual(response.status_code, 200)
+
+
+@disable_admin_mfa()
+@requests_mock.Mocker()
+class AdminVersionTests(WebTest):
+    url = reverse_lazy("admin:index")
+
+    def setUp(self):
+        user = UserFactory(is_superuser=True, is_staff=True)
+        self.app.set_user(user)
+
+    def test_version(self, m):
+        response = self.app.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            str(os.environ.get("TEST_MAYKIN", "-"))
+            + str(os.environ.get("RELEASE", "-"))
+            + str(os.environ.get("DJANGO_SETTINGS_MODULE", "-"))
+            + str(os.environ.get("COMMIT_HASH", "-")),
+            "ciao",
+        )
+        self.assertEqual(os.environ["RELEASE"], "CIAO")
+        self.assertEqual(os.environ["COMMIT_HASH"], "CIAO")
+        if os.environ["ENVIRONMENT"] == "development":
+            self.assertEqual(os.environ["RELEASE"], "dev")
+        else:
+            self.assertEqual(os.environ["RELEASE"], "prod")
+
+        self.assertEqual(os.environ["ENVIRONMENT"], "dev")
