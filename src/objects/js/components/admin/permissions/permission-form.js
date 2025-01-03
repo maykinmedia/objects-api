@@ -9,8 +9,10 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
     const [mode, setMode]  = useState(values["mode"]);
     const [useFields, setUseFields] = useState(values["use_fields"]);
     const [objectType, setObjectType] = useState(values["object_type"]);
-
-    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {});
+    if (!values["fields"]) {
+        values["fields"] = "{}"
+      }
+    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {})
 
     return (
      <fieldset className="module aligned">
@@ -63,7 +65,7 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
                 name="use_fields"
                 id="id_use_fields"
                 label="Use field-based authorization"
-                disabled={mode === "read_and_write" || Object.keys(dataFieldChoices).length === 0}
+                disabled={!mode || mode === "read_and_write"}
                 value={useFields}
                 onChange={(value) => {setUseFields(value)}}
             />
