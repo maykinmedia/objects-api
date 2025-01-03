@@ -13,12 +13,17 @@ spec:
       {{- include "objects.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "objects.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -35,7 +40,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
             - secretRef:
-                name: {{ include "objects.fullname" . }}
+                name: {{ .Values.existingSecret | default (include "objects.fullname" .) }}
             - configMapRef:
                 name: {{ include "objects.fullname" . }}
           ports:
@@ -46,10 +51,16 @@ spec:
             httpGet:
               path: /
               port: http
+              httpHeaders:
+                - name: Host
+                  value: {{ include "objects.fullname" . | quote }}
           readinessProbe:
             httpGet:
               path: /
               port: http
+              httpHeaders:
+                - name: Host
+                  value: {{ include "objects.fullname" . | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
