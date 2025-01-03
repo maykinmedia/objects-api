@@ -1,5 +1,5 @@
-codecov
-pytest
+-c base.txt
+-r base.txt
 
 # Documentation
 sphinx
