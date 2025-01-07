@@ -1,6 +1,11 @@
 from django.contrib import admin
 from django.contrib.gis import forms
 from django.contrib.gis.db.models import GeometryField
+from django.http import JsonResponse
+from django.urls import path
+
+import requests
+from zgw_consumers.client import build_client
 
 from .models import Object, ObjectRecord, ObjectType
 
@@ -12,6 +17,32 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         "uuid",
     )
     readonly_fields = ("_name",)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path(
+                "<int:objecttype_id>/versions/",
+                self.admin_site.admin_view(self.versions_view),
+            )
+        ]
+        return my_urls + urls
+
+    def versions_view(self, request, objecttype_id):
+        versions = {}
+        if objecttype := self.get_object(request, objecttype_id):
+            client = build_client(objecttype.service)
+            try:
+                response = client.get(objecttype.versions_url)
+                response_data = response.json()
+
+                # TODO: remove check once API V1 is removed
+                if "results" in response_data:
+                    versions = response_data["results"]
+
+            except (requests.RequestException, requests.JSONDecodeError):
+                pass
+        return JsonResponse(versions, safe=False)
 
 
 class ObjectRecordInline(admin.TabularInline):

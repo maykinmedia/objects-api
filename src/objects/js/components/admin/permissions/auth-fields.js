@@ -61,14 +61,6 @@ const authFields = (object_fields, dataFields, fields, setFields) => {
 };
 
 const versionAuthFields = (objectType, objectFields, dataFieldChoices, fields, setFields) => {
-    if (!(objectType in dataFieldChoices)) {
-        return (
-            <div className="errornote">
-                <p>To be able to select fields, first you must save the instance and then you can edit the fields!</p>
-                <p>Click on button <strong>'Save and continue editing'</strong></p>
-            </div>
-        );
-    }
 
     const dataFields = dataFieldChoices[objectType];
     const objecttypeVersions = Object.entries(dataFieldChoices).reduce((acc, [k, v]) => {

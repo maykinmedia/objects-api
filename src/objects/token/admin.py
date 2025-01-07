@@ -36,35 +36,6 @@ class PermissionAdmin(admin.ModelAdmin):
         object_fields = build_spec(get_field_names(object_serializer.fields), ui=True)
         return object_fields
 
-    def get_data_field_choices(self, object_type_id):
-        data_fields = {}
-        object_type = ObjectType.objects.filter(id=object_type_id).first()
-        if not object_type:
-            return data_fields
-
-        client = build_client(object_type.service)
-        try:
-            response = client.get(f"{object_type.url}/versions")
-            response_data = response.json()
-
-            # TODO: remove check once API V1 is removed
-            if "results" in response_data:
-                response_data = response_data["results"]
-
-            # use only first level of properties
-            data_fields[object_type_id] = {
-                version["version"]: {
-                    prop: f"record__data__{prop}"
-                    for prop in list(version["jsonSchema"].get("properties", {}).keys())
-                }
-                for version in response_data
-            }
-
-        except (requests.RequestException, requests.JSONDecodeError):
-            pass
-
-        return data_fields
-
     def get_form_data(self, request, object_id) -> dict:
         obj = self.get_object(request, unquote(object_id)) if object_id else None
         ModelForm = self.get_form(request, obj, change=not obj)
@@ -96,20 +67,13 @@ class PermissionAdmin(admin.ModelAdmin):
             (object_type.pk, str(object_type))
             for object_type in ObjectType.objects.all()
         ]
-        objecttypes_available = can_connect_to_objecttypes()
-        data_field_choices = {}
-        obj = self.get_object(request, unquote(object_id)) if object_id else None
-        if objecttypes_available and obj and obj.object_type:
-            data_field_choices = self.get_data_field_choices(obj.object_type.id)
-
         return {
             "object_fields": self.get_object_fields(),
-            "data_field_choices": data_field_choices,
             "token_auth_choices": token_auth_choices,
             "object_type_choices": object_type_choices,
             "mode_choices": mode_choices,
             "form_data": self.get_form_data(request, object_id),
-            "objecttypes_available": objecttypes_available,
+            "objecttypes_available": can_connect_to_objecttypes(),
         }
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
