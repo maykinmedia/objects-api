@@ -6,12 +6,7 @@ from maykin_2fa.test import disable_admin_mfa
 from requests.exceptions import ConnectionError
 
 from objects.accounts.tests.factories import UserFactory
-from objects.token.constants import PermissionModes
-from objects.token.tests.factories import (
-    ObjectTypeFactory,
-    PermissionFactory,
-    TokenAuthFactory,
-)
+from objects.token.tests.factories import ObjectTypeFactory, TokenAuthFactory
 
 from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 

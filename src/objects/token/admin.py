@@ -2,9 +2,6 @@ from django.contrib import admin, messages
 from django.contrib.admin.utils import unquote
 from django.utils.translation import gettext_lazy as _
 
-import requests
-from zgw_consumers.client import build_client
-
 from objects.api.serializers import ObjectSerializer
 from objects.core.models import ObjectType
 from objects.core.utils import can_connect_to_objecttypes
