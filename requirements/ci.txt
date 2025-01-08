@@ -136,7 +136,7 @@ coverage==4.5.4
     # via
     #   -r requirements/test-tools.in
     #   codecov
-cryptography==42.0.4
+cryptography==44.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -576,7 +576,7 @@ pyjwt==2.4.0
     #   -r requirements/base.txt
     #   commonground-api-common
     #   zgw-consumers
-pyopenssl==24.0.0
+pyopenssl==24.3.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
