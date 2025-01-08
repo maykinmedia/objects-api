@@ -63,7 +63,7 @@ coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
     # via coreapi
-cryptography==42.0.4
+cryptography==44.0.0
     # via
     #   django-simple-certmanager
     #   josepy
@@ -278,7 +278,7 @@ pyjwt==2.4.0
     # via
     #   commonground-api-common
     #   zgw-consumers
-pyopenssl==24.0.0
+pyopenssl==24.3.0
     # via
     #   django-simple-certmanager
     #   josepy
