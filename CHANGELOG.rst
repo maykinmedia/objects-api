@@ -2,13 +2,68 @@
 Change history
 ==============
 
-3.0.0 (WIP)
------------
+2.5.0 (2025-01-09)
+------------------
 
 **Breaking changes**
 
-* dropped support for v1 endpoints (#453)
+* upgraded ``django-setup-configuration`` to ``0.5.0``
 
+.. warning::
+
+    Previous configuration files used for ``setup_configuration`` do not work.
+    See the `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config_cli.html>`_
+    for the available settings that can now be configured through ``setup_configuration``.
+    Note that not all previous configurable options are available in this release.
+
+* added support for configuring permissions through ``django-setup-configuration``
+  version ``0.4.0`` [#497]
+* added support for configuring token authorizations through ``django-setup-configuration``
+  version ``0.4.0`` [#485]
+* added support for configuring ``mozilla-django-oidc-db`` through ``django-setup-configuration``
+  version ``0.4.0`` [#490]
+* added support for configuring ``OBJECTTYPE``'s through ``django-setup-configuration``
+  version ``0.4.0`` [#467]
+* added support for configuring Notificatiescomponentconfiguratie through ``django-setup-configuration``
+  version ``0.4.0`` [#484]
+* added the new ``data_attrs`` query parameter for the ``OBJECT``'s resource [#472]
+
+.. warning::
+
+    Usage of the `data_attr` query parameter is deprecated. Usage of the
+    new `data_attrs` query parameter is recommended.
+
+* updated OAF version to 0.9.1. This upgrade allows admin users managing their sessions through the admin.
+
+**Bugfixes and QOL**
+
+* fixed ``latest`` docker image tag not being pushed [open-api-framework/#92]
+* fixed documentation building in CI [#501]
+* included ``gettext`` in docker images [#495]
+* updated zgw-consumers to 0.35.1 [open-api-framework/#66]
+
+.. warning::
+
+    Configuring external services is now done through the ``Service`` model. This
+    replaces the ``APICredential`` model in the admin interface. A data migration
+    was added to move to the `Service` model. It is advised to verify the ``Service``
+    instances in the admin to check that the data migration was ran as expected.
+
+* updated PATCH request behaviour for the ``data`` field [#466]
+* fixed CSP errors [open-api-framework/#68]
+
+**Project maintenance**
+
+* implementend CI action to create a PR with latest OAF version [open-api-framework/#44]
+* security updates [open-api-framework/#93]
+* switched from ``pip-compile`` to ``uv`` [open-api-framework/#81]
+* pinned ``publish`` workflow to ``v3.0.1`` [#504]
+* implementend open-api-workflows [open-api-framework/#13]
+
+** Documentation**
+
+* added documentation for notification retry behavior [#403]
+* added missing changelog entry [#455]
 
 2.4.4 (2024-10-01)
 ------------------
@@ -23,7 +78,6 @@ Change history
 **Project maintenance**
 
 * added CI action to check if OAF is up-to-date (#443)
-
 
 2.4.3 (2024-09-18)
 ------------------
