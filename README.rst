@@ -2,7 +2,7 @@
 Objects API
 ===========
 
-:Version: 2.4.3
+:Version: 2.5.0
 :Source: https://github.com/maykinmedia/objects-api
 :Keywords: objects, assets, zaakobjecten
 
