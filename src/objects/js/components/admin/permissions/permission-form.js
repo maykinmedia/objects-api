@@ -22,17 +22,19 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
         })
         .then(response => response.json())
         .then(response_data => {
-            const objecttypes = {
-                [objecttype_id]: response_data.reduce((acc, version) => {
-                    const properties = Object.keys(version.jsonSchema?.properties || {});
-                    acc[version.version] = properties.reduce((propsAcc, prop) => {
-                        propsAcc[prop] = `record__data__${prop}`;
-                        return propsAcc;
-                    }, {});
-                    return acc;
-                }, {})
-            };
+            if (response_data?.results?.length > 0) {
+                const objecttypes = {
+                    [objecttype_id]: response_data.results.reduce((acc, version) => {
+                        const properties = Object.keys(version?.jsonSchema?.properties || {});
+                        acc[version.version] = properties.reduce((propsAcc, prop) => {
+                            propsAcc[prop] = `record__data__${prop}`;
+                            return propsAcc;
+                        }, {});
+                        return acc;
+                    }, {})
+                };
             setDataFieldChoices(objecttypes);
+            }  
         })
         .catch(error => {
             console.error('An error occurred while fetching the Objecttype versions endpoint:', error);

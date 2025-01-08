@@ -29,17 +29,17 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def versions_view(self, request, objecttype_id):
-        versions = {}
+        versions = {
+            "count": 0,
+            "next": None,
+            "previous": None,
+            "results": [],
+        }
         if objecttype := self.get_object(request, objecttype_id):
             client = build_client(objecttype.service)
             try:
                 response = client.get(objecttype.versions_url)
-                response_data = response.json()
-
-                # TODO: remove check once API V1 is removed
-                if "results" in response_data:
-                    versions = response_data["results"]
-
+                versions = response.json()
             except (requests.RequestException, requests.JSONDecodeError):
                 pass
         return JsonResponse(versions, safe=False)
