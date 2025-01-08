@@ -6,9 +6,60 @@ Change history
 =====
 *TBD*
 
+2.5.0 (2025-01-08)
+------------------
+
 **New features**
 
-* Updated OAF version to 0.9.0. This upgrade allows admin users managing their sessions through the admin.
+* added support for configuring permissions through ``django-setup-configuration``
+  version ``0.4.0`` [#497]
+* added support for configuring token authorizations through ``django-setup-configuration``
+  version ``0.4.0`` [#485]
+* added support for configuring ``mozilla-django-oidc-db`` through ``django-setup-configuration``
+  version ``0.4.0`` [#490]
+* added support for configuring ``OBJECTTYPE``'s through ``django-setup-configuration``
+  version ``0.4.0`` [#467]
+* added support for configuring Notificatiescomponentconfiguratie through ``django-setup-configuration``
+  version ``0.4.0`` [#484]
+* added the new ``data_attrs`` query parameter for the ``OBJECT``'s resource [#472]
+
+.. warning::
+
+    Usage of the `data_attr` query parameter is deprecated. Usage of the
+    new `data_attrs` query parameter is recommended.
+
+* updated OAF version to 0.9.1. This upgrade allows admin users managing their sessions through the admin.
+
+**Bugfixes and QOL**
+
+* fixed ``latest`` docker image tag not being pushed [open-api-framework/#92]
+* fixed documentation building in CI [#501]
+* included ``gettext`` in docker images [#495]
+* updated zgw-consumers to 0.35.1 [open-api-framework/#66]
+
+.. warning::
+
+    Configuring external services is now done through the ``Service`` model. This
+    replaces the ``APICredential`` model in the admin interface. A data migration
+    was added to move to the `Service` model. It is advised to verify the ``Service``
+    instances in the admin to check that the data migration was ran as expected.
+
+* updated PATCH request behaviour for the ``data`` field [#466]
+* added documentation for notification retry behavior [#403]
+* fixed CSP errors [open-api-framework/#68]
+* removed objects-api v1. V2 is the only supported version as of now. [#453]
+* fixed token permissions admin [#449]
+* fixed `NOTIFICATIONS_ENABLED` setting having an incorrect value [#452]
+
+**Project maintenance**
+
+* implementend CI action to create a PR with latest OAF version [open-api-framework/#44]
+* security updates [open-api-framework/#93]
+* switched from ``pip-compile`` to ``uv`` [open-api-framework/#81]
+* re-enabled Trivy image scanning [#463]
+* pinned ``publish`` workflow to ``v3.0.1`` [#504]
+* implementend open-api-workflows [open-api-framework/#13]
+* added missing changelog entry [#455]
 
 
 2.4.3 (2024-09-18)
