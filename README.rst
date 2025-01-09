@@ -2,7 +2,7 @@
 Objects API
 ===========
 
-:Version: 2.5.0
+:Version: 3.0.0
 :Source: https://github.com/maykinmedia/objects-api
 :Keywords: objects, assets, zaakobjecten
 
@@ -36,8 +36,11 @@ Version         Release date    API specification
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml>`_,
-                                (`diff <https://github.com/maykinmedia/objects-api/compare/2.5.0..master>`_)
-2.5.0           2025-01-08      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/2.5.0/src/objects/api/v2/openapi.yaml>`_,
+                                (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.0..master>`_)
+3.0.0           2025-01-09      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.0/src/objects/api/v2/openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.0/src/objects/api/v2/openapi.yaml>`_
+                                (`diff <https://github.com/maykinmedia/objects-api/compare/2.5.0..3.0.0>`_)
+2.5.0           2025-01-09      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/2.5.0/src/objects/api/v2/openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/2.5.0/src/objects/api/v2/openapi.yaml>`_
                                 (`diff <https://github.com/maykinmedia/objects-api/compare/2.4.4..2.5.0>`_)
 2.4.4           2024-03-22      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/2.4.4/src/objects/api/v2/openapi.yaml>`_,
