@@ -5,7 +5,7 @@ Change history
 2.5.0 (2025-01-09)
 ------------------
 
-**New features**
+**Breaking changes**
 
 * upgraded ``django-setup-configuration`` to ``0.5.0``
 
@@ -26,6 +26,9 @@ Change history
   version ``0.4.0`` [#467]
 * added support for configuring Notificatiescomponentconfiguratie through ``django-setup-configuration``
   version ``0.4.0`` [#484]
+
+**New features**
+
 * added the new ``data_attrs`` query parameter for the ``OBJECT``'s resource [#472]
 
 .. warning::
@@ -34,6 +37,7 @@ Change history
     new `data_attrs` query parameter is recommended.
 
 * updated OAF version to 0.9.1. This upgrade allows admin users managing their sessions through the admin.
+
 
 **Bugfixes and QOL**
 
