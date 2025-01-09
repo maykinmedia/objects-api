@@ -1,5 +1,7 @@
 from datetime import date, timedelta
 
+from django.utils.translation import gettext as _
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -211,7 +213,12 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.json(), ["not enough values to unpack (expected 3, got 2)"]
+            response.json(),
+            [
+                _(
+                    "Filter expression '%(value_part)s' doesn't have the shape 'key__operator__value'"
+                ) % {"value_part": "diameter__exact"}
+             ]
         )
 
     def test_filter_nested_attr(self):
