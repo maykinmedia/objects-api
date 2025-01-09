@@ -217,8 +217,9 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             [
                 _(
                     "Filter expression '%(value_part)s' doesn't have the shape 'key__operator__value'"
-                ) % {"value_part": "diameter__exact"}
-             ]
+                )
+                % {"value_part": "diameter__exact"}
+            ],
         )
 
     def test_filter_nested_attr(self):
@@ -431,9 +432,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
             object=object,
             registration_at="2020-01-01",
         )
-        ObjectRecordFactory.create(
-            object=object, registration_at="2021-01-01"
-        )
+        ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
 
@@ -461,9 +460,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         record11 = ObjectRecordFactory.create(
             object=object1, registration_at="2020-01-01"
         )
-        ObjectRecordFactory.create(
-            object=object1, registration_at="2021-01-01"
-        )
+        ObjectRecordFactory.create(object=object1, registration_at="2021-01-01")
         # object 2 - don't show
         ObjectRecordFactory.create(
             object__object_type=self.object_type, registration_at="2021-01-01"
