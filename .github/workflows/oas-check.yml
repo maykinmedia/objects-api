@@ -12,8 +12,14 @@ on:
 jobs:
   open-api-workflow-check-oas:
     uses: maykinmedia/open-api-workflows/.github/workflows/oas-check.yml@v1
+    strategy:
+      matrix:
+        version:
+          - v1
+          - v2
     with:
-      schema-path: 'src/objects/api/v2/openapi.yaml'
+      schema-command: 'spectacular --validate --api-version ${{ matrix.version }}'
+      schema-path: 'src/objects/api/${{ matrix.version }}/openapi.yaml'
       python-version: '3.11'
       django-settings-module: 'objects.conf.ci'
       apt-packages: 'libgdal-dev gdal-bin'
