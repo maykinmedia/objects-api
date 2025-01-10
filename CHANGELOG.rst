@@ -21,7 +21,6 @@ Change history
     Previous configuration files used for ``setup_configuration`` do not work.
     See the `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config_cli.html>`_
     for the available settings that can now be configured through ``setup_configuration``.
-    Note that not all previous configurable options are available in this release.
 
 * added support for configuring permissions through ``django-setup-configuration``
   version ``0.4.0`` [#497]
