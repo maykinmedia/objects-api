@@ -17,8 +17,8 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "rest_framework_gis",
     # Project applications.
     "objects.accounts",
+    "objects.setup_configuration",
     "objects.api",
-    "objects.config",
     "objects.core",
     "objects.token",
     "objects.utils",
@@ -66,10 +66,6 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
 # Relying Party name for WebAuthn (hardware tokens)
 TWO_FACTOR_WEBAUTHN_RP_NAME = "objects api"
 
-
-# VNG API Common
-CUSTOM_CLIENT_FETCHER = "objects.utils.client.get_client"
-
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
 
@@ -87,37 +83,11 @@ CELERY_TASK_TIME_LIMIT = config(
 #
 # Django setup configuration
 #
-SETUP_CONFIGURATION_STEPS = [
-    "objects.config.site.SiteConfigurationStep",
-    "objects.config.objecttypes.ObjecttypesStep",
-    "objects.config.demo.DemoUserStep",
-]
-
-
-#
-# Objecttypes settings
-#
-
-# setup_configuration command
-# sites config
-SITES_CONFIG_ENABLE = config("SITES_CONFIG_ENABLE", default=False, add_to_docs=False)
-OBJECTS_DOMAIN = config("OBJECTS_DOMAIN", "", add_to_docs=False)
-OBJECTS_ORGANIZATION = config("OBJECTS_ORGANIZATION", "", add_to_docs=False)
-# objecttypes config
-OBJECTS_OBJECTTYPES_CONFIG_ENABLE = config(
-    "OBJECTS_OBJECTTYPES_CONFIG_ENABLE", default=False, add_to_docs=False
+SETUP_CONFIGURATION_STEPS = (
+    "django_setup_configuration.contrib.sites.steps.SitesConfigurationStep",
+    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
+    "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
+    "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
+    "objects.setup_configuration.steps.token_auth.TokenAuthConfigurationStep",
 )
-OBJECTTYPES_API_ROOT = config("OBJECTTYPES_API_ROOT", "", add_to_docs=False)
-if OBJECTTYPES_API_ROOT and not OBJECTTYPES_API_ROOT.endswith("/"):
-    OBJECTTYPES_API_ROOT = f"{OBJECTTYPES_API_ROOT.strip()}/"
-OBJECTTYPES_API_OAS = config(
-    "OBJECTTYPES_API_OAS",
-    default=f"{OBJECTTYPES_API_ROOT}schema/openapi.yaml",
-    add_to_docs=False,
-)
-OBJECTS_OBJECTTYPES_TOKEN = config("OBJECTS_OBJECTTYPES_TOKEN", "", add_to_docs=False)
-# Demo User Configuration
-DEMO_CONFIG_ENABLE = config("DEMO_CONFIG_ENABLE", default=False, add_to_docs=False)
-DEMO_TOKEN = config("DEMO_TOKEN", "", add_to_docs=False)
-DEMO_PERSON = config("DEMO_PERSON", "", add_to_docs=False)
-DEMO_EMAIL = config("DEMO_EMAIL", "", add_to_docs=False)

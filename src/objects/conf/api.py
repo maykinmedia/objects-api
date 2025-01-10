@@ -1,5 +1,5 @@
-API_VERSION = "2.4.4"
-VERSIONS = {"v1": "1.3.0", "v2": "2.4.4"}
+API_VERSION = "2.5.0"
+VERSIONS = {"v1": "1.3.0", "v2": "2.5.0"}
 
 # api settings
 REST_FRAMEWORK = {

@@ -1,0 +1,84 @@
+sites_config_enable: true
+sites_config:
+  items:
+  - domain: example.com
+    name: Example site
+
+    
+zgw_consumers_config_enable: true
+zgw_consumers:
+  services:
+  - identifier: objecttypes-api
+    label: Objecttypes API
+    api_root: http://objecttypes.local/api/v1/
+    api_connection_check_path: objecttypes
+    api_type: orc
+    auth_type: api_key
+    header_key: Authorization
+    header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
+
+  - identifier: notifications-api
+    label: Notificaties API
+    api_root: http://notificaties.local/api/v1/
+    api_connection_check_path: notificaties
+    api_type: nrc
+    auth_type: api_key
+    header_key: Authorization
+    header_value: Token ba9d233e95e04c4a8a661a27daffe7c9bd019067
+
+
+notifications_config_enable: true
+notifications_config:
+  notifications_api_service_identifier: notifications-api
+  notification_delivery_max_retries: 1
+  notification_delivery_retry_backoff: 2
+  notification_delivery_retry_backoff_max: 3
+
+
+objecttypes_config_enable: true
+objecttypes:
+  items:
+    - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
+      name: Object Type 1
+      service_identifier: objecttypes-api
+
+    - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+      name: Object Type 2
+      service_identifier: objecttypes-api
+
+
+tokenauth_config_enable: true
+tokenauth:
+  items:
+    - identifier: token-1
+      token: ba9d233e95e04c4a8a661a27daffe7c9bd019067
+      contact_person: Person 1
+      email: person-1@example.com
+      organization: Organization 1
+      application: Application 1
+      administration: Administration 1
+      permissions:
+        - object_type: b427ef84-189d-43aa-9efd-7bb2c459e281
+          mode: read_and_write
+        - object_type: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+          mode: read_only
+          use_fields: true
+          fields:
+            '1':
+              - record__data__leeftijd
+              - record__data__kiemjaar
+                                    
+                                    
+oidc_db_config_enable: true
+oidc_db_config_admin_auth:
+  items:
+    - identifier: admin-oidc
+      oidc_rp_client_id: client-id
+      oidc_rp_client_secret: secret
+      endpoint_config:
+        oidc_op_authorization_endpoint: https://example.com/realms/test/protocol/openid-connect/auth
+        oidc_op_token_endpoint: https://example.com/realms/test/protocol/openid-connect/token
+        oidc_op_user_endpoint: https://example.com/realms/test/protocol/openid-connect/userinfo
+
+      # workaround for https://github.com/maykinmedia/django-setup-configuration/issues/27
+      userinfo_claims_source: id_token

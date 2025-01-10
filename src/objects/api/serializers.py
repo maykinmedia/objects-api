@@ -126,11 +126,15 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
     @transaction.atomic
     def update(self, instance, validated_data):
         # object_data is not used since all object attributes are immutable
-        object_data = validated_data.pop("object", None)
+        validated_data.pop("object", None)
         validated_data["object"] = instance.object
         # version should be set
         if "version" not in validated_data:
             validated_data["version"] = instance.version
+        # start_at should be set
+        if "start_at" not in validated_data:
+            validated_data["start_at"] = instance.start_at
+
         if self.partial and "data" in validated_data:
             # Apply JSON Merge Patch for record data
             validated_data["data"] = merge_patch(instance.data, validated_data["data"])

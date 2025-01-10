@@ -103,7 +103,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
         Test 2a: If records 1 and 40 exists, material history and formal history on
         01-01-2020 should say: Record 40
         """
-        record_1 = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             object=self.object,
             data={
                 "geslachtsnaam": "Poepenstaart",
@@ -177,7 +177,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
         Test 3a: If records 1, 40 and 50 exists, material history and formal history
         on 01-01-2020 should say: Record 50
         """
-        record_1 = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             object=self.object,
             data={
                 "geslachtsnaam": "Poepenstaart",
@@ -189,7 +189,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
             end_at=date(2001, 9, 3),
             registration_at=date(1977, 8, 7),
         )
-        record_40 = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             object=self.object,
             data={
                 "geslachtsnaam": "Bergh",
@@ -274,7 +274,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
 
 
 class Stuf22Tests(TokenAuthMixin, APITestCase):
-    """
+    """# noqa
     Test cases based on the Table 2.2 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|tijdstipRegistratie|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|-------------------|
@@ -403,7 +403,7 @@ class Stuf22Tests(TokenAuthMixin, APITestCase):
 
 
 class Stuf23Tests(TokenAuthMixin, APITestCase):
-    """
+    """# noqa
     Test cases based on the Table 2.2 in the StUF 03.01
     |PersoonsId|volgnummer|geslachtsnaam|voorvoegsel|voorletters|geboortedatum|burgerlijkestaat|beginGeldigheid|tijdstipRegistratie|volgnrNaCorrectie|
     |----------|----------|-------------|-----------|-----------|-------------|----------------|---------------|-------------------|-----------------|

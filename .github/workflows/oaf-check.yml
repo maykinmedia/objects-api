@@ -1,23 +1,19 @@
 name: Check Open API Framework Version
 
 on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
   workflow_dispatch:
   schedule:
-    - cron: '36 0 * * 0'
+    - cron: '0 7 * * 1'
+
 
 jobs:
-  run:
-    runs-on: ubuntu-latest
+  open-api-workflow-check-oas:
+    uses: maykinmedia/open-api-workflows/.github/workflows/oaf-check.yml@v4
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: pip install -U pip-tools
-      - name: Run compile dependencies
-        run: ./bin/compile_dependencies.sh --upgrade-package open-api-framework
-
-      - name: Check git diff
-        run: git diff --exit-code -- requirements/*.txt
+    with:
+      python-version: '3.11'

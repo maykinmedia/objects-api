@@ -21,6 +21,10 @@
             [
                 "two_factor_webauthn",
                 "webauthndevice"
+            ],
+            [
+                "sessionprofile",
+                "sessionprofile"
             ]
         ]
     }

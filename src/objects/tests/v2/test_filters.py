@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from django.db.utils import ProgrammingError
 
+from furl import furl
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -260,7 +261,10 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.json(), ["not enough values to unpack (expected 3, got 2)"]
+            response.json(),
+            [
+                "Filter expression 'diameter__exact' doesn't have the shape 'key__operator__value'"
+            ],
         )
 
     def test_filter_nested_attr(self):
@@ -366,7 +370,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
             start_at=date.today() - timedelta(days=10),
             end_at=date.today() - timedelta(days=1),
         )
-        record_new = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             data={"diameter": 50}, object=record_old.object, start_at=record_old.end_at
         )
 
@@ -378,7 +382,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(len(data), 0)
 
     def test_filter_date_field_gte(self):
-        record = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             data={"dateField": "2000-10-10"}, object__object_type=self.object_type
         )
 
@@ -428,6 +432,398 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         )
 
 
+class FilterDataAttrTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("object-list")
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        PermissionFactory.create(
+            object_type=cls.object_type,
+            mode=PermissionModes.read_only,
+            token_auth=cls.token_auth,
+        )
+
+    def test_filter_exact_string(self):
+        record = ObjectRecordFactory.create(
+            data={"name": "demo"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"name": "demo2"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "name__exact__demo"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_exact_number(self):
+        record = ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "diameter__exact__4"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_exact_date(self):
+        record = ObjectRecordFactory.create(
+            data={"date": "2000-11-01"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"date": "2020-11-01"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "date__exact__2000-11-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_lte(self):
+        record1 = ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=self.object_type
+        )
+        record2 = ObjectRecordFactory.create(
+            data={"diameter": 5}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "diameter__lte__5"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        data = sorted(data, key=lambda x: x["record"]["data"]["diameter"])
+
+        self.assertEqual(len(data), 2)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record1.object.uuid])}",
+        )
+        self.assertEqual(
+            data[1]["url"],
+            f"http://testserver{reverse('object-detail', args=[record2.object.uuid])}",
+        )
+
+    def test_filter_lt(self):
+        record = ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 5}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "diameter__lt__5"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_lte_not_numerical(self):
+        response = self.client.get(self.url, {"data_attr": "diameter__lt__value"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(), ["Operator `lt` supports only dates and/or numeric values"]
+        )
+
+    def test_filter_lte_date(self):
+        record = ObjectRecordFactory.create(
+            data={"date": "2000-11-01"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(self.url, {"data_attr": "date__lte__2000-12-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+        response = self.client.get(self.url, {"data_attr": "date__lte__2000-10-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
+
+        response = self.client.get(self.url, {"data_attr": "date__lte__2000-11-01"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_invalid_operator(self):
+        response = self.client.get(self.url, {"data_attr": "diameter__not__value"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
+
+    def test_filter_invalid_param(self):
+        response = self.client.get(self.url, {"data_attr": "diameter__exact"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            [
+                "Filter expression 'diameter__exact' doesn't have the shape 'key__operator__value'"
+            ],
+        )
+
+    def test_filter_nested_attr(self):
+        record = ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 4}}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"dimensions": {"diameter": 5}}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 4}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(
+            self.url, {"data_attr": "dimensions__diameter__exact__4"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_icontains_string(self):
+        record = ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"name": "Nothing important"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "name__icontains__some"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_icontains_numeric(self):
+        record = ObjectRecordFactory.create(
+            data={"diameter": 45}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 6}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
+
+        response = self.client.get(self.url, {"data_attr": "diameter__icontains__4"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_exclude_old_records(self):
+        record_old = ObjectRecordFactory.create(
+            data={"diameter": 45},
+            object__object_type=self.object_type,
+            start_at=date.today() - timedelta(days=10),
+            end_at=date.today() - timedelta(days=1),
+        )
+        ObjectRecordFactory.create(
+            data={"diameter": 50}, object=record_old.object, start_at=record_old.end_at
+        )
+
+        response = self.client.get(self.url, {"data_attr": "diameter__exact__45"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 0)
+
+    def test_filter_date_field_gte(self):
+        ObjectRecordFactory.create(
+            data={"dateField": "2000-10-10"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(
+            self.url, {"data_attr": "dateField__gte__2000-10-10"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+
+        response = self.client.get(
+            self.url, {"data_attr": "dateField__gte__2000-10-11"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 0)
+
+    def test_filter_in_string(self):
+        record = ObjectRecordFactory.create(
+            data={"name": "demo1"}, object__object_type=self.object_type
+        )
+        record2 = ObjectRecordFactory.create(
+            data={"name": "demo2"}, object__object_type=self.object_type
+        )
+        ObjectRecordFactory.create(
+            data={"name": "demo3"}, object__object_type=self.object_type
+        )
+
+        response = self.client.get(self.url, {"data_attr": "name__in__demo1|demo2"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 2)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record2.object.uuid])}",
+        )
+        self.assertEqual(
+            data[1]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_icontains_string_with_comma(self):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/472
+        """
+        ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        record = ObjectRecordFactory.create(
+            data={"name": "Advies, support en kennis om te weten"},
+            object__object_type=self.object_type,
+        )
+
+        response = self.client.get(
+            self.url, {"data_attr": "name__icontains__Advies, support en kennis"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_two_icontains_with_comma(self):
+        """
+        regression test for https://github.com/maykinmedia/objects-api/issues/472
+        """
+        ObjectRecordFactory.create(
+            data={"name": "Something important"}, object__object_type=self.object_type
+        )
+        record = ObjectRecordFactory.create(
+            data={"name": "Advies, support en kennis om te weten"},
+            object__object_type=self.object_type,
+        )
+        url = (
+            furl(self.url)
+            .add({"data_attr": "name__icontains__Advies, support en kennis"})
+            .add({"data_attr": "name__icontains__om"})
+            .url
+        )
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
+        )
+
+    def test_filter_comma_separated_invalid(self):
+        response = self.client.get(
+            self.url, {"data_attr": "dimensions__diameter__exact__4,name__exact__demo"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            [
+                "Filter expression 'dimensions__diameter__exact__4,name__exact__demo' "
+                "must have the shape 'key__operator__value', commas can only be present in "
+                "the 'value'"
+            ],
+        )
+
+
 class FilterDateTests(TokenAuthMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
@@ -445,7 +841,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         record1 = ObjectRecordFactory.create(
             object=object, start_at="2020-01-01", end_at="2020-12-31"
         )
-        record2 = ObjectRecordFactory.create(object=object, start_at="2021-01-01")
+        ObjectRecordFactory.create(object=object, start_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
 
@@ -459,7 +855,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
     def test_filter_date_detail_no_actual_record(self):
         object = ObjectFactory.create(object_type=self.object_type)
-        record = ObjectRecordFactory.create(object=object, start_at="2021-01-01")
+        ObjectRecordFactory.create(object=object, start_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
 
@@ -473,9 +869,9 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         record11 = ObjectRecordFactory.create(
             object=object1, start_at="2020-01-01", end_at="2020-12-31"
         )
-        record12 = ObjectRecordFactory.create(object=object1, start_at="2021-01-01")
+        ObjectRecordFactory.create(object=object1, start_at="2021-01-01")
         # object 2 - don't show
-        record21 = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             object__object_type=self.object_type, start_at="2021-01-01"
         )
 
@@ -498,9 +894,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
             object=object,
             registration_at="2020-01-01",
         )
-        record2 = ObjectRecordFactory.create(
-            object=object, registration_at="2021-01-01"
-        )
+        ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
 
@@ -514,7 +908,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
     def test_filter_registration_date_detail_no_record(self):
         object = ObjectFactory.create(object_type=self.object_type)
-        record = ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
+        ObjectRecordFactory.create(object=object, registration_at="2021-01-01")
 
         url = reverse_lazy("object-detail", args=[object.uuid])
 
@@ -528,11 +922,9 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         record11 = ObjectRecordFactory.create(
             object=object1, registration_at="2020-01-01"
         )
-        record12 = ObjectRecordFactory.create(
-            object=object1, registration_at="2021-01-01"
-        )
+        ObjectRecordFactory.create(object=object1, registration_at="2021-01-01")
         # object 2 - don't show
-        record21 = ObjectRecordFactory.create(
+        ObjectRecordFactory.create(
             object__object_type=self.object_type, registration_at="2021-01-01"
         )
 

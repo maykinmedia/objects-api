@@ -162,7 +162,7 @@ class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
 @admin.register(TokenAuth)
 class TokenAuthAdmin(admin.ModelAdmin):
     list_display = (
-        "token",
+        "identifier",
         "contact_person",
         "organization",
         "administration",
