@@ -79,10 +79,6 @@ ARG RELEASE
 ENV GIT_SHA=${COMMIT_HASH}
 ENV RELEASE=${RELEASE}
 
-RUN echo "***********************************************"
-RUN echo "GIT_SHA=${GIT_SHA}" && echo "RELEASE=${RELEASE}"
-RUN echo "***********************************************"
-
 ENV DJANGO_SETTINGS_MODULE=objects.conf.docker
 
 ARG SECRET_KEY=dummy
