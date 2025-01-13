@@ -2,7 +2,7 @@
 Change history
 ==============
 
-3.0.0 (2025-01-09)
+3.0.0 (2025-01-14)
 ------------------
 
 **Breaking changes**
@@ -70,7 +70,7 @@ Change history
 * pinned ``publish`` workflow to ``v3.0.1`` [#504]
 * implementend open-api-workflows [open-api-framework/#13]
 
-** Documentation**
+**Documentation**
 
 * added documentation for notification retry behavior [#403]
 * added missing changelog entry [#455]
