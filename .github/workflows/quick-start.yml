@@ -6,11 +6,18 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Download docker-compose file
-        # todo replace branch name with master after the change is merge
-        run: wget https://raw.githubusercontent.com/maykinmedia/objects-api/deps/oaf-0.8.0/docker-compose.yml
+      - uses: actions/checkout@v4
       - name: Start docker containers
-        run: docker compose up -d --no-build
+        run: docker compose up -d --build
+      - name: Wait for migrations to finish
+        run: |
+          echo "Waiting for migrations to complete..."
+          until ! docker compose exec -T web src/manage.py showmigrations | grep -q '\[ \]'; do
+            echo "Migrations not finished, waiting..."
+            sleep 3
+          done
+      - name: Show web-init logs
+        run: docker compose logs web-init
       - name: Load fixtures
         run: docker compose exec -T web src/manage.py loaddata demodata
       - name: Create superuser
