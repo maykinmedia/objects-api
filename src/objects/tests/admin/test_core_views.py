@@ -1,15 +1,9 @@
-from django.urls import reverse_lazy
+from django.urls import reverse
 
 from django_webtest import WebTest
-import requests_mock
-from django.test import TestCase, override_settings
 from maykin_2fa.test import disable_admin_mfa
-from requests.exceptions import ConnectionError
 
 from objects.accounts.tests.factories import UserFactory
-from objects.token.tests.factories import ObjectTypeFactory, TokenAuthFactory
-from django.urls import reverse
-from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 
 
 @disable_admin_mfa()
@@ -35,12 +29,4 @@ class ObjectTypeAdminVersionsTests(WebTest):
 
         url = reverse("admin:objecttype_versions", args=[1])
         response = self.app.get(url, user=user)
-        self.assertEqual(
-            response.json,
-            {
-                "count": 0,
-                "next": None,
-                "previous": None,
-                "results": [],
-            },
-        )
+        self.assertEqual(response.json, [])
