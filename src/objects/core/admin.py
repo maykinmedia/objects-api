@@ -22,7 +22,7 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         my_urls = [
             path(
-                "<int:objecttype_id>/versions/",
+                "<int:objecttype_id>/_versions/",
                 self.admin_site.admin_view(self.versions_view),
             )
         ]
