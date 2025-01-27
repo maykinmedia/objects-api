@@ -24,6 +24,7 @@ class ObjectTypeAdmin(admin.ModelAdmin):
             path(
                 "<int:objecttype_id>/_versions/",
                 self.admin_site.admin_view(self.versions_view),
+                name="objecttype_versions",
             )
         ]
         return my_urls + urls
