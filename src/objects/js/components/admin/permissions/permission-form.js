@@ -13,18 +13,18 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
         values["fields"] = "{}"
     }
 
-    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {})
+    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {} )
     const [dataFieldChoices, setDataFieldChoices] = useState(dataFieldChoices);
 
     const fetchObjecttypeVersions = (objecttype_id) => {
-        fetch(`/admin/core/objecttype/`+ objecttype_id +`/versions/`, {
+        fetch(`/admin/core/objecttype/${objecttype_id}/_versions/`, {
             method: 'GET',
         })
         .then(response => response.json())
         .then(response_data => {
-            if (response_data?.results?.length > 0) {
+            if (response_data?.length > 0) {
                 const objecttypes = {
-                    [objecttype_id]: response_data.results.reduce((acc, version) => {
+                    [objecttype_id]: response_data.reduce((acc, version) => {
                         const properties = Object.keys(version?.jsonSchema?.properties || {});
                         acc[version.version] = properties.reduce((propsAcc, prop) => {
                             propsAcc[prop] = `record__data__${prop}`;
@@ -69,7 +69,6 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
                 errors={errors["object_type"]}
                 onChange={(value) => {
                     setObjectType(value);
-                    fetchObjecttypeVersions(value);
                     setFields({});
                 }}
             />
@@ -98,7 +97,7 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
                 name="use_fields"
                 id="id_use_fields"
                 label="Use field-based authorization"
-                disabled={!mode || mode === "read_and_write"}
+                disabled={!mode || mode === "read_and_write" || Object.keys(dataFieldChoices || {}).length === 0}
                 value={useFields}
                 onChange={(value) => {setUseFields(value)}}
             />
