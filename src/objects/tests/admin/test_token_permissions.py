@@ -37,18 +37,13 @@ class AddPermissionTests(WebTest):
         response = self.app.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.context["data_field_choices"],
-            {
-                object_type.id: {
-                    1: {},
-                    2: {
-                        "diameter": "record__data__diameter",
-                        "plantDate": "record__data__plantDate",
-                    },
-                }
-            },
-        )
+
+        self.assertEqual(version1["jsonSchema"], {})
+        self.assertTrue("diameter", version2["jsonSchema"]["properties"].keys())
+        self.assertTrue("plantDate", version2["jsonSchema"]["properties"].keys())
+
+        self.assertFalse("record__data__diameter" in str(response.content))
+        self.assertFalse("record__data__plantDate" in str(response.content))
 
     def test_get_permission_with_unavailable_objecttypes(self, m):
         """

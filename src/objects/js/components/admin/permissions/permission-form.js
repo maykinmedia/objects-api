@@ -1,17 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { CheckboxInput, TextInput, SelectInput } from "../../forms/inputs";
 import { versionAuthFields } from "./auth-fields";
 
 
-const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttypeChoices, modeChoices, formData}) => {
+const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoices, formData}) => {
     const {values, errors} = formData;
     const [mode, setMode]  = useState(values["mode"]);
     const [useFields, setUseFields] = useState(values["use_fields"]);
     const [objectType, setObjectType] = useState(values["object_type"]);
+    if (!values["fields"]) {
+        values["fields"] = "{}"
+    }
 
-    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {});
+    const [fields, setFields] = useState( JSON.parse(values["fields"]) || {} )
+    const [dataFieldChoices, setDataFieldChoices] = useState({});
 
+    const fetchObjecttypeVersions = (objecttype_id) => {
+        fetch(`/admin/core/objecttype/${objecttype_id}/_versions/`, {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(response_data => {
+            if (response_data?.length > 0) {
+                const objecttypes = {
+                    [objecttype_id]: response_data.reduce((acc, version) => {
+                        const properties = Object.keys(version?.jsonSchema?.properties || {});
+                        acc[version.version] = properties.reduce((propsAcc, prop) => {
+                            propsAcc[prop] = `record__data__${prop}`;
+                            return propsAcc;
+                        }, {});
+                        return acc;
+                    }, {})
+                };
+            setDataFieldChoices(objecttypes);
+            }  
+        })
+        .catch(error => {
+            console.error('An error occurred while fetching the Objecttype versions endpoint:', error);
+        });
+    };
+    useEffect(() => {
+        if (objectType) {
+            fetchObjecttypeVersions(objectType);
+        }
+    }, [objectType]);
+    
     return (
      <fieldset className="module aligned">
         <div className="form-row">
@@ -63,7 +97,7 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
                 name="use_fields"
                 id="id_use_fields"
                 label="Use field-based authorization"
-                disabled={mode === "read_and_write" || Object.keys(dataFieldChoices).length === 0}
+                disabled={!mode || mode === "read_and_write" || Object.keys(dataFieldChoices || {}).length === 0}
                 value={useFields}
                 onChange={(value) => {setUseFields(value)}}
             />
@@ -76,7 +110,7 @@ const PermissionForm = ({objectFields, dataFieldChoices, tokenChoices, objecttyp
                 value={useFields ? JSON.stringify(fields) : ""}
         />
 
-        { useFields ?
+        { useFields && dataFieldChoices && objectType in dataFieldChoices ?
 
             <div className="form-row">
                 <label htmlFor="id_selected_fields">Fields:</label>

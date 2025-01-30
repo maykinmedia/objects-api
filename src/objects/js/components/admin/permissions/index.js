@@ -12,7 +12,6 @@ const mount = () => {
     ReactDOM.render(
         <PermissionForm
             objectFields={jsonScriptToVar('object-fields')}
-            dataFieldChoices={jsonScriptToVar('data-field-choices')}
             tokenChoices={jsonScriptToVar('token-auth-choices')}
             objecttypeChoices={jsonScriptToVar('object-type-choices')}
             modeChoices={jsonScriptToVar('mode-choices')}

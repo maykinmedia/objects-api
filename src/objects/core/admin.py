@@ -1,8 +1,18 @@
+import logging
+
 from django.contrib import admin
 from django.contrib.gis import forms
 from django.contrib.gis.db.models import GeometryField
+from django.http import JsonResponse
+from django.urls import path
+
+import requests
+from zgw_consumers.client import build_client
+from zgw_consumers.service import pagination_helper
 
 from .models import Object, ObjectRecord, ObjectType
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(ObjectType)
@@ -12,6 +22,30 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         "uuid",
     )
     readonly_fields = ("_name",)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path(
+                "<int:objecttype_id>/_versions/",
+                self.admin_site.admin_view(self.versions_view),
+                name="objecttype_versions",
+            )
+        ]
+        return my_urls + urls
+
+    def versions_view(self, request, objecttype_id):
+        versions = []
+        if objecttype := self.get_object(request, objecttype_id):
+            client = build_client(objecttype.service)
+            try:
+                response = client.get(objecttype.versions_url)
+                versions = list(pagination_helper(client, response.json()))
+            except (requests.RequestException, requests.JSONDecodeError):
+                logger.exception(
+                    "Something went wrong while fetching objecttype versions"
+                )
+        return JsonResponse(versions, safe=False)
 
 
 class ObjectRecordInline(admin.TabularInline):
