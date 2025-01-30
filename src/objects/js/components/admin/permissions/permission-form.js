@@ -14,7 +14,7 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
     }
 
     const [fields, setFields] = useState( JSON.parse(values["fields"]) || {} )
-    const [dataFieldChoices, setDataFieldChoices] = useState(dataFieldChoices);
+    const [dataFieldChoices, setDataFieldChoices] = useState({});
 
     const fetchObjecttypeVersions = (objecttype_id) => {
         fetch(`/admin/core/objecttype/${objecttype_id}/_versions/`, {
