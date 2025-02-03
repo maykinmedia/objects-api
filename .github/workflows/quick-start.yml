@@ -1,32 +1,16 @@
-name: quick-start
+name: Quick Start
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch:
 
 jobs:
-  run:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Start docker containers
-        run: docker compose up -d --build
-      - name: Wait for migrations to finish
-        run: |
-          echo "Waiting for migrations to complete..."
-          until ! docker compose exec -T web src/manage.py showmigrations | grep -q '\[ \]'; do
-            echo "Migrations not finished, waiting..."
-            sleep 3
-          done
-      - name: Show web-init logs
-        run: docker compose logs web-init
-      - name: Load fixtures
-        run: docker compose exec -T web src/manage.py loaddata demodata
-      - name: Create superuser
-        run: docker compose exec -T web src/manage.py createsuperuser --username admin --email admin@admin.nl --no-input
-      - name: Check main page
-        run: |
-          curl_status=$(curl -w '%{http_code}' -o /dev/null  -s http://localhost:8000/)
-          if [[ $curl_status != 200 ]]; then
-            printf "Index page responds with ${curl_status} status.\r\n\r\n" >&2
-            curl -i http://localhost:8000
-            exit 1
-          fi
+  open-api-workflow-quick-start:
+    uses: maykinmedia/open-api-workflows/.github/workflows/quick-start.yml@v4.2.0
+    with:
+      fixtures: 'demodata'
