@@ -148,7 +148,7 @@ django-sendfile2==0.7.0
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.5.0
+django-setup-configuration==0.7.1
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -183,6 +183,8 @@ djangorestframework-gis==1.0
     # via open-api-framework
 djangorestframework-inclusions==1.2.0
     # via open-api-framework
+docutils==0.21.2
+    # via django-setup-configuration
 drf-nested-routers==0.94.1
     # via commonground-api-common
 drf-spectacular==0.27.2
@@ -312,6 +314,10 @@ requests==2.32.3
     #   zgw-consumers
 requests-mock==1.12.1
     # via commonground-api-common
+ruamel-yaml==0.18.10
+    # via django-setup-configuration
+ruamel-yaml-clib==0.2.12
+    # via ruamel-yaml
 sentry-sdk==2.12.0
     # via open-api-framework
 setuptools==75.6.0
