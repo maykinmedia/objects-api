@@ -366,7 +366,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.14.1
     # via elastic-apm
-zgw-consumers==0.36.1
+zgw-consumers==0.37.0
     # via
     #   -r requirements/base.in
     #   commonground-api-common
