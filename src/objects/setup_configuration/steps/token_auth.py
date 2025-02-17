@@ -21,6 +21,10 @@ class TokenAuthConfigurationStep(
 ):
     """
     Configure tokens with permissions for other applications to access Objects API
+
+    .. note:: To ensure the proper functioning of the tokens, it is essential to first
+        configure the ``objecttypes``. Then, the token configuration must be completed
+        to guarantee the correct configuration of the ``Permissions``.
     """
 
     namespace = "tokenauth"
