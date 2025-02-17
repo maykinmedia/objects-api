@@ -10,6 +10,14 @@ from objects.setup_configuration.models.objecttypes import ObjectTypesConfigurat
 
 
 class ObjectTypesConfigurationStep(BaseConfigurationStep):
+    """
+    Configure references to objecttypes in the Objecttypes API.
+
+    .. note:: Note that these objecttypes references should match instances in the Objecttypes API. Currently
+            there is no configuration step to do this automatically, so these have to be configured
+            manually or by loading fixtures.
+    """
+
     config_model = ObjectTypesConfigurationModel
     verbose_name = "Objecttypes Configuration"
 
