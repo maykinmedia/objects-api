@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 
 from notifications_api_common.kanalen import KANAAL_REGISTRY, Kanaal
+from rest_framework.request import Request
 
 from objects.core.models import ObjectRecord
 
@@ -22,7 +23,12 @@ class ObjectKanaal(Kanaal):
 
         KANAAL_REGISTRY.add(self)
 
-    def get_kenmerken(self, obj: models.Model, data: dict = None) -> dict:
+    def get_kenmerken(
+        self,
+        obj: models.Model,
+        data: dict = None,
+        request: Request | None = None,  # noqa
+    ) -> dict:
         data = data or {}
         return {
             kenmerk: (

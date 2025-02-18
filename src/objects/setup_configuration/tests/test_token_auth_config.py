@@ -348,7 +348,8 @@ class TokenAuthConfigurationStepTests(TokenTestCase):
         self.assertTrue(
             "Failed configuring token token-2" in str(command_error.exception)
         )
-        self.assertEqual(TokenAuth.objects.count(), 1)
+        # Token was not created, because the changes are rolled back
+        self.assertEqual(TokenAuth.objects.count(), 0)
 
     def test_invalid_setup_contact_person(self):
         object_source = {
@@ -724,8 +725,8 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
             "Object type with 69feca90-6c3d-4628-ace8-19e4b0ae4065 does not exist"
             in str(command_error.exception)
         )
-        # Token was created without permissions
-        self.assertEqual(TokenAuth.objects.count(), 1)
+        # Token was not created, because the changes are rolled back
+        self.assertEqual(TokenAuth.objects.count(), 0)
         self.assertEqual(Permission.objects.count(), 0)
 
     def test_invalid_permissions_mode_not_valid(self):

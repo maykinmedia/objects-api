@@ -126,7 +126,8 @@ class ObjectTypesConfigurationStepTests(TestCase):
         objecttype.refresh_from_db()
 
         self.assertEqual(str(objecttype.uuid), "b427ef84-189d-43aa-9efd-7bb2c459e281")
-        self.assertEqual(objecttype._name, "Object Type 1")
+        # Name should not be changed, because the error causes a rollback
+        self.assertEqual(objecttype._name, "Object Type 001")
         self.assertEqual(objecttype.service, service)
 
     def test_idempotent_step(self):
