@@ -3,7 +3,7 @@
 
 # Helpers
 pip-tools
-bumpversion
+bump-my-version
 
 # Debug tooling
 django-debug-toolbar
