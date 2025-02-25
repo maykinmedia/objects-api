@@ -115,7 +115,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/test-tools.in
-commonground-api-common==2.1.0
+commonground-api-common==2.5.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -179,7 +179,6 @@ django==4.2.17
     #   drf-nested-routers
     #   drf-spectacular
     #   drf-spectacular-sidecar
-    #   drf-yasg
     #   maykin-2fa
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
@@ -318,7 +317,6 @@ djangorestframework==3.15.2
     #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-spectacular
-    #   drf-yasg
     #   notifications-api-common
     #   open-api-framework
 djangorestframework-camel-case==1.4.2
@@ -352,17 +350,13 @@ drf-spectacular==0.27.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   commonground-api-common
     #   open-api-framework
 drf-spectacular-sidecar==2024.7.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-drf-yasg==1.21.7
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   commonground-api-common
 ecs-logging==2.1.0
     # via
     #   -c requirements/base.txt
@@ -419,7 +413,6 @@ inflection==0.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-    #   drf-yasg
 iniconfig==2.0.0
     # via pytest
 iso-639==0.4.5
@@ -493,7 +486,7 @@ notifications-api-common==0.4.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.9.2
+open-api-framework==0.9.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -509,10 +502,7 @@ oyaml==1.0
     #   commonground-api-common
 packaging==23.2
     # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
     #   black
-    #   drf-yasg
     #   pytest
     #   sphinx
 pathspec==0.12.1
@@ -615,14 +605,12 @@ pytz==2024.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   drf-yasg
     #   flower
 pyyaml==6.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-    #   drf-yasg
     #   oyaml
     #   pydantic-settings
     #   vcrpy
@@ -741,7 +729,6 @@ uritemplate==3.0.1
     #   -r requirements/base.txt
     #   coreapi
     #   drf-spectacular
-    #   drf-yasg
 urllib3==2.2.2
     # via
     #   -c requirements/base.txt
@@ -798,4 +785,3 @@ zgw-consumers==0.36.1
     #   -r requirements/base.txt
     #   commonground-api-common
     #   notifications-api-common
-    #   open-api-framework
