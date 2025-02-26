@@ -136,7 +136,7 @@ coverage==4.5.4
     # via
     #   -r requirements/test-tools.in
     #   codecov
-cryptography==44.0.0
+cryptography==44.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -147,7 +147,7 @@ cryptography==44.0.0
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==4.2.17
+django==4.2.19
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

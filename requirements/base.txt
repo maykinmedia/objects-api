@@ -63,14 +63,14 @@ coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
     # via coreapi
-cryptography==44.0.0
+cryptography==44.0.1
     # via
     #   django-simple-certmanager
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.17
+django==4.2.19
     # via
     #   commonground-api-common
     #   django-admin-index
