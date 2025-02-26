@@ -3,8 +3,6 @@ from open_api_framework.conf.utils import config
 
 from .api import *  # noqa
 
-init_sentry()
-
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 
