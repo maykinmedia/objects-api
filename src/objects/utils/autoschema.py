@@ -6,7 +6,7 @@ from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.plumbing import build_parameter_type, get_view_model
 from drf_spectacular.utils import OpenApiParameter
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
-from vng_api_common.inspectors.view import HTTP_STATUS_CODE_TITLES
+from vng_api_common.schema import HTTP_STATUS_CODE_TITLES
 
 from objects.api.mixins import GeoMixin
 
