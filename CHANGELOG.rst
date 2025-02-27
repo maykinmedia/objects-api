@@ -2,6 +2,26 @@
 Change history
 ==============
 
+3.0.1 (2025-03-04)
+------------------
+
+**Bugfixes and QOL**
+
+* [:objects-api:`464`] improved performance of the permission page in the Admin :zap:
+* [:open-api-framework:`79`] disabled admin nav sidebar
+
+**Project maintenance**
+
+* bumped python dependencies: open-api-framework to 0.9.3, commonground-api-common to 2.5.0, django to 4.2.19, cryptography to 44.0.1
+* [:objects-api:`529`] added bump-my-version to dev dependencies
+* [:open-api-framework:`44`] added workflow to CI to auto-update open-api-framework
+* [:objects-api:`509`, :open-api-framework:`104`] updated quick-start workflow to test docker-compose.yml
+* [:charts:`165`] remove unused celery worker command line args
+
+**Documentation**
+
+* [:objects-api:`521`] updated documentation for ``django-setup-configuration`` steps with YAML example directive
+
 3.0.0 (2025-01-22)
 ------------------
 
