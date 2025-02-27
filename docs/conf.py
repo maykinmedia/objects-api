@@ -46,6 +46,7 @@ release = objects.__version__
 # ones.
 extensions = [
     "sphinx.ext.todo",
+    "sphinx.ext.extlinks",
     "sphinx_tabs.tabs",
     "recommonmark",
     "sphinx.ext.autodoc",
@@ -102,3 +103,15 @@ linkcheck_ignore = [
     "https://objects.municipality.nl/admin/",
     "https://sparxsystems.com/products/ea/trial/request.html",  # this raises 403 for crawlers probably?
 ]
+
+extlinks = {
+    "objects-api": ("https://github.com/maykinmedia/objects-api/issues/%s", "#%s"),
+    "open-api-framework": (
+        "https://github.com/maykinmedia/open-api-framework/issues/%s",
+        "#%s",
+    ),
+    "charts": (
+        "https://github.com/maykinmedia/charts/issues/%s",
+        "#%s",
+    ),
+}
