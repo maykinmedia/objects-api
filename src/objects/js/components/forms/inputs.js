@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { ErrorList } from "./error-list";
 
 
-const CheckboxInput = ({name, id, value, label, disabled, onChange}) => {
+const CheckboxInput = ({name, id, value, label, disabled, onChange, helpText}) => {
     return (
         <div className="checkbox-row">
             <input
@@ -19,12 +19,13 @@ const CheckboxInput = ({name, id, value, label, disabled, onChange}) => {
                 }}
             />
             {label ? <label className="vCheckboxLabel" htmlFor={id}>{ label }</label> : null}
+            {helpText ? <div><span className="help" htmlFor={id}>{helpText}</span></div>: null}
         </div>
     );
 };
 
 
-const TextInput = ({id, name, value, label, onChange, hidden}) => {
+const TextInput = ({id, name, value, label, onChange, hidden, helpText}) => {
 
     return (
          <div>
@@ -41,12 +42,13 @@ const TextInput = ({id, name, value, label, onChange, hidden}) => {
                 }}
                 value={value}
             />
+            {helpText ? <div><span className="help" htmlFor={id}>{helpText}</span></div>: null}
          </div>
     );
 };
 
 
-const SelectInput = ({choices, name, id, label, onChange, initialValue, errors}) => {
+const SelectInput = ({choices, name, id, label, onChange, initialValue, errors, helpText}) => {
 
     const [currentValue, setCurrentValue] = useState(initialValue || "");
     const [_errors, setErrors] = useState(errors || []);
@@ -74,6 +76,7 @@ const SelectInput = ({choices, name, id, label, onChange, initialValue, errors})
             >
                 {options}
             </select>
+            {helpText ? <div><span className="help" htmlFor={id}>{helpText}</span></div>: null}
         </div>
     )
 }
