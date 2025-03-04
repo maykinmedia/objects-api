@@ -8,6 +8,8 @@ bump-my-version
 # Debug tooling
 django-debug-toolbar
 django-extensions
+django-silk
+whitenoise
 
 # Documentation
 sphinx

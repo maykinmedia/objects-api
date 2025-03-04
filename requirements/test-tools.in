@@ -4,6 +4,7 @@
 # Dependencies only relevant for (unit) testing
 codecov
 pytest
+pytest-benchmark
 coverage < 5.0
 django-webtest
 factory-boy
