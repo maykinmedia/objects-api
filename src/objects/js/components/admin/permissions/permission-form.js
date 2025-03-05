@@ -65,6 +65,7 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
                 id="id_object_type"
                 label="Object type:"
                 choices={objecttypeChoices}
+                helpText="Changing the Object type will not maintain the previously selected authorization fields."
                 initialValue={values["object_type"]}
                 errors={errors["object_type"]}
                 onChange={(value) => {
