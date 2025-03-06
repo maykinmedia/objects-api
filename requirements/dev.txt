@@ -524,7 +524,7 @@ jsonschema==4.17.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-kombu==5.3.5
+kombu==5.4.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -931,6 +931,7 @@ tzdata==2024.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
+    #   kombu
 uritemplate==3.0.1
     # via
     #   -c requirements/ci.txt
