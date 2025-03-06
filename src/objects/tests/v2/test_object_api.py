@@ -594,6 +594,44 @@ class ObjectsAvailableRecordsTests(TokenAuthMixin, APITestCase):
             self.assertEqual(object_data["uuid"], str(self.object.uuid))
             self.assertEqual(object_data["record"]["data"], {"name": "new"})
 
+    @freeze_time("2024-08-31")
+    def test_only_show_latest_index(self):
+        """
+        In the list endpoint, only the latest record that existed at the given date
+        should show up
+        """
+        object_url = reverse("object-detail", kwargs={"uuid": self.object.uuid})
+        object2 = ObjectFactory.create(object_type=self.object_type)
+        object2_url = reverse("object-detail", kwargs={"uuid": object2.uuid})
+        ObjectRecordFactory.create(
+            object=object2,
+            index=1,
+            data={"name": "old"},
+            start_at="2024-08-01",
+            end_at="2024-08-28",
+            registration_at="2024-08-02",
+        )
+        ObjectRecordFactory.create(
+            object=object2,
+            index=2,
+            data={"name": "new"},
+            start_at="2024-08-28",
+            end_at="2024-09-30",
+            registration_at="2024-08-02",
+        )
+
+        response = self.client.get(self.url, {"date": "2024-08-30"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+
+        self.assertEqual(data["count"], 2)
+        self.assertEqual(data["results"][0]["record"]["index"], 2)
+        self.assertEqual(data["results"][0]["url"], f"http://testserver{object2_url}")
+        self.assertEqual(data["results"][1]["record"]["index"], 1)
+        self.assertEqual(data["results"][1]["url"], f"http://testserver{object_url}")
+
     def test_list_available_for_date(self):
         with self.subTest("filter on old name"):
             response = self.client.get(
