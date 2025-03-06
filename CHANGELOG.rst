@@ -2,6 +2,27 @@
 Change history
 ==============
 
+3.0.2 (2025-03-07)
+------------------
+
+**Bugfixes and QOL**
+
+* [:objects-api:`538`] Optimize objects list performance
+* [:objects-api:`523`] Added help text in Permission admin view to explain that authorization fields are
+  reset when the Object type is changed
+
+**Project maintenance**
+
+* Upgrade dependencies:
+
+  * [:objects-api:`541`] Upgrade kombu to 5.4.2, this should fix the issue that caused Celery workers
+    to not be able to reestablish connections with Redis
+  * Upgrade Django to 4.2.20
+  * Upgrade jinja2 to 3.1.6 to fix security issue
+
+* [:objects-api:`538`] Add performance test for objects API list
+* [:objects-api:`538`] Add django-silk for performance profiling in development environment
+
 3.0.1 (2025-03-04)
 ------------------
 
