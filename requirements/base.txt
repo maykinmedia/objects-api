@@ -70,7 +70,7 @@ cryptography==44.0.1
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.19
+django==4.2.20
     # via
     #   commonground-api-common
     #   django-admin-index

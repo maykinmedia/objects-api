@@ -182,7 +182,7 @@ cssselect==1.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
-django==4.2.19
+django==4.2.20
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
