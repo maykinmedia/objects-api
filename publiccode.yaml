@@ -71,10 +71,10 @@ dependsOn:
       versionMin: '1.0'
     - name: PostgreSQL
       optional: false
-      versionMin: '11.0'
+      versionMin: '13.0'
     - name: PostGIS
       optional: false
-      versionMin: '2.4'
+      versionMin: '3.2'
     - name: Kubernetes
       optional: true
       versionMin: '1.12'

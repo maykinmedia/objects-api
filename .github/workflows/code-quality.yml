@@ -20,6 +20,5 @@ jobs:
       apt-packages: 'libgdal-dev gdal-bin'
       python-version: '3.11'
       node-version: '18'
-      postgres-image: 'postgis/postgis:12-2.5'
-
+      postgres-image: 'postgis/postgis:17-3.5'
       django-settings-module: 'objects.conf.ci'
