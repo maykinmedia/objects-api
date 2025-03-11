@@ -17,5 +17,5 @@ jobs:
         version:
           - v2
     with:
-      node-version: '18'
+      node-version: '20'
       schema-path: 'src/objects/api/${{ matrix.version }}/openapi.yaml'
