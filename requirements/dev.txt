@@ -59,7 +59,7 @@ billiard==4.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-black==24.8.0
+black==25.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -430,7 +430,7 @@ faker==8.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==7.1.1
+flake8==7.1.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -499,7 +499,7 @@ isodate==0.6.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-isort==5.13.2
+isort==6.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

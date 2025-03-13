@@ -2,6 +2,18 @@
 Change history
 ==============
 
+3.x.x (2025-03-31)
+------------------
+
+**Project maintenance**
+
+* Confirm support for Postgres 17 and drop (verified) support for Postgres 12
+* Confirm support for Postgis 3.2/3.5 and drop (verified) support for Postgis 2.5
+* Upgrade nodejs version in Docker image to 20
+* Upgrade dependencies
+
+  * Development tools: black to 25.1.0, flake to 7.1.2 and isort to 6.0.1
+
 3.0.2 (2025-03-07)
 ------------------
 

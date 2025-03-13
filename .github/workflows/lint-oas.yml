@@ -11,11 +11,11 @@ on:
 
 jobs:
   open-api-workflow-lint-oas:
-    uses: maykinmedia/open-api-workflows/.github/workflows/lint-oas.yml@v1
+    uses: maykinmedia/open-api-workflows/.github/workflows/lint-oas.yml@v5
     strategy:
       matrix:
         version:
           - v2
     with:
-      node-version: '18'
+      node-version: '20'
       schema-path: 'src/objects/api/${{ matrix.version }}/openapi.yaml'

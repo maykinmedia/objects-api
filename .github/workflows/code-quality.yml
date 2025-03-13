@@ -15,11 +15,10 @@ on:
 
 jobs:
   open-api-workflow-code-quality:
-    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v1
+    uses: maykinmedia/open-api-workflows/.github/workflows/code-quality.yml@v5
     with:
       apt-packages: 'libgdal-dev gdal-bin'
       python-version: '3.11'
-      node-version: '18'
-      postgres-image: 'postgis/postgis:12-2.5'
-
+      node-version: '20'
+      postgres-image: 'postgis/postgis:17-3.5'
       django-settings-module: 'objects.conf.ci'
