@@ -1,6 +1,5 @@
 from io import StringIO
 
-from django.contrib.sites.models import Site
 from django.core.management import call_command
 from django.test import override_settings
 
@@ -17,15 +16,11 @@ from objects.core.models import Object
 NOTIFICATIONS_API_ROOT = "https://notificaties-api.vng.cloud/api/v1/"
 
 
-@override_settings(IS_HTTPS=True)
+@override_settings(IS_HTTPS=True, SITE_DOMAIN="example.com")
 class CreateNotifKanaalTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        site = Site.objects.get_current()
-        site.domain = "example.com"
-        site.save()
-
         kanaal = ObjectKanaal(label="kanaal_test", main_resource=Object)
         cls.addClassCleanup(lambda: KANAAL_REGISTRY.remove(kanaal))
 
