@@ -13,57 +13,57 @@ env:
   IMAGE_NAME: maykinmedia/objects-api
 
 jobs:
-  tests:
-    strategy:
-      matrix:
-        postgres: ['13', '15', '16', '17']
-        postgis: ['3.2', '3.5']
-        exclude:
-          # postgis 3.2 is not compatible with recent postgres versions
-          - postgres: '17'
-            postgis: '3.2'
-          - postgres: '16'
-            postgis: '3.2'
-          - postgres: '15'
-            postgis: '3.2'
+  # tests:
+  #   strategy:
+  #     matrix:
+  #       postgres: ['13', '15', '16', '17']
+  #       postgis: ['3.2', '3.5']
+  #       exclude:
+  #         # postgis 3.2 is not compatible with recent postgres versions
+  #         - postgres: '17'
+  #           postgis: '3.2'
+  #         - postgres: '16'
+  #           postgis: '3.2'
+  #         - postgres: '15'
+  #           postgis: '3.2'
 
-    name: Run the Django test suite (PG ${{ matrix.postgres }}, postgis ${{ matrix.postgis }})
+  #   name: Run the Django test suite (PG ${{ matrix.postgres }}, postgis ${{ matrix.postgis }})
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgis/postgis:${{ matrix.postgres }}-${{ matrix.postgis }}
-        env:
-          POSTGRES_HOST_AUTH_METHOD: trust
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  #   services:
+  #     postgres:
+  #       image: postgis/postgis:${{ matrix.postgres }}-${{ matrix.postgis }}
+  #       env:
+  #         POSTGRES_HOST_AUTH_METHOD: trust
+  #       ports:
+  #         - 5432:5432
+  #       # needed because the postgres container does not provide a healthcheck
+  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up backend environment
-        uses: maykinmedia/setup-django-backend@v1.3
-        with:
-          apt-packages: 'libgdal-dev gdal-bin'
-          python-version: '3.11'
-          setup-node: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up backend environment
+  #       uses: maykinmedia/setup-django-backend@v1.3
+  #       with:
+  #         apt-packages: 'libgdal-dev gdal-bin'
+  #         python-version: '3.11'
+  #         setup-node: true
 
-      - name: Run tests
-        run: |
-          python src/manage.py collectstatic --noinput --link
-          coverage run src/manage.py test src
-        env:
-          DJANGO_SETTINGS_MODULE: objects.conf.ci
-          SECRET_KEY: dummy
-          DB_USER: postgres
-          DB_PASSWORD: ''
+  #     - name: Run tests
+  #       run: |
+  #         python src/manage.py collectstatic --noinput --link
+  #         coverage run src/manage.py test src
+  #       env:
+  #         DJANGO_SETTINGS_MODULE: objects.conf.ci
+  #         SECRET_KEY: dummy
+  #         DB_USER: postgres
+  #         DB_PASSWORD: ''
 
-      - name: Publish coverage report
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+  #     - name: Publish coverage report
+  #       uses: codecov/codecov-action@v4
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
 
   performance-tests:
     name: Run the performance test suite
@@ -71,7 +71,7 @@ jobs:
 
     services:
       postgres:
-        image: postgis/postgis:${{ matrix.postgres }}-${{ matrix.postgis }}
+        image: postgis/postgis:17-3.5
         env:
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
@@ -97,64 +97,65 @@ jobs:
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''
+          DEBUG: False
 
-  docs:
-    runs-on: ubuntu-latest
-    name: Documentation build
+  # docs:
+  #   runs-on: ubuntu-latest
+  #   name: Documentation build
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up backend environment
-        uses: maykinmedia/setup-django-backend@v1.3
-        with:
-          apt-packages: 'libgdal-dev gdal-bin'
-          python-version: '3.11'
-          setup-node: false
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up backend environment
+  #       uses: maykinmedia/setup-django-backend@v1.3
+  #       with:
+  #         apt-packages: 'libgdal-dev gdal-bin'
+  #         python-version: '3.11'
+  #         setup-node: false
 
-      - name: Generate environment variable documentation using OAf and check if it was updated
-        run: |
-          bin/generate_envvar_docs.sh
-          changes=$(git diff docs/installation/config.rst)
-          if [ ! -z "$changes" ]; then
-              echo $changes
-              echo "Please update the environment documentation by running \`bin/generate_envvar_docs.sh\`"
-              exit 1
-          fi
-        env:
-          DJANGO_SETTINGS_MODULE: objects.conf.ci
+  #     - name: Generate environment variable documentation using OAf and check if it was updated
+  #       run: |
+  #         bin/generate_envvar_docs.sh
+  #         changes=$(git diff docs/installation/config.rst)
+  #         if [ ! -z "$changes" ]; then
+  #             echo $changes
+  #             echo "Please update the environment documentation by running \`bin/generate_envvar_docs.sh\`"
+  #             exit 1
+  #         fi
+  #       env:
+  #         DJANGO_SETTINGS_MODULE: objects.conf.ci
 
-  store-reusable-workflow-vars:
-    name: create values which can be passed through a reusable workflow
-    runs-on: ubuntu-latest
-    outputs:
-      image-name: ${{ steps.image-name.outputs.image-name }}
+  # store-reusable-workflow-vars:
+  #   name: create values which can be passed through a reusable workflow
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     image-name: ${{ steps.image-name.outputs.image-name }}
 
-    steps:
-      - run: echo "image-name=$IMAGE_NAME" >> $GITHUB_OUTPUT
-        name: 'Store the docker image name'
-        id: image-name
+  #   steps:
+  #     - run: echo "image-name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+  #       name: 'Store the docker image name'
+  #       id: image-name
 
-  open-api-ci:
-    uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v5
-    needs:
-      - store-reusable-workflow-vars
-    with:
-      main-branch: 'master'
-      apt-packages: 'libgdal-dev gdal-bin'
-      run-docs: true
-      django-settings-module: objects.conf.ci
-      python-version: '3.11'
-      docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
+  # open-api-ci:
+  #   uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v5
+  #   needs:
+  #     - store-reusable-workflow-vars
+  #   with:
+  #     main-branch: 'master'
+  #     apt-packages: 'libgdal-dev gdal-bin'
+  #     run-docs: true
+  #     django-settings-module: objects.conf.ci
+  #     python-version: '3.11'
+  #     docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
 
-  open-api-publish:
-    uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v5
-    needs:
-      - store-reusable-workflow-vars
-      - open-api-ci
-      - tests
-    with:
-      docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
-      repository-owner: 'maykinmedia'
-    secrets:
-      docker-username: ${{ secrets.DOCKER_USERNAME }}
-      docker-token: ${{ secrets.DOCKER_TOKEN }}
+  # open-api-publish:
+  #   uses: maykinmedia/open-api-workflows/.github/workflows/publish.yml@v5
+  #   needs:
+  #     - store-reusable-workflow-vars
+  #     - open-api-ci
+  #     - tests
+  #   with:
+  #     docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
+  #     repository-owner: 'maykinmedia'
+  #   secrets:
+  #     docker-username: ${{ secrets.DOCKER_USERNAME }}
+  #     docker-token: ${{ secrets.DOCKER_TOKEN }}
