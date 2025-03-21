@@ -589,7 +589,10 @@ pytest==8.3.3
     # via
     #   -r requirements/test-tools.in
     #   pytest-benchmark
+    #   pytest-django
 pytest-benchmark==5.1.0
+    # via -r requirements/test-tools.in
+pytest-django==4.10.0
     # via -r requirements/test-tools.in
 python-dateutil==2.9.0.post0
     # via
