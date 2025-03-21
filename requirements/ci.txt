@@ -590,7 +590,10 @@ pytest==8.3.3
     # via
     #   -r requirements/test-tools.in
     #   pytest-codspeed
+    #   pytest-django
 pytest-codspeed==2.2.1
+    # via -r requirements/test-tools.in
+pytest-django==4.10.0
     # via -r requirements/test-tools.in
 python-dateutil==2.9.0.post0
     # via

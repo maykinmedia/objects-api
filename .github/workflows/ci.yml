@@ -90,27 +90,46 @@ jobs:
   benchmarks:
     name: Run benchmarks
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
-      - name: Bring up docker compose and load data
-        run: |
-          docker compose up -d --build || ( docker compose logs >&2 && exit 1; )
-          until docker compose logs web | grep -q "spawned uWSGI worker"; do
-            echo "uWSGI not running yet, waiting..."
-            sleep 3
-          done
-          docker compose exec --user root web pip install factory-boy
-          cat performance_test/create_data.py | docker compose exec -T web src/manage.py shell
+      # - name: Bring up docker compose and load data
+      #   run: |
+      #     docker compose up -d --build || ( docker compose logs >&2 && exit 1; )
+      #     until docker compose logs web | grep -q "spawned uWSGI worker"; do
+      #       echo "uWSGI not running yet, waiting..."
+      #       sleep 3
+      #     done
+      #     docker compose exec --user root web pip install factory-boy
+      #     cat performance_test/create_data.py | docker compose exec -T web src/manage.py shell
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements/ci.txt
+      - name: Set up backend environment
+        uses: maykinmedia/setup-django-backend@v1.3
+        with:
+          apt-packages: 'libgdal-dev gdal-bin'
+          python-version: '3.11'
+          setup-node: true
 
       - name: Run benchmarks
         uses: CodSpeedHQ/action@v3
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
-          run: "pytest performance_test/ --codspeed"
+          run: "pytest performance_test/ --codspeed --codspeed-mode=walltime"
+        env:
+          DJANGO_SETTINGS_MODULE: objects.conf.ci
+          SECRET_KEY: dummy
+          DB_USER: postgres
+          DB_PASSWORD: ''
 
   docs:
     runs-on: ubuntu-latest

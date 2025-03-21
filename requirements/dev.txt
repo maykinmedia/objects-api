@@ -718,7 +718,12 @@ pytest==8.3.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest-codspeed
+    #   pytest-django
 pytest-codspeed==2.2.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+pytest-django==4.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
