@@ -65,13 +65,33 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-  performance-tests:
-    name: Run the performance test suite
-    runs-on: ubuntu-latest
+  # performance-tests:
+  #   name: Run the performance test suite
+  #   runs-on: ubuntu-latest
 
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Bring up docker compose and load data
+  #       run: |
+  #         docker compose up -d --build || ( docker compose logs >&2 && exit 1; )
+  #         until docker compose logs web | grep -q "spawned uWSGI worker"; do
+  #           echo "uWSGI not running yet, waiting..."
+  #           sleep 3
+  #         done
+  #         docker compose exec --user root web pip install factory-boy
+  #         cat performance_test/create_data.py | docker compose exec -T web src/manage.py shell
+
+  #     - name: Run tests
+  #       run: |
+  #         pip install -r requirements/ci.txt
+  #         pytest performance_test/ --benchmark-json output.json
+
+  benchmarks:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Bring up docker compose and load data
         run: |
           docker compose up -d --build || ( docker compose logs >&2 && exit 1; )
@@ -82,10 +102,15 @@ jobs:
           docker compose exec --user root web pip install factory-boy
           cat performance_test/create_data.py | docker compose exec -T web src/manage.py shell
 
-      - name: Run tests
+      - name: Install dependencies
         run: |
           pip install -r requirements/ci.txt
-          pytest performance_test/ --benchmark-json output.json
+
+      - name: Run benchmarks
+        uses: CodSpeedHQ/action@v3
+        with:
+          token: ${{ secrets.CODSPEED_TOKEN }}
+          run: "pytest performance_test/ --codspeed"
 
   docs:
     runs-on: ubuntu-latest
