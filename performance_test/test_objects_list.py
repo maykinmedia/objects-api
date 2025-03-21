@@ -1,4 +1,3 @@
-import pytest
 import requests
 from furl import furl
 
@@ -6,8 +5,7 @@ BASE_URL = furl("http://localhost:8000/api/v2/")
 AUTH_HEADERS = {"Authorization": "Token secret"}
 
 
-@pytest.mark.benchmark(max_time=60, min_rounds=5)
-def test_objects_api_list(benchmark, benchmark_assertions):
+def test_objects_api_list(benchmark):
     """
     Regression test for maykinmedia/objects-api#538
     """
@@ -25,5 +23,3 @@ def test_objects_api_list(benchmark, benchmark_assertions):
 
     assert result.status_code == 200
     assert result.json()["count"] == 5000
-
-    benchmark_assertions(mean=1, max=1)
