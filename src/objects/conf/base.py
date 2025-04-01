@@ -94,3 +94,10 @@ SETUP_CONFIGURATION_STEPS = (
 )
 
 NOTIFICATIONS_API_GET_DOMAIN = "objects.utils.get_domain"
+
+#
+# Needed for geo widget
+#
+CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ["cdn.jsdelivr.net"]
+CSP_STYLE_SRC = CSP_STYLE_SRC + ["cdn.jsdelivr.net"]
+CSP_IMG_SRC = CSP_IMG_SRC + ["tile.openstreetmap.org"]
