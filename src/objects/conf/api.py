@@ -109,3 +109,5 @@ SPECTACULAR_SETTINGS = {
 }
 
 UNAUTHORIZED_FIELDS_HEADER = "X-Unauthorized-Fields"
+
+COMMONGROUND_API_COMMON_GET_DOMAIN = "objects.utils.get_domain"

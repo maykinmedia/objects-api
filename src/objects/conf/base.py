@@ -11,6 +11,10 @@ DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 INSTALLED_APPS = INSTALLED_APPS + [
     # Optional applications.
     "django.contrib.gis",
+    # `django.contrib.sites` added at the project level because it has been removed at the packages level.
+    # This component is deprecated and should be completely removed.
+    # To determine the project's domain, use the `SITE_DOMAIN` environment variable.
+    "django.contrib.sites",
     # External applications.
     "rest_framework_gis",
     # Project applications.
@@ -21,7 +25,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "objects.token",
     "objects.utils",
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -89,3 +92,5 @@ SETUP_CONFIGURATION_STEPS = (
     "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
     "objects.setup_configuration.steps.token_auth.TokenAuthConfigurationStep",
 )
+
+NOTIFICATIONS_API_GET_DOMAIN = "objects.utils.get_domain"
