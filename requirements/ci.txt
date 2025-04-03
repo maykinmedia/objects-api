@@ -84,6 +84,7 @@ cffi==1.16.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   cryptography
+    #   pytest-codspeed
 charset-normalizer==3.3.2
     # via
     #   -c requirements/base.txt
@@ -379,6 +380,8 @@ factory-boy==3.2.0
     # via -r requirements/test-tools.in
 faker==8.1.0
     # via factory-boy
+filelock==3.18.0
+    # via pytest-codspeed
 flake8==7.1.2
     # via -r requirements/test-tools.in
 flower==2.0.1
@@ -534,8 +537,6 @@ psycopg2==2.9.9
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-py-cpuinfo==9.0.0
-    # via pytest-benchmark
 pycodestyle==2.12.1
     # via flake8
 pycparser==2.20
@@ -588,8 +589,11 @@ pyrsistent==0.17.3
 pytest==8.3.3
     # via
     #   -r requirements/test-tools.in
-    #   pytest-benchmark
-pytest-benchmark==5.1.0
+    #   pytest-codspeed
+    #   pytest-django
+pytest-codspeed==2.2.1
+    # via -r requirements/test-tools.in
+pytest-django==4.10.0
     # via -r requirements/test-tools.in
 python-dateutil==2.9.0.post0
     # via
