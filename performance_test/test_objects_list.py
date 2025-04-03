@@ -1,13 +1,13 @@
 import pytest
-import requests
 from furl import furl
 
 BASE_URL = furl("http://localhost:8000/api/v2/")
 AUTH_HEADERS = {"Authorization": "Token secret"}
 
 
+@pytest.mark.django_db
 @pytest.mark.benchmark(max_time=60, min_rounds=5)
-def test_objects_api_list(benchmark, benchmark_assertions):
+def test_objects_api_list(benchmark, benchmark_assertions, client, setup):
     """
     Regression test for maykinmedia/objects-api#538
     """
@@ -19,7 +19,7 @@ def test_objects_api_list(benchmark, benchmark_assertions):
     }
 
     def make_request():
-        return requests.get((BASE_URL / "objects").set(params), headers=AUTH_HEADERS)
+        return client.get((BASE_URL / "objects").set(params), headers=AUTH_HEADERS)
 
     result = benchmark(make_request)
 

@@ -717,7 +717,12 @@ pytest==8.3.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest-benchmark
+    #   pytest-django
 pytest-benchmark==5.1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+pytest-django==4.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

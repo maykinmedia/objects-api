@@ -5,6 +5,7 @@
 codecov
 pytest
 pytest-benchmark
+pytest-django
 coverage < 5.0
 django-webtest
 factory-boy
