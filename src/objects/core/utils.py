@@ -1,37 +1,48 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 
 import jsonschema
 import requests
 from zgw_consumers.client import build_client
 
+from objects.utils.cache import cache
+
 
 def check_objecttype(object_type, version, data):
-    client = build_client(object_type.service)
-    objecttype_version_url = f"{object_type.url}/versions/{version}"
+    @cache(
+        f"objecttypen-{object_type.uuid}:versions-{version}",
+        timeout=settings.OBJECTTYPE_VERSION_CACHE_TIMEOUT,
+    )
+    def get_objecttype_version_response():
+        client = build_client(object_type.service)
+        try:
+            return client.get(f"{object_type.versions_url}/{version}")
+        except requests.RequestException:
+            raise ValidationError(
+                {"type": "Object type version can not be retrieved."},
+                code="invalid",
+            )
 
-    try:
-        response = client.get(objecttype_version_url)
-    except requests.RequestException:
-        msg = "Object type version can not be retrieved."
-        raise ValidationError(msg)
+    response = get_objecttype_version_response()
 
     try:
         response_data = response.json()
-    except requests.JSONDecodeError:
-        raise ValidationError("Object type doesn't have retrievable data.")
-
-    try:
         schema = response_data["jsonSchema"]
-    except KeyError:
-        msg = f"{objecttype_version_url} does not appear to be a valid objecttype."
-        raise ValidationError(msg)
-
-    # TODO: Set warning header if objecttype is not published.
-
-    try:
         jsonschema.validate(data, schema)
+    except requests.JSONDecodeError:
+        raise ValidationError(
+            {"type": "Object type doesn't have retrievable data."},
+            code="invalid_json",
+        )
+    except KeyError:
+        raise ValidationError(
+            {
+                "type": f"{object_type.versions_url} does not appear to be a valid objecttype."
+            },
+            code="invalid_key",
+        )
     except jsonschema.exceptions.ValidationError as exc:
-        raise ValidationError(exc.args[0]) from exc
+        raise ValidationError({"data": exc.args[0]}, code="invalid_jsonschema")
 
 
 def can_connect_to_objecttypes() -> bool:

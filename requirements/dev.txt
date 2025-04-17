@@ -36,7 +36,7 @@ asn1crypto==1.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webauthn
-attrs==20.3.0
+attrs==25.3.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -609,7 +609,7 @@ pip==24.3.1
     # via pip-tools
 pip-tools==7.4.1
     # via -r requirements/dev.in
-platformdirs==4.3.3
+platformdirs==4.3.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

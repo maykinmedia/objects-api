@@ -40,7 +40,6 @@ class JsonSchemaValidator:
 
         if not object_type or not version:
             return
-
         try:
             check_objecttype(object_type, version, data)
         except ValidationError as exc:
