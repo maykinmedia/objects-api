@@ -4,6 +4,7 @@ from open_api_framework.conf.utils import config
 from .api import *  # noqa
 
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
+DATABASES["default"]["OPTIONS"] = {"pool": True}
 
 
 # Application definition
