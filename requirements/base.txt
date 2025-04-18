@@ -9,7 +9,7 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.7.2
+asgiref==3.8.1
     # via
     #   django
     #   django-axes
@@ -70,7 +70,7 @@ cryptography==44.0.1
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.20
+django==5.2
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -148,7 +148,7 @@ django-sendfile2==0.7.0
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -258,6 +258,10 @@ prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.43
     # via click-repl
+psycopg==3.2.6
+    # via -r requirements/base.in
+psycopg-pool==3.2.6
+    # via psycopg
 psycopg2==2.9.9
     # via open-api-framework
 pycparser==2.20
@@ -336,6 +340,8 @@ tornado==6.4.2
 typing-extensions==4.9.0
     # via
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   zgw-consumers

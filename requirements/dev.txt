@@ -24,7 +24,7 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.7.2
+asgiref==3.8.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -182,7 +182,7 @@ cssselect==1.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
-django==4.2.20
+django==5.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -324,7 +324,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -630,6 +630,14 @@ prompt-toolkit==3.0.43
     #   -r requirements/ci.txt
     #   click-repl
     #   questionary
+psycopg==3.2.6
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+psycopg-pool==3.2.6
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 psycopg2==2.9.9
     # via
     #   -c requirements/ci.txt
@@ -910,6 +918,8 @@ typing-extensions==4.9.0
     #   -r requirements/ci.txt
     #   anyio
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   rich-click
