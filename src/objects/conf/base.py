@@ -5,7 +5,17 @@ from .api import *  # noqa
 
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 DATABASES["default"]["OPTIONS"] = {"pool": True}
-
+# TODO ConnectionPool settings
+# DATABASES["default"]["OPTIONS"] = {"pool": {
+#     "min_size": 4,
+#     "max_size": None,
+#     "timeout":  30,
+#     "max_waiting": 0,
+#     "max_lifetime": 60 * 60,
+#     "max_idle": 10 * 60,
+#     "reconnect_timeout": 5 * 60,
+#     "num_workers": 3
+# }}
 
 # Application definition
 
