@@ -31,7 +31,7 @@ asn1crypto==1.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   webauthn
-attrs==25.3.0
+attrs==20.3.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -510,7 +510,7 @@ phonenumberslite==8.13.30
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-platformdirs==4.3.7
+platformdirs==4.3.3
     # via black
 pluggy==1.5.0
     # via pytest

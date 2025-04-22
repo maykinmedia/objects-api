@@ -16,7 +16,7 @@ asgiref==3.7.2
     #   django-cors-headers
 asn1crypto==1.5.1
     # via webauthn
-attrs==25.3.0
+attrs==20.3.0
     # via
     #   glom
     #   jsonschema

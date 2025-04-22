@@ -9,7 +9,7 @@ from objects.core.models import Object
 from objects.core.tests.factories import ObjectRecordFactory, ObjectTypeFactory
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
-from objects.utils.test import TokenAuthMixin
+from objects.utils.test import ClearCachesMixin, TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
 from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
@@ -19,7 +19,7 @@ OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 @requests_mock.Mocker()
-class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
+class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -101,9 +101,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(
-            data["non_field_errors"], ["Object type doesn't have retrievable data."]
-        )
+        self.assertEqual(data["type"], ["Object type doesn't have retrievable data."])
 
     def test_create_object_objecttype_request_error(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -125,9 +123,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(
-            data["non_field_errors"], ["Object type version can not be retrieved."]
-        )
+        self.assertEqual(data["type"], ["Object type version can not be retrieved."])
 
     def test_create_object_objecttype_with_no_jsonSchema(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -154,9 +150,9 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["non_field_errors"],
+            data["type"],
             [
-                f"{self.object_type.url}/versions/10 does not appear to be a valid objecttype."
+                f"{self.object_type.versions_url} does not appear to be a valid objecttype."
             ],
         )
 
@@ -183,9 +179,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(
-            data["non_field_errors"], ["'diameter' is a required property"]
-        )
+        self.assertEqual(data["data"], ["'diameter' is a required property"])
 
     def test_create_object_without_record_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
