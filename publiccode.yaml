@@ -71,7 +71,7 @@ dependsOn:
       versionMin: '1.0'
     - name: PostgreSQL
       optional: false
-      versionMin: '13.0'
+      versionMin: '14.0'
     - name: PostGIS
       optional: false
       versionMin: '3.2'
