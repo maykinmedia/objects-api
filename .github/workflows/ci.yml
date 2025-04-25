@@ -66,11 +66,12 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   db-config-tests:
-    name: Run the Django test suite with conn_max_age & connection pooling
     runs-on: ubuntu-latest
     strategy:
       matrix:
         use_pooling: [true, false]
+
+    name: Run the Django test suite with ${{matrix.use_pooling && 'connection pooling' || 'conn_max_age'}}.
 
     services:
       postgres:
@@ -101,7 +102,7 @@ jobs:
           DB_USER: postgres
           DB_PASSWORD: ''
           DB_POOL_ENABLED: ${{ matrix.use_pooling }}
-          CONN_MAX_AGE: ${{ matrix.use_pooling && 0 || 3 }}
+          CONN_MAX_AGE: ${{ matrix.use_pooling && '0' || '3' }}
 
   performance-tests:
     name: Run the performance test suite
