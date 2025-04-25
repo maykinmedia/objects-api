@@ -4,13 +4,25 @@ from open_api_framework.conf.utils import config
 from .api import *  # noqa
 
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
+DATABASES["default"]["CONN_MAX_AGE"] = config(
+    "CONN_MAX_AGE",
+    default=0,
+    help_text=(
+        "The lifetime of a database connection, as an integer of seconds. "
+        "Use 0 to close database connections at the end of each request — Django’s historical behavior — and "
+        "None for unlimited persistent database connections. "
+        "This setting cannot be set in combination with connection pooling."
+    ),
+    group="Database",
+)
+
 
 # https://docs.djangoproject.com/en/5.2/ref/databases/#connection-pool
 # https://www.psycopg.org/psycopg3/docs/api/pool.html#the-connectionpool-class
 
 DB_POOL_ENABLED = config(
     "DB_POOL_ENABLED",
-    default=True,
+    default=False,
     help_text=("Whether to use connection pooling."),
     group="Connection Pooling",
 )
