@@ -4,9 +4,9 @@ from django.utils.translation import gettext_lazy as _
 import requests
 from rest_framework import serializers
 from rest_framework.fields import get_attribute
-from zgw_consumers.client import build_client
 
 from objects.core.utils import check_objecttype
+from objects.utils.client import get_objecttypes_client
 
 from .constants import Operators
 from .utils import merge_patch, string_to_value
@@ -131,15 +131,15 @@ class GeometryValidator:
 
         if not geometry:
             return
+        client = get_objecttypes_client(object_type.service)
 
-        client = build_client(object_type.service)
         try:
-            response = client.get(url=object_type.url)
+            response_data = client.get_objecttype(object_type.uuid)
         except requests.RequestException as exc:
             msg = f"Object type can not be retrieved: {exc.args[0]}"
             raise ValidationError(msg)
 
-        allow_geometry = response.json().get("allowGeometry", True)
+        allow_geometry = response_data.get("allowGeometry", True)
 
         if geometry and not allow_geometry:
             raise serializers.ValidationError(self.message, code=self.code)

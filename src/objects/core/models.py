@@ -10,8 +10,9 @@ from django.utils.translation import gettext_lazy as _
 
 import requests
 from requests.exceptions import ConnectionError
-from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
+
+from objects.utils.client import get_objecttypes_client
 
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
 from .utils import check_objecttype
@@ -52,15 +53,12 @@ class ObjectType(models.Model):
         if exclude and "service" in exclude:
             return
 
-        client = build_client(self.service)
+        client = get_objecttypes_client(self.service)
 
         try:
-            response = client.get(url=self.url)
+            object_type_data = client.get_objecttype(self.uuid)
         except (requests.RequestException, ConnectionError, ValueError) as exc:
             raise ValidationError(f"Objecttype can't be requested: {exc}")
-
-        try:
-            object_type_data = response.json()
         except requests.exceptions.JSONDecodeError:
             raise ValidationError("Object type version didn't have any data")
 

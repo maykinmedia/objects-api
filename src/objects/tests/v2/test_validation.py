@@ -31,6 +31,61 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             token_auth=cls.token_auth,
         )
 
+    def test_valid_create_object_check_cache(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(
+            f"{self.object_type.url}/versions/2",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+        with self.subTest("ok_cache"):
+            self.assertEqual(m.call_count, 0)
+            self.assertEqual(Object.objects.count(), 0)
+            for n in range(5):
+                self.client.post(url, data, **GEO_WRITE_KWARGS)
+            # just one request should run — the first one
+            self.assertEqual(m.call_count, 1)
+            self.assertEqual(Object.objects.count(), 5)
+
+        with self.subTest("clear_cache"):
+            m.reset_mock()
+            self.assertEqual(m.call_count, 0)
+            for n in range(5):
+                self._clear_caches()
+                self.client.post(url, data, **GEO_WRITE_KWARGS)
+            self.assertEqual(m.call_count, 5)
+            self.assertEqual(Object.objects.count(), 10)
+
+        with self.subTest("change_version"):
+            self._clear_caches()
+            m.reset_mock()
+            self.assertEqual(m.call_count, 0)
+            for n in range(5):
+                self.client.post(url, data, **GEO_WRITE_KWARGS)
+            # one request version 1
+            self.assertEqual(m.call_count, 1)
+            self.assertEqual(Object.objects.count(), 15)
+
+            data["record"]["typeVersion"] = 2
+            for n in range(5):
+                self.client.post(url, data, **GEO_WRITE_KWARGS)
+            # one request for version 1 and one for version 2
+            self.assertEqual(m.call_count, 2)
+            self.assertEqual(Object.objects.count(), 20)
+
     def test_create_object_with_not_found_objecttype_url(self, m):
         object_type_invalid = ObjectTypeFactory(service=self.object_type.service)
         PermissionFactory.create(
@@ -101,7 +156,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(data["type"], ["Object type doesn't have retrievable data."])
+        self.assertEqual(data["type"], ["Object type version can not be retrieved."])
 
     def test_create_object_objecttype_request_error(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")

@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.urls import path
 
 import requests
-from zgw_consumers.client import build_client
-from zgw_consumers.service import pagination_helper
+
+from objects.utils.client import get_objecttypes_client
 
 from .models import Object, ObjectRecord, ObjectType
 
@@ -37,10 +37,9 @@ class ObjectTypeAdmin(admin.ModelAdmin):
     def versions_view(self, request, objecttype_id):
         versions = []
         if objecttype := self.get_object(request, objecttype_id):
-            client = build_client(objecttype.service)
+            client = get_objecttypes_client(objecttype.service)
             try:
-                response = client.get(objecttype.versions_url)
-                versions = list(pagination_helper(client, response.json()))
+                versions = client.list_objecttype_versions(objecttype.uuid)
             except (requests.RequestException, requests.JSONDecodeError):
                 logger.exception(
                     "Something went wrong while fetching objecttype versions"

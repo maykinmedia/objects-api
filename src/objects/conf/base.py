@@ -41,7 +41,7 @@ TIME_ZONE = "Europe/Amsterdam"
 OBJECTTYPE_VERSION_CACHE_TIMEOUT = config(
     "OBJECTTYPE_VERSION_CACHE_TIMEOUT",
     default=5 * 60,  # 300 seconds
-    help_text="Timeout for cache when retrieving objecttype versions.",
+    help_text="Timeout in seconds for cache when retrieving objecttype versions.",
     group="Cache",
 )
 

@@ -73,7 +73,7 @@ Content Security Policy
 Cache
 -----
 
-* ``OBJECTTYPE_VERSION_CACHE_TIMEOUT``: Timeout for cache when retrieving objecttype versions. Defaults to: ``300``.
+* ``OBJECTTYPE_VERSION_CACHE_TIMEOUT``: Timeout in seconds for cache when retrieving objecttype versions. Defaults to: ``300``.
 
 
 Optional

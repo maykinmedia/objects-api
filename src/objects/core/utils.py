@@ -3,9 +3,9 @@ from django.core.exceptions import ValidationError
 
 import jsonschema
 import requests
-from zgw_consumers.client import build_client
 
 from objects.utils.cache import cache
+from objects.utils.client import get_objecttypes_client
 
 
 def check_objecttype(object_type, version, data):
@@ -14,26 +14,19 @@ def check_objecttype(object_type, version, data):
         timeout=settings.OBJECTTYPE_VERSION_CACHE_TIMEOUT,
     )
     def get_objecttype_version_response():
-        client = build_client(object_type.service)
+        client = get_objecttypes_client(object_type.service)
         try:
-            return client.get(f"{object_type.versions_url}/{version}")
-        except requests.RequestException:
+            return client.get_objecttype_version(object_type.uuid, version)
+        except (requests.RequestException, requests.JSONDecodeError):
             raise ValidationError(
                 {"type": "Object type version can not be retrieved."},
                 code="invalid",
             )
 
-    response = get_objecttype_version_response()
-
     try:
-        response_data = response.json()
-        schema = response_data["jsonSchema"]
-        jsonschema.validate(data, schema)
-    except requests.JSONDecodeError:
-        raise ValidationError(
-            {"type": "Object type doesn't have retrievable data."},
-            code="invalid_json",
-        )
+        vesion_data = get_objecttype_version_response()
+
+        jsonschema.validate(data, vesion_data["jsonSchema"])
     except KeyError:
         raise ValidationError(
             {
@@ -51,13 +44,8 @@ def can_connect_to_objecttypes() -> bool:
     """
     from zgw_consumers.models import Service
 
-    objecttypes_services = Service.objects.filter(object_types__isnull=False).distinct()
-    for service in objecttypes_services:
-        client = build_client(service)
-
-        try:
-            client.get("objecttypes")
-        except requests.RequestException:
+    for service in Service.objects.filter(object_types__isnull=False).distinct():
+        client = get_objecttypes_client(service)
+        if not client.can_connect:
             return False
-
     return True
