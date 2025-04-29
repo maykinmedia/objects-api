@@ -182,7 +182,7 @@ cssselect==1.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
-django==5.2
+django==5.2.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -455,9 +455,9 @@ glom==23.5.0
     #   mozilla-django-oidc-db
 gprof2dot==2024.6.6
     # via django-silk
-h11==0.14.0
+h11==0.16.0
     # via httpcore
-httpcore==1.0.7
+httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via bump-my-version
