@@ -37,13 +37,13 @@ class ObjectTypeAdmin(admin.ModelAdmin):
     def versions_view(self, request, objecttype_id):
         versions = []
         if objecttype := self.get_object(request, objecttype_id):
-            client = get_objecttypes_client(objecttype.service)
-            try:
-                versions = client.list_objecttype_versions(objecttype.uuid)
-            except (requests.RequestException, requests.JSONDecodeError):
-                logger.exception(
-                    "Something went wrong while fetching objecttype versions"
-                )
+            with get_objecttypes_client(objecttype.service) as client:
+                try:
+                    versions = client.list_objecttype_versions(objecttype.uuid)
+                except (requests.RequestException, requests.JSONDecodeError):
+                    logger.exception(
+                        "Something went wrong while fetching objecttype versions"
+                    )
         return JsonResponse(versions, safe=False)
 
 

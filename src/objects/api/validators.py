@@ -5,7 +5,7 @@ import requests
 from rest_framework import serializers
 from rest_framework.fields import get_attribute
 
-from objects.core.utils import check_objecttype
+from objects.core.utils import check_objecttype_cached
 from objects.utils.client import get_objecttypes_client
 
 from .constants import Operators
@@ -41,7 +41,7 @@ class JsonSchemaValidator:
         if not object_type or not version:
             return
         try:
-            check_objecttype(object_type, version, data)
+            check_objecttype_cached(object_type, version, data)
         except ValidationError as exc:
             raise serializers.ValidationError(exc.args[0], code=self.code) from exc
 
@@ -131,13 +131,13 @@ class GeometryValidator:
 
         if not geometry:
             return
-        client = get_objecttypes_client(object_type.service)
 
-        try:
-            response_data = client.get_objecttype(object_type.uuid)
-        except requests.RequestException as exc:
-            msg = f"Object type can not be retrieved: {exc.args[0]}"
-            raise ValidationError(msg)
+        with get_objecttypes_client(object_type.service) as client:
+            try:
+                response_data = client.get_objecttype(object_type.uuid)
+            except requests.RequestException as exc:
+                msg = f"Object type can not be retrieved: {exc.args[0]}"
+                raise ValidationError(msg)
 
         allow_geometry = response_data.get("allowGeometry", True)
 

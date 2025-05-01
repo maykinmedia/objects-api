@@ -1,7 +1,11 @@
+import datetime
 import uuid
+
+from django.conf import settings
 
 import requests
 import requests_mock
+from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -69,22 +73,39 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             self.assertEqual(m.call_count, 5)
             self.assertEqual(Object.objects.count(), 10)
 
-        with self.subTest("change_version"):
-            self._clear_caches()
+        with self.subTest("cache_timeout"):
             m.reset_mock()
-            self.assertEqual(m.call_count, 0)
-            for n in range(5):
+            old_datetime = datetime.datetime(2025, 5, 1, 12, 0)
+            with freeze_time(old_datetime.isoformat()):
+                self.assertEqual(m.call_count, 0)
                 self.client.post(url, data, **GEO_WRITE_KWARGS)
-            # one request version 1
-            self.assertEqual(m.call_count, 1)
-            self.assertEqual(Object.objects.count(), 15)
+                self.client.post(url, data, **GEO_WRITE_KWARGS)
+                # only one request for two post
+                self.assertEqual(m.call_count, 1)
 
-            data["record"]["typeVersion"] = 2
-            for n in range(5):
+            # cache_timeout is still ok
+            cache_timeout = settings.OBJECTTYPE_VERSION_CACHE_TIMEOUT
+            new_datetime = old_datetime + datetime.timedelta(
+                seconds=(cache_timeout - 60)
+            )
+            with freeze_time(new_datetime.isoformat()):
+                # same request as before
+                self.assertEqual(m.call_count, 1)
                 self.client.post(url, data, **GEO_WRITE_KWARGS)
-            # one request for version 1 and one for version 2
-            self.assertEqual(m.call_count, 2)
-            self.assertEqual(Object.objects.count(), 20)
+                # same request as before
+                self.assertEqual(m.call_count, 1)
+
+            # cache_timeout is expired
+            cache_timeout = settings.OBJECTTYPE_VERSION_CACHE_TIMEOUT
+            new_datetime = old_datetime + datetime.timedelta(
+                seconds=(cache_timeout + 60)
+            )
+            with freeze_time(new_datetime.isoformat()):
+                # same request as before
+                self.assertEqual(m.call_count, 1)
+                self.client.post(url, data, **GEO_WRITE_KWARGS)
+                # new request
+                self.assertEqual(m.call_count, 2)
 
     def test_create_object_with_not_found_objecttype_url(self, m):
         object_type_invalid = ObjectTypeFactory(service=self.object_type.service)
@@ -156,7 +177,9 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(data["type"], ["Object type version can not be retrieved."])
+        self.assertEqual(
+            data["non_field_errors"], ["Object type version can not be retrieved."]
+        )
 
     def test_create_object_objecttype_request_error(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -178,7 +201,9 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(data["type"], ["Object type version can not be retrieved."])
+        self.assertEqual(
+            data["non_field_errors"], ["Object type version can not be retrieved."]
+        )
 
     def test_create_object_objecttype_with_no_jsonSchema(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -205,7 +230,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["type"],
+            data["non_field_errors"],
             [
                 f"{self.object_type.versions_url} does not appear to be a valid objecttype."
             ],
@@ -234,7 +259,9 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(data["data"], ["'diameter' is a required property"])
+        self.assertEqual(
+            data["non_field_errors"], ["'diameter' is a required property"]
+        )
 
     def test_create_object_without_record_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
