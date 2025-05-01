@@ -5,12 +5,11 @@ from .api import *  # noqa
 
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 DATABASES["default"]["CONN_MAX_AGE"] = config(
-    "CONN_MAX_AGE",
+    "DB_CONN_MAX_AGE",
     default=0,
     help_text=(
         "The lifetime of a database connection, as an integer of seconds. "
-        "Use 0 to close database connections at the end of each request — Django’s historical behavior — and "
-        "None for unlimited persistent database connections. "
+        "Use 0 to close database connections at the end of each request — Django’s historical behavior."
         "This setting cannot be set in combination with connection pooling."
     ),
     group="Database",
@@ -24,7 +23,7 @@ DB_POOL_ENABLED = config(
     "DB_POOL_ENABLED",
     default=False,
     help_text=("Whether to use connection pooling."),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_MIN_SIZE = config(
@@ -35,7 +34,7 @@ DB_POOL_MIN_SIZE = config(
         "The pool will actively try to create new connections if some are lost (closed, broken) "
         "and will try to never go below min_size."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_MAX_SIZE = config(
@@ -48,7 +47,7 @@ DB_POOL_MAX_SIZE = config(
         "are requested at the same time and will shrink back after the extra connections "
         "have been unused for more than max_idle seconds."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_TIMEOUT = config(
@@ -59,7 +58,7 @@ DB_POOL_TIMEOUT = config(
         "to receive a connection from the pool (using connection() or getconn()). "
         "Note that these methods allow to override the timeout default."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_MAX_WAITING = config(
@@ -69,7 +68,7 @@ DB_POOL_MAX_WAITING = config(
         "Maximum number of requests that can be queued to the pool, "
         "after which new requests will fail, raising TooManyRequests. 0 means no queue limit."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_MAX_LIFETIME = config(
@@ -80,7 +79,7 @@ DB_POOL_MAX_LIFETIME = config(
         "Connections used for longer get closed and replaced by a new one. "
         "The amount is reduced by a random 10% to avoid mass eviction"
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_MAX_IDLE = config(
@@ -91,7 +90,7 @@ DB_POOL_MAX_IDLE = config(
         "before being closed, and the pool shrunk. This only happens to "
         "connections more than min_size, if max_size allowed the pool to grow."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_RECONNECT_TIMEOUT = config(
@@ -104,7 +103,7 @@ DB_POOL_RECONNECT_TIMEOUT = config(
         "If repeated attempts fail, after reconnect_timeout second the connection "
         "attempt is aborted and the reconnect_failed() callback invoked."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 DB_POOL_NUM_WORKERS = config(
@@ -115,7 +114,7 @@ DB_POOL_NUM_WORKERS = config(
         "Background workers are used for example to create new connections and "
         "to clean up connections when they are returned to the pool."
     ),
-    group="Connection Pooling",
+    group="Database",
 )
 
 
