@@ -8,7 +8,7 @@ from objects.core.models import ObjectType
 from objects.core.tests.factories import ObjectTypeFactory
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
-from objects.utils.test import TokenAuthMixin
+from objects.utils.test import ClearCachesMixin, TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
 from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
@@ -18,7 +18,7 @@ OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 @requests_mock.Mocker()
-class JsonSchemaTests(TokenAuthMixin, APITestCase):
+class JsonSchemaTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
     """GH issue - https://github.com/maykinmedia/objects-api/issues/330"""
 
     @classmethod

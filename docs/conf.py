@@ -99,6 +99,7 @@ linkcheck_ignore = [
     r"https?://.*\.gemeente.nl",
     r"http://localhost:\d+/",
     r"https://.*sentry.*",
+    "https://www.utrecht.nl/",
     "https://github.com/maykinmedia/objects-api-performance",
     "https://objects.municipality.nl/admin/",
     "https://sparxsystems.com/products/ea/trial/request.html",  # this raises 403 for crawlers probably?
