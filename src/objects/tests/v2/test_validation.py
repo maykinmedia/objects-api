@@ -41,11 +41,6 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
-        m.get(
-            f"{self.object_type.url}/versions/2",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-
         url = reverse("object-list")
         data = {
             "type": self.object_type.url,
@@ -75,6 +70,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
         with self.subTest("cache_timeout"):
             m.reset_mock()
+            self._clear_caches()
             old_datetime = datetime.datetime(2025, 5, 1, 12, 0)
             with freeze_time(old_datetime.isoformat()):
                 self.assertEqual(m.call_count, 0)
