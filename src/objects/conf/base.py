@@ -9,7 +9,7 @@ DATABASES["default"]["CONN_MAX_AGE"] = config(
     default=0,
     help_text=(
         "The lifetime of a database connection, as an integer of seconds. "
-        "Use 0 to close database connections at the end of each request — Django’s historical behavior."
+        "Use 0 to close database connections at the end of each request — Django’s historical behavior. "
         "This setting cannot be set in combination with connection pooling."
     ),
     group="Database",
