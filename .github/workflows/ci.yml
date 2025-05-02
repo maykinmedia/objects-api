@@ -18,6 +18,7 @@ jobs:
       matrix:
         postgres: ['14', '15', '16', '17']
         postgis: ['3.2', '3.5']
+        use_pooling: [false]
         exclude:
           # postgis 3.2 is not compatible with recent postgres versions
           - postgres: '17'
@@ -26,8 +27,13 @@ jobs:
             postgis: '3.2'
           - postgres: '15'
             postgis: '3.2'
+        include:
+          - postgres: '17'
+            postgis: '3.5'
+            use_pooling: true
 
-    name: Run the Django test suite (PG ${{ matrix.postgres }}, postgis ${{ matrix.postgis }})
+    name: Run the Django test suite (PG ${{ matrix.postgres }}, postgis ${{ matrix.postgis }}) ${{matrix.use_pooling && 'with connection pooling' || ''}}
+
 
     runs-on: ubuntu-latest
 
@@ -59,50 +65,12 @@ jobs:
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''
+          DB_POOL_ENABLED: ${{ matrix.use_pooling }}
 
       - name: Publish coverage report
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
-  db-config-tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        use_pooling: [true, false]
-
-    name: Run the Django test suite with ${{matrix.use_pooling && 'connection pooling' || 'conn_max_age'}}.
-
-    services:
-      postgres:
-        image: postgis/postgis:17-3.5
-        env:
-          POSTGRES_HOST_AUTH_METHOD: trust
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up backend environment
-        uses: maykinmedia/setup-django-backend@v1.3
-        with:
-          apt-packages: 'libgdal-dev gdal-bin'
-          python-version: '3.11'
-          setup-node: true
-
-      - name: Run tests
-        run: |
-          python src/manage.py collectstatic --noinput --link
-          coverage run src/manage.py test src
-        env:
-          DJANGO_SETTINGS_MODULE: objects.conf.ci
-          SECRET_KEY: dummy
-          DB_USER: postgres
-          DB_PASSWORD: ''
-          DB_POOL_ENABLED: ${{ matrix.use_pooling }}
-          CONN_MAX_AGE: ${{ matrix.use_pooling && '0' || '3' }}
 
   performance-tests:
     name: Run the performance test suite
