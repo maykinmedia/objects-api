@@ -1,7 +1,8 @@
 import logging
 
 from django.contrib import admin
-from django.contrib.gis.admin.options import GeoModelAdminMixin
+from django.contrib.gis import forms
+from django.contrib.gis.db.models import GeometryField
 from django.http import JsonResponse
 from django.urls import path
 
@@ -46,7 +47,7 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         return JsonResponse(versions, safe=False)
 
 
-class ObjectRecordInline(GeoModelAdminMixin, admin.TabularInline):
+class ObjectRecordInline(admin.TabularInline):
     model = ObjectRecord
     extra = 1
     readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
@@ -61,6 +62,8 @@ class ObjectRecordInline(GeoModelAdminMixin, admin.TabularInline):
         "get_corrected_by",
         "correct",
     )
+
+    formfield_overrides = {GeometryField: {"widget": forms.Textarea}}
 
     def has_delete_permission(self, request, obj=None):
         return False
