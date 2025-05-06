@@ -19,7 +19,7 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.7.2
+asgiref==3.8.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -147,7 +147,7 @@ cryptography==44.0.1
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==4.2.20
+django==5.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -282,7 +282,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -306,7 +306,7 @@ django-two-factor-auth==1.17.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   maykin-2fa
-django-webtest==1.9.7
+django-webtest==1.9.13
     # via -r requirements/test-tools.in
 djangorestframework==3.15.2
     # via
@@ -524,6 +524,14 @@ prompt-toolkit==3.0.43
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   click-repl
+psycopg==3.2.6
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+psycopg-pool==3.2.6
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 psycopg2==2.9.9
     # via
     #   -c requirements/base.txt
@@ -725,6 +733,8 @@ typing-extensions==4.9.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   zgw-consumers
