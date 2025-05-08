@@ -1,12 +1,13 @@
 import logging
 
+from django import forms
 from django.contrib import admin
-from django.contrib.gis import forms
 from django.contrib.gis.db.models import GeometryField
 from django.http import JsonResponse
 from django.urls import path
 
 import requests
+from vng_api_common.utils import get_help_text
 
 from objects.utils.client import get_objecttypes_client
 
@@ -47,7 +48,19 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         return JsonResponse(versions, safe=False)
 
 
+class ObjectRecordForm(forms.ModelForm):
+
+    class Meta:
+        model: ObjectRecord
+        help_texts = {
+            "geometry": get_help_text("core.ObjectRecord", "geometry")
+            + "\n\n format: SRID=4326;POINT|LINESTRING|POLYGON (LAT LONG, ...)"
+        }
+        fields = "__all__"
+
+
 class ObjectRecordInline(admin.TabularInline):
+    form = ObjectRecordForm
     model = ObjectRecord
     extra = 1
     readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
