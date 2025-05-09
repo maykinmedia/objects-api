@@ -22,7 +22,7 @@ def check_objecttype_cached(
                 return client.get_objecttype_version(object_type.uuid, version)
             except (requests.RequestException, requests.JSONDecodeError):
                 raise ValidationError(
-                    {"non_field_errors": "Object type version can not be retrieved."},
+                    "Object type version can not be retrieved.",
                     code="invalid",
                 )
 
@@ -31,15 +31,11 @@ def check_objecttype_cached(
         jsonschema.validate(data, vesion_data["jsonSchema"])
     except KeyError:
         raise ValidationError(
-            {
-                "non_field_errors": f"{object_type.versions_url} does not appear to be a valid objecttype."
-            },
+            f"{object_type.versions_url} does not appear to be a valid objecttype.",
             code="invalid_key",
         )
     except jsonschema.exceptions.ValidationError as exc:
-        raise ValidationError(
-            {"non_field_errors": exc.args[0]}, code="invalid_jsonschema"
-        )
+        raise ValidationError(exc.args[0], code="invalid_jsonschema")
 
 
 def can_connect_to_objecttypes() -> bool:
