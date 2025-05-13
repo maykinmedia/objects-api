@@ -2,6 +2,52 @@
 Change history
 ==============
 
+3.0.4 (2025-05-13)
+------------------
+
+.. warning::
+
+    This release upgrades Django to version 5.2.1, which requires PostgreSQL version 14 or higher.
+    Attempting to deploy with PostgreSQL <14 will cause errors during deployment.
+
+**Bugfixes and QOL**
+
+* [:objects-api:`570`] Removed broken ObjectRecord geometry map widget.
+* [:objects-api:`374`] Fixed empty token auth field when creating Permission for Token authorization.
+
+**Project maintenance**
+
+* Add additional performance tests for pagination
+* Upgrade dependencies
+
+  * django to 5.2.1
+  * django-setup-configuration to 0.7.2
+  * commonground-api-common to 2.6.2
+  * httpcore to 1.0.9
+  * h11 to 0.16.0
+
+* Upgrade dev dependencies
+
+  * django-webtest to 1.9.13  
+
+* Upgrade npm packages to fix vulnerabilities
+* Fixed admin logout button
+* [:objects-api:`550`] Implement cache for objecttypes
+* [:objects-api:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#cache>`_
+* [:objects-api:`572`] Add db connection pooling environment variables `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_
+
+  * DB_POOL_ENABLED
+  * DB_POOL_MIN_SIZE
+  * DB_POOL_MAX_SIZE
+  * DB_POOL_TIMEOUT
+  * DB_POOL_MAX_WAITING
+  * DB_POOL_MAX_LIFETIME
+  * DB_POOL_MAX_IDLE
+  * DB_POOL_RECONNECT_TIMEOUT
+  * DB_POOL_NUM_WORKERS
+
+* [:objects-api:`566`] Add DB_CONN_MAX_AGE environment variable `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_
+
 3.0.3 (2025-04-03)
 ------------------
 
