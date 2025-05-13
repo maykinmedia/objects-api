@@ -1,3 +1,5 @@
+import json
+
 from django.urls import reverse_lazy
 
 import requests_mock
@@ -58,3 +60,18 @@ class AddPermissionTests(WebTest):
         response = self.app.get(self.url)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_token_auth_is_preselected_in_select(self, m):
+        token = TokenAuthFactory()
+        url = f"{self.url}?token_auth={token.pk}"
+        page = self.app.get(url)
+
+        form_data_script = page.html.find("script", {"id": "form-data"})
+
+        self.assertIsNotNone(form_data_script)
+
+        form_data = json.loads(form_data_script.string)
+
+        token_auth_value = form_data["values"].get("token_auth")
+
+        self.assertEqual(token_auth_value, str(token.pk))

@@ -36,10 +36,18 @@ class PermissionAdmin(admin.ModelAdmin):
     def get_form_data(self, request, object_id) -> dict:
         obj = self.get_object(request, unquote(object_id)) if object_id else None
         ModelForm = self.get_form(request, obj, change=not obj)
+
+        initial = {}
+        token_auth_id = request.GET.get("token_auth") or request.GET.get(
+            "initial-token_auth"
+        )
+        if token_auth_id and not obj:
+            initial["token_auth"] = token_auth_id
+
         if request.method == "POST":
             form = ModelForm(request.POST, request.FILES, instance=obj)
         else:
-            form = ModelForm(instance=obj)
+            form = ModelForm(instance=obj, initial=initial)
         form.is_valid()
 
         values = {field.name: field.value() for field in form}
