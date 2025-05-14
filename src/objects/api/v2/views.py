@@ -14,7 +14,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from vng_api_common.filters import Backend as FilterBackend
+from vng_api_common.filters_backend import Backend as FilterBackend
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import ObjectRecord
