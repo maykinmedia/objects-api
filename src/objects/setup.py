@@ -12,6 +12,7 @@ they are available for Django settings initialization.
 
 import os
 
+import structlog
 from dotenv import load_dotenv
 
 
@@ -21,3 +22,5 @@ def setup_env():
     load_dotenv(dotenv_path)
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "objects.conf.dev")
+
+    structlog.contextvars.bind_contextvars(source="app")
