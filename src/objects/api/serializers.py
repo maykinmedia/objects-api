@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+import structlog
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
@@ -11,6 +12,8 @@ from objects.utils.serializers import DynamicFieldsMixin
 from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
 from .utils import merge_patch
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -121,6 +124,12 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
         validated_data["object"] = object
         record = super().create(validated_data)
+        logger.info(
+            "object_created",
+            object_uuid=str(object.uuid),
+            objecttype_uuid=str(object.object_type.uuid),
+            objecttype_version=record.version,
+        )
         return record
 
     @transaction.atomic
@@ -140,6 +149,12 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
             validated_data["data"] = merge_patch(instance.data, validated_data["data"])
 
         record = super().create(validated_data)
+        logger.info(
+            "object_updated",
+            object_uuid=str(record.object.uuid),
+            objecttype_uuid=str(record.object.object_type.uuid),
+            objecttype_version=record.version,
+        )
         return record
 
 
