@@ -1,6 +1,5 @@
 open-api-framework
 
-
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
