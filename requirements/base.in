@@ -6,7 +6,7 @@ jsonschema
 furl
 
 # Django libraries
-django-structlog
+django-structlog[celery]
 
 # Common ground libraries
 django-setup-configuration>=0.5.0
