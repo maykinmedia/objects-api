@@ -1,5 +1,3 @@
-import logging
-
 from django import forms
 from django.contrib import admin
 from django.contrib.gis.db.models import GeometryField
@@ -7,13 +5,14 @@ from django.http import JsonResponse
 from django.urls import path
 
 import requests
+import structlog
 from vng_api_common.utils import get_help_text
 
 from objects.utils.client import get_objecttypes_client
 
 from .models import Object, ObjectRecord, ObjectType
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 @admin.register(ObjectType)
@@ -41,10 +40,8 @@ class ObjectTypeAdmin(admin.ModelAdmin):
             with get_objecttypes_client(objecttype.service) as client:
                 try:
                     versions = client.list_objecttype_versions(objecttype.uuid)
-                except (requests.RequestException, requests.JSONDecodeError):
-                    logger.exception(
-                        "Something went wrong while fetching objecttype versions"
-                    )
+                except (requests.RequestException, requests.JSONDecodeError) as exc:
+                    logger.exception("objecttypes_api_request_failure", exc_info=exc)
         return JsonResponse(versions, safe=False)
 
 

@@ -1,4 +1,4 @@
-import logging
+import structlog
 from urllib.parse import urlsplit, urlunsplit
 
 from django.db import migrations
@@ -6,7 +6,7 @@ from django.db.models.functions import Length
 
 from vng_api_common.utils import get_uuid_from_path
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 def get_service(model, url: str):
@@ -37,18 +37,18 @@ def move_objecttypes_to_model(apps, _):
         service = get_service(Service, object.object_type)
         if not service:
             logger.warning(
-                "object %s can't be migrated since it has invalid objecttype %s",
-                object,
-                object.object_type,
+                "missing_service_for_objecttype",
+                object=object,
+                object_type=object.object_type,
             )
             continue
         try:
             uuid = get_uuid_from_path(object.object_type)
         except ValueError:
             logger.warning(
-                "object %s can't be migrated since it has invalid objecttype %s",
-                object,
-                object.object_type,
+                "invalid_objecttype",
+                object=object,
+                object_type=object.object_type,
             )
             continue
 

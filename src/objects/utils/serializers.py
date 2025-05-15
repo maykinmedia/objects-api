@@ -1,13 +1,9 @@
-import logging
 from collections import defaultdict
 
 from glom import SKIP, GlomError, glom
 from rest_framework import fields, serializers
 
 from objects.token.constants import PermissionModes
-
-logger = logging.getLogger(__name__)
-
 
 ALL_FIELDS = ["*"]
 
