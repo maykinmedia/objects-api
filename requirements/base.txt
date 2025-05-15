@@ -33,6 +33,7 @@ cbor2==5.6.2
     # via webauthn
 celery==5.4.0
     # via
+    #   django-structlog
     #   flower
     #   notifications-api-common
     #   open-api-framework
