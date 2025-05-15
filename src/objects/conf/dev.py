@@ -11,6 +11,7 @@ os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("ENVIRONMENT", "development")
 os.environ.setdefault("DISABLE_2FA", "True")
+os.environ.setdefault("LOG_FORMAT_CONSOLE", "plain_console")
 
 os.environ.setdefault("DB_NAME", "objects"),
 os.environ.setdefault("DB_USER", "objects"),
@@ -29,29 +30,29 @@ LOGGING["loggers"].update(
         "objects": {
             "handlers": ["console"],
             "level": "DEBUG",
-            "propagate": True,
+            "propagate": False,
         },
         "django": {
             "handlers": ["console"],
             "level": "DEBUG",
-            "propagate": True,
+            "propagate": False,
         },
         "django.db.backends": {
-            "handlers": ["django"],
+            "handlers": ["json_file"],
             "level": "DEBUG",
             "propagate": False,
         },
         "performance": {
             "handlers": ["console"],
             "level": "INFO",
-            "propagate": True,
+            "propagate": False,
         },
         #
         # See: https://code.djangoproject.com/ticket/30554
         # Autoreload logs excessively, turn it down a bit.
         #
         "django.utils.autoreload": {
-            "handlers": ["django"],
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
         },
