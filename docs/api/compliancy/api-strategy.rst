@@ -28,14 +28,5 @@ defined in `API Designrules`_, which is a part of `Nederlandse API Strategie`_.
    API-51,Publish OAS at the base-URI in JSON-format,Yes,Yes
 
 
-The deployed APIs can be tested against API Designrules via `API Test Platform`_.
-For example, the results of testing APIs deployed for Utrecht you can find here:
-
-- `Objecttypes API`_
-- `Objects API`_
-
 .. _`API Designrules`: https://docs.geostandaarden.nl/api/API-Designrules/
 .. _`Nederlandse API Strategie`: https://docs.geostandaarden.nl/api/API-Strategie/
-.. _`API Test Platform`: https://api-test.nl/
-.. _`Objecttypes API`: https://api-test.nl/design_rules/a7cc7393-f34f-44e6-b430-4cd494f1e7a9/
-.. _`Objects API`: https://api-test.nl/design_rules/3afb790b-c0aa-41ff-bca6-295a909cab7e/
