@@ -14,7 +14,7 @@ in the table below. The table below also shows the compliancy to this checklist
 for both APIs. This checklist is only available in Dutch.
 
 .. csv-table:: 1. Stakeholder documentatie
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
@@ -26,7 +26,7 @@ for both APIs. This checklist is only available in Dutch.
    6;VNG-site, API-ontwikkelagenda;Yes;No link available.
 
 .. csv-table:: 2. Informatiemodel
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
@@ -37,7 +37,7 @@ for both APIs. This checklist is only available in Dutch.
    5;Informatiemodel is opgeslagen in SVN;No [1]_;
 
 .. csv-table:: 3. Architectuur
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
@@ -51,7 +51,7 @@ for both APIs. This checklist is only available in Dutch.
    8;Per referentiecomponent is beschreven welke verplicht dan wel optioneel te leveren (provider) of te gebruiken (consumer) services en operaties geïmplementeerd moeten zijn om compliant aan de standaard te zijn.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/index.html>`__;
 
 .. csv-table:: 4. API-specificaties
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
@@ -65,7 +65,7 @@ for both APIs. This checklist is only available in Dutch.
    8;API-specificaties volgen de VNG-R best practices.;No;There are no VNG-R best practices.
 
 .. csv-table:: 5. Compliancy en testen
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
@@ -78,7 +78,7 @@ for both APIs. This checklist is only available in Dutch.
    7;Postman-scripts zijn gepubliceerd op api-test.nl zodat iedereen kan testen of de API voldoet aan zijn specificatie.;No;See 5.4.
 
 .. csv-table:: 6. Referentie-implementatie
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
@@ -87,7 +87,7 @@ for both APIs. This checklist is only available in Dutch.
    3;Is voldoende functioneel om implementatie en gebruik van de API-standaard te demonstreren en compliancy aan te tonen;Yes;Unsure how to provide proof.
 
 .. csv-table:: 7. Overdrachtsdocument (beheer)
-   :header: "#", "Description", "Answer", "Remarks"
+   :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
