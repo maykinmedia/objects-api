@@ -57,8 +57,10 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.6.2
-    # via open-api-framework
+commonground-api-common @ git+https://github.com/maykinmedia/commonground-api-common.git@3515c48be9ef0c3bfafeac9bf6cf84938ce00e71
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
@@ -216,7 +218,7 @@ idna==3.7
     # via requests
 inflection==0.5.1
     # via drf-spectacular
-iso-639==0.4.5
+iso639-lang==2.6.0
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
@@ -339,6 +341,7 @@ tornado==6.4.2
     # via flower
 typing-extensions==4.9.0
     # via
+    #   asgiref
     #   mozilla-django-oidc-db
     #   psycopg
     #   psycopg-pool

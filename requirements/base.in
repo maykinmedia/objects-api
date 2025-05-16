@@ -18,3 +18,5 @@ mozilla-django-oidc-db[setup-configuration]
 kombu>=5.4.0
 
 psycopg[pool]
+
+git+https://github.com/maykinmedia/commonground-api-common.git@issue/filterset-help-text
