@@ -10,7 +10,7 @@ zgw_consumers:
   services:
   - identifier: objecttypes-api
     label: Objecttypes API
-    api_root: http://objecttypes.local/api/v1/
+    api_root: http://objecttypes-web:8000/api/v2/
     api_connection_check_path: objecttypes
     api_type: orc
     auth_type: api_key
@@ -68,7 +68,14 @@ tokenauth:
         # additional permissions can be added like this:
         # - object_type: b427ef84-189d-43aa-9efd-7bb2c459e281
         #   mode: read_and_write
-
+    - identifier: token-2
+      token: QRjwfpD3nf0WpFOOHR37oMhcPPbWFKd4
+      contact_person: Admin
+      email: admin@example.com
+      organization: Organization 2
+      application: Application 2
+      administration: Administration 2
+      is_superuser: true
 
 oidc_db_config_enable: true
 oidc_db_config_admin_auth:

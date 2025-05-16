@@ -1,0 +1,38 @@
+[
+    {
+        "model": "core.objecttype",
+        "pk": 1,
+        "fields": {
+            "uuid": "b427ef84-189d-43aa-9efd-7bb2c459e281",
+            "name": "Accepts everything",
+            "name_plural": "Accepts everything",
+            "description": "",
+            "data_classification": "open",
+            "maintainer_organization": "",
+            "maintainer_department": "",
+            "contact_person": "",
+            "contact_email": "",
+            "source": "",
+            "update_frequency": "unknown",
+            "provider_organization": "",
+            "documentation_url": "",
+            "labels": {},
+            "created_at": "2025-05-16",
+            "modified_at": "2025-05-16",
+            "allow_geometry": true
+        }
+    },
+    {
+        "model": "core.objectversion",
+        "pk": 1,
+        "fields": {
+            "object_type": 1,
+            "version": 1,
+            "created_at": "2025-05-16",
+            "modified_at": "2025-05-16",
+            "published_at": "2025-05-16",
+            "json_schema": true,
+            "status": "published"
+        }
+    }
+]
