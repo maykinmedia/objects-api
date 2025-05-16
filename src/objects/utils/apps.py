@@ -1,6 +1,10 @@
 from django.apps import AppConfig
+from django.db import models
 
 from drf_spectacular.extensions import OpenApiFilterExtension
+from rest_framework.serializers import ModelSerializer
+
+from .fields import JSONObjectField
 
 
 def unregister_camelize_filter_extension():
@@ -23,3 +27,6 @@ class UtilsConfig(AppConfig):
         from . import oas_extensions  # noqa
 
         unregister_camelize_filter_extension()
+
+        field_mapping = ModelSerializer.serializer_field_mapping
+        field_mapping[models.JSONField] = JSONObjectField
