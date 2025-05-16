@@ -1,0 +1,10 @@
+tokenauth_config_enable: true
+tokenauth:
+  items:
+    - identifier: objects
+      token: b9f100590925b529664ed9d370f5f8da124b2c20
+      contact_person: Person 1
+      email: person-1@example.com
+      organization: Organization 1
+      application: Application 1
+      administration: Administration 1
