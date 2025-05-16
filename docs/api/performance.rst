@@ -27,7 +27,7 @@ _______
 
 
 .. csv-table:: Performance results per version (30 minutes)
-   :header: "Method", "Test", "v2.0.0-alpha", "v1.1.1", "v1.1.0"
+   :header: "Method"; "Test"; "v2.0.0-alpha"; "v1.1.1"; "v1.1.0"
    :delim: ;
 
     GET;Retrieve all objects (ms);127;127;125

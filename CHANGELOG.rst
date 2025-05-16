@@ -28,7 +28,7 @@ Change history
 
 * Upgrade dev dependencies
 
-  * django-webtest to 1.9.13  
+  * django-webtest to 1.9.13
 
 * Upgrade npm packages to fix vulnerabilities
 * Fixed admin logout button
@@ -246,7 +246,7 @@ Change history
 * bumped python dependencies due to security issues: django, celery, certifi, maykin-2fa, mozilla-django-oidc-db,
   sentry-sdk, webob and others (#428)
 * bumped ``zgw-consumers`` to 0.29.0 and updated a code for clients, because of zgw-consumers breaking change.
-* paginated ``/api/v2/objects/{uuid}/history``endpoint (#329)
+* paginated ``/api/v2/objects/{uuid}/history`` endpoint (#329)
 * fixed ``"register_kanalen`` command (#426)
 * fixed notification page link (open-zaak/open-notificaties#171)
 
@@ -307,7 +307,7 @@ Change history
 * changed caching backend from LocMem to Redis
 * Elastic APM service name can now be configured with ``ELASTIC_APM_SERVICE_NAME`` envvar
 
-** Documentation**
+**Documentation**
 
 * added security policy (#390)
 * updated Quick start documentation (#348)
