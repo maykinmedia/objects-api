@@ -421,6 +421,15 @@ class TokenAuthConfigurationStepTests(TokenTestCase):
         self.assertTrue("String should match pattern" in str(command_error.exception))
         self.assertEqual(TokenAuth.objects.count(), 0)
 
+    def test_valid_without_configured_tokens(self):
+        execute_single_step(
+            TokenAuthConfigurationStep,
+            yaml_source=str(DIR_FILES / "no_tokens.yaml"),
+        )
+
+        tokens = TokenAuth.objects.all()
+        self.assertEqual(tokens.count(), 0)
+
 
 class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
     def test_valid_setup_default_without_permissions(self):

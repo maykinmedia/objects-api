@@ -1,10 +1,12 @@
 open-api-framework
 
-
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
 furl
+
+# Django libraries
+django-structlog[celery]
 
 # Common ground libraries
 django-setup-configuration>=0.5.0

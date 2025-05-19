@@ -6,6 +6,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         build-essential \
         git \
         libpq-dev \
+        # required for (log) routing support in uwsgi
+        libpcre3 \
+        libpcre3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -44,6 +47,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         gdal-bin \
         libgdal-dev \
         gettext \
+        libpcre3 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install pip "setuptools>=70.0.0"
@@ -60,6 +64,7 @@ COPY ./bin/celery_worker.sh /celery_worker.sh
 COPY ./bin/celery_flower.sh /celery_flower.sh
 COPY ./bin/check_celery_worker_liveness.py ./bin/
 COPY ./bin/setup_configuration.sh /setup_configuration.sh
+COPY ./bin/uwsgi.ini /
 RUN mkdir /app/log /app/config /app/tmp
 
 # copy frontend build statics

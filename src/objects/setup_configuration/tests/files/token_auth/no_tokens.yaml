@@ -1,0 +1,3 @@
+tokenauth_config_enable: true
+tokenauth:
+  items: []

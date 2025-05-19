@@ -1,9 +1,6 @@
-import logging
 import os
 
 from requests_mock import Mocker
-
-logger = logging.getLogger(__name__)
 
 MOCK_FILES_DIR = os.path.join(
     os.path.abspath(os.path.dirname(__file__)),

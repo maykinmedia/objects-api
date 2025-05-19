@@ -1,9 +1,9 @@
-import logging
 from typing import Any
 
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
 
+import structlog
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
 
@@ -13,7 +13,7 @@ from objects.setup_configuration.models.token_auth import (
 )
 from objects.token.models import Permission, TokenAuth
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class TokenAuthConfigurationStep(
@@ -43,7 +43,7 @@ class TokenAuthConfigurationStep(
 
     def _configure_permissions(self, token: TokenAuth, permissions: list) -> None:
         if len(permissions) == 0:
-            logger.warning("No permissions provided for %s", token.identifier)
+            logger.warning("no_permissions_defined", token_identifier=token.identifier)
 
         for permission in permissions:
             try:
@@ -82,10 +82,10 @@ class TokenAuthConfigurationStep(
 
     def execute(self, model: TokenAuthGroupConfigurationModel) -> None:
         if len(model.items) == 0:
-            logger.warning("No tokens provided for configuration")
+            logger.warning("no_tokens_defined")
 
         for item in model.items:
-            logger.info("Configuring %s", item.identifier)
+            logger.info("configure_token", token_identifier=item.identifier)
 
             token_kwargs = {
                 "identifier": item.identifier,
@@ -101,7 +101,7 @@ class TokenAuthConfigurationStep(
             token_instance = TokenAuth(**token_kwargs)
             self._full_clean(token_instance)
             try:
-                logger.debug("Saving %s", item.identifier)
+                logger.debug("save_token_to_database", token_identifier=item.identifier)
                 token, _ = TokenAuth.objects.update_or_create(
                     identifier=item.identifier,
                     defaults={
@@ -114,8 +114,11 @@ class TokenAuthConfigurationStep(
                 self._configure_permissions(token, item.permissions)
 
             except IntegrityError as exception:
+                logger.exception(
+                    "token_configuration_failure", token_identifier=item.identifier
+                )
                 raise ConfigurationRunFailed(
                     "Failed configuring token %s" % item.identifier
                 ) from exception
 
-            logger.info("Configured %s", item.identifier)
+            logger.info("token_configuration_success", token_identifier=item.identifier)
