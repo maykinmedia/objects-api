@@ -33,8 +33,8 @@ Change history
 * Upgrade npm packages to fix vulnerabilities
 * Fixed admin logout button
 * [:objects-api:`550`] Implement cache for objecttypes
-* [:objects-api:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#cache>`_
-* [:objects-api:`572`] Add db connection pooling environment variables `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_
+* [:objects-api:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable (see `documentation for environment variables for caching <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#cache>`_)
+* [:objects-api:`572`] Add db connection pooling environment variables (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
 
   * DB_POOL_ENABLED
   * DB_POOL_MIN_SIZE
@@ -46,7 +46,7 @@ Change history
   * DB_POOL_RECONNECT_TIMEOUT
   * DB_POOL_NUM_WORKERS
 
-* [:objects-api:`566`] Add DB_CONN_MAX_AGE environment variable `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_
+* [:objects-api:`566`] Add DB_CONN_MAX_AGE environment variable (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
 
 3.0.3 (2025-04-03)
 ------------------
@@ -132,8 +132,7 @@ Change history
 .. warning::
 
     Previous configuration files used for ``setup_configuration`` do not work.
-    See the `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config_cli.html>`_
-    for the available settings that can now be configured through ``setup_configuration``.
+    See :ref:`installation_config_cli` for the available settings that can now be configured through ``setup_configuration``.
 
 * added support for configuring permissions through ``django-setup-configuration``
   version ``0.4.0`` [#497]
