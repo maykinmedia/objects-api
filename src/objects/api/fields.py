@@ -11,7 +11,13 @@ from objects.core.models import ObjectRecord
 
 class ObjectSlugRelatedField(serializers.SlugRelatedField):
     def get_queryset(self):
-        queryset = ObjectRecord.objects.all()
+        queryset = ObjectRecord.objects.select_related(
+            "object",
+            "object__object_type",
+            "object__object_type__service",
+            "correct",
+            "corrected",
+        ).order_by("-pk")
 
         record_instance = self.parent.parent.instance
         if not record_instance:
