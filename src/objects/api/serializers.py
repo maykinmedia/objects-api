@@ -9,7 +9,7 @@ from objects.core.models import Object, ObjectRecord, ObjectType
 from objects.token.models import Permission, TokenAuth
 from objects.utils.serializers import DynamicFieldsMixin
 
-from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
+from .fields import CachedObjectUrlField, ObjectSlugRelatedField, ObjectTypeField
 from .utils import merge_patch
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 
@@ -90,7 +90,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
 
 
 class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerializer):
-    url = ObjectUrlField(view_name="object-detail")
+    url = CachedObjectUrlField(view_name="object-detail")
     uuid = serializers.UUIDField(
         source="object.uuid",
         required=False,
