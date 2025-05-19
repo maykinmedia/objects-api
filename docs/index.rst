@@ -61,5 +61,6 @@ a national and/or local :ref:`Objecttypes API`.
    api/index
    admin/index
    installation/index
+   manual/index
    examples/index
    changelog

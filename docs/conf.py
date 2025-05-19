@@ -8,6 +8,9 @@
 import os
 import sys
 
+# Import as private variable to avoid errors on build
+from importlib.metadata import version as _version
+
 import django
 from django.utils.translation import activate
 
@@ -47,6 +50,7 @@ release = objects.__version__
 extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.extlinks",
+    "sphinx.ext.intersphinx",
     "sphinx_tabs.tabs",
     "recommonmark",
     "sphinx.ext.autodoc",
@@ -114,5 +118,13 @@ extlinks = {
     "charts": (
         "https://github.com/maykinmedia/charts/issues/%s",
         "#%s",
+    ),
+}
+
+django_structlog_version = _version("django-structlog")
+intersphinx_mapping = {
+    "django-structlog": (
+        f"https://django-structlog.readthedocs.io/en/{django_structlog_version}",
+        None,
     ),
 }
