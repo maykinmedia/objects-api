@@ -1,7 +1,7 @@
 # Stage 1 - Compile needed python dependencies
 FROM python:3.11-slim-bookworm AS backend-build
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         pkg-config \
         build-essential \
         git \
@@ -37,7 +37,7 @@ FROM python:3.11-slim-bookworm AS production
 
 # Stage 3.1 - Set up the needed production dependencies
 # install all the dependencies for GeoDjango
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         postgresql-client \
         binutils \
         libproj-dev \
