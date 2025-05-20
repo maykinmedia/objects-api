@@ -21,15 +21,10 @@ other developers to give tips even before you start coding.
 
 To keep the code clean and readable, this project uses:
 
-- [`isort`](https://github.com/timothycrosley/isort) to order the imports
-- [`black`](https://github.com/psf/black) to format the code and keep diffs for 
-  pull requests small
-- [`flake8`](https://github.com/PyCQA/flake8) to clean up code (removing unused
-  imports, etc.)
+- [`ruff`](https://docs.astral.sh/ruff/) to format and clean up code (removing unused imports, etc.)
 
-Whenever a branch is pushed or a pull request is made, the code will be checked 
-in CI by the tools mentioned above, so make sure to install these tools and run 
-them locally before pushing branches/making pull requests.
+Whenever a branch is pushed or a pull request is made, the code will be checked in CI by Ruff, so
+make sure to install and run it locally before pushing branches/making pull requests.
 
 This project aims to meet the criteria of the 
 [Standard for Public Code][Standard_for_Public_Code]. Please make sure that 
