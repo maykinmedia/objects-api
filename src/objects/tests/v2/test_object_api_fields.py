@@ -82,7 +82,7 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             data,
             {
-                "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
+                "url": f"http://testserver{reverse('object-detail', args=[object.uuid])}",
                 "type": object.object_type.url,
                 "record": {
                     "geometry": {

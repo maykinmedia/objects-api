@@ -503,7 +503,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertTrue(isinstance(permission.fields, dict))
         self.assertTrue(isinstance(permission.fields["1"], list))
         self.assertEqual(len(permission.fields.keys()), 1)
-        self.assertTrue("1" in permission.fields.keys())
+        self.assertTrue("1" in permission.fields)
         self.assertTrue("record__data__leeftijd" in permission.fields["1"])
         self.assertTrue("record__data__kiemjaar" in permission.fields["1"])
         object_type = ObjectType.objects.get(
@@ -616,7 +616,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertTrue(isinstance(permission.fields, dict))
         self.assertTrue(isinstance(permission.fields["1"], list))
         self.assertEqual(len(permission.fields.keys()), 1)
-        self.assertTrue("1" in permission.fields.keys())
+        self.assertTrue("1" in permission.fields)
         self.assertTrue("record__data__leeftijd" in permission.fields["1"])
         self.assertTrue("record__data__kiemjaar" in permission.fields["1"])
 
@@ -657,7 +657,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertTrue(isinstance(old_permission.fields, dict))
         self.assertTrue(isinstance(old_permission.fields["1"], list))
         self.assertEqual(len(old_permission.fields.keys()), 1)
-        self.assertTrue("1" in old_permission.fields.keys())
+        self.assertTrue("1" in old_permission.fields)
         self.assertTrue("record__data__leeftijd" in old_permission.fields["1"])
         self.assertTrue("record__data__kiemjaar" in old_permission.fields["1"])
 
@@ -688,7 +688,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertTrue(isinstance(new_permission.fields, dict))
         self.assertTrue(isinstance(new_permission.fields["1"], list))
         self.assertEqual(len(new_permission.fields.keys()), 1)
-        self.assertTrue("1" in new_permission.fields.keys())
+        self.assertTrue("1" in new_permission.fields)
         self.assertTrue("record__data__leeftijd" in new_permission.fields["1"])
         self.assertTrue("record__data__kiemjaar" in new_permission.fields["1"])
 

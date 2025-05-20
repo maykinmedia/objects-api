@@ -67,7 +67,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(
             data[0]["url"],
-            f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
     def test_filter_objecttype(self):
@@ -100,7 +100,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(
             data[0]["url"],
-            f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
     def test_without_geometry(self):
@@ -119,5 +119,5 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(
             data[0]["url"],
-            f'http://testserver{reverse("object-detail", args=[record.object.uuid])}',
+            f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )

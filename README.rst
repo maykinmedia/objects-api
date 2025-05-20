@@ -74,7 +74,7 @@ See: `All versions and changes <https://github.com/maykinmedia/objects-api/blob/
 Reference implementation
 ========================
 
-|build-status| |coverage| |black| |docker| |python-versions|
+|build-status| |coverage| |ruff| |docker| |python-versions|
 
 The reference implementation is used to demonstrate the API in action and can
 be used for test and demo purposes. The reference implementation is open source,
@@ -134,9 +134,9 @@ Licensed under the EUPL_
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/objects-api
 
-.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :alt: Code style
-    :target: https://github.com/psf/black
+.. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff
 
 .. |docker| image:: https://images.microbadger.com/badges/image/maykinmedia/objects-api.svg
     :alt: Docker image

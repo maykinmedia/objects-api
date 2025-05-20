@@ -4,6 +4,7 @@
 # Helpers
 pip-tools
 bump-my-version
+pre-commit
 
 # Debug tooling
 django-debug-toolbar

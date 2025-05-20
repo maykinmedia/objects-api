@@ -76,7 +76,7 @@ Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/objects-api/bl
 Referentie implementatie
 ========================
 
-|build-status| |coverage| |black| |docker| |python-versions|
+|build-status| |coverage| |ruff| |docker| |python-versions|
 
 De referentie implementatie toont de API in actie en kan gebruikt worden voor
 test en demonstratie doeleinden. De referentie implementatie is open source,
@@ -136,9 +136,9 @@ Licensed under the EUPL_
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/objects-api
 
-.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :alt: Code style
-    :target: https://github.com/psf/black
+.. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff
 
 .. |docker| image:: https://images.microbadger.com/badges/image/maykinmedia/objects-api.svg
     :alt: Docker image

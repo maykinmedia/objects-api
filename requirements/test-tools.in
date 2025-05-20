@@ -15,6 +15,4 @@ tblib
 vcrpy
 
 # Code formatting
-black
-isort
-flake8
+ruff

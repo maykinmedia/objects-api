@@ -13,9 +13,9 @@ os.environ.setdefault("ENVIRONMENT", "development")
 os.environ.setdefault("DISABLE_2FA", "True")
 os.environ.setdefault("LOG_FORMAT_CONSOLE", "plain_console")
 
-os.environ.setdefault("DB_NAME", "objects"),
-os.environ.setdefault("DB_USER", "objects"),
-os.environ.setdefault("DB_PASSWORD", "objects"),
+os.environ.setdefault("DB_NAME", "objects")
+os.environ.setdefault("DB_USER", "objects")
+os.environ.setdefault("DB_PASSWORD", "objects")
 
 from .base import *  # noqa isort:skip
 
@@ -121,7 +121,7 @@ if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True
 
 # Override settings with local settings.
-try:
+try:  # noqa: SIM105
     from .local import *  # noqa
 except ImportError:
     pass

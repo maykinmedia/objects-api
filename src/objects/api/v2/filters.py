@@ -27,9 +27,8 @@ Valid operator values are:
 
 """
 
-DATA_ATTRS_HELP_TEXT = (
-    _(
-        """**DEPRECATED: Use 'data_attr' instead**.
+DATA_ATTRS_HELP_TEXT = _(
+    """**DEPRECATED: Use 'data_attr' instead**.
 Only include objects that have attributes with certain values.
 Data filtering expressions are comma-separated and are structured as follows:
 
@@ -42,13 +41,10 @@ should be used. If `height` is nested inside `dimensions` attribute, query shoul
 `value` may not contain comma, since commas are used as separator between filtering expressions.
 If you want to use commas in `value` you can use `data_attr` query parameter.
 """
-    )
-    % {"value_part_help_text": DATA_ATTR_VALUE_HELP_TEXT}
-)
+) % {"value_part_help_text": DATA_ATTR_VALUE_HELP_TEXT}
 
-DATA_ATTR_HELP_TEXT = (
-    _(
-        """Only include objects that have attributes with certain values.
+DATA_ATTR_HELP_TEXT = _(
+    """Only include objects that have attributes with certain values.
 
 %(value_part_help_text)s
 
@@ -64,9 +60,7 @@ This filter is very similar to the old `data_attrs` filter, but it has two diffe
 If you want to use several filtering expressions, just use this `data_attr` several times in the query string.
 Example: `data_attr=height__exact__100&data_attr=naam__icontains__boom`
 """
-    )
-    % {"value_part_help_text": DATA_ATTR_VALUE_HELP_TEXT}
-)
+) % {"value_part_help_text": DATA_ATTR_VALUE_HELP_TEXT}
 
 
 def filter_data_attr_value_part(value_part: str, queryset: QuerySet) -> QuerySet:
