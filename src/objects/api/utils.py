@@ -32,10 +32,10 @@ def is_number(value: str) -> bool:
     return True
 
 
-def display_choice_values_for_help_text(Choices: type[models.TextChoices]) -> str:
+def display_choice_values_for_help_text(choices: type[models.TextChoices]) -> str:
     items = []
 
-    for key, value in Choices.choices:
+    for key, value in choices.choices:
         item = f"* `{key}` - {value}"
         items.append(item)
 

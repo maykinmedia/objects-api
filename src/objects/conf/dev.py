@@ -121,7 +121,7 @@ if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True
 
 # Override settings with local settings.
-try:
+try:  # noqa: SIM105
     from .local import *  # noqa
 except ImportError:
     pass
