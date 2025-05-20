@@ -69,7 +69,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                 "previous": None,
                 "results": [
                     {
-                        "url": f'http://testserver{reverse("object-detail", args=[object_record1.object.uuid])}',
+                        "url": f"http://testserver{reverse('object-detail', args=[object_record1.object.uuid])}",
                         "uuid": str(object_record1.object.uuid),
                         "type": object_record1.object.object_type.url,
                         "record": {
@@ -106,7 +106,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             data,
             {
-                "url": f'http://testserver{reverse("object-detail", args=[object.uuid])}',
+                "url": f"http://testserver{reverse('object-detail', args=[object.uuid])}",
                 "uuid": str(object.uuid),
                 "type": object.object_type.url,
                 "record": {

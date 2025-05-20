@@ -134,7 +134,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             f"{self.object_type.url}/versions/1",
             json=mock_objecttype_version(self.object_type.url),
         )
-        object_type_long = f"{OBJECT_TYPES_API}{'a'*1000}/{self.object_type.uuid}"
+        object_type_long = f"{OBJECT_TYPES_API}{'a' * 1000}/{self.object_type.uuid}"
         data = {
             "type": object_type_long,
             "record": {

@@ -14,7 +14,6 @@ from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_g
 @disable_admin_mfa()
 @requests_mock.Mocker()
 class ObjectTypeAdminVersionsTests(WebTest):
-
     def test_valid_response_view(self, m):
         objecttypes_api = "https://example.com/objecttypes/v1/"
         object_type = ObjectTypeFactory.create(service__api_root=objecttypes_api)

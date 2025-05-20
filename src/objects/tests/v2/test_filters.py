@@ -80,7 +80,7 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
         )
 
     def test_filter_too_long_object_type(self):
-        object_type_long = f"{OBJECT_TYPES_API}{'a'*1000}/{self.object_type.uuid}"
+        object_type_long = f"{OBJECT_TYPES_API}{'a' * 1000}/{self.object_type.uuid}"
         response = self.client.get(self.url, {"type": object_type_long})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -11,8 +11,7 @@ class ObjectTypeField(filters.ModelChoiceField):
         "max_length": _("The value has too many characters"),
         "min_length": _("The value has too few characters"),
         "invalid_choice": _(
-            "Select a valid object type. %(value)s is not one of the"
-            " available choices."
+            "Select a valid object type. %(value)s is not one of the available choices."
         ),
         "invalid": _("Invalid value."),
     }

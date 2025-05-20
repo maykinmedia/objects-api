@@ -12,7 +12,6 @@ from objects.core.tests.factories import ObjectTypeFactory
 
 @disable_admin_mfa()
 class PermissionAdminTests(VCRMixin, TestCase):
-
     object_types_api = "http://127.0.0.1:8008/api/{version}/"
 
     def setUp(self):

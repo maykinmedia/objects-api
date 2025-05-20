@@ -46,7 +46,6 @@ class ObjectTypeAdmin(admin.ModelAdmin):
 
 
 class ObjectRecordForm(forms.ModelForm):
-
     class Meta:
         model: ObjectRecord
         help_texts = {
