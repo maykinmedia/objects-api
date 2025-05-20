@@ -54,6 +54,7 @@ development machine.
        $ virtualenv env
        $ source env/bin/activate
        $ pip install -r requirements/dev.txt
+       $ pre-commit install
 
 4. Install all required (frontend) libraries and build static files.
 
