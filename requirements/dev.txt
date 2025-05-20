@@ -60,10 +60,6 @@ billiard==4.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-black==25.1.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 bleach==6.1.0
     # via
     #   -c requirements/ci.txt
@@ -117,7 +113,6 @@ click==8.1.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   bump-my-version
     #   celery
     #   click-didyoumean
@@ -441,10 +436,6 @@ faker==37.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==7.1.2
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -505,10 +496,6 @@ iso-639==0.4.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-isort==6.0.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 itypes==1.2.0
     # via
     #   -c requirements/ci.txt
@@ -552,11 +539,6 @@ maykin-2fa==1.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-mccabe==0.7.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   flake8
 mdurl==0.1.2
     # via markdown-it-py
 mozilla-django-oidc==4.0.0
@@ -574,11 +556,6 @@ multidict==6.0.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   yarl
-mypy-extensions==1.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
 notifications-api-common==0.7.2
     # via
     #   -c requirements/ci.txt
@@ -602,15 +579,9 @@ packaging==23.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   build
     #   pytest
     #   sphinx
-pathspec==0.12.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
 phonenumberslite==8.13.30
     # via
     #   -c requirements/ci.txt
@@ -620,11 +591,6 @@ pip==24.3.1
     # via pip-tools
 pip-tools==7.4.1
     # via -r requirements/dev.in
-platformdirs==4.3.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   black
 pluggy==1.5.0
     # via
     #   -c requirements/ci.txt
@@ -660,11 +626,7 @@ py-cpuinfo==9.0.0
     #   -r requirements/ci.txt
     #   pytest-benchmark
 pycodestyle==2.12.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   autopep8
-    #   flake8
+    # via autopep8
 pycparser==2.20
     # via
     #   -c requirements/ci.txt
@@ -688,11 +650,6 @@ pydantic-settings==2.6.1
     #   -r requirements/ci.txt
     #   bump-my-version
     #   django-setup-configuration
-pyflakes==3.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   flake8
 pygments==2.18.0
     # via
     #   -c requirements/ci.txt
@@ -823,6 +780,10 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ruamel-yaml
+ruff==0.11.10
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 sentry-sdk==2.12.0
     # via
     #   -c requirements/ci.txt
