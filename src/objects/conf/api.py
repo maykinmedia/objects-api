@@ -4,7 +4,7 @@ API_VERSION = "2.4.3"
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
-    "DEFAULT_FILTER_BACKENDS": ["vng_api_common.filters.Backend"],
+    "DEFAULT_FILTER_BACKENDS": ["vng_api_common.filters_backend.Backend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "objects.token.authentication.TokenAuthentication"
     ],

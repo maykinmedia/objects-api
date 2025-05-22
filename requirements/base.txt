@@ -59,7 +59,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.6.2
+commonground-api-common==2.6.4
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -223,7 +223,7 @@ idna==3.7
     # via requests
 inflection==0.5.1
     # via drf-spectacular
-iso-639==0.4.5
+iso639-lang==2.6.0
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
