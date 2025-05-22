@@ -6,7 +6,7 @@ a reference for a potential observability stack.
 **Disclaimer**
 
 The chosen vendors/technologies here merely serve as an example - it's simply a stack we're somewhat
-comfortable with. Open Forms itself is vendor agnostic and the principles demonstrated apply to
+comfortable with. Objects API itself is vendor agnostic and the principles demonstrated apply to
 competing vendors too.
 
 ## Bringing up the services
@@ -36,7 +36,7 @@ In the Grafana menu, navigate to "Explore" to create ad-hoc queries.
 **Web service logs**
 
 ```logql
-{job="docker", app="openforms"} | json | __error__ = ""
+{job="docker", app="objects-api"} | json | __error__ = ""
 ```
 
 This ignores logs that cannot be parsed as JSON (such as container/server startup logs).
@@ -46,5 +46,5 @@ This ignores logs that cannot be parsed as JSON (such as container/server startu
 You can filter application logs based on a request ID:
 
 ```logql
-{job="docker", app="openforms"} | json | __error__ = "" | request_id=`1e9e1b9d-4d34-4657-99e4-88673d824724`
+{job="docker", app="objects-api"} | json | __error__ = "" | request_id=`1e9e1b9d-4d34-4657-99e4-88673d824724`
 ```

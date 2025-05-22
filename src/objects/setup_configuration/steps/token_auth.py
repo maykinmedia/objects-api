@@ -42,7 +42,7 @@ class TokenAuthConfigurationStep(
             ) from exception
 
     def _configure_permissions(self, token: TokenAuth, permissions: list) -> None:
-        if len(permissions) == 0:
+        if len(permissions) == 0 and not token.is_superuser:
             logger.warning("no_permissions_defined", token_identifier=token.identifier)
 
         for permission in permissions:
@@ -85,7 +85,7 @@ class TokenAuthConfigurationStep(
             logger.warning("no_tokens_defined")
 
         for item in model.items:
-            logger.info("configure_token", token_identifier=item.identifier)
+            logger.info("configuring_token", token_identifier=item.identifier)
 
             token_kwargs = {
                 "identifier": item.identifier,
@@ -115,7 +115,9 @@ class TokenAuthConfigurationStep(
 
             except IntegrityError as exception:
                 logger.exception(
-                    "token_configuration_failure", token_identifier=item.identifier
+                    "token_configuration_failure",
+                    token_identifier=item.identifier,
+                    exc_info=exception,
                 )
                 raise ConfigurationRunFailed(
                     "Failed configuring token %s" % item.identifier
