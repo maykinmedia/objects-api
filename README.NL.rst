@@ -76,7 +76,7 @@ Zie: `Alle versies en wijzigingen <https://github.com/maykinmedia/objects-api/bl
 Referentie implementatie
 ========================
 
-|build-status| |coverage| |ruff| |docker| |python-versions|
+|build-status| |coverage| |code-style| |codeql| |ruff| |docker| |python-versions|
 
 De referentie implementatie toont de API in actie en kan gebruikt worden voor
 test en demonstratie doeleinden. De referentie implementatie is open source,
@@ -140,11 +140,19 @@ Licensed under the EUPL_
     :target: https://github.com/astral-sh/ruff
     :alt: Ruff
 
-.. |docker| image:: https://images.microbadger.com/badges/image/maykinmedia/objects-api.svg
+.. |code-style| image:: https://github.com/maykinmedia/objects-api/actions/workflows/code-quality.yml/badge.svg?branch=master
+    :alt: Code style
+    :target: https://github.com/maykinmedia/objects-api/actions/workflows/code-quality.yml
+
+.. |codeql| image:: https://github.com/maykinmedia/objects-api/actions/workflows/codeql-analysis.yml/badge.svg?branch=master
+    :alt: CodeQL scan
+    :target: https://github.com/maykinmedia/objects-api/actions/workflows/codeql-analysis.yml
+
+.. |docker| image:: https://img.shields.io/docker/v/maykinmedia/objects-api.svg?sort=semver
     :alt: Docker image
     :target: https://hub.docker.com/r/maykinmedia/objects-api
 
-.. |python-versions| image:: https://img.shields.io/badge/python-3.7%2B-blue.svg
+.. |python-versions| image:: https://img.shields.io/badge/python-3.12%2B-blue.svg
     :alt: Supported Python version
 
 .. |lint-oas| image:: https://github.com/maykinmedia/objects-api/workflows/lint-oas/badge.svg

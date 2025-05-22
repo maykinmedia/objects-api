@@ -53,7 +53,7 @@ jobs:
         uses: maykinmedia/setup-django-backend@v1.3
         with:
           apt-packages: 'libgdal-dev gdal-bin'
-          python-version: '3.11'
+          python-version: '3.12'
           setup-node: true
 
       - name: Run tests
@@ -109,7 +109,7 @@ jobs:
         uses: maykinmedia/setup-django-backend@v1.3
         with:
           apt-packages: 'libgdal-dev gdal-bin'
-          python-version: '3.11'
+          python-version: '3.12'
           setup-node: false
 
       - name: Generate environment variable documentation using OAf and check if it was updated
@@ -144,7 +144,7 @@ jobs:
       apt-packages: 'libgdal-dev gdal-bin'
       run-docs: true
       django-settings-module: objects.conf.ci
-      python-version: '3.11'
+      python-version: '3.12'
       docker-image-name: ${{ needs.store-reusable-workflow-vars.outputs.image-name }}
 
   open-api-publish:
