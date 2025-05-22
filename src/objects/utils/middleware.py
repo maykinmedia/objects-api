@@ -1,4 +1,4 @@
-import logging
+import logging  # noqa: TID251, TID253 - correct use to replace stdlib logging
 import os
 
 from django.http import HttpResponse
