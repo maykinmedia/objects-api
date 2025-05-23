@@ -2,6 +2,44 @@
 Change history
 ==============
 
+3.1.0 (2025-05-26)
+------------------
+
+**New features**
+
+.. note::
+
+  The logging format has been changed from unstructured to structured with `structlog <https://www.structlog.org/en/stable/>`_.
+  For more information on the available log events and their context, see :ref:`manual_logging`.
+
+* [:objects-api:`586`] Add log events for creation/updating of objects via the API
+
+**Performance optimizations**
+
+* [:objects-api:`538`] Apply caching to ``reverse`` calls in ``ObjectUrlField`` to avoid additional overhead
+* [:objects-api:`538`] Avoid doing more queries than necessary for ``/objects`` endpoint
+
+**Bugfixes and QOL**
+
+* [:objects-api:`576`] Add missing ``type: object`` property to ``ObjectRecord`` in OAS
+* Do not use ``save_outgoing_requests`` log handler if ``LOG_REQUESTS`` is set to false
+
+**Project maintenance**
+
+* [:objects-api:`562`] Fix security issues by upgrading packages in Dockerfile
+* Upgrade dependencies:
+
+  * ``tornado`` to 6.5.0 to fix security issues
+  * ``josepy`` to 1.14.0
+  * ``django-formtools`` to 2.5.1
+  * ``open-api-framework`` to 0.10.1
+  * ``commonground-api-common`` to 2.6.4
+
+* [:open-api-framework:`140`] Upgrade python to 3.12
+* Replace OAS workflows with single workflow
+* [:open-api-framework:`133`] Replace black, isort and flake8 with ``ruff`` and update ``code-quality`` workflow
+* Remove references to API test platform in README/documentation
+
 3.0.4 (2025-05-13)
 ------------------
 
