@@ -259,7 +259,7 @@ django-filter==24.2
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   open-api-framework
-django-formtools==2.3
+django-formtools==2.5.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

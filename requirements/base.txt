@@ -123,7 +123,7 @@ django-filter==24.2
     # via
     #   commonground-api-common
     #   open-api-framework
-django-formtools==2.3
+django-formtools==2.5.1
     # via django-two-factor-auth
 django-ipware==7.0.1
     # via django-structlog
