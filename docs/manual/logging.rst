@@ -32,7 +32,8 @@ only log lines with of that level or higher will be emitted.
 Objects API log events
 ----------------------
 
-Below is the list of logging ``event`` types that Objects API can emit.
+Below is the list of logging ``event`` types that Objects API can emit. In addition to the mentioned
+context variables, these events will also have the **request bound metadata** described in the :ref:`django-structlog documentation <request_events>`.
 
 API
 ~~~
