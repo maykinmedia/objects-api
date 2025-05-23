@@ -340,7 +340,7 @@ LOGGING = {
             "handlers": (
                 ["log_outgoing_requests", "save_outgoing_requests"]
                 if LOG_REQUESTS
-                else ["save_outgoing_requests"]
+                else []
             ),
             "level": "DEBUG",
             "propagate": True,
