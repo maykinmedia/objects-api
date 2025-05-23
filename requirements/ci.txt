@@ -440,7 +440,7 @@ jinja2==3.1.6
     #   -r requirements/base.txt
     #   coreschema
     #   sphinx
-josepy==1.9.0
+josepy==1.14.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -670,11 +670,6 @@ sentry-sdk==2.12.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-setuptools==75.6.0
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   josepy
 six==1.16.0
     # via
     #   -c requirements/base.txt

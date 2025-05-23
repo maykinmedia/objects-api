@@ -229,7 +229,7 @@ itypes==1.2.0
     # via coreapi
 jinja2==3.1.6
     # via coreschema
-josepy==1.9.0
+josepy==1.14.0
     # via mozilla-django-oidc
 jsonschema==4.17.3
     # via
@@ -333,8 +333,6 @@ ruamel-yaml-clib==0.2.12
     # via ruamel-yaml
 sentry-sdk==2.12.0
     # via open-api-framework
-setuptools==75.6.0
-    # via josepy
 six==1.16.0
     # via
     #   bleach
