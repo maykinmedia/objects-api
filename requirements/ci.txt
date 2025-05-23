@@ -215,7 +215,7 @@ django-filter==24.2
     #   -r requirements/base.txt
     #   commonground-api-common
     #   open-api-framework
-django-formtools==2.3
+django-formtools==2.5.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
