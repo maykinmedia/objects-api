@@ -515,7 +515,7 @@ jinja2==3.1.6
     #   -r requirements/ci.txt
     #   coreschema
     #   sphinx
-josepy==1.9.0
+josepy==1.14.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -805,11 +805,7 @@ sentry-sdk==2.12.0
     #   -r requirements/ci.txt
     #   open-api-framework
 setuptools==75.6.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   josepy
-    #   pip-tools
+    # via pip-tools
 six==1.16.0
     # via
     #   -c requirements/ci.txt
