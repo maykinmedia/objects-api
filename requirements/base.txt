@@ -123,7 +123,7 @@ django-filter==24.2
     # via
     #   commonground-api-common
     #   open-api-framework
-django-formtools==2.3
+django-formtools==2.5.1
     # via django-two-factor-auth
 django-ipware==7.0.1
     # via django-structlog
@@ -229,7 +229,7 @@ itypes==1.2.0
     # via coreapi
 jinja2==3.1.6
     # via coreschema
-josepy==1.9.0
+josepy==1.14.0
     # via mozilla-django-oidc
 jsonschema==4.17.3
     # via
@@ -253,7 +253,7 @@ notifications-api-common==0.7.2
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.10.0
+open-api-framework==0.10.1
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -333,8 +333,6 @@ ruamel-yaml-clib==0.2.12
     # via ruamel-yaml
 sentry-sdk==2.12.0
     # via open-api-framework
-setuptools==75.6.0
-    # via josepy
 six==1.16.0
     # via
     #   bleach
