@@ -7,10 +7,12 @@ on:
     paths:
       - '**.py'
       - '**.yml'
+      - 'ruff.toml'
   pull_request:
     paths:
       - '**.py'
       - '**.yml'
+      - 'ruff.toml'
   workflow_dispatch:
 
 jobs:

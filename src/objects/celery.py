@@ -1,5 +1,5 @@
-import logging  # noqa: TID251 - correct use to replace stdlib logging
-import logging.config  # noqa: TID251 - correct use to replace stdlib logging
+import logging  # noqa: TID251, TID253 - correct use to replace stdlib logging
+import logging.config  # noqa: TID251, TID253 - correct use to replace stdlib logging
 from pathlib import Path
 
 from django.conf import settings
