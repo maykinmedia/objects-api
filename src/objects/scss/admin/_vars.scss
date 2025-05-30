@@ -1,28 +1,28 @@
 /* Colors */
-$color-primary: #04a5bb;
-$color-primary-dark: #017092;
-$color-primary-light: #c3eaef;
+$color_primary: #04a5bb;
+$color_primary_dark: #017092;
+$color_primary_light: #c3eaef;
 
-$color-secondary: #f3f3f3;
-$color-secondary-dark: #ddd;
-$color-secondary-light: #fff;
+$color_secondary: #f3f3f3;
+$color_secondary_dark: #ddd;
+$color_secondary_light: #fff;
 
-$color-link: #017092;
-$color-link-hover: #051f31;
+$color_link: #017092;
+$color_link_hover: #051f31;
 
-$color-darkest: #000;
-$color-dark: #333;
-$color-lightest: #fff;
+$color_darkest: #000;
+$color_dark: #333;
+$color_lightest: #fff;
 
-$color-error: #ba2121; // default django admin color
+$color_error: #ba2121; // default django admin color
 
-$color-tooltip-background: #fffeaa;
-$color-tooltip-border: #f7f071;
-$color-tooltip-text: #000;
+$color_tooltip_background: #fffeaa;
+$color_tooltip_border: #f7f071;
+$color_tooltip_text: #000;
 
 /* Dimensions */
-$input-field-size: 20em; // django-original: 20em;
+$input_field_size: 20em; // django-original: 20em;
 
 /* Responsive breakpoints used int the Django admin */
-$breakpoint-tablet: 768px;
-$breakpoint-laptop: 1025px;
+$breakpoint_tablet: 768px;
+$breakpoint_laptop: 1025px;
