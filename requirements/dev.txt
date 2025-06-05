@@ -213,6 +213,7 @@ django==5.2.1
     #   django-solo
     #   django-structlog
     #   django-two-factor-auth
+    #   django-upgrade-check
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
@@ -360,6 +361,11 @@ django-two-factor-auth==1.17.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   maykin-2fa
+django-upgrade-check==1.1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   open-api-framework
 django-webtest==1.9.13
     # via
     #   -c requirements/ci.txt
@@ -571,7 +577,7 @@ notifications-api-common==0.7.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.10.1
+open-api-framework==0.10.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -799,6 +805,11 @@ ruff==0.11.10
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+semantic-version==2.10.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-upgrade-check
 sentry-sdk==2.12.0
     # via
     #   -c requirements/ci.txt
