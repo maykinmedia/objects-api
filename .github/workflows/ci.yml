@@ -66,10 +66,15 @@ jobs:
           docker compose exec --user root web pip install factory-boy
           cat performance_test/create_data.py | docker compose exec -T web src/manage.py shell
 
+      - name: Run Locust tests
+        run: |
+          pip install locust
+          locust --config performance_test/locust.conf
+
       - name: Run tests
         run: |
           pip install -r requirements/ci.txt
-          pytest performance_test/ --benchmark-json output.json
+          pytest -v performance_test/test_objects_list.py --benchmark-json output.json
 
   docs:
     runs-on: ubuntu-latest

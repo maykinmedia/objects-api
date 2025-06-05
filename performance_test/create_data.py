@@ -9,7 +9,7 @@ object_type = ObjectTypeFactory.create(
 token = TokenAuthFactory(token="secret", is_superuser=True)
 
 ObjectRecordFactory.create_batch(
-    5000,
+    15000000,
     object__object_type=object_type,
     start_at="2020-01-01",
     version=1,

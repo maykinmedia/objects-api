@@ -111,6 +111,11 @@ if config("PROFILE", default=False, add_to_docs=False):
     security_index = MIDDLEWARE.index("django.middleware.security.SecurityMiddleware")
     MIDDLEWARE.insert(security_index + 1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
+
+if config("USE_PYINSTRUMENT", default=False, add_to_docs=False):  # pragma:no cover
+    MIDDLEWARE = ["objects.utils.middleware.PyInstrumentMiddleware"] + MIDDLEWARE
+
+
 if "test" in sys.argv:
     NOTIFICATIONS_DISABLED = True
 
