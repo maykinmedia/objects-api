@@ -1,2 +1,0 @@
-[objects]
-localhost ansible_connection=local ansible_python_interpreter=./env/bin/python3
