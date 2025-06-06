@@ -10,11 +10,12 @@ from django.utils.translation import gettext_lazy as _
 
 import requests
 from requests.exceptions import ConnectionError
-from zgw_consumers.client import build_client
 from zgw_consumers.models import Service
 
+from objects.utils.client import get_objecttypes_client
+
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
-from .utils import check_objecttype
+from .utils import check_objecttype_cached
 
 
 class ObjectType(models.Model):
@@ -52,17 +53,13 @@ class ObjectType(models.Model):
         if exclude and "service" in exclude:
             return
 
-        client = build_client(self.service)
-
-        try:
-            response = client.get(url=self.url)
-        except (requests.RequestException, ConnectionError, ValueError) as exc:
-            raise ValidationError(f"Objecttype can't be requested: {exc}")
-
-        try:
-            object_type_data = response.json()
-        except requests.exceptions.JSONDecodeError:
-            raise ValidationError("Object type version didn't have any data")
+        with get_objecttypes_client(self.service) as client:
+            try:
+                object_type_data = client.get_objecttype(self.uuid)
+            except (requests.RequestException, ConnectionError, ValueError) as exc:
+                raise ValidationError(f"Objecttype can't be requested: {exc}")
+            except requests.exceptions.JSONDecodeError:
+                raise ValidationError("Object type version didn't have any data")
 
         if not self._name:
             self._name = object_type_data["name"]
@@ -158,7 +155,7 @@ class ObjectRecord(models.Model):
         super().clean()
 
         if hasattr(self.object, "object_type") and self.version and self.data:
-            check_objecttype(self.object.object_type, self.version, self.data)
+            check_objecttype_cached(self.object.object_type, self.version, self.data)
 
     def save(self, *args, **kwargs):
         if not self.id and self.object.last_record:

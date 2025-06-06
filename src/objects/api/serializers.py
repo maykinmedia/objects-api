@@ -1,16 +1,19 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
+import structlog
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord, ObjectType
-from objects.token.models import Permission
+from objects.token.models import Permission, TokenAuth
 from objects.utils.serializers import DynamicFieldsMixin
 
-from .fields import ObjectSlugRelatedField, ObjectTypeField, ObjectUrlField
+from .fields import CachedObjectUrlField, ObjectSlugRelatedField, ObjectTypeField
 from .utils import merge_patch
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -87,7 +90,7 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
 
 
 class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerializer):
-    url = ObjectUrlField(view_name="object-detail")
+    url = CachedObjectUrlField(view_name="object-detail")
     uuid = serializers.UUIDField(
         source="object.uuid",
         required=False,
@@ -121,6 +124,15 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
         validated_data["object"] = object
         record = super().create(validated_data)
+        token_auth: TokenAuth = self.context["request"].auth
+        logger.info(
+            "object_created",
+            object_uuid=str(object.uuid),
+            objecttype_uuid=str(object.object_type.uuid),
+            objecttype_version=record.version,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
         return record
 
     @transaction.atomic
@@ -140,6 +152,15 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
             validated_data["data"] = merge_patch(instance.data, validated_data["data"])
 
         record = super().create(validated_data)
+        token_auth: TokenAuth = self.context["request"].auth
+        logger.info(
+            "object_updated",
+            object_uuid=str(record.object.uuid),
+            objecttype_uuid=str(record.object.object_type.uuid),
+            objecttype_version=record.version,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
         return record
 
 

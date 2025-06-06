@@ -1,18 +1,18 @@
-import logging
-
+from django import forms
 from django.contrib import admin
-from django.contrib.gis import forms
 from django.contrib.gis.db.models import GeometryField
 from django.http import JsonResponse
 from django.urls import path
 
 import requests
-from zgw_consumers.client import build_client
-from zgw_consumers.service import pagination_helper
+import structlog
+from vng_api_common.utils import get_help_text
+
+from objects.utils.client import get_objecttypes_client
 
 from .models import Object, ObjectRecord, ObjectType
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 @admin.register(ObjectType)
@@ -37,18 +37,27 @@ class ObjectTypeAdmin(admin.ModelAdmin):
     def versions_view(self, request, objecttype_id):
         versions = []
         if objecttype := self.get_object(request, objecttype_id):
-            client = build_client(objecttype.service)
-            try:
-                response = client.get(objecttype.versions_url)
-                versions = list(pagination_helper(client, response.json()))
-            except (requests.RequestException, requests.JSONDecodeError):
-                logger.exception(
-                    "Something went wrong while fetching objecttype versions"
-                )
+            with get_objecttypes_client(objecttype.service) as client:
+                try:
+                    versions = client.list_objecttype_versions(objecttype.uuid)
+                except (requests.RequestException, requests.JSONDecodeError) as exc:
+                    logger.exception("objecttypes_api_request_failure", exc_info=exc)
         return JsonResponse(versions, safe=False)
 
 
+class ObjectRecordForm(forms.ModelForm):
+
+    class Meta:
+        model: ObjectRecord
+        help_texts = {
+            "geometry": get_help_text("core.ObjectRecord", "geometry")
+            + "\n\n format: SRID=4326;POINT|LINESTRING|POLYGON (LAT LONG, ...)"
+        }
+        fields = "__all__"
+
+
 class ObjectRecordInline(admin.TabularInline):
+    form = ObjectRecordForm
     model = ObjectRecord
     extra = 1
     readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
@@ -63,7 +72,8 @@ class ObjectRecordInline(admin.TabularInline):
         "get_corrected_by",
         "correct",
     )
-    formfield_overrides = {GeometryField: {"widget": forms.OSMWidget}}
+
+    formfield_overrides = {GeometryField: {"widget": forms.Textarea}}
 
     def has_delete_permission(self, request, obj=None):
         return False

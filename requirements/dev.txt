@@ -24,13 +24,14 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.7.2
+asgiref==3.8.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django
     #   django-axes
     #   django-cors-headers
+    #   django-structlog
 asn1crypto==1.5.1
     # via
     #   -c requirements/ci.txt
@@ -59,7 +60,7 @@ billiard==4.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-black==24.8.0
+black==25.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -143,7 +144,7 @@ codecov==2.1.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-commonground-api-common==2.5.1
+commonground-api-common==2.6.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -182,7 +183,7 @@ cssselect==1.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
-django==4.2.20
+django==5.2.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -211,6 +212,7 @@ django==4.2.20
     #   django-silk
     #   django-simple-certmanager
     #   django-solo
+    #   django-structlog
     #   django-two-factor-auth
     #   djangorestframework
     #   djangorestframework-inclusions
@@ -263,6 +265,11 @@ django-formtools==2.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
+django-ipware==7.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-structlog
 django-jsonform==2.22.0
     # via
     #   -c requirements/ci.txt
@@ -324,7 +331,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -345,12 +352,16 @@ django-solo==2.2.0
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
+django-structlog==9.1.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-two-factor-auth==1.17.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   maykin-2fa
-django-webtest==1.9.7
+django-webtest==1.9.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -425,12 +436,12 @@ factory-boy==3.2.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-faker==8.1.0
+faker==37.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==7.1.1
+flake8==7.1.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -455,9 +466,9 @@ glom==23.5.0
     #   mozilla-django-oidc-db
 gprof2dot==2024.6.6
     # via django-silk
-h11==0.14.0
+h11==0.16.0
     # via httpcore
-httpcore==1.0.7
+httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via bump-my-version
@@ -494,12 +505,7 @@ iso-639==0.4.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-isodate==0.6.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   commonground-api-common
-isort==5.13.2
+isort==6.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -573,12 +579,12 @@ mypy-extensions==1.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   black
-notifications-api-common==0.6.0
+notifications-api-common==0.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.9.3
+open-api-framework==0.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -635,6 +641,14 @@ prompt-toolkit==3.0.43
     #   -r requirements/ci.txt
     #   click-repl
     #   questionary
+psycopg==3.2.6
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+psycopg-pool==3.2.6
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 psycopg2==2.9.9
     # via
     #   -c requirements/ci.txt
@@ -727,7 +741,6 @@ python-dateutil==2.9.0.post0
     #   -r requirements/ci.txt
     #   celery
     #   django-relativedelta
-    #   faker
     #   freezegun
 python-decouple==3.8
     # via
@@ -740,6 +753,11 @@ python-dotenv==1.0.0
     #   -r requirements/ci.txt
     #   open-api-framework
     #   pydantic-settings
+python-ipware==3.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-ipware
 pytz==2024.1
     # via
     #   -c requirements/ci.txt
@@ -822,7 +840,6 @@ six==1.16.0
     #   -r requirements/ci.txt
     #   bleach
     #   furl
-    #   isodate
     #   orderedmultidict
     #   python-dateutil
     #   qrcode
@@ -900,18 +917,18 @@ sqlparse==0.5.0
     #   django
     #   django-debug-toolbar
     #   django-silk
+structlog==25.3.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-structlog
 tblib==1.7.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-text-unidecode==1.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   faker
 tomlkit==0.13.2
     # via bump-my-version
-tornado==6.4.2
+tornado==6.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -922,6 +939,8 @@ typing-extensions==4.9.0
     #   -r requirements/ci.txt
     #   anyio
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   rich-click
@@ -931,6 +950,7 @@ tzdata==2024.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
+    #   faker
     #   kombu
 uritemplate==3.0.1
     # via

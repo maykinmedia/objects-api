@@ -9,11 +9,12 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.7.2
+asgiref==3.8.1
     # via
     #   django
     #   django-axes
     #   django-cors-headers
+    #   django-structlog
 asn1crypto==1.5.1
     # via webauthn
 attrs==20.3.0
@@ -32,6 +33,7 @@ cbor2==5.6.2
     # via webauthn
 celery==5.4.0
     # via
+    #   django-structlog
     #   flower
     #   notifications-api-common
     #   open-api-framework
@@ -57,7 +59,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.5.1
+commonground-api-common==2.6.2
     # via open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
@@ -70,7 +72,7 @@ cryptography==44.0.1
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==4.2.20
+django==5.2.1
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -94,6 +96,7 @@ django==4.2.20
     #   django-setup-configuration
     #   django-simple-certmanager
     #   django-solo
+    #   django-structlog
     #   django-two-factor-auth
     #   djangorestframework
     #   djangorestframework-inclusions
@@ -122,6 +125,8 @@ django-filter==24.2
     #   open-api-framework
 django-formtools==2.3
     # via django-two-factor-auth
+django-ipware==7.0.1
+    # via django-structlog
 django-jsonform==2.22.0
     # via
     #   mozilla-django-oidc-db
@@ -148,7 +153,7 @@ django-sendfile2==0.7.0
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.1
+django-setup-configuration==0.7.2
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -164,6 +169,8 @@ django-solo==2.2.0
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
+django-structlog==9.1.1
+    # via -r requirements/base.in
 django-two-factor-auth==1.17.0
     # via maykin-2fa
 djangorestframework==3.15.2
@@ -218,8 +225,6 @@ inflection==0.5.1
     # via drf-spectacular
 iso-639==0.4.5
     # via commonground-api-common
-isodate==0.6.0
-    # via commonground-api-common
 itypes==1.2.0
     # via coreapi
 jinja2==3.1.6
@@ -244,11 +249,11 @@ mozilla-django-oidc-db==0.22.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
-notifications-api-common==0.6.0
+notifications-api-common==0.7.2
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.9.3
+open-api-framework==0.10.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -260,6 +265,10 @@ prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.43
     # via click-repl
+psycopg==3.2.6
+    # via -r requirements/base.in
+psycopg-pool==3.2.6
+    # via psycopg
 psycopg2==2.9.9
     # via open-api-framework
 pycparser==2.20
@@ -293,6 +302,8 @@ python-dotenv==1.0.0
     # via
     #   open-api-framework
     #   pydantic-settings
+python-ipware==3.0.0
+    # via django-ipware
 pytz==2024.1
     # via flower
 pyyaml==6.0.1
@@ -328,17 +339,20 @@ six==1.16.0
     # via
     #   bleach
     #   furl
-    #   isodate
     #   orderedmultidict
     #   python-dateutil
     #   qrcode
 sqlparse==0.5.0
     # via django
-tornado==6.4.2
+structlog==25.3.0
+    # via django-structlog
+tornado==6.5
     # via flower
 typing-extensions==4.9.0
     # via
     #   mozilla-django-oidc-db
+    #   psycopg
+    #   psycopg-pool
     #   pydantic
     #   pydantic-core
     #   zgw-consumers

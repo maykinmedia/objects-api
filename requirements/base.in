@@ -1,10 +1,12 @@
 open-api-framework
 
-
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
 furl
+
+# Django libraries
+django-structlog[celery]
 
 # Common ground libraries
 django-setup-configuration>=0.5.0
@@ -16,3 +18,5 @@ mozilla-django-oidc-db[setup-configuration]
 # TODO this should be moved to open-api-framework once it is verified that this fixes
 # maykinmedia/objects-api#541
 kombu>=5.4.0
+
+psycopg[pool]

@@ -2,8 +2,9 @@
 Continuous integration settings module.
 """
 
-import logging
 import os
+
+from open_api_framework.conf.utils import mute_logging
 
 os.environ.setdefault("SECRET_KEY", "dummy")
 os.environ.setdefault("IS_HTTPS", "no")
@@ -20,8 +21,7 @@ CACHES = {
     "oidc": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
 }
 
-LOGGING = None  # Quiet is nice
-logging.disable(logging.CRITICAL)
+mute_logging(LOGGING)
 
 
 #

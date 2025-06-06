@@ -800,6 +800,8 @@ paths:
 components:
   schemas:
     GeoJSONGeometry:
+      title: GeoJSONGeometry
+      type: object
       oneOf:
       - $ref: '#/components/schemas/Point'
       - $ref: '#/components/schemas/MultiPoint'
@@ -810,14 +812,6 @@ components:
       - $ref: '#/components/schemas/GeometryCollection'
       discriminator:
         propertyName: type
-        mapping:
-          Point: '#/components/schemas/Point'
-          MultiPoint: '#/components/schemas/MultiPoint'
-          LineString: '#/components/schemas/LineString'
-          MultiLineString: '#/components/schemas/MultiLineString'
-          Polygon: '#/components/schemas/Polygon'
-          MultiPolygon: '#/components/schemas/MultiPolygon'
-          GeometryCollection: '#/components/schemas/GeometryCollection'
     GeoWithin:
       type: object
       properties:
@@ -833,7 +827,8 @@ components:
         url: https://tools.ietf.org/html/rfc7946#section-3.1
       properties:
         type:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
           description: The geometry type
     GeometryCollection:
       type: object
@@ -863,6 +858,8 @@ components:
           minimum: 0
           description: Version of the OBJECTTYPE for data in the object record
         data:
+          type: object
+          additionalProperties: true
           description: Object data, based on OBJECTTYPE
         geometry:
           allOf:
@@ -986,11 +983,11 @@ components:
         url:
           type: string
           format: uri
+          readOnly: true
           minLength: 1
           maxLength: 1000
           description: URL reference to this object. This is the unique identification
             and location of this object.
-          readOnly: true
         uuid:
           type: string
           format: uuid
@@ -1021,6 +1018,8 @@ components:
           minimum: 0
           description: Version of the OBJECTTYPE for data in the object record
         data:
+          type: object
+          additionalProperties: true
           description: Object data, based on OBJECTTYPE
         geometry:
           allOf:
@@ -1143,11 +1142,11 @@ components:
         url:
           type: string
           format: uri
+          readOnly: true
           minLength: 1
           maxLength: 1000
           description: URL reference to this object. This is the unique identification
             and location of this object.
-          readOnly: true
         uuid:
           type: string
           format: uuid
@@ -1183,6 +1182,8 @@ components:
           type: boolean
           description: Use field-based authorization
         fields:
+          type: object
+          additionalProperties: true
           nullable: true
           title: Mode
           description: Fields allowed for this token in relation to objecttype versions.
@@ -1228,6 +1229,18 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Point2D'
+    TypeEnum:
+      type: string
+      enum:
+      - Point
+      - MultiPoint
+      - LineString
+      - MultiLineString
+      - Polygon
+      - MultiPolygon
+      - Feature
+      - FeatureCollection
+      - GeometryCollection
   securitySchemes:
     tokenAuth:
       type: apiKey

@@ -2,16 +2,20 @@ services:
   db:
     # NOTE: No persistance storage configured.
     # See: https://hub.docker.com/_/postgres/
-    image: postgis/postgis:12-2.5
+    image: postgis/postgis:17-3.5
     environment:
       - POSTGRES_USER=${DB_USER:-objects}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-objects}
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - objects-dev
 
   redis:
     image: redis:7
     command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - objects-dev
 
   web:
     image: maykinmedia/objects-api:latest
@@ -29,6 +33,7 @@ services:
       CELERY_LOGLEVEL: DEBUG
       DISABLE_2FA: ${DISABLE_2FA:-yes}
       SUBPATH: ${SUBPATH}
+      LOG_LEVEL: INFO
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
       interval: 30s
@@ -45,6 +50,13 @@ services:
           condition: service_completed_successfully
     volumes: &web_volumes
       - media:/app/media  # Shared media volume to get access to saved OAS files
+    networks:
+      - objects-dev
+    labels:
+      client: dev
+      target: test
+      app: objects-api
+      service: web
 
   web-init:
     image: maykinmedia/objects-api:latest
@@ -60,6 +72,46 @@ services:
       - redis
     volumes:
       - ./docker/setup_configuration:/app/setup_configuration
+    networks:
+      - objects-dev
+
+  objecttypes-web:
+    image: maykinmedia/objecttypes-api:latest
+    environment: &app-env
+      DB_USER: objects
+      DB_PASSWORD: objects
+      DJANGO_SETTINGS_MODULE: objecttypes.conf.docker
+      SECRET_KEY: ${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cyf15d}
+      ALLOWED_HOSTS: '*'
+      CACHE_DEFAULT: redis:6379/0
+      CACHE_AXES: redis:6379/0
+      DISABLE_2FA: yes
+      SUBPATH: ${SUBPATH:-/}
+    volumes:
+      - ./docker/objecttypes/objecttypes.json:/app/fixtures/objecttypes.json
+    ports:
+      - 8001:8000
+    depends_on:
+      objecttypes-web-init:
+        condition: service_completed_successfully
+    networks:
+      - objects-dev
+
+  objecttypes-web-init:
+    image: maykinmedia/objecttypes-api:latest
+    environment:
+      <<: *app-env
+      #
+      # Django-setup-configuration
+      RUN_SETUP_CONFIG: ${RUN_SETUP_CONFIG:-true}
+    command: /setup_configuration.sh
+    volumes:
+      - ./docker/setup_configuration/objecttypes_data.yaml:/app/setup_configuration/data.yaml
+    depends_on:
+      - db
+      - redis
+    networks:
+      - objects-dev
 
   celery:
     image: maykinmedia/objects-api:latest
@@ -76,6 +128,8 @@ services:
       web:
         condition: service_healthy
     volumes: *web_volumes
+    networks:
+      - objects-dev
 
   celery-flower:
     image: maykinmedia/objects-api:latest
@@ -87,7 +141,13 @@ services:
     depends_on:
       - redis
       - celery
+    networks:
+      - objects-dev
 
 volumes:
   media:
   postgres-data:
+
+networks:
+  objects-dev:
+    name: objects-dev
