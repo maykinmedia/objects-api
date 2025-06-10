@@ -32,6 +32,7 @@ services:
       DISABLE_2FA: ${DISABLE_2FA:-yes}
       SUBPATH: ${SUBPATH}
       LOG_LEVEL: INFO
+      LOG_STDOUT: true
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
       interval: 30s

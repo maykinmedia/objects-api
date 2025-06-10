@@ -156,6 +156,24 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "objects.utils",
 ]
 
+
+LOG_STDOUT = config(
+    "LOG_STDOUT",
+    default=True,
+    help_text="whether to log to stdout or not",
+    group="Logging",
+)
+LOG_OUTGOING_REQUESTS = config("LOG_OUTGOING_REQUESTS", default=True)
+LOG_LEVEL = config(
+    "LOG_LEVEL",
+    default="INFO",
+    help_text=(
+        "control the verbosity of logging output. "
+        "Available values are ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO`` and ``DEBUG``"
+    ),
+    group="Logging",
+)
+
 # XXX: this should be renamed to `LOG_REQUESTS` in the next major release
 _log_requests_via_middleware = config(
     "ENABLE_STRUCTLOG_REQUESTS",
@@ -211,9 +229,7 @@ LOGGING = {
         "outgoing_requests": {"()": HttpFormatter},
     },
     # TODO can be removed?
-    "filters": {
-        "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
-    },
+    "filters": {},
     "handlers": {
         # TODO can be removed?
         "mail_admins": {
@@ -225,14 +241,7 @@ LOGGING = {
         "console": {
             "level": LOG_LEVEL,
             "class": "logging.StreamHandler",
-            "formatter": config(
-                "LOG_FORMAT_CONSOLE",
-                default="json",
-                help_text=(
-                    "The format for the console logging handler, possible options: ``json``, ``plain_console``."
-                ),
-                group="Logging",
-            ),
+            "formatter": config("LOG_FORMAT_CONSOLE", default="json"),
         },
         "console_db": {
             "level": "DEBUG",
@@ -255,7 +264,7 @@ LOGGING = {
         # replaces the "django" and "project" handlers - in containerized applications
         # the best practices is to log to stdout (use the console handler).
         "json_file": {
-            "level": LOG_LEVEL,  # always debug might be better?
+            "level": "DEBUG",  # always debug might be better?
             "class": "logging.handlers.RotatingFileHandler",
             "filename": Path(LOGGING_DIR) / "application.jsonl",
             "formatter": "json",
@@ -290,15 +299,10 @@ LOGGING = {
         },
     },
     "loggers": {
-        "": {
-            "handlers": logging_root_handlers,
-            "level": "ERROR",
-            "propagate": False,
-        },
-        PROJECT_DIRNAME: {
+        "objects": {
             "handlers": logging_root_handlers,
             "level": LOG_LEVEL,
-            "propagate": False,
+            "propagate": True,
         },
         "mozilla_django_oidc": {
             "handlers": logging_root_handlers,
@@ -339,7 +343,7 @@ LOGGING = {
         "log_outgoing_requests": {
             "handlers": (
                 ["log_outgoing_requests", "save_outgoing_requests"]
-                if LOG_REQUESTS
+                if LOG_OUTGOING_REQUESTS
                 else []
             ),
             "level": "DEBUG",
@@ -355,6 +359,10 @@ LOGGING = {
             "level": CELERY_LOGLEVEL,
             "propagate": True,
         },
+    },
+    "root": {
+        "level": LOG_LEVEL,
+        "handlers": logging_root_handlers,
     },
 }
 

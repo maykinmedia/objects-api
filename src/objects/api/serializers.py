@@ -16,6 +16,10 @@ from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValid
 logger = structlog.stdlib.get_logger(__name__)
 
 
+def test_logging():
+    logger.info("test_log_loki", debug_test="✅ this should appear in Grafana")
+
+
 class ObjectRecordSerializer(serializers.ModelSerializer):
     correctionFor = ObjectSlugRelatedField(
         source="correct",
@@ -125,14 +129,18 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         validated_data["object"] = object
         record = super().create(validated_data)
         token_auth: TokenAuth = self.context["request"].auth
-        logger.info(
-            "object_created",
-            object_uuid=str(object.uuid),
-            objecttype_uuid=str(object.object_type.uuid),
-            objecttype_version=record.version,
-            token_identifier=token_auth.identifier,
-            token_application=token_auth.application,
-        )
+        print("Logging object_created event now")
+        try:
+            logger.info(
+                event="object_created",
+                object_uuid=str(object.uuid),
+                objecttype_uuid=str(object.object_type.uuid),
+                objecttype_version=record.version,
+                token_identifier=token_auth.identifier,
+                token_application=token_auth.application,
+            )
+        except Exception as e:
+            print("Logging error:", e)
         return record
 
     @transaction.atomic
@@ -153,8 +161,9 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
         record = super().create(validated_data)
         token_auth: TokenAuth = self.context["request"].auth
+        print("Logging object_created event now")
         logger.info(
-            "object_updated",
+            event="object_updated",
             object_uuid=str(record.object.uuid),
             objecttype_uuid=str(record.object.object_type.uuid),
             objecttype_version=record.version,
