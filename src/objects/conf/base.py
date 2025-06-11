@@ -232,16 +232,18 @@ LOGGING = {
     "filters": {},
     "handlers": {
         # TODO can be removed?
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
         "console": {
             "level": LOG_LEVEL,
             "class": "logging.StreamHandler",
-            "formatter": config("LOG_FORMAT_CONSOLE", default="json"),
+            "formatter": config(
+                "LOG_FORMAT_CONSOLE",
+                default="json",
+                help_text=(
+                    "The format for the console logging handler, possible options: ``json``, ``plain_console``."
+                ),
+                group="Logging",
+            ),
         },
         "console_db": {
             "level": "DEBUG",
@@ -299,7 +301,11 @@ LOGGING = {
         },
     },
     "loggers": {
-        "objects": {
+        "": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+        PROJECT_DIRNAME: {
             "handlers": logging_root_handlers,
             "level": LOG_LEVEL,
             "propagate": True,
@@ -343,7 +349,7 @@ LOGGING = {
         "log_outgoing_requests": {
             "handlers": (
                 ["log_outgoing_requests", "save_outgoing_requests"]
-                if LOG_OUTGOING_REQUESTS
+                if LOG_REQUESTS
                 else []
             ),
             "level": "DEBUG",
@@ -359,10 +365,6 @@ LOGGING = {
             "level": CELERY_LOGLEVEL,
             "propagate": True,
         },
-    },
-    "root": {
-        "level": LOG_LEVEL,
-        "handlers": logging_root_handlers,
     },
 }
 

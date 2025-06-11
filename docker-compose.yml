@@ -16,7 +16,7 @@ services:
       - objects-dev
 
   web:
-    image: maykinmedia/objects-api:latest
+    # image: maykinmedia/objects-api:latest
     build: &web_build
       context: .
     environment: &web_env
@@ -31,8 +31,6 @@ services:
       CELERY_LOGLEVEL: DEBUG
       DISABLE_2FA: ${DISABLE_2FA:-yes}
       SUBPATH: ${SUBPATH}
-      LOG_LEVEL: INFO
-      LOG_STDOUT: true
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
       interval: 30s
@@ -58,7 +56,7 @@ services:
       service: web
 
   web-init:
-    image: maykinmedia/objects-api:latest
+    # image: maykinmedia/objects-api:latest
     build: *web_build
     environment:
       <<: *web_env
@@ -113,7 +111,7 @@ services:
       - objects-dev
 
   celery:
-    image: maykinmedia/objects-api:latest
+    # image: maykinmedia/objects-api:latest
     build: *web_build
     environment: *web_env
     command: /celery_worker.sh
@@ -131,7 +129,7 @@ services:
       - objects-dev
 
   celery-flower:
-    image: maykinmedia/objects-api:latest
+    # image: maykinmedia/objects-api:latest
     build: *web_build
     environment: *web_env
     command: /celery_flower.sh
