@@ -1,3 +1,51 @@
+[project]
+requires-python = "== 3.12"
+
+# Bumpversion configuration
+
+[tool.bumpversion]
+commit = false
+tag = false
+current_version = "3.1.0"
+pre_commit_hooks = [
+    "npm i",  # ensure that package-lock.json is updated
+]
+
+# Defines the files to be updated.
+[[tool.bumpversion.files]]
+filename = "src/objects/__init__.py"
+
+[[tool.bumpversion.files]]
+filename = "README.rst"
+search = ":Version: {current_version}"
+replace = ":Version: {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "README.NL.rst"
+search = ":Version: {current_version}"
+replace = ":Version: {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "package.json"
+search = '"version": "{current_version}"'
+replace = '"version": "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "docs/api/index.rst"
+
+[[tool.bumpversion.files]]
+filename = "publiccode.yaml"
+search = "softwareVersion: {current_version}"
+replace = "softwareVersion: {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "publiccode.yaml"
+search = "releaseDate: '\\d{{4}}-\\d{{2}}-\\d{{2}}'"
+replace = "releaseDate: '{now:%Y-%m-%d}'"
+regex = true
+
+# Ruff configuration
+[tool.ruff]
 # Exclude folders and files
 exclude = [
     "migrations",
@@ -11,7 +59,7 @@ indent-width = 4
 
 target-version = "py312"
 
-[lint]
+[tool.ruff.lint]
 select = [
     # https://docs.astral.sh/ruff/rules/#isort-i
     "I",
@@ -79,8 +127,7 @@ ignore = [
     "SIM117",
 ]
 
-# Import sorting configuration (equivalent to isort)
-[lint.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 force-wrap-aliases = false
 known-first-party = ["objects"]
@@ -96,8 +143,8 @@ section-order = [
     "local-folder",
 ]
 
-[format]
+[tool.ruff.format]
 line-ending = "lf"
 
-[lint.flake8-tidy-imports.banned-api]
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
 "logging".msg = "Use `structlog.stdlib.get_logger(__name__)` instead of the stdlib logging module."
