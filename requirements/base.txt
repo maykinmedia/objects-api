@@ -98,6 +98,7 @@ django==5.2.1
     #   django-solo
     #   django-structlog
     #   django-two-factor-auth
+    #   django-upgrade-check
     #   djangorestframework
     #   djangorestframework-inclusions
     #   drf-nested-routers
@@ -173,6 +174,8 @@ django-structlog==9.1.1
     # via -r requirements/base.in
 django-two-factor-auth==1.17.0
     # via maykin-2fa
+django-upgrade-check==1.1.0
+    # via open-api-framework
 djangorestframework==3.15.2
     # via
     #   commonground-api-common
@@ -253,7 +256,7 @@ notifications-api-common==0.7.2
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.10.1
+open-api-framework==0.10.2
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -331,6 +334,8 @@ ruamel-yaml==0.18.10
     # via django-setup-configuration
 ruamel-yaml-clib==0.2.12
     # via ruamel-yaml
+semantic-version==2.10.0
+    # via django-upgrade-check
 sentry-sdk==2.12.0
     # via open-api-framework
 six==1.16.0
