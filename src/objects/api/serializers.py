@@ -129,18 +129,14 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         validated_data["object"] = object
         record = super().create(validated_data)
         token_auth: TokenAuth = self.context["request"].auth
-        print("Logging object_created event now")
-        try:
-            logger.info(
-                event="object_created",
-                object_uuid=str(object.uuid),
-                objecttype_uuid=str(object.object_type.uuid),
-                objecttype_version=record.version,
-                token_identifier=token_auth.identifier,
-                token_application=token_auth.application,
-            )
-        except Exception as e:
-            print("Logging error:", e)
+        logger.info(
+            "object_created",
+            object_uuid=str(object.uuid),
+            objecttype_uuid=str(object.object_type.uuid),
+            objecttype_version=record.version,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
         return record
 
     @transaction.atomic
@@ -161,9 +157,8 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
         record = super().create(validated_data)
         token_auth: TokenAuth = self.context["request"].auth
-        print("Logging object_created event now")
         logger.info(
-            event="object_updated",
+            "object_updated",
             object_uuid=str(record.object.uuid),
             objecttype_uuid=str(record.object.object_type.uuid),
             objecttype_version=record.version,

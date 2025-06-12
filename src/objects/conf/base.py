@@ -229,9 +229,16 @@ LOGGING = {
         "outgoing_requests": {"()": HttpFormatter},
     },
     # TODO can be removed?
-    "filters": {},
+    "filters": {
+        "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
+    },
     "handlers": {
         # TODO can be removed?
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+        },
         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
         "console": {
             "level": LOG_LEVEL,
@@ -266,7 +273,7 @@ LOGGING = {
         # replaces the "django" and "project" handlers - in containerized applications
         # the best practices is to log to stdout (use the console handler).
         "json_file": {
-            "level": "DEBUG",  # always debug might be better?
+            "level": LOG_LEVEL,  # always debug might be better?
             "class": "logging.handlers.RotatingFileHandler",
             "filename": Path(LOGGING_DIR) / "application.jsonl",
             "formatter": "json",
@@ -302,13 +309,19 @@ LOGGING = {
     },
     "loggers": {
         "": {
+            "handlers": logging_root_handlers,
+            "level": "INFO",
+            "propagate": False,
+        },
+        "objects.api.serializers": {
             "handlers": ["console"],
             "level": "INFO",
+            "propagate": False,
         },
         PROJECT_DIRNAME: {
             "handlers": logging_root_handlers,
             "level": LOG_LEVEL,
-            "propagate": True,
+            "propagate": False,
         },
         "mozilla_django_oidc": {
             "handlers": logging_root_handlers,

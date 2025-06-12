@@ -12,8 +12,6 @@ os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("ENVIRONMENT", "development")
 os.environ.setdefault("DISABLE_2FA", "True")
 os.environ.setdefault("LOG_FORMAT_CONSOLE", "plain_console")
-os.environ.setdefault("LOG_OUTGOING_REQUESTS", "no")
-os.environ.setdefault("LOG_STDOUT", "1")
 
 os.environ.setdefault("DB_NAME", "objects")
 os.environ.setdefault("DB_USER", "objects")
@@ -29,6 +27,11 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 LOGGING["loggers"].update(
     {
+        "objects.api.serializers": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
         "objects": {
             "handlers": ["console"],
             "level": "DEBUG",
