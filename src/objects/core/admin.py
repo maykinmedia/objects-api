@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
 from django.http import JsonResponse
 from django.urls import path
@@ -97,6 +98,26 @@ class ObjectRecordInline(admin.TabularInline):
     get_corrected_by.short_description = "corrected by"
 
 
+class ObjectTypeFilter(SimpleListFilter):
+    """
+    List filters do not use `ModelAdmin.list_select_related` unfortunately, so to avoid
+    additional queries for each ObjectType.service, the filter's queryset is explicitly
+    overridden
+    """
+
+    title = "object type"
+    parameter_name = "object_type__id__exact"
+
+    def lookups(self, request, model_admin):
+        qs = ObjectType.objects.select_related("service")
+        return [(ot.pk, str(ot)) for ot in qs]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(object_type__id=self.value())
+        return queryset
+
+
 @admin.register(Object)
 class ObjectAdmin(admin.ModelAdmin):
     list_display = (
@@ -108,7 +129,7 @@ class ObjectAdmin(admin.ModelAdmin):
     )
     search_fields = ("uuid", "records__data")
     inlines = (ObjectRecordInline,)
-    list_filter = ("object_type",)
+    list_filter = (ObjectTypeFilter,)
 
     @admin.display(description="Object type UUID")
     def get_object_type_uuid(self, obj):
