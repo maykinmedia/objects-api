@@ -171,6 +171,11 @@ class ObjectRecordFilterSet(FilterSet):
         return queryset
 
     def filter_data_icontains(self, queryset, name, value: str):
+        # TODO consider using `data__icontains=value` here instead? This does mean regexes
+        # are no longer supported, but it's a lot more efficient and the docs do not
+        # clearly state that regexes were supported anyway. A different parameter could
+        # be added to allow regex search
+
         # WHERE clause has jsonpath: where data @? '$.** ? (@ like_regex "$value" flag "i")'
         where_str = "core_objectrecord.data @? CONCAT('$.** ? (@ like_regex \"',%s::text,'\" flag \"i\")')::jsonpath"
         return queryset.extra(where=[where_str], params=[value])
