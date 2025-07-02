@@ -22,9 +22,9 @@ Install the Helm chart with following commands:
 
 .. code:: shell
 
-   cd deployment/kubernetes/objects
-   helm dependency build .
-   helm install objects .
+   helm repo add maykinmedia https://maykinmedia.github.io/charts/
+   helm search repo maykinmedia
+   helm install my-release maykinmedia/objecten
 
 
 Use Kubernetes CLI to monitor the status of deployment:
