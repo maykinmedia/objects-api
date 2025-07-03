@@ -490,7 +490,7 @@ notifications-api-common==0.7.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.10.3
+open-api-framework==0.11.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -525,19 +525,20 @@ prompt-toolkit==3.0.43
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   click-repl
-psycopg==3.2.6
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-psycopg-pool==3.2.6
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-psycopg2==2.9.9
+psycopg==3.2.9
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+psycopg-binary==3.2.9
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   psycopg
+psycopg-pool==3.2.6
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 py-cpuinfo==9.0.0
     # via pytest-benchmark
 pycparser==2.20
