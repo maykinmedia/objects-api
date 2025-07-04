@@ -2,6 +2,37 @@
 Change history
 ==============
 
+3.1.1 (2025-07-04)
+------------------
+
+**Bugfixes**
+
+* [:objects-api:`619`] Fix unstructured logs still being emitted by the Celery container
+
+**Project maintenance**
+
+* [:objects-api:`587`] Add rule to disallow direct ``logging`` imports
+* [:open-api-framework:`151`] Move ``ruff`` and ``bump-my-version`` configurations into ``pyproject.toml``
+* [:open-api-framework:`149`] Add dark/light theme toggle to the admin interface
+* [:open-api-framework:`139`] Integrate ``django-upgrade-check`` to ensure that all required versions are correctly handled during instance upgrades
+
+* Upgrade dependencies:
+  * django to 5.2.3
+  * notifications-api-common to 0.7.3
+  * commonground-api-common to 2.6.7
+  * open-api-framework to 0.11.0
+  * django-setup-configuration to 0.8.2
+  * django-debug-toolbar to 5.2.0
+  * zgw-consumers to 0.38.1
+  * requests to 2.32.4
+  * urllib3 to 2.5.0
+  * vcrpy to 7.0.0
+
+**Performance optimizations**
+
+* [:objects-api:`615`] Improve admin ``listview`` search performance and usability
+
+
 3.1.0 (2025-05-26)
 ------------------
 

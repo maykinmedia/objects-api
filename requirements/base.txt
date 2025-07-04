@@ -59,8 +59,10 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.6.4
-    # via open-api-framework
+commonground-api-common==2.6.7
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 coreapi==2.3.3
     # via commonground-api-common
 coreschema==0.0.4
@@ -72,7 +74,7 @@ cryptography==44.0.1
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.1
+django==5.2.3
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -154,7 +156,7 @@ django-sendfile2==0.7.0
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.2
+django-setup-configuration==0.8.2
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -286,7 +288,7 @@ pydantic-core==2.23.4
     # via pydantic
 pydantic-settings==2.6.1
     # via django-setup-configuration
-pyjwt==2.4.0
+pyjwt==2.10.1
     # via
     #   commonground-api-common
     #   zgw-consumers
@@ -320,7 +322,7 @@ qrcode==6.1
     # via django-two-factor-auth
 redis==3.5.3
     # via django-redis
-requests==2.32.3
+requests==2.32.4
     # via
     #   ape-pie
     #   commonground-api-common
@@ -369,7 +371,7 @@ uritemplate==3.0.1
     # via
     #   coreapi
     #   drf-spectacular
-urllib3==2.2.2
+urllib3==2.5.0
     # via
     #   elastic-apm
     #   requests
@@ -389,7 +391,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.14.1
     # via elastic-apm
-zgw-consumers==0.37.0
+zgw-consumers==0.38.1
     # via
     #   -r requirements/base.in
     #   commonground-api-common
