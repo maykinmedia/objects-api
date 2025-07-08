@@ -15,6 +15,7 @@ this.
    :caption: Further reading
 
    quickstart
+   prerequisites
    config
    config_cli
    deployment/index
