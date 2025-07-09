@@ -7,7 +7,7 @@ Kubernetes
 Here you can find a reference implementation of the Objects API deployment for
 a Kubernetes cluster using `Helm`_.
 
-This Helm chart installs the Objects API and is dependent on a PostgreSQL
+The `Helm chart`_ installs the Objects API and is dependent on a PostgreSQL
 database, installed using a `subchart`_.
 
 .. warning:: The default settings are unsafe and should only be used for
@@ -47,3 +47,4 @@ of the application:
 
 .. _`Helm`: https://helm.sh/
 .. _`subchart`: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+.. _`Helm chart`: https://github.com/maykinmedia/charts/tree/main/charts/objecten
