@@ -10,14 +10,17 @@ DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 DATABASES["default"]["CONN_MAX_AGE"] = config(
     "DB_CONN_MAX_AGE",
     default=0,
+    # The default is set to `60` in the docker settings, so that's what is mentioned
+    # in the help text as well
     help_text=(
         "The lifetime of a database connection, as an integer of seconds. "
         "Use 0 to close database connections at the end of each request — Django’s historical behavior. "
-        "This setting cannot be set in combination with connection pooling."
+        "This setting must be set to 0 if connection pooling is used. Defaults to: ``60``."
     ),
     group="Database",
+    auto_display_default=False,
+    cast=lambda x: int(x) if x != "None" else None,
 )
-
 
 # https://docs.djangoproject.com/en/5.2/ref/databases/#connection-pool
 # https://www.psycopg.org/psycopg3/docs/api/pool.html#the-connectionpool-class
@@ -25,7 +28,10 @@ DATABASES["default"]["CONN_MAX_AGE"] = config(
 DB_POOL_ENABLED = config(
     "DB_POOL_ENABLED",
     default=False,
-    help_text=("Whether to use connection pooling."),
+    help_text=(
+        "Whether to use connection pooling "
+        "(requires ``DB_CONN_MAX_AGE`` to be set to 0)."
+    ),
     group="Database",
 )
 
