@@ -7,7 +7,7 @@ Kubernetes
 Here you can find a reference implementation of the Objecttypes API deployment for
 a Kubernetes cluster using `Helm`_.
 
-This Helm chart installs the Objecttypes API and is dependent on a PostgreSQL
+The `Helm chart`_ installs the Objecttypes API and is dependent on a PostgreSQL
 database, installed using a `subchart`_.
 
 .. warning:: The default settings are unsafe and should only be used for
@@ -22,9 +22,9 @@ Install the Helm chart with following commands:
 
 .. code:: shell
 
-   cd deployment/kubernetes/objecttypes
-   helm dependency build .
-   helm install objecttypes .
+   helm repo add maykinmedia https://maykinmedia.github.io/charts/
+   helm search repo maykinmedia
+   helm install my-release maykinmedia/objecttypen
 
 
 Use Kubernetes CLI to monitor the status of deployment:
@@ -46,3 +46,4 @@ of the application:
 
 .. _`Helm`: https://helm.sh/
 .. _`subchart`: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+.. _`Helm chart`: https://github.com/maykinmedia/charts/tree/main/charts/objecttypen

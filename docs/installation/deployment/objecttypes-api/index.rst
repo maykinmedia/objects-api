@@ -7,5 +7,4 @@ Objecttypes API deployment
 .. toctree::
    :maxdepth: 1
 
-   single-server
    kubernetes
