@@ -31,7 +31,6 @@ services:
       CELERY_LOGLEVEL: DEBUG
       DISABLE_2FA: ${DISABLE_2FA:-yes}
       SUBPATH: ${SUBPATH}
-      DB_CONN_MAX_AGE: "0"
       DB_POOL_ENABLED: True
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])"]
