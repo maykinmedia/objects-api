@@ -6,6 +6,19 @@ from open_api_framework.conf.utils import config
 
 from .api import *  # noqa
 
+DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = config(
+    "DB_DISABLE_SERVER_SIDE_CURSORS",
+    False,
+    help_text=(
+        "Whether or not server side cursors should be disabled for Postgres connections. "
+        "Setting this to true is required when using a connection pooler in "
+        "transaction mode (like PgBouncer). "
+        "**WARNING:** the effect of disabling server side cursors on performance has not "
+        "been thoroughly tested yet."
+    ),
+    group="Database",
+)
+
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 # Application definition
