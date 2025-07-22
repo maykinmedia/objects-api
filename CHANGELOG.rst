@@ -2,6 +2,36 @@
 Change history
 ==============
 
+3.1.2 (2025-07-22)
+------------------
+
+**Bugfixes/QOL**
+
+* Fix Elastic APM not showing time spent in database when using connection pooling via envvars
+
+**Maintenance**
+
+* Add environment variable ``DB_DISABLE_SERVER_SIDE_CURSORS`` to disable server side cursors (see :ref:`installation_env_config` > Database for more information)
+* Upgrade dependencies
+
+  * ``django-privates`` to 3.1.1
+  * ``commonground-api-common`` to 2.7.0
+  * ``open-api-framework`` to 0.12.0
+
+* Use DB connection pooling settings from ``open-api-framework``
+
+.. warning::
+
+  The connection pooling settings (via environment variables) apply to each uWSGI process and each replica, this means
+  that when running with 2 replicas and 4 processes for example, there will effectively be 8
+  connection pools with the above settings.
+
+**Documentation**
+
+* Fix incorrect default in docs for DB_CONN_MAX_AGE
+* [:open-api-framework:`148`] Add prerequisites docs page
+* [:open-api-framework:`118`] Remove outdated deployment tooling/docs
+
 3.1.1 (2025-07-04)
 ------------------
 
