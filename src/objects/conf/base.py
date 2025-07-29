@@ -299,6 +299,16 @@ TWO_FACTOR_WEBAUTHN_RP_NAME = "objects api"
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
 
+CELERY_RESULT_EXPIRES = config(
+    "CELERY_RESULT_EXPIRES",
+    3600,
+    help_text=(
+        "How long the results of tasks will be stored in Redis (in seconds),"
+        " this can be set to a lower duration to lower memory usage for Redis."
+    ),
+    group="Celery",
+)
+
 # Add (by default) 5 (soft), 15 (hard) minute timeouts to all Celery tasks.
 CELERY_TASK_TIME_LIMIT = config(
     "CELERY_TASK_HARD_TIME_LIMIT",
