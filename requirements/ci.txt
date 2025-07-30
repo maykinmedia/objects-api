@@ -42,7 +42,7 @@ babel==2.16.0
     # via sphinx
 beautifulsoup4==4.9.3
     # via webtest
-billiard==4.2.0
+billiard==4.2.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -427,7 +427,7 @@ jsonschema==4.17.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-kombu==5.4.2
+kombu==5.5.4
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -472,8 +472,11 @@ oyaml==1.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-packaging==23.2
+packaging==25.0
     # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   kombu
     #   pytest
     #   sphinx
 phonenumberslite==8.13.30
@@ -714,7 +717,7 @@ typing-extensions==4.9.0
     #   pydantic
     #   pydantic-core
     #   zgw-consumers
-tzdata==2024.1
+tzdata==2025.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

@@ -21,7 +21,7 @@ attrs==20.3.0
     # via
     #   glom
     #   jsonschema
-billiard==4.2.0
+billiard==4.2.1
     # via celery
 bleach==6.1.0
     # via open-api-framework
@@ -232,7 +232,7 @@ jsonschema==4.17.3
     # via
     #   -r requirements/base.in
     #   drf-spectacular
-kombu==5.4.2
+kombu==5.5.4
     # via
     #   -r requirements/base.in
     #   celery
@@ -254,6 +254,8 @@ orderedmultidict==1.0.1
     # via furl
 oyaml==1.0
     # via commonground-api-common
+packaging==25.0
+    # via kombu
 phonenumberslite==8.13.30
     # via django-two-factor-auth
 prometheus-client==0.20.0
@@ -352,7 +354,7 @@ typing-extensions==4.9.0
     #   pydantic
     #   pydantic-core
     #   zgw-consumers
-tzdata==2024.1
+tzdata==2025.2
     # via
     #   celery
     #   kombu
