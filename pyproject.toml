@@ -148,3 +148,8 @@ line-ending = "lf"
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "logging".msg = "Use `structlog.stdlib.get_logger(__name__)` instead of the stdlib logging module."
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = ["*/test_*.py"]
