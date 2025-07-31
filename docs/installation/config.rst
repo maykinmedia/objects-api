@@ -64,6 +64,7 @@ Celery
 
 * ``CELERY_LOGLEVEL``: control the verbosity of logging output for celery, independent of ``LOG_LEVEL``. Available values are ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO`` and ``DEBUG``. Defaults to: ``INFO``.
 * ``CELERY_RESULT_BACKEND``: the URL of the backend/broker that will be used by Celery to send the notifications. Defaults to: ``redis://localhost:6379/1``.
+* ``CELERY_RESULT_EXPIRES``: How long the results of tasks will be stored in Redis (in seconds), this can be set to a lower duration to lower memory usage for Redis. Defaults to: ``3600``.
 * ``CELERY_TASK_HARD_TIME_LIMIT``: Task hard time limit in seconds. The worker processing the task will be killed and replaced with a new one when this is exceeded. Defaults to: ``900``.
 
 
