@@ -107,6 +107,7 @@ linkcheck_ignore = [
     "https://github.com/maykinmedia/objects-api-performance",
     "https://objects.municipality.nl/admin/",
     "https://sparxsystems.com/products/ea/trial/request.html",  # this raises 403 for crawlers probably?
+    "https://data.overheid.nl/",
 ]
 
 extlinks = {

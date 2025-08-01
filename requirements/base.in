@@ -17,6 +17,7 @@ commonground-api-common[oas]
 # celery dependencies
 # TODO this should be moved to open-api-framework once it is verified that this fixes
 # maykinmedia/objects-api#541
+celery>=5.5.0
 kombu>=5.4.0
 
 psycopg[pool]

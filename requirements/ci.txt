@@ -62,7 +62,7 @@ cbor2==5.6.2
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   webauthn
-celery==5.4.0
+celery==5.5.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -721,7 +721,6 @@ tzdata==2025.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   celery
     #   faker
     #   kombu
 uritemplate==3.0.1

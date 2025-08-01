@@ -99,4 +99,4 @@ for both APIs. This checklist is only available in Dutch.
 .. [1] This is most likely an internal VNG compliancy check and is considered out of scope.
 
 .. _`municipality of Utrecht`: https://www.utrecht.nl/
-.. _`VNG`: https://www.vngrealisatie.nl/
+.. _`VNG`: https://vng.nl/

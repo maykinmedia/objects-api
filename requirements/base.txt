@@ -31,8 +31,9 @@ boltons==21.0.0
     #   glom
 cbor2==5.6.2
     # via webauthn
-celery==5.4.0
+celery==5.5.3
     # via
+    #   -r requirements/base.in
     #   django-structlog
     #   flower
     #   notifications-api-common
@@ -355,9 +356,7 @@ typing-extensions==4.9.0
     #   pydantic-core
     #   zgw-consumers
 tzdata==2025.2
-    # via
-    #   celery
-    #   kombu
+    # via kombu
 uritemplate==3.0.1
     # via drf-spectacular
 urllib3==2.5.0
