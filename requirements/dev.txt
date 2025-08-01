@@ -55,7 +55,7 @@ beautifulsoup4==4.9.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webtest
-billiard==4.2.0
+billiard==4.2.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -505,7 +505,7 @@ jsonschema==4.17.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-kombu==5.4.2
+kombu==5.5.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -565,11 +565,12 @@ oyaml==1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-packaging==23.2
+packaging==25.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   build
+    #   kombu
     #   pytest
     #   sphinx
 phonenumberslite==8.13.30
@@ -901,7 +902,7 @@ typing-extensions==4.9.0
     #   pydantic-core
     #   rich-click
     #   zgw-consumers
-tzdata==2024.1
+tzdata==2025.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
