@@ -2,6 +2,26 @@
 Change history
 ==============
 
+3.1.3 (2025-08-04)
+------------------
+
+**Bugfixes/QOL**
+
+* Upgrade kombu to ensure celery worker properly reestablishes connection to redis on restart
+
+**Maintenance**
+
+* Add environment variable ``CELERY_RESULT_EXPIRES`` to change how long the results will be stored in Redis (see :ref:`installation_env_config` > Celery for more information)
+
+* Upgrade dependencies
+
+  * ``celery`` to 5.5.3
+  * ``kombu`` to 5.5.4
+  * ``packaging`` to 25.0
+  * ``billiard`` to 4.2.1
+  * ``tzdata`` to 2052.2
+
+
 3.1.2 (2025-07-22)
 ------------------
 
