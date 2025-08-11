@@ -8,4 +8,4 @@ Manual
    :caption: Further reading
 
    logging
-
+   scripts
