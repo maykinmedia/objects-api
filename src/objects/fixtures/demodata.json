@@ -814,7 +814,6 @@
         "auth_type": "api_key",
         "header_key": "Authorization",
         "header_value": "Token 4271c4a3bb0726c55d44b1e2e68de29b19dfc643",
-        "oas": "http://localhost:8001/api/v1/schema/openapi.yaml",
         "nlx": "",
         "user_id": "",
         "user_representation": ""
