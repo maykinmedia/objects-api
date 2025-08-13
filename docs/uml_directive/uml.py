@@ -21,10 +21,6 @@ class UmlImagesDirective(Directive):
         for filename in sorted(os.listdir(static_dir)):
             if filename.lower().endswith(".png"):
                 image_path = f"/_static/uml/{filename}"
-                title_text = os.path.splitext(filename)[0].capitalize()
-
-                title_node = nodes.subtitle(text=title_text)
-                image_nodes.append(title_node)
 
                 image_node = nodes.image(uri=image_path)
                 image_node["classes"].append("uml-diagram")

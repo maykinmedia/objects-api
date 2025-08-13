@@ -8,7 +8,7 @@ sphinx:
   configuration: docs/conf.py
 
 build:
-  os: 'ubuntu-22.04'
+  os: "ubuntu-22.04"
   apt_packages:
     - libxml2-dev
     - libxmlsec1-dev
@@ -19,8 +19,4 @@ build:
     - graphviz
     - graphviz-dev
   tools:
-    python: '3.12'
-
-python:
-  install:
-    - requirements: requirements/dev.txt
+    python: "3.12"
