@@ -16,6 +16,8 @@ build:
     - wget
     - libgdal-dev
     - gdal-bin
+    - graphviz
+    - graphviz-dev
   tools:
     python: '3.12'
 

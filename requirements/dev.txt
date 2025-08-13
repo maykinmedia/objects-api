@@ -515,6 +515,11 @@ lxml==4.9.4
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
+markdown==3.8.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   sphinx-markdown-tables
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.3
@@ -653,6 +658,8 @@ pygments==2.18.0
     #   rich
     #   sphinx
     #   sphinx-tabs
+pygraphviz==1.14
+    # via -r requirements/dev.in
 pyjwt==2.10.1
     # via
     #   -c requirements/ci.txt
@@ -822,6 +829,10 @@ sphinx==8.1.3
     #   sphinx-rtd-theme
     #   sphinx-tabs
     #   sphinxcontrib-jquery
+sphinx-markdown-tables==0.0.17
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 sphinx-rtd-theme==3.0.2
     # via
     #   -c requirements/ci.txt

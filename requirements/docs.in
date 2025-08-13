@@ -6,3 +6,4 @@ sphinx
 sphinx-rtd-theme
 sphinx-tabs
 recommonmark
+sphinx-markdown-tables
