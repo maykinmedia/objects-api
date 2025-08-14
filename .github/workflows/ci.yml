@@ -141,7 +141,7 @@ jobs:
       - store-reusable-workflow-vars
     with:
       main-branch: 'master'
-      apt-packages: 'libgdal-dev gdal-bin'
+      apt-packages: 'libgdal-dev gdal-bin graphviz graphviz-dev'
       run-docs: true
       django-settings-module: objects.conf.ci
       python-version: '3.12'

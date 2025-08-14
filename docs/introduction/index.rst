@@ -28,6 +28,7 @@ configuration or development needed.
    background
    definitions
    information-model
+   uml-diagram
    metadata
    visualization
    features

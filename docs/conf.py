@@ -14,7 +14,10 @@ from importlib.metadata import version as _version
 import django
 from django.utils.translation import activate
 
-sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(1, os.path.abspath("../src"))
+
+from model_graph import generate_model_graphs
 
 import objects  # noqa isort:skip
 from objects.setup import setup_env  # noqa isort:skip
@@ -54,9 +57,11 @@ extensions = [
     "sphinx_tabs.tabs",
     "recommonmark",
     "sphinx.ext.autodoc",
+    "sphinx.ext.graphviz",
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
-    #    "sphinx_markdown_tables",
+    "uml_directive.uml",
+    "sphinx_markdown_tables",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -129,3 +134,12 @@ intersphinx_mapping = {
         None,
     ),
 }
+
+#
+#   Datamodel image creation
+#
+graphviz_output_format = "png"
+
+
+def setup(app):
+    app.connect("builder-inited", generate_model_graphs)
