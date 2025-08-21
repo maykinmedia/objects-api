@@ -16,6 +16,7 @@ from django.utils.translation import activate
 
 sys.path.insert(0, os.path.abspath("../src"))
 
+
 import objects  # noqa isort:skip
 from objects.setup import setup_env  # noqa isort:skip
 
@@ -54,9 +55,11 @@ extensions = [
     "sphinx_tabs.tabs",
     "recommonmark",
     "sphinx.ext.autodoc",
+    "sphinx.ext.graphviz",
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
-    #    "sphinx_markdown_tables",
+    "vng_api_common.diagrams.uml_images",
+    "sphinx_markdown_tables",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -79,6 +82,9 @@ activate("en")
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 source_suffix = [".rst", ".md"]
+
+# Datamodel image settings
+graphviz_output_format = "png"
 
 # -- Options for HTML output -------------------------------------------------
 
