@@ -276,6 +276,9 @@ PROJECT_NAME = "Objects"
 SITE_TITLE = "Starting point"
 SHOW_ALERT = True
 
+# Default (connection timeout, read timeout) for the requests library (in seconds)
+REQUESTS_DEFAULT_TIMEOUT = (10, 30)
+
 #
 # Library settings
 #
