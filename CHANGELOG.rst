@@ -2,6 +2,22 @@
 Change history
 ==============
 
+3.1.4 (2025-08-28)
+------------------
+
+**Maintenance**
+
+* [:open-api-framework:`157`] Add script for management information datadump exporting relevant component data (see :ref:`scripts`)
+* [:open-api-framework:`179`] Add monkeypatch to requests applying a default timeout to all requests calls
+
+* Upgrade dependencies
+
+  * ``zgw-consumers`` to 1.0.0
+
+**Documentation**
+
+* [:open-api-framework:`159`] Add functionality to create model image for Objects API and ObjectTypes API(see :ref:`uml_diagrams`)
+
 3.1.3 (2025-08-04)
 ------------------
 
