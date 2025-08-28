@@ -43,6 +43,8 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "registrationAt",
             "correctionFor",
             "correctedBy",
+            "createdOn",
+            "modifiedOn",
         )
         extra_kwargs = {
             "index": {"read_only": True},
@@ -50,6 +52,8 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "startAt": {"source": "start_at"},
             "endAt": {"source": "end_at", "read_only": True},
             "registrationAt": {"source": "registration_at", "read_only": True},
+            "createdOn": {"source": "created_on"},
+            "modifiedOn": {"source": "modified_on"},
         }
 
 
@@ -79,6 +83,8 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "registrationAt",
             "correctionFor",
             "correctedBy",
+            "createdOn",
+            "modifiedOn",
         )
         extra_kwargs = {
             "index": {"read_only": True},
@@ -86,6 +92,8 @@ class HistoryRecordSerializer(serializers.ModelSerializer):
             "startAt": {"source": "start_at"},
             "endAt": {"source": "end_at", "read_only": True},
             "registrationAt": {"source": "registration_at", "read_only": True},
+            "createdOn": {"source": "created_on"},
+            "modifiedOn": {"source": "modified_on"},
         }
 
 
@@ -111,9 +119,11 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
     class Meta:
         model = ObjectRecord
-        fields = ("url", "uuid", "type", "record")
+        fields = ("url", "uuid", "type", "record", "createdOn", "modifiedOn")
         extra_kwargs = {
             "url": {"lookup_field": "object.uuid"},
+            "createdOn": {"source": "created_on"},
+            "modifiedOn": {"source": "modified_on"},
         }
         validators = [JsonSchemaValidator(), GeometryValidator()]
 
