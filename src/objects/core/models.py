@@ -68,12 +68,17 @@ class ObjectType(models.Model):
 
 class Object(models.Model):
     uuid = models.UUIDField(
-        unique=True, default=uuid.uuid4, help_text="Unique identifier (UUID4)"
+        unique=True, default=uuid.uuid4, help_text=_("Unique identifier (UUID4)")
     )
     object_type = models.ForeignKey(
         ObjectType,
         on_delete=models.PROTECT,
         help_text=_("OBJECTTYPE in Objecttypes API"),
+    )
+
+    created_on = models.DateTimeField(auto_now_add=True, help_text=_("Creation date"))
+    modified_on = models.DateTimeField(
+        auto_now=True, help_text=_("Last modification date")
     )
 
     objects = ObjectQuerySet.as_manager()
@@ -142,6 +147,11 @@ class ObjectRecord(models.Model):
             "(`OBJECTTYPE.allowGeometry = true` or `OBJECTTYPE.allowGeometry` doesn't "
             "exist)"
         ),
+    )
+
+    created_on = models.DateTimeField(auto_now_add=True, help_text=_("Creation date"))
+    modified_on = models.DateTimeField(
+        auto_now=True, help_text=_("Last modification date")
     )
 
     objects = ObjectRecordQuerySet.as_manager()
