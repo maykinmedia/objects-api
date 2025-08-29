@@ -31,7 +31,9 @@
     "pk": 1,
     "fields": {
         "uuid": "bea734f3-456b-4049-87b1-58d895daab8b",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -39,7 +41,9 @@
     "pk": 2,
     "fields": {
         "uuid": "d4643987-7f5f-4d41-8083-046eb8fbad61",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -47,7 +51,9 @@
     "pk": 3,
     "fields": {
         "uuid": "59765348-ee72-4d30-b21f-dcc2ba2dffac",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -55,7 +61,9 @@
     "pk": 4,
     "fields": {
         "uuid": "47454f68-1884-438c-8f69-398f437d59c3",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -63,7 +71,9 @@
     "pk": 8,
     "fields": {
         "uuid": "6cb099c1-acb2-4ff1-989e-c752e6d44540",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -71,7 +81,9 @@
     "pk": 9,
     "fields": {
         "uuid": "601b20a6-bd09-41ff-b4ea-25c38ed5c424",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -79,7 +91,9 @@
     "pk": 10,
     "fields": {
         "uuid": "d89bcbcb-51bb-4bc4-9523-2891ed9994d7",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -87,7 +101,9 @@
     "pk": 11,
     "fields": {
         "uuid": "8e155233-f06e-49ea-97fb-3c9eef31dc35",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -95,7 +111,9 @@
     "pk": 12,
     "fields": {
         "uuid": "f710ad49-8c90-4b4d-bf94-83555212dd5c",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -103,7 +121,9 @@
     "pk": 15,
     "fields": {
         "uuid": "4e04fedb-e8a5-47a2-beea-4963eafbf4b9",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -111,7 +131,9 @@
     "pk": 16,
     "fields": {
         "uuid": "1017c4c4-24c1-47b4-8f61-3b45a56f3054",
-        "object_type": 1
+        "object_type": 1,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -119,7 +141,9 @@
     "pk": 27,
     "fields": {
         "uuid": "6ce48e78-dc54-4164-8670-4b139d98f761",
-        "object_type": 2
+        "object_type": 2,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -127,7 +151,9 @@
     "pk": 28,
     "fields": {
         "uuid": "69feca90-6c3d-4628-ace8-19e4b0ae4065",
-        "object_type": 2
+        "object_type": 2,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -135,7 +161,9 @@
     "pk": 29,
     "fields": {
         "uuid": "2ffa8464-00be-473d-be78-c2d4a6283dea",
-        "object_type": 2
+        "object_type": 2,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -143,7 +171,9 @@
     "pk": 30,
     "fields": {
         "uuid": "f86dc47e-9613-4eb3-aca7-f727cba3bea0",
-        "object_type": 2
+        "object_type": 2,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -151,7 +181,9 @@
     "pk": 31,
     "fields": {
         "uuid": "57001413-c035-434e-9d46-090ba24fca8e",
-        "object_type": 2
+        "object_type": 2,
+        "created_on": "2025-08-29T12:16:12.567Z",
+        "modified_on": "2025-08-29T12:16:12.575Z"
     }
 },
 {
@@ -169,7 +201,9 @@
         "end_at": "2006-11-01",
         "registration_at": "2000-11-12",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -187,7 +221,9 @@
         "end_at": "2010-09-04",
         "registration_at": "2006-07-14",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -205,7 +241,9 @@
         "end_at": "2016-10-24",
         "registration_at": "2010-09-04",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -223,7 +261,9 @@
         "end_at": null,
         "registration_at": "2016-10-24",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -241,7 +281,9 @@
         "end_at": null,
         "registration_at": "2016-10-29",
         "correct": 11,
-        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)"
+        "geometry": "SRID=4326;POINT (4.896787 52.37359492959213)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -296,7 +338,9 @@
         "end_at": null,
         "registration_at": "2020-09-22",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.905289 52.369918)"
+        "geometry": "SRID=4326;POINT (4.905289 52.369918)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -322,7 +366,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.897787 52.37659492959213)"
+        "geometry": "SRID=4326;POINT (4.897787 52.37659492959213)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -369,7 +415,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.901166811673011 52.37626808920047)"
+        "geometry": "SRID=4326;POINT (4.901166811673011 52.37626808920047)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -412,7 +460,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.90663497584874 52.37384227041968)"
+        "geometry": "SRID=4326;POINT (4.90663497584874 52.37384227041968)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -461,7 +511,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.908187981083221 52.3719808282391)"
+        "geometry": "SRID=4326;POINT (4.908187981083221 52.3719808282391)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -515,7 +567,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.908722727852763 52.36991749536178)"
+        "geometry": "SRID=4326;POINT (4.908722727852763 52.36991749536178)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -566,7 +620,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.908187009455887 52.36785425886177)"
+        "geometry": "SRID=4326;POINT (4.908187009455887 52.36785425886177)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -609,7 +665,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.906633403722665 52.3659930690003)"
+        "geometry": "SRID=4326;POINT (4.906633403722665 52.3659930690003)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -635,7 +693,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.897787 52.38340911858636)"
+        "geometry": "SRID=4326;POINT (4.897787 52.38340911858636)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -682,7 +742,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.90461710532547 52.38274861943765)"
+        "geometry": "SRID=4326;POINT (4.90461710532547 52.38274861943765)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -699,7 +761,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.886851272147237 52.36991749536178)"
+        "geometry": "SRID=4326;POINT (4.886851272147237 52.36991749536178)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -716,7 +780,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.88738601891678 52.3719808282391)"
+        "geometry": "SRID=4326;POINT (4.88738601891678 52.3719808282391)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -733,7 +799,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.88893902415126 52.37384227041968)"
+        "geometry": "SRID=4326;POINT (4.88893902415126 52.37384227041968)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -750,7 +818,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.891358354234796 52.3753195751365)"
+        "geometry": "SRID=4326;POINT (4.891358354234796 52.3753195751365)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
@@ -767,7 +837,9 @@
         "end_at": null,
         "registration_at": "2020-09-30",
         "correct": null,
-        "geometry": "SRID=4326;POINT (4.894407188326989 52.37626808920047)"
+        "geometry": "SRID=4326;POINT (4.894407188326989 52.37626808920047)",
+        "created_on": "2025-08-29T12:16:12.578Z",
+        "modified_on": "2025-08-29T12:16:12.582Z"
     }
 },
 {
