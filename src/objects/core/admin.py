@@ -60,7 +60,14 @@ class ObjectRecordInline(admin.TabularInline):
     form = ObjectRecordForm
     model = ObjectRecord
     extra = 1
-    readonly_fields = ("index", "registration_at", "end_at", "get_corrected_by")
+    readonly_fields = (
+        "index",
+        "registration_at",
+        "end_at",
+        "get_corrected_by",
+        "created_on",
+        "modified_on",
+    )
     fields = (
         "index",
         "version",
@@ -71,6 +78,8 @@ class ObjectRecordInline(admin.TabularInline):
         "registration_at",
         "get_corrected_by",
         "correct",
+        "created_on",
+        "modified_on",
     )
 
     formfield_overrides = {GeometryField: {"widget": forms.Textarea}}
@@ -126,10 +135,12 @@ class ObjectAdmin(admin.ModelAdmin):
         "current_record",
         "uuid",
         "get_object_type_uuid",
+        "modified_on",
+        "created_on",
     )
     search_fields = ("uuid", "records__data")
     inlines = (ObjectRecordInline,)
-    list_filter = (ObjectTypeFilter,)
+    list_filter = (ObjectTypeFilter, "created_on", "modified_on")
 
     @admin.display(description="Object type UUID")
     def get_object_type_uuid(self, obj):
@@ -143,6 +154,8 @@ class ObjectAdmin(admin.ModelAdmin):
                 "uuid",
                 "get_object_type_uuid",
                 "object_type",
+                "created_on",
+                "modified_on",
             ) + readonly_fields
 
         return readonly_fields
