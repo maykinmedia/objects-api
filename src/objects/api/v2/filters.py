@@ -1,7 +1,8 @@
 from datetime import date as date_
+from typing import Any
 
 from django import forms
-from django.db.models import QuerySet
+from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from django_filters import filters
@@ -63,6 +64,20 @@ Example: `data_attr=height__exact__100&data_attr=naam__icontains__boom`
 ) % {"value_part_help_text": DATA_ATTR_VALUE_HELP_TEXT}
 
 
+def build_nested_dict(path: str, value: Any) -> dict[str, Any]:
+    """
+    Converts a dot-separated path into a nested dictionary suitable for data__contains.
+    Example:
+        build_nested_dict("outer.inner", 123)
+        -> {"outer": {"inner": 123}}
+    """
+    keys = path.split("__")
+    nested = value
+    for key in reversed(keys):
+        nested = {key: nested}
+    return nested
+
+
 def filter_data_attr_value_part(value_part: str, queryset: QuerySet) -> QuerySet:
     """
     filter one value part for data_attr and data_attrs filters
@@ -75,7 +90,15 @@ def filter_data_attr_value_part(value_part: str, queryset: QuerySet) -> QuerySet
         in_vals = [str_value]
         if real_value != str_value:
             in_vals.append(real_value)
-        queryset = queryset.filter(**{f"data__{variable}__in": in_vals})
+
+        query = Q()
+        for val in in_vals:
+            nested_dict = build_nested_dict(variable, val)
+            query |= Q(data__contains=nested_dict)
+
+        # Make sure containment operator is used (`@>`) via __contains, to ensure the
+        # GINIndex on `data` is utilized
+        queryset = queryset.filter(query)
     elif operator == "icontains":
         # icontains treats everything like strings
         queryset = queryset.filter(**{f"data__{variable}__icontains": str_value})
