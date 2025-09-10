@@ -14,7 +14,7 @@ from rest_framework.settings import api_settings
 
 from objects.accounts.views import QRGeneratorView
 
-handler500 = "objects.utils.views.server_error"
+handler500 = "maykin_common.views.server_error"
 admin.site.site_header = "objects admin"
 admin.site.site_title = "objects admin"
 admin.site.index_title = "Welcome to the objects admin"
