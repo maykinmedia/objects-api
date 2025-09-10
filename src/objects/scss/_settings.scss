@@ -23,6 +23,27 @@ $color-border: $color_secondary_dark;
 
 // css vars
 :root {
+  --body-color: #212529;
+
+  // Link component
+  --link-color: #017092;
+  --link-color-hover: var(--link-color);
+  --link-color-muted: #6c757d;
+
+  // footer component
+  --footer-border-color: #dee2e6;
+
+  // tabs component
+  --tabs-border-color: #dee2e6;
+  --tabs-item-hover-border-color: #f3f3f3;
+
+  // Button component
+  --button-color: #ffffff;
+  --button-background-color: #04a5bb;
+  --button-hover-background-color: #017092;
+  --button-alert-background-color: #dc3545;
+  --button-alert-hover-background-color: #bd2130;
+
   --color_primary: #{$color_primary};
   --color_primary_dark: #{$color_primary_dark};
 
@@ -42,4 +63,17 @@ $color-border: $color_secondary_dark;
   --color_link_hover: #{$color_link_hover};
   --color-text: #{$color-text};
   --color-border: #{$color-border};
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--body-color);
+}
+
+.content {
+  &#{&}--align-right {
+    text-align: right;
+  }
 }
