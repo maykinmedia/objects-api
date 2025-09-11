@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.4
+    method: GET
+    uri: http://127.0.0.1:8008/api/v2/objecttypes
+  response:
+    body:
+      string: '{"count":1,"next":null,"previous":null,"results":[{"url":"http://127.0.0.1:8008/api/v2/objecttypes/ca754b52-3f37-4c49-837c-130e8149e337","uuid":"ca754b52-3f37-4c49-837c-130e8149e337","name":"Melding","namePlural":"Meldingen","description":"","dataClassification":"intern","maintainerOrganization":"Dimpact","maintainerDepartment":"","contactPerson":"Ad
+        Alarm","contactEmail":"","source":"","updateFrequency":"unknown","providerOrganization":"","documentationUrl":"","labels":{},"createdAt":"2020-12-01","modifiedAt":"2020-12-01","allowGeometry":true,"versions":["http://127.0.0.1:8008/api/v2/objecttypes/ca754b52-3f37-4c49-837c-130e8149e337/versions/1","http://127.0.0.1:8008/api/v2/objecttypes/ca754b52-3f37-4c49-837c-130e8149e337/versions/2","http://127.0.0.1:8008/api/v2/objecttypes/ca754b52-3f37-4c49-837c-130e8149e337/versions/3"]}]}'
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      Content-Length:
+      - '838'
+      Content-Security-Policy:
+      - 'img-src ''self'' data: cdn.redoc.ly; form-action ''self''; style-src ''self''
+        ''unsafe-inline'' fonts.googleapis.com; frame-src ''self''; worker-src ''self''
+        blob:; default-src ''self''; object-src ''none''; font-src ''self'' fonts.gstatic.com;
+        frame-ancestors ''none''; script-src ''self'' ''unsafe-inline''; base-uri
+        ''self'''
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Wed, 10 Sep 2025 14:52:29 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - WSGIServer/0.2 CPython/3.12.3
+      Server-Timing:
+      - TimerPanel_utime;dur=9.131999999999252;desc="User CPU time", TimerPanel_stime;dur=3.3320000000003347;desc="System
+        CPU time", TimerPanel_total;dur=12.463999999999587;desc="Total CPU time",
+        TimerPanel_total_time;dur=18.878865001170198;desc="Elapsed time", SQLPanel_sql_time;dur=2.034262000961462;desc="SQL
+        4 queries", CachePanel_total_time;dur=0;desc="Cache 0 Calls"
+      Vary:
+      - origin, Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      djdt-store-id:
+      - cb7d0f56ba8e40dfb4fd67a27838c76b
+    status:
+      code: 200
+      message: OK
+version: 1
