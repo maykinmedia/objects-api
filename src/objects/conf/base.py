@@ -25,6 +25,7 @@ DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 INSTALLED_APPS = INSTALLED_APPS + [
     "maykin_common",
+    "capture_tag",
     # Optional applications.
     "django.contrib.gis",
     "django_structlog",

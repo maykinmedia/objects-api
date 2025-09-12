@@ -1,0 +1,34 @@
+{% extends "maykin_common/api/includes/footer.html" %}
+{% load static i18n capture_tags %}
+
+{% block footer %}
+    {% capture as issues_link silent %}<a class="link link--muted" href="https://github.com/maykinmedia/objects-api/issues">issues</a>{% endcapture %}
+
+    {% with issues_link=issues_link client_link='<a class="link" href="https://www.utrecht.nl">Municipality of Utrecht</a>' %}
+        {{ block.super }}
+    {% endwith %}
+
+{% endblock %}
+
+{% block links %}
+    <li>
+        <a class="link link--muted" href="https://objects-and-objecttypes-api.readthedocs.io/">
+            {% trans "Documentation" %}
+        </a>
+    </li>
+    <li>
+        <a class="link link--muted" href="https://commonground.nl/groups/view/54477963/objecten-en-objecttypen-api">
+            {% trans "Community on CommonGround.nl" %}
+        </a>
+    </li>
+    <li>
+        <a class="link link--muted" href="https://hub.docker.com/r/maykinmedia/objects-api">
+            {% trans "Docker image" %}
+        </a>
+    </li>
+    <li>
+        <a class="link link--muted" href="https://github.com/maykinmedia/objects-api">
+            {% trans "Code on Github" %}
+        </a>
+    </li>
+{% endblock %}
