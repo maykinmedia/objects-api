@@ -2,6 +2,26 @@
 Change history
 ==============
 
+3.2.0 (2025-09-16)
+------------------
+
+.. warning::
+
+  This release adds a GINIndex on ``data_attrs``, which might slow down writes to ObjectRecord
+  occasionally, when this index is updated. The migration that adds this index concurrently, so it
+  does not lock the table while migrating, but adding the index might take some time (several minutes) if the table
+  contains a lot of ObjectRecords.
+
+  No additional Postgres extensions are required to use this index.
+
+**Features**
+
+* [:objects-api:`661`] Add GINIndex on ObjectRecord.data to improve performance when filtering on ``data_attrs``
+
+**Project maintenance**
+
+* [:open-api-framework:`85`] Set the default number of threads used by uWSGI to 4
+
 3.1.4 (2025-08-28)
 ------------------
 
