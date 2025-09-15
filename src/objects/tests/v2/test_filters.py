@@ -269,13 +269,16 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
 
     def test_filter_nested_attr(self):
         record = ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 4}}, object__object_type=self.object_type
+            data={"dimensions": {"unrelated_field": 1, "diameter": 4}},
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 5}}, object__object_type=self.object_type
+            data={"dimensions": {"unrelated_field": 1, "diameter": 5}},
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
-            data={"diameter": 4}, object__object_type=self.object_type
+            data={"unrelated_field": 1, "diameter": 4},
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 
@@ -618,13 +621,16 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
 
     def test_filter_nested_attr(self):
         record = ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 4}}, object__object_type=self.object_type
+            data={"dimensions": {"unrelated_field": 1, "diameter": 4}},
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
-            data={"dimensions": {"diameter": 5}}, object__object_type=self.object_type
+            data={"dimensions": {"unrelated_field": 1, "diameter": 5}},
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(
-            data={"diameter": 4}, object__object_type=self.object_type
+            data={"unrelated_field": 1, "diameter": 4},
+            object__object_type=self.object_type,
         )
         ObjectRecordFactory.create(data={}, object__object_type=self.object_type)
 

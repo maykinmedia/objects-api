@@ -3,6 +3,7 @@ import uuid
 from typing import Iterable
 
 from django.contrib.gis.db.models import GeometryField
+from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
@@ -147,6 +148,7 @@ class ObjectRecord(models.Model):
 
     class Meta:
         unique_together = ("object", "index")
+        indexes = [GinIndex(fields=["data"], name="idx_objectrecord_data_gin")]
 
     def __str__(self):
         return f"{self.version} ({self.start_at})"
