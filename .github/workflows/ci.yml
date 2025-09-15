@@ -79,6 +79,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Bring up docker compose and load data
         run: |
           docker compose up -d --build || ( docker compose logs >&2 && exit 1; )
@@ -89,10 +93,12 @@ jobs:
           docker compose exec --user root web pip install factory-boy
           cat performance_test/create_data.py | docker compose exec -T web src/manage.py shell
 
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install locust
+
       - name: Run Locust tests
         run: |
-          pip install locust
-          locust --config performance_test/locust.conf
+          python -m locust --config performance_test/locust.conf
 
       - name: Run tests
         run: |
