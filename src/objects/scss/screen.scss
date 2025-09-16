@@ -1,4 +1,8 @@
-@import 'settings';
-@import 'app';
-@import 'components';
-@import 'views';
+// vendor
+@use "vendor";
+
+// own styles
+@use 'settings';
+@use 'components';
+@use 'app';
+@use 'views';

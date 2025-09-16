@@ -70,6 +70,7 @@ RUN mkdir /app/log /app/config /app/tmp
 
 # copy frontend build statics
 COPY --from=frontend-build /app/src/objects/static /app/src/objects/static
+COPY --from=frontend-build /app/node_modules/@fortawesome/fontawesome-free/webfonts /app/node_modules/@fortawesome/fontawesome-free/webfonts
 
 # copy source code
 COPY ./src /app/src
