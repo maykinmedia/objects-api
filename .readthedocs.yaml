@@ -23,4 +23,4 @@ build:
 
 python:
   install:
-    - requirements: requirements/ci.txt
+    - requirements: requirements/dev.txt
