@@ -20,3 +20,7 @@ build:
     - graphviz-dev
   tools:
     python: "3.12"
+
+python:
+  install:
+    - requirements: requirements/ci.txt
