@@ -270,7 +270,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.8.2
+django-setup-configuration==0.9.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
