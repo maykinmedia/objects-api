@@ -896,16 +896,6 @@ components:
           minimum: 0
           description: Index of the record, which corrects the current record
           readOnly: true
-        createdOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Creation date
-        modifiedOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Last modification date
       required:
       - startAt
       - typeVersion
@@ -1012,16 +1002,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/ObjectRecord'
           description: State of the OBJECT at a certain time
-        createdOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Creation date
-        modifiedOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Last modification date
       required:
       - record
       - type
@@ -1076,16 +1056,6 @@ components:
           minimum: 0
           description: Index of the record, which corrects the current record
           readOnly: true
-        createdOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Creation date
-        modifiedOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Last modification date
       required:
       - startAt
       - typeVersion
@@ -1191,16 +1161,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/ObjectRecord'
           description: State of the OBJECT at a certain time
-        createdOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Creation date
-        modifiedOn:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Last modification date
     Permission:
       type: object
       properties:

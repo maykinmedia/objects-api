@@ -82,11 +82,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                             "registrationAt": object_record1.registration_at.isoformat(),
                             "correctionFor": None,
                             "correctedBy": None,
-                            "createdOn": object_record1.created_on.astimezone().isoformat(),
-                            "modifiedOn": object_record1.modified_on.astimezone().isoformat(),
                         },
-                        "createdOn": object_record1.object.created_on.astimezone().isoformat(),
-                        "modifiedOn": object_record1.object.modified_on.astimezone().isoformat(),
                     }
                 ],
             },
@@ -123,11 +119,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "registrationAt": object_record.registration_at.isoformat(),
                     "correctionFor": None,
                     "correctedBy": None,
-                    "createdOn": object_record.created_on.astimezone().isoformat(),
-                    "modifiedOn": object_record.modified_on.astimezone().isoformat(),
                 },
-                "createdOn": object_record.object.created_on.astimezone().isoformat(),
-                "modifiedOn": object_record.object.modified_on.astimezone().isoformat(),
             },
         )
 
@@ -166,8 +158,6 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "registrationAt": record1.registration_at.isoformat(),
                     "correctionFor": None,
                     "correctedBy": 2,
-                    "createdOn": record1.created_on.astimezone().isoformat(),
-                    "modifiedOn": record1.modified_on.astimezone().isoformat(),
                 },
             )
 
@@ -192,8 +182,6 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "registrationAt": record2.registration_at.isoformat(),
                     "correctionFor": 1,
                     "correctedBy": None,
-                    "createdOn": record2.created_on.astimezone().isoformat(),
-                    "modifiedOn": record2.modified_on.astimezone().isoformat(),
                 },
             )
 
@@ -429,8 +417,6 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                         "registrationAt": record1.registration_at.isoformat(),
                         "correctionFor": None,
                         "correctedBy": 2,
-                        "createdOn": record1.created_on.astimezone().isoformat(),
-                        "modifiedOn": record1.modified_on.astimezone().isoformat(),
                     },
                     {
                         "index": 2,
@@ -442,8 +428,6 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                         "registrationAt": date.today().isoformat(),
                         "correctionFor": 1,
                         "correctedBy": None,
-                        "createdOn": record1.created_on.astimezone().isoformat(),
-                        "modifiedOn": record1.modified_on.astimezone().isoformat(),
                     },
                 ],
             },

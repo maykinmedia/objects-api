@@ -1,9 +1,7 @@
 import json
-from datetime import date
 
 from django.contrib.gis.geos import Point
 
-from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -58,8 +56,6 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             set(response.headers["x-unauthorized-fields"].split(",")),
             {
                 "uuid",
-                "modifiedOn",
-                "createdOn",
                 "record__data__name",
                 "record__correctionFor",
                 "record__endAt",
@@ -69,8 +65,6 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
                 "record__geometry__coordinates",
                 "record__geometry__type",
                 "record__typeVersion",
-                "record__modifiedOn",
-                "record__createdOn",
             },
         )
 
@@ -179,33 +173,28 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
         cls.other_object_type = ObjectTypeFactory()
 
-    @freeze_time("2025-01-01")
     def test_list_without_query_different_object_types(self):
         PermissionFactory.create(
             object_type=self.object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields={"1": ["url", "type", "createdOn", "modifiedOn", "record"]},
+            fields={"1": ["url", "type", "record"]},
         )
         PermissionFactory.create(
             object_type=self.other_object_type,
             mode=PermissionModes.read_only,
             token_auth=self.token_auth,
             use_fields=True,
-            fields={"1": ["url", "uuid", "createdOn", "modifiedOn", "record"]},
+            fields={"1": ["url", "uuid", "record"]},
         )
         record1 = ObjectRecordFactory.create(
-            object__object_type=self.object_type,
-            data={"name": "some"},
-            version=1,
-            start_at=date(2020, 1, 1),
+            object__object_type=self.object_type, data={"name": "some"}, version=1
         )
         record2 = ObjectRecordFactory.create(
             object__object_type=self.other_object_type,
             data={"name": "other"},
             version=1,
-            start_at=date.today(),
         )
 
         response = self.client.get(self.url)
@@ -227,11 +216,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
                         "registrationAt": record2.registration_at.isoformat(),
                         "correctionFor": None,
                         "correctedBy": None,
-                        "createdOn": record2.created_on.astimezone().isoformat(),
-                        "modifiedOn": record2.modified_on.astimezone().isoformat(),
                     },
-                    "createdOn": record2.object.created_on.astimezone().isoformat(),
-                    "modifiedOn": record2.object.modified_on.astimezone().isoformat(),
                 },
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[record1.object.uuid])}",
@@ -246,11 +231,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
                         "registrationAt": record1.registration_at.isoformat(),
                         "correctionFor": None,
                         "correctedBy": None,
-                        "createdOn": record1.created_on.astimezone().isoformat(),
-                        "modifiedOn": record1.modified_on.astimezone().isoformat(),
                     },
-                    "createdOn": record1.object.created_on.astimezone().isoformat(),
-                    "modifiedOn": record1.object.modified_on.astimezone().isoformat(),
                 },
             ],
         )
