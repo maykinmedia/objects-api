@@ -102,6 +102,9 @@ jobs:
           createdb -h localhost -U postgres objects
           pip install uv
           uv pip install --system -r requirements/ci.txt
+          src/manage.py migrate
+          SCRIPTPATH=bin UWSGI_PROCESSES=4 UWSGI_THREADS=4 bin/docker_start.sh &
+          src/manage.py shell < performance_test/create_data.py
         env:
           RUN_SETUP_CONFIG: false
           DB_PASSWORD: ""

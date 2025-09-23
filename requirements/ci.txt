@@ -615,7 +615,7 @@ qrcode==6.1
     #   django-two-factor-auth
 recommonmark==0.7.1
     # via -r requirements/docs.in
-redis==3.5.3
+redis==6.4.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

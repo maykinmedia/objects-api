@@ -749,7 +749,7 @@ recommonmark==0.7.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   -r requirements/dev.in
-redis==3.5.3
+redis==6.4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
