@@ -24,6 +24,8 @@ DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 # Application definition
 
 INSTALLED_APPS = INSTALLED_APPS + [
+    "maykin_common",
+    "capture_tag",
     # Optional applications.
     "django.contrib.gis",
     "django_structlog",
@@ -286,7 +288,7 @@ REQUESTS_DEFAULT_TIMEOUT = (10, 30)
 
 # Django-Admin-Index
 ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
-    "objects.utils.admin_index.should_display_dropdown_menu"
+    "maykin_common.django_two_factor_auth.should_display_dropdown_menu"
 )
 
 #
