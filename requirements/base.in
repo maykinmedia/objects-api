@@ -1,12 +1,9 @@
-open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis]
+open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis, structlog-celery]
 
 # Core python libraries
 glom # data represenation based on spec
 jsonschema
 furl
-
-# Django libraries
-django-structlog[celery]
 
 # Common ground libraries
 django-setup-configuration>=0.5.0
