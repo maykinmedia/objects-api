@@ -117,7 +117,7 @@ django-axes==6.5.1
     # via open-api-framework
 django-cors-headers==4.4.0
     # via open-api-framework
-django-csp==3.8
+django-csp==4.0
     # via open-api-framework
 django-filter==24.2
     # via
@@ -170,7 +170,7 @@ django-solo==2.2.0
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
-    # via -r requirements/base.in
+    # via open-api-framework
 django-two-factor-auth==1.17.0
     # via maykin-2fa
 django-upgrade-check==1.1.0
@@ -249,14 +249,16 @@ notifications-api-common==0.7.3
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.12.0
+open-api-framework==0.13.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
 oyaml==1.0
     # via commonground-api-common
 packaging==25.0
-    # via kombu
+    # via
+    #   django-csp
+    #   kombu
 phonenumberslite==8.13.30
     # via django-two-factor-auth
 prometheus-client==0.20.0
@@ -343,8 +345,10 @@ six==1.16.0
     #   qrcode
 sqlparse==0.5.0
     # via django
-structlog==25.3.0
-    # via django-structlog
+structlog==25.4.0
+    # via
+    #   django-structlog
+    #   open-api-framework
 tornado==6.5
     # via flower
 typing-extensions==4.9.0

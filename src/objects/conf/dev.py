@@ -11,7 +11,6 @@ os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("ENVIRONMENT", "development")
 os.environ.setdefault("DISABLE_2FA", "True")
-os.environ.setdefault("LOG_FORMAT_CONSOLE", "plain_console")
 
 os.environ.setdefault("DB_NAME", "objects")
 os.environ.setdefault("DB_USER", "objects")
@@ -22,6 +21,7 @@ from .base import *  # noqa isort:skip
 #
 # Standard Django settings.
 #
+
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
