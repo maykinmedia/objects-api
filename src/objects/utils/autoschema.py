@@ -1,13 +1,10 @@
-from typing import Optional, Dict, Type
-
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.plumbing import build_parameter_type, get_view_model
-from drf_spectacular.utils import OpenApiParameter, _SerializerType
-from rest_framework import serializers
+from drf_spectacular.utils import OpenApiParameter
 from vng_api_common.constants import VERSION_HEADER
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.schema import HTTP_STATUS_CODE_TITLES
