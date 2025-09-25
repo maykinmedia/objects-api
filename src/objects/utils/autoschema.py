@@ -1,10 +1,13 @@
+from typing import Optional, Dict, Type
+
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.plumbing import build_parameter_type, get_view_model
-from drf_spectacular.utils import OpenApiParameter
+from drf_spectacular.utils import OpenApiParameter, _SerializerType
+from rest_framework import serializers
 from vng_api_common.constants import VERSION_HEADER
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.schema import HTTP_STATUS_CODE_TITLES
@@ -19,6 +22,14 @@ object_path_parameter = OpenApiParameter(
 
 
 class AutoSchema(_AutoSchema):
+    def get_response_serializers(
+        self,
+    ):
+        if self.method == "DELETE":
+            return {204: None}
+
+        return super().get_response_serializers()
+
     def get_operation_id(self):
         """
         Use model name as a base for operation_id
@@ -128,6 +139,7 @@ class AutoSchema(_AutoSchema):
         ]
 
     def get_version_headers(self) -> list[OpenApiParameter]:
+        print("get_version_headers called for", self.view.__class__.__name__)
         return [
             OpenApiParameter(
                 name=VERSION_HEADER,
