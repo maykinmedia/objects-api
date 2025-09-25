@@ -5,12 +5,12 @@ from drf_spectacular.views import (
 )
 from rest_framework import routers
 
-from .views import ObjectViewSet, PermissionViewSet
-
 from objects.utils.oas_extensions.views import (
-    SpectacularYAMLAPIView,
     SpectacularJSONAPIView,
+    SpectacularYAMLAPIView,
 )
+
+from .views import ObjectViewSet, PermissionViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r"objects", ObjectViewSet, basename="object")
@@ -35,7 +35,7 @@ urlpatterns = [
                 ),
                 path(
                     "schema/",
-                    SpectacularRedocView.as_view(url_name="schema"),
+                    SpectacularRedocView.as_view(url_name="schema-yaml"),
                     name="schema-redoc",
                 ),
                 # actual endpoints
