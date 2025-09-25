@@ -42,6 +42,10 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "objects.utils",
 ]
 
+MIDDLEWARE += [
+    "vng_api_common.middleware.APIVersionHeaderMiddleware",
+]
+
 # XXX: this should be renamed to `LOG_REQUESTS` in the next major release
 _log_requests_via_middleware = config(
     "ENABLE_STRUCTLOG_REQUESTS",
