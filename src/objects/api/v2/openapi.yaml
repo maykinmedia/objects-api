@@ -529,6 +529,12 @@ paths:
       - tokenAuth: []
       responses:
         '204':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           description: No response body
   /objects/{uuid}/{index}:
     get:
