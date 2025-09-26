@@ -154,11 +154,20 @@ class ObjectRecord(models.Model):
         auto_now=True, help_text=_("Last modification date")
     )
 
+    # Denormalized column for `index`
+    _is_latest = models.BooleanField(default=False, db_index=True)
+
     objects = ObjectRecordQuerySet.as_manager()
 
     class Meta:
         unique_together = ("object", "index")
-        indexes = [GinIndex(fields=["data"], name="idx_objectrecord_data_gin")]
+        indexes = [
+            GinIndex(fields=["data"], name="idx_objectrecord_data_gin"),
+            models.Index(
+                fields=["object", "_is_latest", "start_at", "end_at"],
+                name="idx_record_index_start_end",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.version} ({self.start_at})"
@@ -170,6 +179,10 @@ class ObjectRecord(models.Model):
             check_objecttype_cached(self.object.object_type, self.version, self.data)
 
     def save(self, *args, **kwargs):
+        if not self.id:
+            self._is_latest = True
+
+        # TODO transaction
         if not self.id and self.object.last_record:
             self.index = self.object.last_record.index + 1
 
@@ -177,5 +190,9 @@ class ObjectRecord(models.Model):
             previous_record = self.object.last_record
             previous_record.end_at = self.start_at
             previous_record.save()
+
+            ObjectRecord.objects.filter(object=self.object).exclude(pk=self.pk).update(
+                _is_latest=False
+            )
 
         super().save(*args, **kwargs)
