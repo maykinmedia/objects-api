@@ -100,7 +100,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
     type = ObjectTypeField(
         min_length=1,
         max_length=1000,
-        source="object.object_type",
+        source="_object_type",
         queryset=ObjectType.objects.all(),
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
         validators=[IsImmutableValidator()],

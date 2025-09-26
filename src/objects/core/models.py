@@ -107,6 +107,14 @@ class ObjectRecord(models.Model):
         help_text=_("Incremental index number of the object record."),
     )
     object = models.ForeignKey(Object, on_delete=models.CASCADE, related_name="records")
+    # Denormalized
+    _object_type = models.ForeignKey(
+        ObjectType,
+        on_delete=models.PROTECT,
+        help_text=_("OBJECTTYPE in Objecttypes API"),
+        null=True,
+        blank=True,
+    )
     version = models.PositiveSmallIntegerField(
         _("version"),
         help_text=_("Version of the OBJECTTYPE for data in the object record"),
@@ -166,6 +174,11 @@ class ObjectRecord(models.Model):
             models.Index(
                 fields=["object", "_is_latest", "start_at", "end_at"],
                 name="idx_record_index_start_end",
+            ),
+            # Composite index to speed up queries filtering by type and latest, ordered by id DESC
+            models.Index(
+                fields=["_object_type_id", "_is_latest", "id"],
+                name="idx_objectrecord_type_latest",
             ),
         ]
 

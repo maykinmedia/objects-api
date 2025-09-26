@@ -35,9 +35,7 @@ class ObjectRecordQuerySet(models.QuerySet):
             return self.all()
 
         allowed_object_types = token.permissions.values("object_type")
-        return self.filter(
-            object__object_type__in=models.Subquery(allowed_object_types)
-        )
+        return self.filter(_object_type__in=models.Subquery(allowed_object_types))
 
     def keep_max_record_per_object(self):
         """
