@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models import F, Window
-from django.db.models.functions import RowNumber
 
 from vng_api_common.utils import get_uuid_from_path
 from zgw_consumers.models import Service
@@ -37,28 +35,27 @@ class ObjectRecordQuerySet(models.QuerySet):
             return self.all()
 
         allowed_object_types = token.permissions.values("object_type")
-        return self.filter(
-            object__object_type__in=models.Subquery(allowed_object_types)
-        )
+        return self.filter(_object_type__in=models.Subquery(allowed_object_types))
 
     def keep_max_record_per_object(self):
         """
         Return records with the largest index for the object
         """
-        filtered_records = (
-            self.filter(object=models.OuterRef("object"))
-            .annotate(
-                row_number=Window(
-                    expression=RowNumber(),
-                    partition_by=[F("object")],
-                    order_by=F("index").desc(),
-                )
-            )
-            .filter(row_number=1)
-            .values("index")
-        )
+        # filtered_records = (
+        #     self.filter(object=models.OuterRef("object"))
+        #     .annotate(
+        #         row_number=Window(
+        #             expression=RowNumber(),
+        #             partition_by=[F("object")],
+        #             order_by=F("index").desc(),
+        #         )
+        #     )
+        #     .filter(row_number=1)
+        #     .values("index")
+        # )
 
-        return self.filter(index__in=filtered_records)
+        # return self.filter(index__in=filtered_records)
+        return self.filter(_is_latest=True)
 
     def filter_for_date(self, date):
         """
