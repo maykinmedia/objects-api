@@ -23,6 +23,7 @@ from .base import *  # noqa isort:skip
 # Standard Django settings.
 #
 
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 LOGGING["loggers"].update(
