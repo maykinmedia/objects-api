@@ -38,6 +38,7 @@ class ObjectRecordFactory(_ObjectRecordFactory):
 ObjectRecordFactory.create_batch(
     5000,
     object__object_type=object_type,
+    _object_type=object_type,
     start_at="2020-01-01",
     version=1,
     data={"identifier": "63f473de-a7a6-4000-9421-829e146499e3", "foo": "bar"},
@@ -45,6 +46,7 @@ ObjectRecordFactory.create_batch(
 )
 ObjectRecordFactory.create(
     object__object_type=object_type,
+    _object_type=object_type,
     start_at="2020-01-01",
     version=1,
     data={"identifier": "ec5cde18-40a0-4135-8d97-3500d1730e60", "foo": "bar"},

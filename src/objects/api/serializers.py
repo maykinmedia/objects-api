@@ -100,7 +100,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
     type = ObjectTypeField(
         min_length=1,
         max_length=1000,
-        source="object.object_type",
+        source="_object_type",
         queryset=ObjectType.objects.all(),
         help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
         validators=[IsImmutableValidator()],
@@ -119,7 +119,9 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
 
     @transaction.atomic
     def create(self, validated_data):
-        object_data = validated_data.pop("object")
+        object_data = validated_data.pop("object", {})
+        if object_type := validated_data.pop("_object_type"):
+            object_data["object_type"] = object_type
         object = Object.objects.create(**object_data)
 
         validated_data["object"] = object
@@ -156,7 +158,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         logger.info(
             "object_updated",
             object_uuid=str(record.object.uuid),
-            objecttype_uuid=str(record.object.object_type.uuid),
+            objecttype_uuid=str(record._object_type.uuid),
             objecttype_version=record.version,
             token_identifier=token_auth.identifier,
             token_application=token_auth.application,
