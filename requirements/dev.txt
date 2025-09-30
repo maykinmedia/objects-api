@@ -139,7 +139,7 @@ codecov==2.1.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-commonground-api-common==2.9.0
+commonground-api-common==2.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -231,7 +231,7 @@ django-cors-headers==4.4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-csp==3.8
+django-csp==4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -556,7 +556,7 @@ notifications-api-common==0.7.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.12.0
+open-api-framework==0.13.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -575,6 +575,7 @@ packaging==25.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   build
+    #   django-csp
     #   kombu
     #   pytest
     #   sphinx
@@ -885,7 +886,7 @@ sqlparse==0.5.0
     #   django
     #   django-debug-toolbar
     #   django-silk
-structlog==25.3.0
+structlog==25.4.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
