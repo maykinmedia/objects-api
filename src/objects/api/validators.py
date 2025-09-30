@@ -21,16 +21,16 @@ class JsonSchemaValidator:
 
         # create
         if not instance:
-            object_type = attrs.get("object", {}).get("object_type")
+            object_type = attrs.get("_object_type")
             version = attrs.get("version")
             data = attrs.get("data", {})
 
         # update
         else:
             object_type = (
-                attrs.get("object", {}).get("object_type")
-                if "object" in attrs
-                else instance.object.object_type
+                attrs.get("_object_type")
+                if "_object_type" in attrs
+                else instance._object_type
             )
             version = attrs.get("version") if "version" in attrs else instance.version
             data = attrs.get("data", {}) if "data" in attrs else instance.data
@@ -124,9 +124,7 @@ class GeometryValidator:
 
     def __call__(self, attrs, serializer):
         instance = getattr(serializer, "instance", None)
-        object_type = (
-            attrs.get("object", {}).get("object_type") or instance.object.object_type
-        )
+        object_type = attrs.get("_object_type") or instance._object_type
         geometry = attrs.get("geometry")
 
         if not geometry:

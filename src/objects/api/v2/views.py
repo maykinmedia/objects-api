@@ -80,13 +80,16 @@ data_attr_parameter = OpenApiParameter(
 class ObjectViewSet(
     ObjectNotificationMixin, SearchMixin, GeoMixin, viewsets.ModelViewSet
 ):
-    queryset = ObjectRecord.objects.select_related(
-        "object",
-        "object__object_type",
-        "object__object_type__service",
-        "correct",
-        "corrected",
-    ).order_by("-pk")
+    queryset = (
+        ObjectRecord.objects.select_related(
+            "_object_type",
+            "_object_type__service",
+            "correct",
+            "corrected",
+        )
+        .prefetch_related("object")
+        .order_by("-pk")
+    )
     serializer_class = ObjectSerializer
     filterset_class = ObjectRecordFilterSet
     filter_backends = [FilterBackend, OrderingBackend]
@@ -105,7 +108,7 @@ class ObjectViewSet(
         # prefetch permissions for DB optimization. Used in DynamicFieldsMixin
         base = base.prefetch_related(
             models.Prefetch(
-                "object__object_type__permissions",
+                "_object_type__permissions",
                 queryset=Permission.objects.filter(token_auth=token_auth),
                 to_attr="token_permissions",
             ),

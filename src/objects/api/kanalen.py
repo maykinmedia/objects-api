@@ -32,7 +32,7 @@ class ObjectKanaal(Kanaal):
         data = data or {}
         return {
             kenmerk: (
-                data.get("type") or obj.object.object_type.url
+                data.get("type") or obj._object_type.url
                 if kenmerk == "object_type"
                 else data.get(kenmerk, getattr(obj, kenmerk))
             )
