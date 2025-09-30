@@ -169,7 +169,7 @@ cssselect==1.1.0
     #   pyquery
 distlib==0.3.9
     # via virtualenv
-django==5.2.3
+django==5.2.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -584,7 +584,7 @@ phonenumberslite==8.13.30
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pip==24.3.1
+pip==25.2
     # via pip-tools
 pip-tools==7.4.1
     # via -r requirements/dev.in

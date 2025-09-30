@@ -2,6 +2,31 @@
 Change history
 ==============
 
+3.3.3 (2025-10-02)
+------------------
+
+**New features**
+
+* [:objects-api:`653`] Add ``created_on`` & ``modified_on`` to ``Object`` & ``ObjectRecord`` models to
+  allow sorting and filtering in the admin UI
+* [:open-api-framework:`175`] Changes to logging of handled and unhandled exceptions (see :ref:`manual_logging`)
+
+  * Log events for handled API exceptions (e.g. HTTP 400) now include ``invalid_params``
+  * Log events for unhandled API exceptions (e.g. HTTP 500) now include the traceback via ``exception``
+  * TODO outside API?
+
+**Project maintenance**
+
+* Upgrade dependencies
+
+  * ``Django`` to 5.2.6
+  * ``pip`` to 25.2 in dev dependencies
+  * [:open-api-framework:`175`] ``commonground-api-common`` to 2.10.0
+  * [:open-api-framework:`184`] ``django-setup-configuration`` to 0.9.0
+  * [:open-api-framework:`186`] ``open-api-framework`` to 0.13.0
+
+* Fix ReadTheDocs build by installing required dependencies
+
 3.2.0 (2025-09-16)
 ------------------
 
