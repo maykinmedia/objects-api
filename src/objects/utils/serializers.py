@@ -106,7 +106,7 @@ class DynamicFieldsMixin:
             not_allowed = set(get_field_names(data)) - set(get_field_names(result_data))
             if not_allowed:
                 self.not_allowed[
-                    f"{instance.object.object_type.url}({instance.version})"
+                    f"{instance._object_type.url}({instance.version})"
                 ] |= not_allowed
         else:
             spec_query = build_spec(query_fields)
@@ -121,7 +121,7 @@ class DynamicFieldsMixin:
             )
             if not_allowed:
                 self.not_allowed[
-                    f"{instance.object.object_type.url}({instance.version})"
+                    f"{instance._object_type.url}({instance.version})"
                 ] |= not_allowed
 
         return result_data
@@ -148,11 +148,11 @@ class DynamicFieldsMixin:
             return ALL_FIELDS
 
         # use prefetch_related for DB optimization
-        if getattr(instance.object.object_type, "token_permissions", None):
-            permission = instance.object.object_type.token_permissions[0]
+        if getattr(instance._object_type, "token_permissions", None):
+            permission = instance._object_type.token_permissions[0]
         else:
             permission = request.auth.get_permission_for_object_type(
-                instance.object.object_type
+                instance._object_type
             )
         if permission.mode == PermissionModes.read_only and permission.use_fields:
             return permission.fields.get(str(instance.version), [])
