@@ -36,7 +36,37 @@ Application version     Release date    API specification
 ===================     ==============  =============================
 latest                  n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml>`_,
                                         `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml>`_,
-                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.0..master>`_)
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.2.0..master>`_)
+3.2.0                   2025-09-16      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.2.0/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.2.0/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.1.4..3.2.0>`_)
+3.1.4                   2025-08-28      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.4/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.4/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.1.3..3.1.4>`_)
+3.1.3                   2025-08-04      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.3/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.3/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.1.2..3.1.3>`_)
+3.1.2                   2025-07-22      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.2/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.2/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.1.1..3.1.2>`_)
+3.1.1                   2025-07-04      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.1/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.1/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.1.0..3.1.1>`_)
+3.1.0                   2025-05-26      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.0/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.1.0/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.4..3.1.0>`_)
+3.0.4                   2025-05-13      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.4/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.4/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.3..3.0.4>`_)
+3.0.3                   2025-04-03      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.3/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.3/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.2..3.0.3>`_)
+3.0.2                   2025-03-07      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.2/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.2/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.1..3.0.2>`_)
+3.0.1                   2025-03-04      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.1/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.1/src/objects/api/v2/openapi.yaml>`_
+                                        (`diff <https://github.com/maykinmedia/objects-api/compare/3.0.0..3.0.1>`_)
 3.0.0                   2025-01-22      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.0/src/objects/api/v2/openapi.yaml>`_,
                                         `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.0.0/src/objects/api/v2/openapi.yaml>`_
                                         (`diff <https://github.com/maykinmedia/objects-api/compare/2.5.0..3.0.0>`_)
