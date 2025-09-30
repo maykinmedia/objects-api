@@ -114,6 +114,7 @@ linkcheck_ignore = [
     "https://objects.municipality.nl/admin/",
     "https://sparxsystems.com/products/ea/trial/request.html",  # this raises 403 for crawlers probably?
     "https://data.overheid.nl/",
+    "https://github.com/maykinmedia/django-setup-configuration/blob/main/README.rst#environment-variable-substitution",
 ]
 
 extlinks = {
