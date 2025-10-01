@@ -6,6 +6,7 @@ from drf_spectacular.views import (
 from rest_framework import routers
 
 from objects.utils.oas_extensions.views import (
+    DeprecationRedirectView,
     SpectacularJSONAPIView,
     SpectacularYAMLAPIView,
 )
@@ -23,6 +24,10 @@ urlpatterns = [
         "/",
         include(
             [
+                path(
+                    "schema/openapi.yaml",
+                    DeprecationRedirectView.as_view(pattern_name="v2:schema-yaml"),
+                ),
                 path(
                     "openapi.yaml",
                     SpectacularYAMLAPIView.as_view(),

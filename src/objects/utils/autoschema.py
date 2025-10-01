@@ -136,7 +136,6 @@ class AutoSchema(_AutoSchema):
         ]
 
     def get_version_headers(self) -> list[OpenApiParameter]:
-        print("get_version_headers called for", self.view.__class__.__name__)
         return [
             OpenApiParameter(
                 name=VERSION_HEADER,

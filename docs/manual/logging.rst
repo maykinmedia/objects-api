@@ -63,6 +63,7 @@ Objects API
 * ``search_failed_for_datastore``: attempted to perform ``jsonpath`` search for a backend that does not support this operation. Additional context: ``exc_info``.
 * ``object_created``: created an ``Object`` via the API. Additional context: ``object_uuid``, ``objecttype_uuid``, ``objecttype_version``, ``token_identifier``, ``token_application``.
 * ``object_updated``: updated an ``Object`` via the API. Additional context: ``object_uuid``, ``objecttype_uuid``, ``objecttype_version``, ``token_identifier``, ``token_application``.
+* ``deprecated_endpoint_called``: a deprecated endpoint was called. Additional context: ``endpoint``.
 
 Objecttypes API
 ~~~~~~~~~~~~~~~
@@ -73,6 +74,7 @@ Objecttypes API
 * ``object_version_created``: created an ``Object_version`` via the API. Additional context: ``version``, ``objecttype_uuid``, ``token_identifier``, ``token_application``.
 * ``object_version_updated``: updated an ``Object_version`` via the API. Additional context: ``version``, ``objecttype_uuid``, ``token_identifier``, ``token_application``.
 * ``object_version_deleted``: deleted an ``Object_version`` via the API. Additional context: ``version``, ``objecttype_uuid``, ``token_identifier``, ``token_application``.
+* ``deprecated_endpoint_called``: a deprecated endpoint was called. Additional context: ``endpoint``.
 
 Setup configuration
 ~~~~~~~~~~~~~~~~~~~
