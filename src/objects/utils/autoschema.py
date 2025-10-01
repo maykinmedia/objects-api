@@ -5,6 +5,7 @@ from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.plumbing import build_parameter_type, get_view_model
 from drf_spectacular.utils import OpenApiParameter
+from vng_api_common.constants import VERSION_HEADER
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.schema import HTTP_STATUS_CODE_TITLES
 
@@ -18,6 +19,14 @@ object_path_parameter = OpenApiParameter(
 
 
 class AutoSchema(_AutoSchema):
+    def get_response_serializers(
+        self,
+    ):
+        if self.method == "DELETE":
+            return {204: None}
+
+        return super().get_response_serializers()
+
     def get_operation_id(self):
         """
         Use model name as a base for operation_id
@@ -29,10 +38,15 @@ class AutoSchema(_AutoSchema):
 
     def get_override_parameters(self):
         """Add request GEO headers"""
+        params = super().get_override_parameters()
+
         geo_headers = self.get_geo_headers()
         content_type_headers = self.get_content_type_headers()
+        version_headers = self.get_version_headers()
         field_params = self.get_fields_params()
-        return geo_headers + content_type_headers + field_params
+        return (
+            params + geo_headers + content_type_headers + version_headers + field_params
+        )
 
     def _get_filter_parameters(self):
         """remove filter parameters from all actions except LIST"""
@@ -118,6 +132,20 @@ class AutoSchema(_AutoSchema):
                 required=True,
                 enum=["application/json"],
                 description=_("Content type of the request body."),
+            )
+        ]
+
+    def get_version_headers(self) -> list[OpenApiParameter]:
+        return [
+            OpenApiParameter(
+                name=VERSION_HEADER,
+                type=str,
+                location=OpenApiParameter.HEADER,
+                description=_(
+                    "Geeft een specifieke API-versie aan in de context van "
+                    "een specifieke aanroep. Voorbeeld: 1.2.1."
+                ),
+                response=True,
             )
         ]
 
