@@ -1,3 +1,4 @@
+import os
 from datetime import date, timedelta
 from unittest.mock import patch
 
@@ -1021,6 +1022,7 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
             f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
         )
 
+    @patch.dict(os.environ, {"DEBUG": "false"})
     @patch(
         "objects.core.query.ObjectRecordQuerySet._fetch_all",
         side_effect=ProgrammingError("'jsonpath' is not found"),
@@ -1032,7 +1034,10 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             response.json(),
             {
-                "detail": "This search operation is not supported by the underlying data store."
+                "code": "error",
+                "title": "Internal Server Error",
+                "status": 500,
+                "detail": "This search operation is not supported by the underlying data store.",
             },
         )
 
