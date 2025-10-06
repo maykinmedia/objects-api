@@ -74,8 +74,53 @@ Objecttypes API
 * ``object_version_updated``: updated an ``Object_version`` via the API. Additional context: ``version``, ``objecttype_uuid``, ``token_identifier``, ``token_application``.
 * ``object_version_deleted``: deleted an ``Object_version`` via the API. Additional context: ``version``, ``objecttype_uuid``, ``token_identifier``, ``token_application``.
 
+.. _manual_logging_exceptions:
+
+Exceptions
+----------
+
+Handled exceptions follow a standardized JSON format to ensure consistency and improve error tracking.
+Most fields are standard and include:
+``title``, ``code``, ``status``, ``event``, ``source``, ``user_id``, ``request_id``, ``timestamp``, ``logger`` and ``level``.
+
+A new field ``data`` has been added to provide detailed information about which input parameters caused the error in API calls.
+
+.. code-block:: json
+
+    {
+        "title": "Authentication credentials were not provided.",
+        "code": "not_authenticated",
+        "status": 401,
+        "data": {
+            "detail": "Authentication credentials were not provided."
+        },
+        "event": "api.handled_exception",
+        "user_id": null,
+        "request_id": "68b46bf0-a5b8-43f7-a550-e37dee617bff",
+        "source": "app",
+        "timestamp": "2025-10-06T07:43:40.991929Z",
+        "logger": "objects.utils.views",
+        "level": "error"
+    }
+
+Uncaught exceptions that occur via the API are logged as ``api.uncaught_exception`` events
+and contain the traceback of the exception.
+
+.. code-block:: json
+
+    {
+        "event": "api.uncaught_exception",
+        "request_id": "9a5c781d-b15c-4b3a-8910-e7968ae37cb6",
+        "user_id": null,
+        "timestamp": "2025-10-06T08:31:57.572352Z",
+        "logger": "objects.utils.views",
+        "level": "error",
+        "exception": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.12/site-packages/rest_framework/views.py\", line 497, in dispatch\n    self.initial(request, *args, **kwargs)\n  File \"/usr/local/lib/python3.12/site-packages/vng_api_common/geo.py\", line 30, in initial\n    super().initial(request, *args, **kwargs)\n  File \"/usr/local/lib/python3.12/site-packages/rest_framework/views.py\", line 415, in initial\n    self.check_permissions(request)\n  File \"/usr/local/lib/python3.12/site-packages/rest_framework/views.py\", line 332, in check_permissions\n    if not permission.has_permission(request, self):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/src/objects/token/permissions.py\", line 10, in has_permission\n    1 / 0\n    ~~^~~\nZeroDivisionError: division by zero"
+    }
+
+
 Setup configuration
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 * ``no_permissions_defined``: while running the token configuration step, it was detected that neither permissions nor ``is_superuser`` was set for the token. Additional context: ``token_identifier``.
 * ``no_tokens_defined``: while running the token configuration step, it was detected that the config file did not define any tokens.
@@ -85,7 +130,7 @@ Setup configuration
 * ``token_configuration_success``: configuring a token succeeded. Additional context: ``token_identifier``.
 
 Data migrations
-~~~~~~~~~~~~~~~
+---------------
 
 * ``token_identifier_generated``: while migrating, an ``identifier`` was generated for a token. Additional context: ``token_identifier``, ``token_pk``.
 * ``missing_service_for_objecttype``: while migrating, a ``Service`` object is missing for an ``ObjectType``. Additional context: ``object``, ``objecttype``.
