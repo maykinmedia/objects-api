@@ -249,7 +249,7 @@ notifications-api-common==0.7.3
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.13.0
+open-api-framework==0.13.1
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
