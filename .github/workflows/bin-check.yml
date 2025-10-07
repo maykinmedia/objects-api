@@ -39,6 +39,8 @@ jobs:
           python src/manage.py migrate
           src/manage.py loaddata demodata
           SCRIPTPATH=bin DUMP_FILE=dump.sql bin/dump_data.sh --combined
+          mkdir csv_exports
+          SCRIPTPATH=bin DUMP_FILE=dump.sql bin/dump_data.sh --csv
         env:
           DB_PASSWORD: ""
           DB_USER: postgres
@@ -56,11 +58,6 @@ jobs:
         run: |
           createdb -h localhost -U postgres test
           psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d test -f dump.sql
-
-      - name: dump data to csv
-        run: |
-          mkdir csv_exports
-          SCRIPTPATH=bin DUMP_FILE=dump.sql bin/dump_data.sh --csv
 
       - name: validate csv dump
         run: |

@@ -11,7 +11,7 @@
 # The schema dump could not use -t to filter tables because this excludes extensions like postgis in the dump.
 # pg_dump also does not add related tables automatically, so `dump_data.sh` does not add related data from accounts to the dump.
 #
-# with --csv and csv dump can be created for all tables in the given components. The csv files will be generated in CSV_OUTPUT_DIR (csv_exports by default).
+# with --csv a csv dump can be created for all tables in the given components. The csv files will be generated in CSV_OUTPUT_DIR (csv_exports by default).
 
 set -e
 
