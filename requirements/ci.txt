@@ -188,6 +188,10 @@ django-axes==6.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+django-capture-tag==1.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-cors-headers==4.4.0
     # via
     #   -c requirements/base.txt

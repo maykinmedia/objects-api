@@ -27,6 +27,7 @@ DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 INSTALLED_APPS = INSTALLED_APPS + [
     "maykin_common",
+    "capture_tag",
     # Optional applications.
     "django.contrib.gis",
     # `django.contrib.sites` added at the project level because it has been removed at the packages level.

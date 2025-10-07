@@ -5,6 +5,9 @@ glom # data represenation based on spec
 jsonschema
 furl
 
+# Django libraries
+django-capture-tag
+
 # Common ground libraries
 django-setup-configuration>=0.5.0
 notifications-api-common[setup-configuration]
