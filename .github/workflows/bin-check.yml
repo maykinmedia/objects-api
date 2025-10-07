@@ -56,3 +56,16 @@ jobs:
         run: |
           createdb -h localhost -U postgres test
           psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d test -f dump.sql
+
+      - name: dump data to csv
+        run: |
+          mkdir csv_exports
+          SCRIPTPATH=bin DUMP_FILE=dump.sql bin/dump_data.sh --csv
+
+      - name: validate csv dump
+        run: |
+          test -f csv_exports/core_object.csv || exit 1
+          ! test -f csv_exports/auth_group.csv || exit 1
+          grep "id,uuid,object_type_id,created_on,modified_on" csv_exports/core_object.csv
+
+

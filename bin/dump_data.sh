@@ -10,7 +10,8 @@
 # or --combined which appends the data dump to the schema dump.
 # The schema dump could not use -t to filter tables because this excludes extensions like postgis in the dump.
 # pg_dump also does not add related tables automatically, so `dump_data.sh` does not add related data from accounts to the dump.
-
+#
+# with --csv and csv dump can be created for all tables in the given components. The csv files will be generated in CSV_OUTPUT_DIR (csv_exports by default).
 
 set -e
 
@@ -28,31 +29,35 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 ${SCRIPTPATH}/wait_for_db.sh
 
 DUMP_FILE=${DUMP_FILE:-"dump_$(date +'%Y-%m-%d_%H-%M-%S').sql"}
+CSV_OUTPUT_DIR=${CSV_OUTPUT_DIR:-"csv_exports"}
 
+CSV=false
 SCHEMA=true
 DATA=true
 COMBINED=false
 
 for arg in "$@"; do
-  case "$arg" in
+    case "$arg" in
+    --csv) CSV=true ;;
     --schema-only) DATA=false ;;
-    --data-only)   SCHEMA=false ;;
-    --combined)    COMBINED=true ;;
+    --data-only) SCHEMA=false ;;
+    --combined) COMBINED=true ;;
     --*)
-      echo "Unknown flag: $arg"
-      exit 1
-      ;;
+        echo "Unknown flag: $arg"
+        exit 1
+        ;;
     *)
-      APPS+=("$arg") ;;
-  esac
+        APPS+=("$arg")
+        ;;
+    esac
 done
 
 # export given apps or export DEFAULT_APPS
 if [ "${#APPS[@]}" -eq 0 ]; then
-  APPS=("${DEFAULT_APPS[@]}")
+    APPS=("${DEFAULT_APPS[@]}")
 fi
 
->&2 echo "exporting: ${APPS[*]}"
+echo >&2 "exporting: ${APPS[*]}"
 
 # create -t flags for each app
 INCLUDES=()
@@ -61,32 +66,60 @@ for app in "${APPS[@]}"; do
 done
 
 dump_schema() {
-  echo "Dumping schema to $1..."
-  pg_dump --schema-only -f "$1"
+    echo "Dumping schema to $1..."
+    pg_dump --schema-only -f "$1"
 }
 
 dump_data() {
-  echo "Dumping data to $1..."
-  pg_dump "${INCLUDES[@]}" --disable-triggers --data-only > "$1"
+    echo "Dumping data to $1..."
+    pg_dump "${INCLUDES[@]}" --disable-triggers --data-only >"$1"
 }
 
 append_data() {
-  echo "Appending data to $1..."
-  pg_dump "${INCLUDES[@]}" --disable-triggers --data-only \
-    | sed '/^SET\|^SELECT pg_catalog.set_config/d' >> "$1"
+    echo "Appending data to $1..."
+    pg_dump "${INCLUDES[@]}" --disable-triggers --data-only |
+        sed '/^SET\|^SELECT pg_catalog.set_config/d' >>"$1"
 }
 
+dump_csv() {
+    echo "Dumping data to csv..."
+
+    WHERE_CLAUSE=""
+    for app in "${APPS[@]}"; do
+        if [ -n "$WHERE_CLAUSE" ]; then
+            WHERE_CLAUSE+=" OR "
+        fi
+        WHERE_CLAUSE+="tablename LIKE '${app}_%'"
+    done
+
+    TABLES=$(psql -Atc "SELECT tablename FROM pg_tables WHERE schemaname='public' AND ($WHERE_CLAUSE);")
+
+    for table in $TABLES; do
+        echo "dumping $table..."
+        psql -c "\copy $table TO '$CSV_OUTPUT_DIR/$table.csv' WITH CSV HEADER"
+    done
+}
+
+if $CSV; then
+
+    if [ ! -d "$CSV_OUTPUT_DIR" ]; then
+        echo "csv output directory $CSV_OUTPUT_DIR does not exist in current path"
+    else
+        dump_csv
+    fi
+    exit 0
+fi
 
 if $COMBINED; then
-  dump_schema "$DUMP_FILE"
-  append_data "$DUMP_FILE"
-  exit 0
+    dump_schema "$DUMP_FILE"
+    append_data "$DUMP_FILE"
+    exit 0
 fi
 
 if $SCHEMA; then
-  dump_schema "schema__$DUMP_FILE"
+    dump_schema "schema__$DUMP_FILE"
 fi
 
 if $DATA; then
-  dump_data "data__$DUMP_FILE"
+    dump_data "data__$DUMP_FILE"
 fi
