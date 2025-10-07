@@ -1,70 +1,60 @@
-{% extends "master.html" %}
+{% extends "maykin_common/api/index_base.html" %}
+{% load i18n %}
 
-{% block content %}
 
-  <div class="title">
-    <h1 class="title__header">{{ settings.PROJECT_NAME }} API</h1>
-    <p class="title__description">{{ settings.SITE_TITLE }}</p>
-  </div>
+{% block page_title %}{{ settings.PROJECT_NAME }} API{% endblock %}
+{% block page_subtitle %}{{ settings.SITE_TITLE }}{% endblock page_subtitle %}
 
-  <div class="container container--center">
-    <nav class="nav">
-      <ul class="nav__list">
-        <li class="nav__item" data-id="en">English</li>
-        <li class="nav__item" data-id="nl">Nederlands</li>
-      </ul>
 
-      <div class="nav__content">
-        <div class="nav__pane" id="en">
-          <p>
-          The Objects API aims to easily store various objects and make them available in
-          standardized format. The Objects API can be used by any organization to manage
-          relevant objects. An organization can also choose to use the Objects API to
-          expose objects to the public, as Open Data.
-          </p>
-          <p>
-          To define the format of objects, so called object types, organizations can use
-          a national and/or local
-            <a class="link" href="https://github.com/maykinmedia/objecttypes-api">
-            Objecttypes API</a>.
-          </p>
-        </div>
-        <div class="nav__pane" id="nl">
-          <p>
-          De Objecten API heeft als doel om uiteenlopende objecten eenvoudig te kunnen
-          registreren en ontsluiten in een gestandaardiseerd formaat. De Objecten API kan
-          door elke organisatie ingezet worden om de voor haar interessante objecten te
-          beheren. Ook kan een organisatie er voor kiezen een Objecten API in te zetten
-          voor Open Data, waarbij de geregistreerde objecten publiekelijk toegankelijk
-          zijn.
-          </p>
-          <p>
-          Om het formaat van objecten, de zogenoemde objecttypen, vast te leggen wordt
-          gebruik gemaakt van de landelijke en/of een lokale
-            <a class="link" href="https://github.com/maykinmedia/objecttypes-api">
-            Objecttypen API</a>.
-          </p>
-        </div>
-      </div>
-    </nav>
+{% block content_nl %}
+<p>
+    De Objecten API heeft als doel om uiteenlopende objecten eenvoudig te kunnen
+    registreren en ontsluiten in een gestandaardiseerd formaat. De Objecten API kan
+    door elke organisatie ingezet worden om de voor haar interessante objecten te
+    beheren. Ook kan een organisatie er voor kiezen een Objecten API in te zetten
+    voor Open Data, waarbij de geregistreerde objecten publiekelijk toegankelijk
+    zijn.
+</p>
+<p>
+    Om het formaat van objecten, de zogenoemde objecttypen, vast te leggen wordt
+    gebruik gemaakt van de landelijke en/of een lokale
+    <a class="link" href="https://github.com/maykinmedia/objecttypes-api">Objecttypen API</a>.
+</p>
+{% endblock content_nl %}
 
-    <p>
-      <b>Licensed under the <a class="link" href="https://github.com/maykinmedia/objects-api/blob/master/LICENSE.md">
-        European Union Public License (EUPL) 1.2</a></b>
-    </p>
+{% block content_en %}
+<p>
+    The Objects API aims to easily store various objects and make them available in
+    standardized format. The Objects API can be used by any organization to manage
+    relevant objects. An organization can also choose to use the Objects API to
+    expose objects to the public, as Open Data.
+</p>
+<p>
+    To define the format of objects, so called object types, organizations can use
+    a national and/or local
+    <a class="link" href="https://github.com/maykinmedia/objecttypes-api">Objecttypes API</a>.
+</p>
+{% endblock content_en %}
 
-    {% with schema_view=version|add:":schema-redoc" api_root_view=version|add:":api-root" %}
-    <p>
-      <a href="{% url schema_view %}" class="button"><i class="fas fa-file-alt"></i> Open API specification</a>
-      <a href="{% url api_root_view %}" class="button"><i class="fas fa-wifi"></i> API root</a>
-      <a href="https://github.com/maykinmedia/objects-api/blob/master/src/notificaties.md" class="button"><i class="fas fa-bullhorn"></i> Notifications</a>
-    </p>
+
+{% block license_link %}https://github.com/maykinmedia/objects-api/blob/master/LICENSE.md{% endblock %}
+
+
+{% block api_links %}
+    {% url version|add:":schema-redoc" as api_docs_link %}
+    {% url version|add:":api-root" as api_schema_link %}
+
+    {% with api_docs_link=api_docs_link api_schema_link=api_schema_link %}
+        {{ block.super }}
     {% endwith %}
-
-    <p>
-      <a href="{% url 'admin:index' %}" class="button button--alert"><i class="fas fa-lock"></i> Administration</a>
-    </p>
-
-  </div>
-
 {% endblock %}
+
+{% block extra_buttons %}
+    <div class="button-group">
+        <a href="https://github.com/maykinmedia/objects-api/blob/master/src/notificaties.md" class="button">
+            <i class="fas fa-bullhorn"></i>
+            {% trans "Notifications" %}
+        </a>
+    </div>
+{% endblock %}
+
