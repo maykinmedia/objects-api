@@ -23,23 +23,28 @@ $color-border: $color_secondary_dark;
 
 // css vars
 :root {
-  --color_primary: #{$color_primary};
-  --color_primary_dark: #{$color_primary_dark};
+  // Link component
+  --link-color: #017092;
+  --link-color-hover: var(--link-color);
+  --link-color-muted: #6c757d;
 
-  --color_secondary: #{$color_secondary};
-  --color_secondary_dark: #{$color_secondary_dark};
-  --color_secondary_light: #{$color_secondary_light};
+  // footer component
+  --footer-border-color: #dee2e6;
 
-  --color_alert: #{$color_alert};
-  --color_alert_dark: #{$color_alert_dark};
+  // tabs component
+  --tabs-border-color: #dee2e6;
+  --tabs-item-hover-border-color: #f3f3f3;
 
-  --color-darkest: #{$color-darkest};
-  --color_dark: #{$color_dark};
-  --color_lightest: #{$color_lightest};
-  --color_muted: #{$color_muted};
+  // Button component
+  --button-color: #ffffff;
+  --button-background-color: #04a5bb;
+  --button-hover-background-color: #017092;
+  --button-alert-background-color: #dc3545;
+  --button-alert-hover-background-color: #bd2130;
+}
 
-  --color_link: #{$color_link};
-  --color_link_hover: #{$color_link_hover};
-  --color-text: #{$color-text};
-  --color-border: #{$color-border};
+.content {
+  &#{&}--align-right {
+    text-align: right;
+  }
 }

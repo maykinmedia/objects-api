@@ -1,0 +1,21 @@
+.view {
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3rem;
+    min-block-size: 100dvh;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__main {
+    flex-grow: 1;
+    inline-size: clamp(20rem, 100%, 960px);
+    margin-inline: auto;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+}
