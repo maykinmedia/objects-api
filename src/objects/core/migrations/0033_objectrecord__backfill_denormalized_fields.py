@@ -12,39 +12,45 @@ logger = get_logger(__name__)
 BATCH_SIZE = int(os.getenv("OBJECTRECORD_BATCH_SIZE", 200_000))
 
 
-def backfill_object_type_batch(apps, cursor, batch_size):
+# TODO does this handle new records?
+def backfill_object_type_batch(apps, cursor, first_id, last_id):
     cursor.execute(
         """
-        WITH batch AS (
-            SELECT r.id
-            FROM core_objectrecord r
-            WHERE r._object_type_id IS NULL
-            LIMIT %s
-        )
         UPDATE core_objectrecord r
         SET _object_type_id = o.object_type_id
-        FROM core_object o, batch
-        WHERE r.id = batch.id
-          AND r.object_id = o.id;
+        FROM core_object o
+        WHERE r.object_id = o.id
+        AND r.id > %s
+        AND r.id <= %s
+        AND r._object_type_id IS NULL;
     """,
-        [batch_size],
+        [first_id, last_id],
     )
     return cursor.rowcount
 
 
 def forward(apps, schema_editor):
+    last_id = 0
     with connection.cursor() as cursor:
         while True:
-            num_updated = backfill_object_type_batch(apps, cursor, BATCH_SIZE)
+
+            num_updated = backfill_object_type_batch(apps, cursor, last_id, last_id+BATCH_SIZE)
             if num_updated == 0:
                 break
+
+            last_id = last_id + BATCH_SIZE
 
             logger.info("backfilled_object_type_for_records", num_records=num_updated)
 
 
 class Migration(migrations.Migration):
+    atomic = False
     dependencies = [
         ("core", "0032_objectrecord__object_type"),
     ]
 
     operations = [migrations.RunPython(forward, migrations.RunPython.noop)]
+
+# CREATE INDEX CONCURRENTLY IF NOT EXISTS core_objectrecord_object_id_idx ON core_objectrecord (id, object_id) WHERE _object_type_id IS NULL;
+
+# CLUSTER core_objectrecord USING core_objectrecord_pkey;
