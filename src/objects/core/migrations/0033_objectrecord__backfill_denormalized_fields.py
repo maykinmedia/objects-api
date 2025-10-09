@@ -2,14 +2,14 @@
 
 import os
 
-from django.db import connection, migrations
+from django.db import connection, migrations, transaction
 
 from structlog import get_logger
 
 logger = get_logger(__name__)
 
 
-BATCH_SIZE = int(os.getenv("OBJECTRECORD_BATCH_SIZE", 200_000))
+BATCH_SIZE = int(os.getenv("OBJECTRECORD_BATCH_SIZE", 20_000))
 
 
 # TODO does this handle new records?
@@ -31,16 +31,18 @@ def backfill_object_type_batch(apps, cursor, first_id, last_id):
 
 def forward(apps, schema_editor):
     last_id = 0
-    with connection.cursor() as cursor:
-        while True:
+    while True:
+        with transaction.atomic():
+            with connection.cursor() as cursor:
+                # cursor.execute("SET LOCAL synchronous_commit = OFF;")
 
-            num_updated = backfill_object_type_batch(apps, cursor, last_id, last_id+BATCH_SIZE)
-            if num_updated == 0:
-                break
+                num_updated = backfill_object_type_batch(apps, cursor, last_id, last_id+BATCH_SIZE)
+                if num_updated == 0:
+                    break
 
-            last_id = last_id + BATCH_SIZE
+                last_id = last_id + BATCH_SIZE
 
-            logger.info("backfilled_object_type_for_records", num_records=num_updated)
+                logger.info("backfilled_object_type_for_records", num_records=num_updated)
 
 
 class Migration(migrations.Migration):
