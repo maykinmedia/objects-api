@@ -1,11 +1,15 @@
 from django.urls import include, path
 
 from drf_spectacular.views import (
-    SpectacularJSONAPIView,
     SpectacularRedocView,
-    SpectacularYAMLAPIView,
 )
 from rest_framework import routers
+
+from objects.utils.oas_extensions.views import (
+    DeprecationRedirectView,
+    SpectacularJSONAPIView,
+    SpectacularYAMLAPIView,
+)
 
 from .views import ObjectViewSet, PermissionViewSet
 
@@ -16,20 +20,27 @@ router.register(r"permissions", PermissionViewSet)
 app_name = "v2"
 
 urlpatterns = [
-    path("", SpectacularJSONAPIView.as_view(), name="schema-json"),
     path(
         "/",
         include(
             [
-                # schema
                 path(
                     "schema/openapi.yaml",
+                    DeprecationRedirectView.as_view(pattern_name="v2:schema-yaml"),
+                ),
+                path(
+                    "openapi.yaml",
                     SpectacularYAMLAPIView.as_view(),
-                    name="schema",
+                    name="schema-yaml",
+                ),
+                path(
+                    "openapi.json",
+                    SpectacularJSONAPIView.as_view(),
+                    name="schema-json",
                 ),
                 path(
                     "schema/",
-                    SpectacularRedocView.as_view(url_name="schema"),
+                    SpectacularRedocView.as_view(url_name="schema-yaml"),
                     name="schema-redoc",
                 ),
                 # actual endpoints

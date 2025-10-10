@@ -70,6 +70,8 @@ info:
     `objecten` channel.
   contact:
     url: https://github.com/maykinmedia/objects-api
+    email: support@maykinmedia.nl
+    name: Maykin Media
   license:
     name: EUPL-1.2
 paths:
@@ -234,6 +236,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             X-Unauthorized-Fields:
               schema:
                 type: string
@@ -297,6 +304,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
@@ -345,6 +357,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             X-Unauthorized-Fields:
               schema:
                 type: string
@@ -415,6 +432,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
@@ -480,6 +502,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
@@ -502,6 +529,12 @@ paths:
       - tokenAuth: []
       responses:
         '204':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           description: No response body
   /objects/{uuid}/{index}:
     get:
@@ -543,6 +576,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
@@ -596,6 +634,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
@@ -763,6 +806,11 @@ paths:
               description: 'The ''Coordinate Reference System'' (CRS) of the request
                 data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
                 is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
@@ -792,6 +840,12 @@ paths:
       - {}
       responses:
         '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
           content:
             application/json:
               schema:
