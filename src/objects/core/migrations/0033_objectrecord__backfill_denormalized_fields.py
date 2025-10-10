@@ -3,7 +3,8 @@
 import os
 import threading
 from datetime import datetime
-
+import random
+from time import sleep
 from django.db import connection, migrations, transaction
 from concurrent.futures import ThreadPoolExecutor
 from structlog import get_logger
@@ -28,6 +29,7 @@ def estimate_total_time(start_time, current_time, processed_records: int):
     Returns:
         Estimated total duration as a timedelta.
     """
+    # TODO actual count
     total_records = 3_800_000
     if processed_records == 0:
         # Avoid division by zero; we have no info yet
@@ -40,7 +42,8 @@ def estimate_total_time(start_time, current_time, processed_records: int):
     return total_time_estimate.seconds
 
 
-BATCH_SIZE = int(os.getenv("OBJECTRECORD_BATCH_SIZE", 5_000))
+BATCH_SIZE = int(os.getenv("OBJECTRECORD_BATCH_SIZE", 2_000))
+# TODO configurable?
 NUM_WORKERS = 4
 
 
@@ -73,6 +76,10 @@ def worker(apps, start):
     Worker that keeps grabbing batches until none are left.
     """
     global records_processed
+    # Stagger the workers to avoid synchronized bursts of commit I/O
+    delay = random.uniform(0.5, 1.5)
+    sleep(delay)
+
     while True:
         with transaction.atomic():
             with connection.cursor() as cursor:
@@ -85,6 +92,7 @@ def worker(apps, start):
 
                 expected_end = estimate_total_time(start, current, records_processed)
                 if num_updated == 0:
+                    sleep(0.5)
                     break
 
                 logger.info(
@@ -115,9 +123,21 @@ class Migration(migrations.Migration):
 
     # TODO MAKE SURE THIS WORKS FOR ALL MIGRATION PATHS
     # TODO make previous ginindex migration empty
-    # TODO if exists remove ginindex
-    # TODO if not exists add ginindex
-    operations = [migrations.RunPython(forward, migrations.RunPython.noop)]
+    operations = [
+        # Drop the GINIndex on data to improve speed for updates, rebuilding it after
+        # the bulk update is faster
+        migrations.RunSQL(
+            "DROP INDEX CONCURRENTLY IF EXISTS idx_objectrecord_data_gin", migrations.RunSQL.noop
+        ),
+        migrations.RunPython(forward, migrations.RunPython.noop),
+        # Re-add the index
+        migrations.RunSQL(
+            "CREATE INDEX CONCURRENTLY idx_objectrecord_data_gin "
+            "ON core_objectrecord "
+            "USING GIN (data);",
+            migrations.RunSQL.noop
+        )
+    ]
 
 # CREATE INDEX CONCURRENTLY IF NOT EXISTS core_objectrecord_object_id_idx ON core_objectrecord (id, object_id) WHERE _object_type_id IS NULL;
 
