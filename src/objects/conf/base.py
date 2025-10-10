@@ -26,6 +26,8 @@ DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 # Application definition
 
 INSTALLED_APPS = INSTALLED_APPS + [
+    "maykin_common",
+    "capture_tag",
     # Optional applications.
     "django.contrib.gis",
     # `django.contrib.sites` added at the project level because it has been removed at the packages level.
@@ -87,7 +89,7 @@ REQUESTS_DEFAULT_TIMEOUT = (10, 30)
 
 # Django-Admin-Index
 ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
-    "objects.utils.admin_index.should_display_dropdown_menu"
+    "maykin_common.django_two_factor_auth.should_display_dropdown_menu"
 )
 
 #
@@ -143,3 +145,14 @@ NOTIFICATIONS_API_GET_DOMAIN = "objects.utils.get_domain"
 #
 DJANGO_STRUCTLOG_IP_LOGGING_ENABLED = False
 DJANGO_STRUCTLOG_CELERY_ENABLED = True
+
+#
+# SECURITY settings
+#
+CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
+
+# This setting is used by the csrf_failure view (accounts app).
+# You can specify any path that should match the request.path
+# Note: the LOGIN_URL Django setting is not used because you could have
+# multiple login urls defined.
+LOGIN_URLS = [reverse_lazy("admin:login")]

@@ -1,32 +1,44 @@
-{% extends "open_api_framework/admin/base_site.html" %}
-{% load i18n static %}
+{% extends "admin/base.html" %}
+{% load i18n static maykin_common %}
 
-{% block title %}{{ title }} | {{ settings.PROJECT_NAME }}{% endblock %}
+{% block title %}
+{{ title }} | {{ site_title|default:_('Administration') }}
+{% endblock %}
 
 {% block extrastyle %}
     {{ block.super }}
 
     <link rel="stylesheet" type="text/css" href="{% static 'bundles/admin_overrides.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maykin_common/css/version.css' %}">
 
-    <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
+    <link href="{% static 'maykin_common/ico/favicon.svg' %}" sizes="any" rel="icon" type="image/svg+xml" />
+    <link href="{% static 'maykin_common/ico/favicon-96x96.png' %}" sizes="96x96" rel="icon" type="image/png" />
+    <link href="{% static 'maykin_common/ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
+    <link href="{% static 'maykin_common/ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
+    <link href="{% static 'maykin_common/ico/favicon.png' %}" rel="shortcut icon">
 {% endblock %}
 
 {% block branding %}
-    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ settings.PROJECT_NAME }} {% trans 'Administration' %}</a></h1>
-
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {{ site_header|default:_('Administration') }}
+        </a>
+    </h1>
+    {% show_environment_info %}
     {% if user.is_anonymous %}
       {% include "admin/color_theme_toggle.html" %}
     {% endif %}
 {% endblock %}
 
-{% block welcome-msg %}
-    {% trans 'Logged in as' %}
-    <strong>{% firstof user.get_short_name user.get_username %}</strong>.
-{% endblock %}
-
 {% block userlinks %}
     {% if site_url %}
-        <a href="{{ site_url }}">{{ settings.SITE_TITLE }}</a> /
+    <a href="{{ site_url }}">
+      {% if settings.SITE_TITLE %}
+        {{ settings.SITE_TITLE }}
+      {% else %}
+        {% trans 'View site' %}
+      {% endif %}
+    </a> /
     {% endif %}
     {% url 'maykin_2fa:account_security' as 2fa_account_security_url %}
     {% if 2fa_account_security_url %}
@@ -35,19 +47,28 @@
     {% if user.has_usable_password %}
     <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
     {% endif %}
+
     <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
         {% csrf_token %}
-        <button type="submit">{% trans 'Log out' %}</button>        
+        <button type="submit">{% trans 'Log out' %}</button>
     </form>
 
     {% include "admin/color_theme_toggle.html" %}
+
 {% endblock %}
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
+{% endblock %}
 
+{# Override footer block to display version information if you're a logged in staff user #}
 {% block footer %}
-    {{ block.super }}
 
     {# Load the custom JS #}
     <script src="{% static 'bundles/objects-js.js' %}"></script>
+
+    <div id="footer">
+        {% if user.is_authenticated and user.is_staff %}
+            {% show_version_info %}
+        {% endif %}
+    </div>
 {% endblock %}
