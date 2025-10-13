@@ -315,7 +315,7 @@ pyyaml==6.0.1
     #   pydantic-settings
 qrcode==6.1
     # via django-two-factor-auth
-redis==3.5.3
+redis==6.4.0
     # via django-redis
 requests==2.32.4
     # via
