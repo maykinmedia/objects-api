@@ -23,3 +23,6 @@ celery>=5.5.0
 kombu>=5.4.0
 
 psycopg[pool]
+
+# Progress indicator for scripts/migration
+tqdm
