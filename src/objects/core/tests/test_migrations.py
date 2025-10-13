@@ -131,15 +131,15 @@ class TestBackfillDenormalizedObjectType(BaseMigrationTest):
             "objects.core.migrations.0033_objectrecord__backfill_denormalized_fields"
         )
 
-        original_batch = migration_module.backfill_object_type_batch
+        original_batch = migration_module.backfill_object_type_batch_concurrent
 
-        def delayed_batch(apps, cursor, batch_size):
+        def delayed_batch(cursor):
             time.sleep(0.1)  # simulate long-running batch
-            return original_batch(apps, cursor, 1)
+            return original_batch(cursor)
 
         with patch.object(
             migration_module,
-            "backfill_object_type_batch",
+            "backfill_object_type_batch_concurrent",
             side_effect=delayed_batch,
         ):
             thread = threading.Thread(target=self._perform_migration)

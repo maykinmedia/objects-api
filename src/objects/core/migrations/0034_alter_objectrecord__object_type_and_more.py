@@ -16,6 +16,7 @@ class Migration(migrations.Migration):
             model_name="objectrecord",
             name="_object_type",
             field=models.ForeignKey(
+                db_index=True,
                 help_text="OBJECTTYPE in Objecttypes API",
                 on_delete=django.db.models.deletion.PROTECT,
                 to="core.objecttype",
