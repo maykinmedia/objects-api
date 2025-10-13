@@ -4,41 +4,18 @@ import os
 import random
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
 from time import sleep
 
 from django.db import connection, migrations, transaction
-from django.utils.timezone import now
 
 from structlog import get_logger
+from tqdm import tqdm
 
 logger = get_logger(__name__)
-
-# Shared counter and lock
-records_processed = 0
-counter_lock = threading.Lock()
 
 
 BATCH_SIZE = int(os.getenv("OBJECTRECORD_MIGRATION_0033_BATCH_SIZE", 2_000))
 NUM_WORKERS = int(os.getenv("OBJECTRECORD_MIGRATION_0033_NUM_WORKERS", 4))
-
-
-def estimate_total_time(
-    start_time: datetime,
-    current_time: datetime,
-    total_records: int,
-    processed_records: int,
-):
-    """
-    Estimate the time for the migration to be completed based on current progress.
-    """
-    if processed_records == 0:
-        return None
-
-    elapsed_time = current_time - start_time
-    fraction_done = float(processed_records) / float(total_records)
-    total_time_estimate = elapsed_time / fraction_done
-    return (start_time + total_time_estimate).isoformat()
 
 
 def backfill_object_type_batch_concurrent(cursor):
@@ -67,12 +44,10 @@ def backfill_object_type_batch_concurrent(cursor):
     return cursor.rowcount
 
 
-def worker(apps, start, total_records):
+def worker(apps, progress):
     """
     Worker that keeps grabbing batches until none are left.
     """
-    global records_processed
-
     # Stagger the workers to avoid synchronized bursts of commit I/O
     delay = random.uniform(0.5, 1.5)
     sleep(delay)
@@ -82,24 +57,12 @@ def worker(apps, start, total_records):
             with connection.cursor() as cursor:
                 cursor.execute("SET LOCAL synchronous_commit = OFF;")
                 num_updated = backfill_object_type_batch_concurrent(cursor)
-                current = now()
 
-                with counter_lock:
-                    records_processed += num_updated
-
-                expected_end = estimate_total_time(
-                    start, current, total_records, records_processed
-                )
                 if num_updated == 0:
                     sleep(0.5)
                     break
 
-                logger.info(
-                    "backfilled_object_type_for_records",
-                    num_records=num_updated,
-                    total_processed=records_processed,
-                    expected_end=expected_end,
-                )
+                progress.update(num_updated)
 
 
 def forward(apps, schema_editor):
@@ -109,12 +72,15 @@ def forward(apps, schema_editor):
     ObjectRecord = apps.get_model("core", "ObjectRecord")
     total_records = ObjectRecord.objects.count()
 
-    start = now()
+    # Progress bar
+    lock = threading.Lock()
+    tqdm.set_lock(lock)  # make tqdm thread-safe
+    progress = tqdm(
+        total=total_records, desc="Backfilling ObjectRecords", smoothing=0.1
+    )
+
     with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
-        futures = [
-            executor.submit(worker, apps, start, total_records)
-            for _ in range(NUM_WORKERS)
-        ]
+        futures = [executor.submit(worker, apps, progress) for _ in range(NUM_WORKERS)]
 
         for f in futures:
             f.result()
