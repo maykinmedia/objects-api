@@ -23,7 +23,7 @@ Om alleen specifieke data te exporteren kunnen de gewenste component namen worde
 
     om een postgres 17 db te exporteren is de package postgres-client-17 vereist.
 
-Met de flag ``--csv`` worden alle tabellen in de meegegeven componenten geëxporteerd naar een csv bestand. Deze bestanden worden in ``$CSV_EXPORT_DIR`` geplaatst.
+Met de flag ``--csv`` worden alle tabellen in de meegegeven componenten geëxporteerd naar csv bestanden. Deze bestanden worden tijdelijk in ``csv_dumps`` geplaatst en gecombineerd in een ZIP bestand.
 
 Environment variabelen
 ----------------------
@@ -34,7 +34,7 @@ Environment variabelen
 * DB_NAME (objects/objecttypes)
 * DB_PASSWORD ("")
 * DUMP_FILE ("dump_$(date +'%Y-%m-%d_%H-%M-%S').sql")
-* CSV_OUTPUT_DIR (csv_exports)
+* CSV_FILE ("dump_$(date +'%Y-%m-%d_%H-%M-%S').zip")
 
 .. code-block:: shell
 

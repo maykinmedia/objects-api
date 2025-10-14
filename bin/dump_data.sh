@@ -11,7 +11,8 @@
 # The schema dump could not use -t to filter tables because this excludes extensions like postgis in the dump.
 # pg_dump also does not add related tables automatically, so `dump_data.sh` does not add related data from accounts to the dump.
 #
-# with --csv a csv dump can be created for all tables in the given components. The csv files will be generated in CSV_OUTPUT_DIR (csv_exports by default).
+# with --csv a csv dump can be created for all tables in the given components. The csv files will be generated in csv_dumps
+# temporarily and combined into a single ZIP archive.
 
 set -e
 
@@ -28,8 +29,10 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 ${SCRIPTPATH}/wait_for_db.sh
 
-DUMP_FILE=${DUMP_FILE:-"dump_$(date +'%Y-%m-%d_%H-%M-%S').sql"}
-CSV_OUTPUT_DIR=${CSV_OUTPUT_DIR:-"csv_exports"}
+DEFAULT_FILE_NAME="dump_$(date +'%Y-%m-%d_%H-%M-%S')"
+DUMP_FILE=${DUMP_FILE:-"$DEFAULT_FILE_NAME.sql"}
+ZIP_FILE=${ZIP_FILE:-"$DEFAULT_FILE_NAME.zip"}
+CSV_OUTPUT_DIR="csv_dumps"
 
 CSV=false
 SCHEMA=true
@@ -98,10 +101,12 @@ dump_csv() {
         echo "dumping $table..."
         psql -c "\copy $table TO '$CSV_OUTPUT_DIR/$table.csv' WITH CSV HEADER"
     done
+
+    zip -j "$ZIP_FILE" "$CSV_OUTPUT_DIR"/*.csv
+    rm -f "$CSV_OUTPUT_DIR"/*.csv
 }
 
 if $CSV; then
-
     if [ ! -d "$CSV_OUTPUT_DIR" ]; then
         echo "csv output directory $CSV_OUTPUT_DIR does not exist in current path"
     else
