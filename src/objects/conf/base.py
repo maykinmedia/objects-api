@@ -145,3 +145,14 @@ NOTIFICATIONS_API_GET_DOMAIN = "objects.utils.get_domain"
 #
 DJANGO_STRUCTLOG_IP_LOGGING_ENABLED = False
 DJANGO_STRUCTLOG_CELERY_ENABLED = True
+
+#
+# SECURITY settings
+#
+CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
+
+# This setting is used by the csrf_failure view (accounts app).
+# You can specify any path that should match the request.path
+# Note: the LOGIN_URL Django setting is not used because you could have
+# multiple login urls defined.
+LOGIN_URLS = [reverse_lazy("admin:login")]

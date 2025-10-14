@@ -1,8 +1,5 @@
 from django.db.utils import DatabaseError
-from django.template import TemplateDoesNotExist, loader
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.csrf import requires_csrf_token
-from django.views.defaults import ERROR_500_TEMPLATE_NAME
 
 import structlog
 from open_api_framework.conf.utils import config
