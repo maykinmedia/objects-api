@@ -1,8 +1,11 @@
+from typing import Sequence
+
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.urls import path
 
 import requests
@@ -141,6 +144,15 @@ class ObjectAdmin(admin.ModelAdmin):
     search_fields = ("uuid", "records__data")
     inlines = (ObjectRecordInline,)
     list_filter = (ObjectTypeFilter, "created_on", "modified_on")
+
+    def get_search_fields(self, request: HttpRequest) -> Sequence[str]:
+        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
+            return ()
+
+        return (
+            "uuid",
+            "records__data",
+        )
 
     @admin.display(description="Object type UUID")
     def get_object_type_uuid(self, obj):
