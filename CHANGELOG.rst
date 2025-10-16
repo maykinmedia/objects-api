@@ -2,6 +2,14 @@
 Change history
 ==============
 
+3.3.1 (2025-10-16)
+------------------
+
+**Bugfixes/QOL**
+
+* [:objects-api:`621`] Add environment variable ``OBJECTS_ADMIN_SEARCH_DISABLED``
+  (default: ``False``) to disable the search bar in the Objects admin list view
+
 3.3.0 (2025-10-06)
 ------------------
 
