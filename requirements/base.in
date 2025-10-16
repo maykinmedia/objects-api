@@ -5,12 +5,17 @@ glom # data represenation based on spec
 jsonschema
 furl
 
+# Django libraries
+django-capture-tag
+
 # Common ground libraries
 django-setup-configuration>=0.5.0
 notifications-api-common[setup-configuration]
 zgw-consumers[setup-configuration]
 mozilla-django-oidc-db[setup-configuration]
 commonground-api-common[oas]
+maykin-common[axes,mfa]
+
 # celery dependencies
 # TODO this should be moved to open-api-framework once it is verified that this fixes
 # maykinmedia/objects-api#541

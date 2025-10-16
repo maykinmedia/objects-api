@@ -1,10 +1,15 @@
-{% extends 'master.html' %}
+{% extends "maykin_common/api/index_base.html" %}
+{% load i18n %}
 
-{% block menu %}{% endblock %}
+{% block page_title %}{{ settings.PROJECT_NAME }}{% endblock %}
+{% block page_subtitle %}{{ settings.SITE_TITLE }}{% endblock page_subtitle %}
 
 {% block content %}
 
-  <h1>Sorry, the requested page could not be found (404)</h1>
-
-
-{% endblock content %}
+    {% block content_header %}
+        {{ block.super }}
+    {% endblock content_header %}
+    <div class="container container--center">
+        <h1>{% trans "Sorry, the requested page could not be found (404)" %}</h1>
+    </div>
+{% endblock %}
