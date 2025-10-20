@@ -191,7 +191,7 @@ class ObjectRecord(models.Model):
         super().clean()
 
         if hasattr(self.object, "object_type") and self.version and self.data:
-            check_objecttype_cached(self._object_type, self.version, self.data)
+            check_objecttype_cached(self.object.object_type, self.version, self.data)
 
     def save(self, *args, **kwargs):
         if not self.id and self.object.last_record:
