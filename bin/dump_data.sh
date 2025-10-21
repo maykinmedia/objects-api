@@ -11,8 +11,8 @@
 # The schema dump could not use -t to filter tables because this excludes extensions like postgis in the dump.
 # pg_dump also does not add related tables automatically, so `dump_data.sh` does not add related data from accounts to the dump.
 #
-# with --csv a csv dump can be created for all tables in the given components. The csv files will be generated in csv_dumps
-# temporarily and combined into a single ZIP archive.
+# with --csv a csv dump can be created for all tables in the given components. The csv files will be generated in the temporary directory csv_dumps
+# and combined into a single ZIP archive csv_dumps.
 
 set -e
 
@@ -85,6 +85,7 @@ append_data() {
 }
 
 dump_csv() {
+    mkdir -p $CSV_OUTPUT_DIR
     echo "Dumping data to csv..."
 
     WHERE_CLAUSE=""
@@ -103,15 +104,11 @@ dump_csv() {
     done
 
     zip -j "$ZIP_FILE" "$CSV_OUTPUT_DIR"/*.csv
-    rm -f "$CSV_OUTPUT_DIR"/*.csv
+    rm -rf "$CSV_OUTPUT_DIR"
 }
 
 if $CSV; then
-    if [ ! -d "$CSV_OUTPUT_DIR" ]; then
-        echo "csv output directory $CSV_OUTPUT_DIR does not exist in current path"
-    else
-        dump_csv
-    fi
+    dump_csv
     exit 0
 fi
 
