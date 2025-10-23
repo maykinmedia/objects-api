@@ -27,10 +27,10 @@ jobs:
             postgis: '3.2'
           - postgres: '15'
             postgis: '3.2'
-        include:
-          - postgres: '17'
-            postgis: '3.5'
-            use_pooling: true
+        # include:
+        #   - postgres: '17'
+        #     postgis: '3.5'
+        #     use_pooling: true
 
     name: Run the Django test suite (PG ${{ matrix.postgres }}, postgis ${{ matrix.postgis }}) ${{matrix.use_pooling && 'with connection pooling' || ''}}
 

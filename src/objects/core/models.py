@@ -154,11 +154,35 @@ class ObjectRecord(models.Model):
         auto_now=True, help_text=_("Last modification date")
     )
 
+    # Denormalized field to avoid unnecessary joins on `Object`
+    _object_type = models.ForeignKey(
+        ObjectType,
+        on_delete=models.PROTECT,
+        help_text=_("OBJECTTYPE in Objecttypes API"),
+        null=False,
+        blank=False,
+        db_index=True,
+    )
+
     objects = ObjectRecordQuerySet.as_manager()
 
     class Meta:
         unique_together = ("object", "index")
-        indexes = [GinIndex(fields=["data"], name="idx_objectrecord_data_gin")]
+        indexes = [
+            GinIndex(fields=["data"], name="idx_objectrecord_data_gin"),
+            models.Index(
+                fields=["_object_type_id", "-index"],
+                name="idx_objectrecord_type_index",
+            ),
+            models.Index(
+                fields=["_object_type_id", "id"],
+                name="idx_objectrecord_type_id",
+            ),
+            models.Index(
+                fields=["_object_type_id", "start_at", "end_at", "object", "-index"],
+                name="idx_type_start_end_object_idx",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.version} ({self.start_at})"
@@ -177,5 +201,7 @@ class ObjectRecord(models.Model):
             previous_record = self.object.last_record
             previous_record.end_at = self.start_at
             previous_record.save()
+
+        self._object_type = self.object.object_type
 
         super().save(*args, **kwargs)
