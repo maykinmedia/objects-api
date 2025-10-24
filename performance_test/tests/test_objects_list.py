@@ -98,3 +98,25 @@ def test_objects_api_list_filter_one_result(benchmark, benchmark_assertions):
     assert result.json()["count"] == 1
 
     benchmark_assertions(mean=1, max=1)
+
+
+@pytest.mark.benchmark(max_time=60, min_rounds=5)
+def test_objects_api_list_filter_by_object_type(benchmark, benchmark_assertions):
+    """
+    Regression test for maykinmedia/objects-api#677
+    """
+    params = {
+        "pageSize": 100,
+        "type": "http://localhost:8001/api/v2/objecttypes/f1220670-8ab7-44f1-a318-bd0782e97662",
+        "ordering": "-record__data__nested__timestamp",
+    }
+
+    def make_request():
+        return requests.get((BASE_URL / "objects").set(params), headers=AUTH_HEADERS)
+
+    result = benchmark(make_request)
+
+    assert result.status_code == 200
+    assert result.json()["count"] == 5001
+
+    benchmark_assertions(mean=1, max=1)
