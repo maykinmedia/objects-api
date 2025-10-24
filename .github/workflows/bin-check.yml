@@ -39,7 +39,7 @@ jobs:
           python src/manage.py migrate
           src/manage.py loaddata demodata
           SCRIPTPATH=bin DUMP_FILE=dump.sql bin/dump_data.sh --combined
-          SCRIPTPATH=bin ZIP_FILE=dump.zip bin/dump_data.sh --csv
+          SCRIPTPATH=bin TAR_FILE=dump.tar bin/dump_data.sh --csv
         env:
           DB_PASSWORD: ""
           DB_USER: postgres
@@ -60,7 +60,7 @@ jobs:
 
       - name: validate csv dump
         run: |
-          unzip dump.zip
+          tar -xf dump.tar
           test -f core_object.csv || exit 1
           ! test -f auth_group.csv || exit 1
           grep "id,uuid,object_type_id,created_on,modified_on" core_object.csv

@@ -12,7 +12,7 @@
 # pg_dump also does not add related tables automatically, so `dump_data.sh` does not add related data from accounts to the dump.
 #
 # with --csv a csv dump can be created for all tables in the given components. The csv files will be generated in the temporary directory csv_dumps
-# and combined into a single ZIP archive csv_dumps.
+# and combined into a single TAR archive csv_dumps.
 
 set -e
 
@@ -31,7 +31,7 @@ ${SCRIPTPATH}/wait_for_db.sh
 
 DEFAULT_FILE_NAME="dump_$(date +'%Y-%m-%d_%H-%M-%S')"
 DUMP_FILE=${DUMP_FILE:-"$DEFAULT_FILE_NAME.sql"}
-ZIP_FILE=${ZIP_FILE:-"$DEFAULT_FILE_NAME.zip"}
+TAR_FILE=${TAR_FILE:-"$DEFAULT_FILE_NAME.tar"}
 CSV_OUTPUT_DIR="csv_dumps"
 
 CSV=false
@@ -103,7 +103,7 @@ dump_csv() {
         psql -c "\copy $table TO '$CSV_OUTPUT_DIR/$table.csv' WITH CSV HEADER"
     done
 
-    zip -j "$ZIP_FILE" "$CSV_OUTPUT_DIR"/*.csv
+    tar -cf "$TAR_FILE" -C "$CSV_OUTPUT_DIR" .
     rm -rf "$CSV_OUTPUT_DIR"
 }
 
