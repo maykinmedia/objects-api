@@ -1,4 +1,4 @@
-API_VERSION = "2.4.4"
+API_VERSION = "2.5.0"
 
 # api settings
 REST_FRAMEWORK = {
