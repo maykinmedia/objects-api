@@ -2,6 +2,37 @@
 Change history
 ==============
 
+3.4.0 (2025-10-28)
+------------------
+
+.. warning::
+
+  This version contains a data migration which denormalizes the ``object_type`` on the ObjectRecord
+  model to make queries more performant, by avoiding additional JOINs.
+
+  This data migration can take around **40 minutes to 1.5 hours**, dependent
+  on the amount of ObjectRecords in the database. It was tested on a dataset of 3.8 million
+  ObjectRecords, for which this migration took 45 minutes. This data migration does handle newly
+  created ObjectRecords if the Objects API is still running simultaneously.
+
+  If the Objects API is still running while this migration is applied and if there is
+  always a constant influx of created ObjectRecords, this migration could theoretically
+  keep running indefinitely, or there could be a small window (if the data migration does finish)
+  where the ``NOT NULL`` constraint is not yet applied and ``NULL`` values are being inserted,
+  causing errors. Although this is unlikely, if your instance is at risk for this,
+  it could be safer to take the Objects API offline before migrating to avoid this.
+
+**Performance optimizations**
+
+* [#677] Denormalize ``ObjectRecord`` by adding ``_object_type`` to avoid additional JOINs in queries.
+  This improves performance for read operations via the API.
+
+**Project maintenance**
+
+* [:open-api-framework:`163`] Integrate django-common to make uses of shared views/templates
+* [:objects-api:`663`] Upload performance tests results to bencher
+* [:open-api-workflows:`30`] Run API Design Rules linter on OpenAPI specification in CI
+
 3.3.1 (2025-10-16)
 ------------------
 
