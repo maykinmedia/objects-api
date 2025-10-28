@@ -6,6 +6,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 
+from django.conf import settings
 from django.db import connection, migrations, transaction
 
 from structlog import get_logger
@@ -15,7 +16,11 @@ logger = get_logger(__name__)
 
 
 BATCH_SIZE = int(os.getenv("OBJECTRECORD_MIGRATION_0033_BATCH_SIZE", 2_000))
-NUM_WORKERS = int(os.getenv("OBJECTRECORD_MIGRATION_0033_NUM_WORKERS", 4))
+NUM_WORKERS = int(os.getenv("OBJECTRECORD_MIGRATION_0033_NUM_WORKERS", 2))
+
+# Pooling does not work with multiple workers
+if "pool" in settings.DATABASES["default"].get("OPTIONS", {}):
+    NUM_WORKERS = 1
 
 
 def backfill_object_type_batch_concurrent(cursor):
@@ -49,7 +54,7 @@ def worker(apps, progress):
     Worker that keeps grabbing batches until none are left.
     """
     # Stagger the workers to avoid synchronized bursts of commit I/O
-    delay = random.uniform(0.5, 1.5)
+    delay = random.uniform(0.1, 0.3)
     sleep(delay)
 
     while True:
@@ -78,12 +83,14 @@ def forward(apps, schema_editor):
     progress = tqdm(
         total=total_records, desc="Backfilling ObjectRecords", smoothing=0.1
     )
+    if NUM_WORKERS == 1:
+        worker(apps, progress)
+    else:
+        with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
+            futures = [executor.submit(worker, apps, progress) for _ in range(NUM_WORKERS)]
 
-    with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
-        futures = [executor.submit(worker, apps, progress) for _ in range(NUM_WORKERS)]
-
-        for f in futures:
-            f.result()
+            for f in futures:
+                f.result()
 
 
 class Migration(migrations.Migration):
