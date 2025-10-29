@@ -20,11 +20,11 @@
   "license": "UNLICENSED",
   "homepage": "https://maykinmedia.nl",
   "dependencies": {
-    "microscope-sass": "latest",
     "@fortawesome/fontawesome-free": "^7.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "tough-cookie": "^4.1.4"
+    "microscope-sass": "latest",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tough-cookie": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "latest",

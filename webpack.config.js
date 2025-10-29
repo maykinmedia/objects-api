@@ -1,5 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const argv = require('yargs').argv;
+const argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 const paths = require('./build/paths');
 
 
