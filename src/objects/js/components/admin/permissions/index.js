@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from "react"; 
+import { createRoot } from "react-dom/client";
 
-import { PermissionForm } from "./permission-form";
 import { jsonScriptToVar } from "../../../utils";
+import { PermissionForm } from "./permission-form";
 
 const mount = () => {
     const node = document.getElementById('react-permissions');
     if (!node) return;
 
-
-    ReactDOM.render(
+    const root = createRoot(node);
+    root.render(
         <PermissionForm
             objectFields={jsonScriptToVar('object-fields')}
             tokenChoices={jsonScriptToVar('token-auth-choices')}
@@ -17,7 +17,6 @@ const mount = () => {
             modeChoices={jsonScriptToVar('mode-choices')}
             formData={jsonScriptToVar('form-data')}
         />,
-        node
     );
 };
 

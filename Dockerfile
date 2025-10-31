@@ -20,7 +20,7 @@ RUN pip install -r requirements/production.txt
 
 
 # Stage 2 - build frontend
-FROM node:20-alpine AS frontend-build
+FROM node:24-alpine AS frontend-build
 
 WORKDIR /app
 
