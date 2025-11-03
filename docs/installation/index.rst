@@ -20,3 +20,4 @@ this.
    config_cli
    deployment/index
    oidc
+   hardware
