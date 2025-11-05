@@ -1,5 +1,5 @@
 # Stage 1 - Compile needed python dependencies
-FROM python:3.12-slim-bookworm AS backend-build
+FROM python:3.12-slim-trixie AS backend-build
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         pkg-config \
@@ -7,8 +7,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         git \
         libpq-dev \
         # required for (log) routing support in uwsgi
-        libpcre3 \
-        libpcre3-dev \
+        libpcre2-8-0 \
+        libpcre2-dev \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -36,7 +36,7 @@ RUN npm run build
 
 
 # Stage 3 - Build docker image suitable for execution and deployment
-FROM python:3.12-slim-bookworm AS production
+FROM python:3.12-slim-trixie AS production
 
 # Stage 3.1 - Set up the needed production dependencies
 # install all the dependencies for GeoDjango
@@ -47,7 +47,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         gdal-bin \
         libgdal-dev \
         gettext \
-        libpcre3 \
+        libpcre2-8-0 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install pip "setuptools>=70.0.0"
