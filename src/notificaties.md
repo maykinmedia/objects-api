@@ -27,6 +27,6 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 **Resources en acties**
 
 
-* <code>objectrecord</code>: create, update, destroy, create, update, destroy
+* <code>object</code>: create, update, destroy
 
 

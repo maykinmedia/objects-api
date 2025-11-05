@@ -3,6 +3,7 @@ from django.db import models
 from notifications_api_common.viewsets import (
     NotificationCreateMixin,
     NotificationDestroyMixin,
+    NotificationMixinBase,
     conditional_atomic,
 )
 from rest_framework.exceptions import NotAcceptable
@@ -40,7 +41,22 @@ class GeoMixin(_GeoMixin):
             raise NotAcceptable(detail=f"CRS '{requested_crs}' is niet ondersteund")
 
 
-class ObjectNotificationMixin(NotificationCreateMixin, NotificationDestroyMixin):
+class ObjectNotificationMixinBase(NotificationMixinBase):
+    def __new__(cls, name, bases, attrs):
+        new_cls = super().__new__(cls, name, bases, attrs)
+
+        if name == "ObjectViewSet":
+            kanaal = attrs.get("notifications_kanaal")
+            kanaal.usage["object"] = kanaal.usage.pop("objectrecord")
+
+        return new_cls
+
+
+class ObjectNotificationMixin(
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
+    metaclass=ObjectNotificationMixinBase,
+):
     def construct_message(self, data: dict, instance: models.Model = None) -> dict:
         message = super().construct_message(data, instance)
         message["resource"] = "object"
