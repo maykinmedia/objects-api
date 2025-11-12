@@ -72,7 +72,7 @@ class ObjectAdminTests(WebTest):
 
             self.assertIsNotNone(response.html.find("input", {"id": "searchbar"}))
 
-            response = self.app.get(list_url, params={"q": "bar"}, user=self.user)
+            response = self.app.get(list_url, params={"q": "foo:bar"}, user=self.user)
 
             self.assertEqual(get_num_results(response), 1)
 
@@ -84,7 +84,9 @@ class ObjectAdminTests(WebTest):
 
                 self.assertIsNone(response.html.find("input", {"id": "searchbar"}))
 
-                response = self.app.get(list_url, params={"q": "bar"}, user=self.user)
+                response = self.app.get(
+                    list_url, params={"q": "foo:bar"}, user=self.user
+                )
 
                 self.assertEqual(get_num_results(response), 2)
 
