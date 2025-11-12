@@ -5,6 +5,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
+from django.db.models import CharField
+from django.db.models.fields.json import KeyTextTransform
+from django.db.models.functions import Cast
 from django.http import HttpRequest, JsonResponse
 from django.urls import path
 
@@ -141,7 +144,7 @@ class ObjectAdmin(admin.ModelAdmin):
         "modified_on",
         "created_on",
     )
-    search_fields = ("uuid", "records__data")
+    search_fields = ("uuid",)
     inlines = (ObjectRecordInline,)
     list_filter = (ObjectTypeFilter, "created_on", "modified_on")
 
@@ -149,10 +152,26 @@ class ObjectAdmin(admin.ModelAdmin):
         if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
             return ()
 
-        return (
-            "uuid",
-            "records__data",
-        )
+        return ("uuid",)
+
+    def get_search_results(self, request, queryset, search_term):
+        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
+            return queryset, False
+
+        if ":" in search_term:
+            key, _, value = search_term.partition(":")
+            key = key.strip()
+            value = value.strip()
+
+            queryset = queryset.filter(records__data__has_key=key)
+
+            queryset = queryset.annotate(
+                key_text=Cast(KeyTextTransform(key, "records__data"), CharField())
+            ).filter(key_text__icontains=value)
+
+            return queryset.distinct(), False
+
+        return super().get_search_results(request, queryset, search_term)
 
     @admin.display(description="Object type UUID")
     def get_object_type_uuid(self, obj):
