@@ -72,7 +72,7 @@ class ObjectAdminTests(WebTest):
 
             self.assertIsNotNone(response.html.find("input", {"id": "searchbar"}))
 
-            response = self.app.get(list_url, params={"q": "foo:bar"}, user=self.user)
+            response = self.app.get(list_url, params={"q": "foo__bar"}, user=self.user)
 
             self.assertEqual(get_num_results(response), 1)
 
@@ -85,7 +85,7 @@ class ObjectAdminTests(WebTest):
                 self.assertIsNone(response.html.find("input", {"id": "searchbar"}))
 
                 response = self.app.get(
-                    list_url, params={"q": "foo:bar"}, user=self.user
+                    list_url, params={"q": "foo__bar"}, user=self.user
                 )
 
                 self.assertEqual(get_num_results(response), 2)
@@ -128,3 +128,75 @@ class ObjectAdminTests(WebTest):
             response = form.submit()
 
         self.assertEqual(object.records.count(), 1)
+
+    @tag("gh-621")
+    def test_object_admin_search_json_key_operator_value(self):
+        object1 = ObjectFactory()
+        ObjectRecordFactory(
+            object=object1,
+            data={"id_nummer": 1, "naam": "Boomgaard", "plantDate": "2025-01-01"},
+        )
+        object2 = ObjectFactory()
+        ObjectRecordFactory(
+            object=object2,
+            data={"id_nummer": 2, "naam": "Appelboom", "plantDate": "2025-06-15"},
+        )
+        object3 = ObjectFactory()
+        ObjectRecordFactory(
+            object=object3,
+            data={"id_nummer": 3, "naam": "Peren", "plantDate": "2025-12-31"},
+        )
+
+        list_url = reverse("admin:core_object_changelist")
+
+        def get_num_results(response) -> int:
+            result_list = response.html.find("table", {"id": "result_list"})
+            return len(result_list.find("tbody").find_all("tr"))
+
+        with self.subTest("Exact match"):
+            response = self.app.get(
+                list_url, params={"q": "id_nummer__exact__1"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 1)
+
+        with self.subTest("icontains"):
+            response = self.app.get(
+                list_url, params={"q": "naam__icontains__boom"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 2)
+
+        with self.subTest("Default operator"):
+            response = self.app.get(
+                list_url, params={"q": "naam__Boomgaard"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 1)
+
+        with self.subTest("Numeric comparison gt"):
+            response = self.app.get(
+                list_url, params={"q": "id_nummer__gt__1"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 2)
+
+        with self.subTest("IN operator"):
+            response = self.app.get(
+                list_url, params={"q": "id_nummer__in__1|3"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 2)
+
+        with self.subTest("Date exact"):
+            response = self.app.get(
+                list_url, params={"q": "plantDate__exact__2025-06-15"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 1)
+
+        with self.subTest("Date gt"):
+            response = self.app.get(
+                list_url, params={"q": "plantDate__gt__2025-01-01"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 2)
+
+        with self.subTest("Date lt"):
+            response = self.app.get(
+                list_url, params={"q": "plantDate__lt__2025-12-01"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 2)
