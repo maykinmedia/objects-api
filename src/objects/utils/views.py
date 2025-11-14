@@ -1,6 +1,7 @@
 from django.db.utils import DatabaseError
 from django.utils.translation import gettext_lazy as _
 
+import sentry_sdk
 import structlog
 from open_api_framework.conf.utils import config
 from rest_framework import status
@@ -36,6 +37,9 @@ def exception_handler(exc, context):
                 "This search operation is not supported by the underlying data store."
             )
             event = "api.database_exception"
+
+        # make sure the exception still ends up in Sentry
+        sentry_sdk.capture_exception(exc)
 
         response = Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=data)
         logger.exception(event, exc_info=exc)
