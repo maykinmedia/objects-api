@@ -567,7 +567,7 @@ notifications-api-common==0.7.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.13.1
+open-api-framework==0.13.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
