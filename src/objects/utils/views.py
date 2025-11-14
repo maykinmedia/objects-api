@@ -38,6 +38,7 @@ def exception_handler(exc, context):
             )
             event = "api.database_exception"
 
+        # make sure the exception still ends up in Sentry
         sentry_sdk.capture_exception(exc)
 
         response = Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=data)
