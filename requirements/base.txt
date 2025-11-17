@@ -160,7 +160,7 @@ django-sendfile2==0.7.0
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.9.0
+django-setup-configuration==0.11.0
     # via
     #   -r requirements/base.in
     #   mozilla-django-oidc-db
@@ -173,7 +173,6 @@ django-solo==2.2.0
     # via
     #   commonground-api-common
     #   django-log-outgoing-requests
-    #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
@@ -252,7 +251,7 @@ maykin-common==0.11.0
     # via -r requirements/base.in
 mozilla-django-oidc==4.0.0
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==0.22.0
+mozilla-django-oidc-db==1.1.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
