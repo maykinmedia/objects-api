@@ -151,6 +151,8 @@ class ObjectAdmin(admin.ModelAdmin):
     inlines = (ObjectRecordInline,)
     list_filter = (ObjectTypeFilter, "created_on", "modified_on")
 
+    change_list_template = "admin/core/object_change_list.html"
+
     def get_search_fields(self, request: HttpRequest) -> Sequence[str]:
         if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
             return ()
@@ -164,7 +166,7 @@ class ObjectAdmin(admin.ModelAdmin):
         if "__" not in search_term:
             return super().get_search_results(request, queryset, search_term)
 
-        parts = search_term.split("__", 2)
+        parts = search_term.rsplit("__", 2)
         if len(parts) == 3:
             key, operator, str_value = parts
         elif len(parts) == 2:

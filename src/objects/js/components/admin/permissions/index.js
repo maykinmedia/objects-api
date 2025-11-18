@@ -18,7 +18,7 @@ const mount = () => {
             formData={jsonScriptToVar('form-data')}
         />,
     );
+     
 };
-
 
 mount();

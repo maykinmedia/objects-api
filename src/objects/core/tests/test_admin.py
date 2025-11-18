@@ -146,6 +146,16 @@ class ObjectAdminTests(WebTest):
             object=object3,
             data={"id_nummer": 3, "naam": "Peren", "plantDate": "2025-12-31"},
         )
+        object4 = ObjectFactory()
+        ObjectRecordFactory(
+            object=object4,
+            data={
+                "id_nummer": 4,
+                "naam": "Kersen",
+                "plantDate": "2025-07-20",
+                "location": {"city": "Amsterdam", "region": "Noord-Holland"},
+            },
+        )
 
         list_url = reverse("admin:core_object_changelist")
 
@@ -156,6 +166,14 @@ class ObjectAdminTests(WebTest):
         with self.subTest("Exact match"):
             response = self.app.get(
                 list_url, params={"q": "id_nummer__exact__1"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 1)
+
+        with self.subTest("Nested JSON value match"):
+            response = self.app.get(
+                list_url,
+                params={"q": "location__city__exact__Amsterdam"},
+                user=self.user,
             )
             self.assertEqual(get_num_results(response), 1)
 
@@ -175,7 +193,7 @@ class ObjectAdminTests(WebTest):
             response = self.app.get(
                 list_url, params={"q": "id_nummer__gt__1"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 2)
+            self.assertEqual(get_num_results(response), 3)
 
         with self.subTest("IN operator"):
             response = self.app.get(
@@ -193,10 +211,22 @@ class ObjectAdminTests(WebTest):
             response = self.app.get(
                 list_url, params={"q": "plantDate__gt__2025-01-01"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 2)
+            self.assertEqual(get_num_results(response), 3)
 
         with self.subTest("Date lt"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__lt__2025-12-01"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 3)
+
+        with self.subTest("Date comparison gte"):
+            response = self.app.get(
+                list_url, params={"q": "plantDate__gte__2025-06-15"}, user=self.user
+            )
+            self.assertEqual(get_num_results(response), 3)
+
+        with self.subTest("Date comparison lte"):
+            response = self.app.get(
+                list_url, params={"q": "plantDate__lte__2025-06-15"}, user=self.user
             )
             self.assertEqual(get_num_results(response), 2)
