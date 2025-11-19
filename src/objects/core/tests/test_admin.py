@@ -1,3 +1,5 @@
+import re
+
 from django.test import override_settings, tag
 from django.urls import reverse
 
@@ -159,15 +161,19 @@ class ObjectAdminTests(WebTest):
 
         list_url = reverse("admin:core_object_changelist")
 
-        def get_num_results(response) -> int:
-            result_list = response.html.find("table", {"id": "result_list"})
-            return len(result_list.find("tbody").find_all("tr"))
+        def get_row_pks(response):
+            rows = response.html.select("#result_list tbody tr")
+            pks = []
+            for row in rows:
+                href = row.select_one("th a")["href"]
+                pks.append(int(re.search(r"\d+", href).group()))
+            return pks
 
         with self.subTest("Exact match"):
             response = self.app.get(
                 list_url, params={"q": "id_nummer__exact__1"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 1)
+            self.assertEqual(get_row_pks(response), [object1.pk])
 
         with self.subTest("Nested JSON value match"):
             response = self.app.get(
@@ -175,58 +181,74 @@ class ObjectAdminTests(WebTest):
                 params={"q": "location__city__exact__Amsterdam"},
                 user=self.user,
             )
-            self.assertEqual(get_num_results(response), 1)
+            self.assertEqual(get_row_pks(response), [object4.pk])
+
+        with self.subTest("Nested"):
+            response = self.app.get(
+                list_url,
+                params={"q": "location__city__Amsterdam"},
+                user=self.user,
+            )
+            self.assertEqual(get_row_pks(response), [object4.pk])
 
         with self.subTest("icontains"):
             response = self.app.get(
                 list_url, params={"q": "naam__icontains__boom"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 2)
+            self.assertCountEqual(get_row_pks(response), [object1.pk, object2.pk])
 
         with self.subTest("Default operator"):
             response = self.app.get(
                 list_url, params={"q": "naam__Boomgaard"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 1)
+            self.assertEqual(get_row_pks(response), [object1.pk])
 
         with self.subTest("Numeric comparison gt"):
             response = self.app.get(
                 list_url, params={"q": "id_nummer__gt__1"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 3)
+            self.assertCountEqual(
+                get_row_pks(response), [object2.pk, object3.pk, object4.pk]
+            )
 
         with self.subTest("IN operator"):
             response = self.app.get(
                 list_url, params={"q": "id_nummer__in__1|3"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 2)
+            self.assertCountEqual(get_row_pks(response), [object1.pk, object3.pk])
 
         with self.subTest("Date exact"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__exact__2025-06-15"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 1)
+            self.assertEqual(get_row_pks(response), [object2.pk])
 
         with self.subTest("Date gt"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__gt__2025-01-01"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 3)
+            self.assertCountEqual(
+                get_row_pks(response), [object2.pk, object3.pk, object4.pk]
+            )
 
         with self.subTest("Date lt"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__lt__2025-12-01"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 3)
+            self.assertCountEqual(
+                get_row_pks(response), [object1.pk, object2.pk, object4.pk]
+            )
 
         with self.subTest("Date comparison gte"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__gte__2025-06-15"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 3)
+            self.assertCountEqual(
+                get_row_pks(response), [object2.pk, object3.pk, object4.pk]
+            )
 
         with self.subTest("Date comparison lte"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__lte__2025-06-15"}, user=self.user
             )
-            self.assertEqual(get_num_results(response), 2)
+            self.assertCountEqual(get_row_pks(response), [object1.pk, object2.pk])
