@@ -81,8 +81,9 @@ services:
   objecttypes-web:
     image: maykinmedia/objecttypes-api:latest
     environment: &app-env
-      DB_NAME: objecttypes
-      DB_USER: objecttypes
+      DB_NAME: postgres
+      DB_USER: objects
+      DB_PASSWORD: objects
       DJANGO_SETTINGS_MODULE: objecttypes.conf.docker
       SECRET_KEY: ${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cyf15d}
       ALLOWED_HOSTS: '*'

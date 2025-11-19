@@ -1,4 +1,3 @@
-from datetime import date
 from typing import Sequence
 
 from django import forms
@@ -6,9 +5,6 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
-from django.db.models import CharField, DateField, FloatField, Q
-from django.db.models.fields.json import KeyTextTransform
-from django.db.models.functions import Cast
 from django.http import HttpRequest, JsonResponse
 from django.urls import path
 
@@ -16,8 +12,7 @@ import requests
 import structlog
 from vng_api_common.utils import get_help_text
 
-from objects.api.utils import string_to_value
-from objects.api.v2.filters import build_nested_dict
+from objects.api.v2.filters import filter_queryset_by_data_attr
 from objects.utils.client import get_objecttypes_client
 
 from .models import Object, ObjectRecord, ObjectType
@@ -160,6 +155,8 @@ class ObjectAdmin(admin.ModelAdmin):
         return ("uuid",)
 
     def get_search_results(self, request, queryset, search_term):
+        VALID_OPERATORS = {"exact", "icontains", "in", "gt", "gte", "lt", "lte"}
+
         if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
             return queryset, False
 
@@ -167,49 +164,26 @@ class ObjectAdmin(admin.ModelAdmin):
             return super().get_search_results(request, queryset, search_term)
 
         parts = search_term.rsplit("__", 2)
-        if len(parts) == 3:
+
+        if len(parts) == 3 and parts[1] in VALID_OPERATORS:
             key, operator, str_value = parts
+        elif len(parts) == 3:
+            key = "__".join(parts[:-1])
+            operator = "exact"
+            str_value = parts[-1]
         elif len(parts) == 2:
             key, str_value = parts
             operator = "icontains"
         else:
             return super().get_search_results(request, queryset, search_term)
 
-        key, str_value = key.strip(), str_value.strip()
-        value = string_to_value(str_value)
-
-        if operator == "exact":
-            in_vals = [str_value]
-            if value != str_value:
-                in_vals.append(value)
-
-            query = Q()
-            for val in in_vals:
-                nested_dict = build_nested_dict(key, val)
-                query |= Q(records__data__contains=nested_dict)
-            queryset = queryset.filter(query)
-        else:
-            cast_field = CharField()
-            if isinstance(value, (int, float)):
-                cast_field = FloatField()
-            elif isinstance(value, date):
-                cast_field = DateField()
-
-            queryset = queryset.annotate(
-                key_value=Cast(KeyTextTransform(key, "records__data"), cast_field)
-            )
-
-            if operator == "icontains":
-                queryset = queryset.filter(key_value__icontains=str_value)
-            elif operator == "in":
-                if isinstance(value, str):
-                    value = value.split("|")
-                queryset = queryset.filter(key_value__in=value)
-            elif operator in ("gt", "gte", "lt", "lte"):
-                queryset = queryset.filter(**{f"key_value__{operator}": value})
-            else:
-                queryset = queryset.filter(key_value__icontains=str_value)
-
+        queryset = filter_queryset_by_data_attr(
+            queryset,
+            key.strip(),
+            operator,
+            str_value.strip(),
+            field_prefix="records__data",
+        )
         return queryset.distinct(), False
 
     @admin.display(description="Object type UUID")

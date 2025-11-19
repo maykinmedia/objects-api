@@ -1,38 +1,20 @@
-import React, { useEffect } from "react";
-import { createRoot } from "react-dom/client";
+function mountSearchHelpToggle() {
+    const toggleLink = document.getElementById("toggle-search-help");
+    const content = document.getElementById("search-help-content");
 
-const SearchHelpToggle = () => {
-    useEffect(() => {
-        const toggleLink = document.getElementById("toggle-search-help");
-        const content = document.getElementById("search-help-content");
+    if (!toggleLink || !content) return;
 
-        if (!toggleLink || !content) return;
+    toggleLink.addEventListener("click", function (e) {
+        e.preventDefault();
 
-        const handleClick = (e) => {
-            e.preventDefault();
-            if (content.style.display === "none" || content.style.display === "") {
-                content.style.display = "block";
-                toggleLink.textContent = "Hide search information";
-            } else {
-                content.style.display = "none";
-                toggleLink.textContent = "Show search information";
-            }
-        };
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+            toggleLink.textContent = "Hide search information";
+        } else {
+            content.style.display = "none";
+            toggleLink.textContent = "Show search information";
+        }
+    });
+}
 
-        toggleLink.addEventListener("click", handleClick);
-
-        return () => toggleLink.removeEventListener("click", handleClick);
-    }, []);
-
-    return null;
-};
-
-const mountSearchHelpToggle = () => {
-    const node = document.getElementById("search-help-toggle-root");
-    if (!node) return;
-
-    const root = createRoot(node);
-    root.render(<SearchHelpToggle />);
-};
-
-export { mountSearchHelpToggle };
+document.addEventListener("DOMContentLoaded", mountSearchHelpToggle);
