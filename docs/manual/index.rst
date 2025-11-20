@@ -7,5 +7,4 @@ Manual
    :maxdepth: 1
    :caption: Further reading
 
-   logging
    scripts

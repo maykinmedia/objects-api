@@ -158,7 +158,7 @@ class ObjectViewSet(
         objects_update_counter.add(1)
 
     def perform_destroy(self, instance):
-        super().perform_destroy(instance)
+        instance.object.delete()
         objects_delete_counter.add(1)
 
     @extend_schema(

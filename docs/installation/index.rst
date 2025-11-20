@@ -19,5 +19,6 @@ this.
    config
    config_cli
    deployment/index
+   observability/index
    oidc
    hardware
