@@ -8,3 +8,5 @@ DB_USER="objects"
 DB_PASSWORD=""
 DB_HOST=""
 DB_PORT=""
+
+OTEL_SERVICE_NAME=objects
