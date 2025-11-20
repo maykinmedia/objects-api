@@ -54,7 +54,11 @@
             ],
             [
                 "mozilla_django_oidc_db",
-                "openidconnectconfig"
+                "oidcprovider"
+            ],
+            [
+                "mozilla_django_oidc_db",
+                "oidcclient"
             ],
             [
                 "log_outgoing_requests",
