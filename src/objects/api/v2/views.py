@@ -23,6 +23,11 @@ from objects.token.permissions import ObjectTypeBasedPermission
 
 from ..filter_backends import OrderingBackend
 from ..kanalen import KANAAL_OBJECTEN
+from ..metrics import (
+    objects_create_counter,
+    objects_delete_counter,
+    objects_update_counter,
+)
 from ..mixins import GeoMixin, ObjectNotificationMixin
 from ..pagination import DynamicPageSizePagination
 from ..serializers import (
@@ -144,8 +149,17 @@ class ObjectViewSet(
         # filter on the rest of query params
         return super().filter_queryset(queryset)
 
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        objects_create_counter.add(1)
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        objects_update_counter.add(1)
+
     def perform_destroy(self, instance):
-        instance.object.delete()
+        super().perform_destroy(instance)
+        objects_delete_counter.add(1)
 
     @extend_schema(
         description="Retrieve all RECORDs of an OBJECT.",
