@@ -89,13 +89,13 @@ Accounts
 Objects
 -------
 
-``objects.objects.creates``
+``objects.object.creates``
     Reports the number of objects created via the API.
 
-``objects.objects.updates``
+``objects.object.updates``
     Reports the number of objects updated via the API.
 
-``objects.objects.deletes``
+``objects.object.deletes``
     Reports the number of objects deleted via the API.
 
 The objects metrics show how many entities are created, updated, or deleted via the API,
@@ -105,4 +105,4 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_objects_zaken_updates_total)
+        sum by (otel_scope_name) (otel_objects_object_updates_total)
