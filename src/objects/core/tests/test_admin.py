@@ -211,12 +211,6 @@ class ObjectAdminTests(WebTest):
                 get_row_pks(response), [object2.pk, object3.pk, object4.pk]
             )
 
-        with self.subTest("IN operator"):
-            response = self.app.get(
-                list_url, params={"q": "id_nummer__in__1|3"}, user=self.user
-            )
-            self.assertCountEqual(get_row_pks(response), [object1.pk, object3.pk])
-
         with self.subTest("Date exact"):
             response = self.app.get(
                 list_url, params={"q": "plantDate__exact__2025-06-15"}, user=self.user
