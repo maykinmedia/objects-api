@@ -1,11 +1,8 @@
-from typing import Sequence
-
 from django import forms
-from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
-from django.http import HttpRequest, JsonResponse
+from django.http import JsonResponse
 from django.urls import path
 
 import requests
@@ -148,17 +145,9 @@ class ObjectAdmin(admin.ModelAdmin):
 
     change_list_template = "admin/core/object_change_list.html"
 
-    def get_search_fields(self, request: HttpRequest) -> Sequence[str]:
-        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
-            return ()
-
-        return ("uuid",)
-
     def get_search_results(self, request, queryset, search_term):
         VALID_OPERATORS = {"exact", "icontains", "in", "gt", "gte", "lt", "lte"}
-
-        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
-            return queryset, False
+        DEFAULT_OPERATOR = "icontains"
 
         if "__" not in search_term:
             return super().get_search_results(request, queryset, search_term)
@@ -169,12 +158,15 @@ class ObjectAdmin(admin.ModelAdmin):
             key, operator, str_value = parts
         elif len(parts) == 3:
             key = "__".join(parts[:-1])
-            operator = "exact"
+            operator = DEFAULT_OPERATOR
             str_value = parts[-1]
         elif len(parts) == 2:
             key, str_value = parts
-            operator = "icontains"
+            operator = DEFAULT_OPERATOR
         else:
+            return super().get_search_results(request, queryset, search_term)
+
+        if not key or not str_value:
             return super().get_search_results(request, queryset, search_term)
 
         queryset = filter_queryset_by_data_attr(

@@ -1,6 +1,6 @@
 import re
 
-from django.test import override_settings, tag
+from django.test import tag
 from django.urls import reverse
 
 import requests_mock
@@ -57,40 +57,6 @@ class ObjectAdminTests(WebTest):
         self.assertEqual(len(rows), 1)
         self.assertIn(str(object1.uuid), response.text)
         self.assertNotIn(str(object2.uuid), response.text)
-
-    @tag("gh-621")
-    def test_object_admin_search_disabled(self):
-        list_url = reverse("admin:core_object_changelist")
-
-        ObjectRecordFactory.create(data={"foo": "bar"})
-        ObjectRecordFactory.create(data={"foo": "baz"})
-
-        def get_num_results(response) -> int:
-            result_list = response.html.find("table", {"id": "result_list"})
-            return len(result_list.find("tbody").find_all("tr"))
-
-        with self.subTest("search is enabled by default"):
-            response = self.app.get(list_url, user=self.user)
-
-            self.assertIsNotNone(response.html.find("input", {"id": "searchbar"}))
-
-            response = self.app.get(list_url, params={"q": "foo__bar"}, user=self.user)
-
-            self.assertEqual(get_num_results(response), 1)
-
-        with self.subTest("search is disabled if OBJECTS_ADMIN_SEARCH_DISABLED=True"):
-            with override_settings(OBJECTS_ADMIN_SEARCH_DISABLED=True):
-                response = self.app.get(
-                    reverse("admin:core_object_changelist"), user=self.user
-                )
-
-                self.assertIsNone(response.html.find("input", {"id": "searchbar"}))
-
-                response = self.app.get(
-                    list_url, params={"q": "foo__bar"}, user=self.user
-                )
-
-                self.assertEqual(get_num_results(response), 2)
 
     @tag("gh-677")
     def test_add_new_objectrecord(self):
