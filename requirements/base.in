@@ -14,7 +14,7 @@ notifications-api-common[setup-configuration]
 zgw-consumers[setup-configuration]
 mozilla-django-oidc-db[setup-configuration]
 commonground-api-common[oas]
-maykin-common[axes,mfa]
+maykin-common[axes,mfa,otel]
 
 # celery dependencies
 # TODO this should be moved to open-api-framework once it is verified that this fixes

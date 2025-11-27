@@ -17,6 +17,9 @@ os.environ.setdefault("DB_NAME", "objects")
 os.environ.setdefault("DB_USER", "objects")
 os.environ.setdefault("DB_PASSWORD", "objects")
 
+os.environ.setdefault("OTEL_SDK_DISABLED", "true")
+os.environ.setdefault("OTEL_EXPORTER_OTLP_METRICS_INSECURE", "true")
+
 from .base import *  # noqa isort:skip
 
 #

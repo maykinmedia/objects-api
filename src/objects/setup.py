@@ -11,11 +11,13 @@ they are available for Django settings initialization.
 """
 
 import os
+import warnings
 
 from django.conf import settings
 
 import structlog
 from dotenv import load_dotenv
+from maykin_common.otel import setup_otel
 
 logger = structlog.stdlib.get_logger(__name__)
 
@@ -26,6 +28,16 @@ def setup_env():
     load_dotenv(dotenv_path)
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "objects.conf.dev")
+    if "OTEL_SERVICE_NAME" not in os.environ:
+        warnings.warn(
+            "No OTEL_SERVICE_NAME environment variable set, using a default. "
+            "You should set a (distinct) value for each component (web, worker...)",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        os.environ.setdefault("OTEL_SERVICE_NAME", "objects")
+
+    setup_otel()
 
     structlog.contextvars.bind_contextvars(source="app")
 

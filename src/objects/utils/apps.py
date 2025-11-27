@@ -24,6 +24,7 @@ class UtilsConfig(AppConfig):
 
     def ready(self):
         from . import oas_extensions  # noqa
+        from ..api import metrics  # noqa
 
         unregister_camelize_filter_extension()
 

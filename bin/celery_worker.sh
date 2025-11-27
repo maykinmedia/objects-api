@@ -14,7 +14,12 @@ if [[ "$ENABLE_COVERAGE" ]]; then
     _binary="coverage run $_binary"
 fi
 
+# Set defaults for OTEL
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-objects-worker-"${QUEUE}"}"
+
 echo "Starting celery worker $WORKER_NAME with queue $QUEUE"
+# unset this if NOT using a process pool
+export _OTEL_DEFER_SETUP="true"
 exec $_binary --workdir src --app "objects.celery" worker \
     -Q $QUEUE \
     -n $WORKER_NAME \
