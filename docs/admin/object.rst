@@ -64,3 +64,35 @@ corrected in the "Correction" field of the next record.
 
 In the Objects API you always see one record, which contains data of a certain time (by default
 the latest one). However in the admin interface you can see all the records created for the object.
+
+
+Search objects in the admin
+---------------------------
+
+You can search by **UUID** or inside object data using the format:
+
+.. code-block:: text
+
+    field__operator__value
+
+Operators:
+
+- ``exact`` - exact match  
+- ``icontains`` - case insensitive substring match  
+- ``gt`` - greater than  
+- ``gte`` - greater than or equal to  
+- ``lt`` - less than  
+- ``lte`` - less than or equal to
+
+Examples:
+
+- ``0233da1f-32c1-4e7d-9896-2eecc7d24288`` - searching directly by object UUID  
+- ``id__exact__1``  
+- ``naam__icontains__boom``  
+- ``date__gt__2025-01-01``  
+- ``date__gte__2025-06-15``  
+- ``date__lt__2025-12-31``  
+- ``date__lte__2025-06-15``  
+- ``location__city__exact__Amsterdam``  
+- ``location__region__icontains__Noord``
+
