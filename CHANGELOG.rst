@@ -303,6 +303,13 @@ Change history
   * DB_POOL_RECONNECT_TIMEOUT
   * DB_POOL_NUM_WORKERS
 
+.. warning::
+
+    **Experimental:** — connection pooling is *not yet recommended for production use*.
+    It may not behave as expected when running uWSGI with multiple processes or threads.
+    Use this feature cautiously and test thoroughly before deployment.
+    See the :ref:`documentation <database_connections>` for details.
+
 * [:objects-api:`566`] Add DB_CONN_MAX_AGE environment variable (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
 
 3.0.3 (2025-04-03)
