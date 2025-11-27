@@ -159,6 +159,7 @@ class ObjectAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
         extra_context["toggle_show"] = _("Show search instructions")
         extra_context["toggle_hide"] = _("Hide search instructions")
+        extra_context["search_enabled"] = bool(self.get_search_fields(request))
         return super().changelist_view(request, extra_context=extra_context)
 
     def get_search_results(self, request, queryset, search_term):

@@ -1,6 +1,8 @@
 {% extends "admin/change_list.html" %}
 {% load i18n %}
 {% block search %}
+
+{% if search_enabled %}
 <div style="margin-bottom: 10px;">
     <div id="search-help-toggle-root"></div>
 
@@ -43,6 +45,7 @@
         </ul>
     </div>
 </div>
+{% endif %}
 
 {{ block.super }}
 {% endblock %}
