@@ -166,6 +166,9 @@ class ObjectAdmin(admin.ModelAdmin):
         VALID_OPERATORS = {"exact", "icontains", "in", "gt", "gte", "lt", "lte"}
         DEFAULT_OPERATOR = "icontains"
 
+        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
+            return queryset, False
+
         if "__" not in search_term:
             return super().get_search_results(request, queryset, search_term)
 
