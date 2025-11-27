@@ -1,15 +1,36 @@
 {% extends "admin/change_list.html" %}
-
+{% load i18n %}
 {% block search %}
 <div style="margin-bottom: 10px;">
-    <div id="search-help-toggle-root"></div> {# React mount point #}
-    <a href="#" id="toggle-search-help">Search information</a>
+    <div id="search-help-toggle-root"></div>
+
+    <a href="#" id="toggle-search-help" data-show-text="{{ toggle_show }}" data-hide-text="{{ toggle_hide }}">
+        {% blocktranslate %}Search instructions{% endblocktranslate %}
+    </a>
+
     <div id="search-help-content"
         style="display: none; margin-top: 5px; padding: 5px 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
-        <strong>Search inside object data using the format:</strong> <code>field__operator__value</code>.<br>
-        Operators: <strong>exact</strong>, <strong>icontains</strong>,<strong>gt</strong>,
-        <strong>gte</strong>, <strong>lt</strong>, <strong>lte</strong>.<br>
-        Examples:
+
+        {% blocktranslate trimmed %}
+        You can search by <strong>UUID</strong> or
+        <strong>search inside object data using the format:</strong>
+        <code>field__operator__value</code>.
+        {% endblocktranslate %}
+        <br>
+        {% blocktranslate %}Operators:{% endblocktranslate %}
+        <strong>exact</strong>,
+        <strong>icontains</strong>
+        {% blocktranslate %}(case insensitive substring match){% endblocktranslate %},
+        <strong>gt</strong>
+        {% blocktranslate %}(greater than){% endblocktranslate %},
+        <strong>gte</strong>
+        {% blocktranslate %}(greater than or equal to){% endblocktranslate %},
+        <strong>lt</strong>
+        {% blocktranslate %}(less than){% endblocktranslate %},
+        <strong>lte</strong>
+        {% blocktranslate %}(less than or equal to){% endblocktranslate %}.
+        <br>
+        {% blocktranslate %}Examples:{% endblocktranslate %}
         <ul>
             <li><code>id__exact__1</code></li>
             <li><code>naam__icontains__boom</code></li>
@@ -20,7 +41,6 @@
             <li><code>location__city__exact__Amsterdam</code></li>
             <li><code>location__region__icontains__Noord</code></li>
         </ul>
-        You can also search by <strong>UUID</strong>.
     </div>
 </div>
 

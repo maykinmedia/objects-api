@@ -1,9 +1,13 @@
+from typing import Sequence
+
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.urls import path
+from django.utils.translation import gettext_lazy as _
 
 import requests
 import structlog
@@ -143,7 +147,19 @@ class ObjectAdmin(admin.ModelAdmin):
     inlines = (ObjectRecordInline,)
     list_filter = (ObjectTypeFilter, "created_on", "modified_on")
 
+    def get_search_fields(self, request: HttpRequest) -> Sequence[str]:
+        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
+            return ()
+
+        return ("uuid",)
+
     change_list_template = "admin/core/object_change_list.html"
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["toggle_show"] = _("Show search instructions")
+        extra_context["toggle_hide"] = _("Hide search instructions")
+        return super().changelist_view(request, extra_context=extra_context)
 
     def get_search_results(self, request, queryset, search_term):
         VALID_OPERATORS = {"exact", "icontains", "in", "gt", "gte", "lt", "lte"}

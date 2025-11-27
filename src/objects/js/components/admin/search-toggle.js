@@ -4,15 +4,18 @@ function mountSearchHelpToggle() {
 
     if (!toggleLink || !content) return;
 
+    const showText = toggleLink.dataset.showText;
+    const hideText = toggleLink.dataset.hideText;
+
     toggleLink.addEventListener("click", function (e) {
         e.preventDefault();
 
         if (content.style.display === "none" || content.style.display === "") {
             content.style.display = "block";
-            toggleLink.textContent = "Hide search information";
+            toggleLink.textContent = hideText;
         } else {
             content.style.display = "none";
-            toggleLink.textContent = "Show search information";
+            toggleLink.textContent = showText;
         }
     });
 }

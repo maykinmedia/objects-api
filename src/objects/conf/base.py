@@ -79,6 +79,15 @@ PROJECT_NAME = "Objects"
 SITE_TITLE = "Starting point"
 SHOW_ALERT = True
 
+# TODO remove this once https://github.com/maykinmedia/objects-api/issues/621 is fixed
+OBJECTS_ADMIN_SEARCH_DISABLED = config(
+    "OBJECTS_ADMIN_SEARCH_DISABLED",
+    help_text=(
+        "Indicates whether or not searching in the Objects admin should be disabled"
+    ),
+    default=False,
+)
+
 # Default (connection timeout, read timeout) for the requests library (in seconds)
 REQUESTS_DEFAULT_TIMEOUT = (10, 30)
 
