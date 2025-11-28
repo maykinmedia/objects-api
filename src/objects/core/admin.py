@@ -7,11 +7,13 @@ from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
 from django.http import HttpRequest, JsonResponse
 from django.urls import path
+from django.utils.translation import gettext_lazy as _
 
 import requests
 import structlog
 from vng_api_common.utils import get_help_text
 
+from objects.api.v2.filters import filter_queryset_by_data_attr
 from objects.utils.client import get_objecttypes_client
 
 from .models import Object, ObjectRecord, ObjectType
@@ -141,7 +143,7 @@ class ObjectAdmin(admin.ModelAdmin):
         "modified_on",
         "created_on",
     )
-    search_fields = ("uuid", "records__data")
+    search_fields = ("uuid",)
     inlines = (ObjectRecordInline,)
     list_filter = (ObjectTypeFilter, "created_on", "modified_on")
 
@@ -149,10 +151,52 @@ class ObjectAdmin(admin.ModelAdmin):
         if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
             return ()
 
-        return (
-            "uuid",
-            "records__data",
+        return ("uuid",)
+
+    change_list_template = "admin/core/object_change_list.html"
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["toggle_show"] = _("Show search instructions")
+        extra_context["toggle_hide"] = _("Hide search instructions")
+        extra_context["search_enabled"] = bool(self.get_search_fields(request))
+        return super().changelist_view(request, extra_context=extra_context)
+
+    def get_search_results(self, request, queryset, search_term):
+        VALID_OPERATORS = {"exact", "icontains", "in", "gt", "gte", "lt", "lte"}
+        DEFAULT_OPERATOR = "icontains"
+
+        if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
+            return queryset, False
+
+        if "__" not in search_term:
+            return super().get_search_results(request, queryset, search_term)
+
+        parts = search_term.rsplit("__", 2)
+
+        if len(parts) == 3 and parts[1] in VALID_OPERATORS:
+            key, operator, str_value = parts
+        elif len(parts) == 3:
+            key = "__".join(parts[:-1])
+            operator = DEFAULT_OPERATOR
+            str_value = parts[-1]
+        elif len(parts) == 2:
+            key, str_value = parts
+            operator = DEFAULT_OPERATOR
+        else:
+            return super().get_search_results(request, queryset, search_term)
+
+        if not key or not str_value:
+            return super().get_search_results(request, queryset, search_term)
+
+        queryset = filter_queryset_by_data_attr(
+            queryset,
+            key.strip(),
+            operator,
+            str_value.strip(),
+            field_prefix="records__data",
         )
+        return queryset.distinct(), False
 
     @admin.display(description="Object type UUID")
     def get_object_type_uuid(self, obj):

@@ -78,12 +78,19 @@ def build_nested_dict(path: str, value: Any) -> dict[str, Any]:
     return nested
 
 
-def filter_data_attr_value_part(value_part: str, queryset: QuerySet) -> QuerySet:
+def filter_queryset_by_data_attr(
+    queryset: QuerySet,
+    key: str,
+    operator: str,
+    str_value: str,
+    field_prefix: str,
+) -> QuerySet:
     """
-    filter one value part for data_attr and data_attrs filters
+    Generic filter helper.
+    Can be used in API FilterSet or Admin search.
     """
-    variable, operator, str_value = value_part.rsplit("__", 2)
     real_value = string_to_value(str_value)
+    full_field = f"{field_prefix}__{key}" if key else field_prefix
 
     if operator == "exact":
         #  for exact operator try to filter on string and numeric values
@@ -93,24 +100,40 @@ def filter_data_attr_value_part(value_part: str, queryset: QuerySet) -> QuerySet
 
         query = Q()
         for val in in_vals:
-            nested_dict = build_nested_dict(variable, val)
-            query |= Q(data__contains=nested_dict)
+            nested_dict = build_nested_dict(key, val)
+            query |= Q(**{f"{field_prefix}__contains": nested_dict})
 
         # Make sure containment operator is used (`@>`) via __contains, to ensure the
         # GINIndex on `data` is utilized
         queryset = queryset.filter(query)
+
     elif operator == "icontains":
-        # icontains treats everything like strings
-        queryset = queryset.filter(**{f"data__{variable}__icontains": str_value})
+        queryset = queryset.filter(**{f"{full_field}__icontains": str_value})
+
     elif operator == "in":
         # in must be a list
         values = str_value.split("|")
-        queryset = queryset.filter(**{f"data__{variable}__in": values})
+        queryset = queryset.filter(**{f"{full_field}__in": values})
+
+    elif operator in ("gt", "gte", "lt", "lte"):
+        queryset = queryset.filter(**{f"{full_field}__{operator}": real_value})
 
     else:
-        # gt, gte, lt, lte operators
-        queryset = queryset.filter(**{f"data__{variable}__{operator}": real_value})
+        queryset = queryset.filter(**{f"{full_field}__icontains": str_value})
+
     return queryset
+
+
+def filter_data_attr_value_part(
+    value_part: str, queryset: QuerySet, field_prefix: str = "data"
+) -> QuerySet:
+    """
+    Wrapper to handle a single value part of data_attr or data_attrs.
+    """
+    key, operator, str_value = value_part.rsplit("__", 2)
+    return filter_queryset_by_data_attr(
+        queryset, key, operator, str_value, field_prefix=field_prefix
+    )
 
 
 class ObjectRecordFilterForm(forms.Form):

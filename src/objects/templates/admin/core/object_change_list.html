@@ -1,0 +1,53 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% block search %}
+
+{% if search_enabled %}
+<div style="margin-bottom: 10px;">
+    <div id="search-help-toggle-root"></div>
+
+    <a href="#" id="toggle-search-help" data-show-text="{{ toggle_show }}" data-hide-text="{{ toggle_hide }}">
+        {% blocktranslate %}Search instructions{% endblocktranslate %}
+    </a>
+
+    <div id="search-help-content"
+        style="display: none; margin-top: 5px; padding: 5px 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
+
+        {% blocktranslate trimmed %}
+        You can search by <strong>UUID</strong> or
+        <strong>search inside object data using the format:</strong>
+        <code>field__operator__value</code>.
+        {% endblocktranslate %}
+        <br>
+        {% blocktranslate %}Operators:{% endblocktranslate %}
+        <strong>exact</strong>,
+        <strong>icontains</strong>
+        {% blocktranslate %}(case insensitive substring match){% endblocktranslate %},
+        <strong>gt</strong>
+        {% blocktranslate %}(greater than){% endblocktranslate %},
+        <strong>gte</strong>
+        {% blocktranslate %}(greater than or equal to){% endblocktranslate %},
+        <strong>lt</strong>
+        {% blocktranslate %}(less than){% endblocktranslate %},
+        <strong>lte</strong>
+        {% blocktranslate %}(less than or equal to){% endblocktranslate %}.
+        <br>
+        {% blocktranslate %}Examples:{% endblocktranslate %}
+        <ul>
+            <li><code>0233da1f-32c1-4e7d-9896-2eecc7d24288</code></li>
+            {% blocktranslate %} (searching directly by object UUID) {% endblocktranslate %}
+            <li><code>id__exact__1</code></li>
+            <li><code>naam__icontains__boom</code></li>
+            <li><code>date__gt__2025-01-01</code></li>
+            <li><code>date__gte__2025-06-15</code></li>
+            <li><code>date__lt__2025-12-31</code></li>
+            <li><code>date__lte__2025-06-15</code></li>
+            <li><code>location__city__exact__Amsterdam</code></li>
+            <li><code>location__region__icontains__Noord</code></li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+{{ block.super }}
+{% endblock %}
