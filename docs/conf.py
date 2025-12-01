@@ -119,6 +119,10 @@ linkcheck_ignore = [
 
 extlinks = {
     "objects-api": ("https://github.com/maykinmedia/objects-api/issues/%s", "#%s"),
+    "commonground-api-common": (
+        "https://github.com/maykinmedia/commonground-api-common/issues/%s",
+        "#%s",
+    ),
     "open-api-framework": (
         "https://github.com/maykinmedia/open-api-framework/issues/%s",
         "#%s",
@@ -133,10 +137,16 @@ extlinks = {
     ),
 }
 
+oaf_version = _version("open-api-framework")
 django_structlog_version = _version("django-structlog")
+
 intersphinx_mapping = {
     "django-structlog": (
         f"https://django-structlog.readthedocs.io/en/{django_structlog_version}",
+        None,
+    ),
+    "oaf": (
+        f"https://open-api-framework.readthedocs.io/en/{oaf_version}/",
         None,
     ),
 }

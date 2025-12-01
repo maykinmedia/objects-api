@@ -111,7 +111,7 @@ click-repl==0.3.0
     #   celery
 codecov==2.1.13
     # via -r requirements/test-tools.in
-commonground-api-common==2.10.1
+commonground-api-common==2.10.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -132,7 +132,7 @@ cryptography==44.0.1
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==5.2.7
+django==5.2.8
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -475,19 +475,19 @@ mozilla-django-oidc==4.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
-mozilla-django-oidc-db==1.1.0
+mozilla-django-oidc-db==1.1.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
 multidict==6.0.5
     # via yarl
-notifications-api-common==0.7.3
+notifications-api-common==0.10.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.13.1
+open-api-framework==0.13.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -771,6 +771,7 @@ sentry-sdk==2.12.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   commonground-api-common
     #   open-api-framework
 six==1.16.0
     # via

@@ -139,7 +139,7 @@ codecov==2.1.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-commonground-api-common==2.10.1
+commonground-api-common==2.10.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -169,7 +169,7 @@ cssselect==1.1.0
     #   pyquery
 distlib==0.3.9
     # via virtualenv
-django==5.2.7
+django==5.2.8
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -565,7 +565,7 @@ mozilla-django-oidc==4.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   mozilla-django-oidc-db
-mozilla-django-oidc-db==1.1.0
+mozilla-django-oidc-db==1.1.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -577,12 +577,12 @@ multidict==6.0.5
     #   yarl
 nodeenv==1.9.1
     # via pre-commit
-notifications-api-common==0.7.3
+notifications-api-common==0.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.13.1
+open-api-framework==0.13.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -912,6 +912,7 @@ sentry-sdk==2.12.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   commonground-api-common
     #   open-api-framework
 setuptools==78.1.1
     # via pip-tools

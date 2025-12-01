@@ -2,14 +2,14 @@
 Change history
 ==============
 
-3.5.0 (TBD)
------------
+3.5.0 (2025-12-01)
+------------------
 
 .. warning::
 
     Changes to format of ``setup_configuration`` data for OpenID connect
 
-    In this release, ``mozilla-django-oidc-db`` has been updated to version 1.1.0, which requires the new data format.
+    In this release, ``mozilla-django-oidc-db`` has been updated to version 1.1.1, which requires the new data format.
     The old format is deprecated and will be removed in future releases.
 
     The new configuration must be used, as it splits the previous solo model configuration into ``OIDCProvider`` and ``OIDCClient``
@@ -32,6 +32,62 @@ Change history
 
     For detailed configuration, see :ref:`Admin OIDC Configuration Step  <ref_step_mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep>`.
     Make sure to check which fields are marked as ``DEPRECATED`` and replace them with the fields that are mentioned as replacements.
+
+**New features**
+
+* [:open-api-framework:`152`] Add OpenTelemetry (``OTel``) for collecting and exporting application metrics.
+
+    * Metrics now exposed include:
+
+        - HTTP request durations.
+        - Number of active requests.
+        - Number of users, logins, logouts, failed logins, and account lockouts.
+        - **CRUD** operations for the ``/objects`` endpoint.
+
+    * All metrics are exported using the **OpenTelemetry standard**, enabling seamless integration with existing monitoring and visualization platforms.
+
+.. note::
+
+    The OpenTelemetry SDK is **enabled by default**.
+
+    If you do not have an endpoint to send system telemetry to, update your deployment to **disable it** by setting the environment variable:
+
+    .. code-block:: bash
+
+        OTEL_SDK_DISABLED=true
+
+    If this is not done, warnings will be emitted to the container logs. The application will continue to function normally.
+
+    All available metrics and details can be found in the :ref:`Observability documentation <installation_observability_index>`.
+
+* [:open-api-framework:`188`] Add CSV option to ``dump_data.sh`` script (see :ref:`scripts` for more information)
+* [:objects-api:`621`] Improve admin search bar for JSON data using key-value patterns, see :ref:`admin_objects_search`
+
+**Bugfixes**
+
+* [:commonground-api-common:`134`] Fix exceptions in API endpoints not forwarded to Sentry when ``DEBUG=False``
+
+**Maintenance**
+
+* [:open-api-framework:`191`] ``nodejs`` to v24
+* [:open-api-workflows:`31`] ``codeql`` to v4
+* [:open-api-framework:`188`] Update docker backend image to ``python:3.12-slim-trixie`` and frontend image to ``node:24-trixie-slim``
+* Upgrade python dependencies
+
+    * [:open-api-framework:`171`] ``open-api-framework`` to 0.13.2
+    * ``commonground-api-common`` to 2.10.5
+    * ``notifications-api-common`` to 0.9.0
+    * ``django-setup-configuration`` to 0.11.0
+    * ``mozilla-django-oidc-db`` to 1.1.1
+    * ``maykin-common`` to 0.11.0
+    * ``django`` to 5.2.8
+    * ``uwsgi`` to 2.0.31
+    * ``pip`` to 25.3
+
+**Documentation**
+
+* [:objects-api:`689`] Fix resource reference in notification documentation.
+* [:objects-api:`694`] Add minimum postgres database requirements to documentation.
 
 
 3.4.0 (2025-10-28)
@@ -61,7 +117,7 @@ Change history
 
 **Project maintenance**
 
-* [:open-api-framework:`163`] Integrate django-common to make uses of shared views/templates
+* [:open-api-framework:`163`] Integrate ``maykin-common`` to make uses of shared views/templates
 * [:objects-api:`663`] Upload performance tests results to bencher
 * [:open-api-workflows:`30`] Run API Design Rules linter on OpenAPI specification in CI
 
@@ -302,6 +358,13 @@ Change history
   * DB_POOL_MAX_IDLE
   * DB_POOL_RECONNECT_TIMEOUT
   * DB_POOL_NUM_WORKERS
+
+.. warning::
+
+    **Experimental:** — connection pooling is *not yet recommended for production use*.
+    It may not behave as expected when running uWSGI with multiple processes or threads.
+    Use this feature cautiously and test thoroughly before deployment.
+    See the :ref:`documentation <database_connections>` for details.
 
 * [:objects-api:`566`] Add DB_CONN_MAX_AGE environment variable (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
 
