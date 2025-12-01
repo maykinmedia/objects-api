@@ -2,7 +2,7 @@
 Objecten API
 ============
 
-:Version: 3.4.0
+:Version: 3.5.0
 :Source: https://github.com/maykinmedia/objecttypes-api
 :Keywords: objecten, assets, zaakobjecten
 
@@ -38,7 +38,10 @@ Applicatie versie       Release datum   API specificatie
 =================       ==============  =============================
 latest                  n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml>`_,
                                         `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml>`_,
-                                        (`verschillen <https://github.com/maykinmedia/objects-api/compare/3.4.0..master>`_)
+                                        (`verschillen <https://github.com/maykinmedia/objects-api/compare/3.5.0..master>`_)
+3.5.0                   2025-12-01      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.5.0/src/objects/api/v2/openapi.yaml>`_,
+                                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.5.0/src/objects/api/v2/openapi.yaml>`_
+                                        (`verschillen <https://github.com/maykinmedia/objects-api/compare/3.4.0..3.5.0>`_)
 3.4.0                   2025-10-28      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.4.0/src/objects/api/v2/openapi.yaml>`_,
                                         `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.4.0/src/objects/api/v2/openapi.yaml>`_
                                         (`verschillen <https://github.com/maykinmedia/objects-api/compare/3.3.1..3.4.0>`_)

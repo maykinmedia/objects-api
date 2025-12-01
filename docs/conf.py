@@ -119,6 +119,10 @@ linkcheck_ignore = [
 
 extlinks = {
     "objects-api": ("https://github.com/maykinmedia/objects-api/issues/%s", "#%s"),
+    "commonground-api-common": (
+        "https://github.com/maykinmedia/commonground-api-common/issues/%s",
+        "#%s",
+    ),
     "open-api-framework": (
         "https://github.com/maykinmedia/open-api-framework/issues/%s",
         "#%s",
