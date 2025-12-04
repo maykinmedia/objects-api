@@ -15,8 +15,13 @@ from zgw_consumers.models import Service
 
 from objects.utils.client import get_objecttypes_client
 
+from .constants import (
+    DataClassificationChoices,
+    ObjectVersionStatus,
+    UpdateFrequencyChoices,
+)
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
-from .utils import check_objecttype_cached
+from .utils import check_json_schema, check_objecttype_cached
 
 
 class ObjectType(models.Model):
@@ -29,6 +34,128 @@ class ObjectType(models.Model):
     _name = models.CharField(
         max_length=100,
         help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
+    )
+
+    name = models.CharField(
+        _("name"),
+        max_length=100,
+        help_text=_("Name of the object type"),
+        blank=True,  # TODO temp
+    )
+
+    name_plural = models.CharField(
+        _("name plural"),
+        max_length=100,
+        help_text=_("Plural name of the object type"),
+        blank=True,  # TODO temp
+    )
+    description = models.CharField(
+        _("description"),
+        max_length=1000,
+        blank=True,
+        help_text=_("The description of the object type"),
+    )
+    data_classification = models.CharField(
+        _("data classification"),
+        max_length=50,
+        choices=DataClassificationChoices.choices,
+        default=DataClassificationChoices.open,
+        help_text=_("Confidential level of the object type"),
+    )
+    maintainer_organization = models.CharField(
+        _("maintainer organization"),
+        max_length=200,
+        blank=True,
+        help_text=_("Organization which is responsible for the object type"),
+    )
+    maintainer_department = models.CharField(
+        _("maintainer department"),
+        max_length=200,
+        blank=True,
+        help_text=_("Business department which is responsible for the object type"),
+    )
+    contact_person = models.CharField(
+        _("contact person"),
+        max_length=200,
+        blank=True,
+        help_text=_(
+            "Name of the person in the organization who can provide information about the object type"
+        ),
+    )
+    contact_email = models.CharField(
+        _("contact email"),
+        max_length=200,
+        blank=True,
+        help_text=_(
+            "Email of the person in the organization who can provide information about the object type"
+        ),
+    )
+    source = models.CharField(
+        _("source"),
+        max_length=200,
+        blank=True,
+        help_text=_("Name of the system from which the object type originates"),
+    )
+    update_frequency = models.CharField(
+        _("update frequency"),
+        max_length=10,
+        choices=UpdateFrequencyChoices.choices,
+        default=UpdateFrequencyChoices.unknown,
+        help_text=_("Indicates how often the object type is updated"),
+    )
+    provider_organization = models.CharField(
+        _("provider organization"),
+        max_length=200,
+        blank=True,
+        help_text=_(
+            "Organization which is responsible for publication of the object type"
+        ),
+    )
+    documentation_url = models.URLField(
+        _("documentation url"),
+        blank=True,
+        help_text=_("Link to the documentation for the object type"),
+    )
+    labels = models.JSONField(
+        _("labels"),
+        help_text=_("Key-value pairs of keywords related for the object type"),
+        default=dict,
+        blank=True,
+    )
+    created_at = models.DateField(
+        _("created at"),
+        auto_now_add=False,  # TODO temp
+        blank=True,  # TODO temp
+        null=True,  # TODO temp
+        help_text=_("Date when the object type was created"),
+    )
+    modified_at = models.DateField(
+        _("modified at"),
+        auto_now=False,  # TODO temp
+        blank=True,  # TODO temp
+        null=True,  # TODO temp
+        help_text=_("Last date when the object type was modified"),
+    )
+    allow_geometry = models.BooleanField(
+        _("allow geometry"),
+        default=True,
+        help_text=_(
+            "Shows whether the related objects can have geographic coordinates. "
+            "If the value is 'false' the related objects are not allowed to "
+            "have coordinates and the creation/update of objects with "
+            "`geometry` property will raise an error "
+        ),
+    )
+    linkable_to_zaken = models.BooleanField(
+        _("linkable to zaken"),
+        default=False,
+        help_text=_(
+            # TODO Document: how and where these links should be created/maintained
+            "Objects of this type can have a link to 1 or more Zaken.\n"
+            "True indicates the lifetime of the object is linked to the lifetime "
+            "of linked zaken, i.e., when all linked Zaken to an object are "
+            "archived/destroyed, the object will also be archived/destroyed."
+        ),
     )
 
     objects = ObjectTypeQuerySet.as_manager()
@@ -64,6 +191,86 @@ class ObjectType(models.Model):
 
         if not self._name:
             self._name = object_type_data["name"]
+
+
+class ObjectTypeVersion(models.Model):
+    object_type = models.ForeignKey(
+        ObjectType, on_delete=models.CASCADE, related_name="versions"
+    )
+    version = models.PositiveSmallIntegerField(
+        _("version"), help_text=_("Integer version of the OBJECTTYPE")
+    )
+    created_at = models.DateField(
+        _("created at"),
+        auto_now_add=False,  # TODO temp
+        blank=True,  # TODO temp
+        null=True,  # TODO temp
+        help_text=_("Date when the version was created"),
+    )
+    modified_at = models.DateField(
+        _("modified at"),
+        auto_now=False,  # TODO temp
+        blank=True,  # TODO temp
+        null=True,  # TODO temp
+        help_text=_("Last date when the version was modified"),
+    )
+    published_at = models.DateField(
+        _("published_at"),
+        null=True,
+        blank=True,
+        help_text=_("Date when the version was published"),
+    )
+    json_schema = models.JSONField(
+        _("JSON schema"), help_text=_("JSON schema for Object validation"), default=dict
+    )
+    status = models.CharField(
+        _("status"),
+        max_length=20,
+        choices=ObjectVersionStatus.choices,
+        default=ObjectVersionStatus.draft,
+        help_text=_("Status of the object type version"),
+    )
+
+    class Meta:
+        unique_together = ("object_type", "version")
+
+    def __str__(self):
+        return f"{self.object_type} v.{self.version}"
+
+    def clean(self):
+        super().clean()
+
+        check_json_schema(self.json_schema)
+
+    def save(self, *args, **kwargs):
+        if not self.version:
+            self.version = self.generate_version_number()
+
+        # save published_at
+        previous_status = (
+            ObjectTypeVersion.objects.get(id=self.id).status if self.id else None
+        )
+        if (
+            self.status == ObjectVersionStatus.published
+            and previous_status != self.status
+        ):
+            self.published_at = datetime.date.today()
+
+        super().save(*args, **kwargs)
+
+    def generate_version_number(self) -> int:
+        existed_versions = ObjectTypeVersion.objects.filter(
+            object_type=self.object_type
+        )
+
+        max_version = 0
+        if existed_versions.exists():
+            max_version = existed_versions.aggregate(models.Max("version"))[
+                "version__max"
+            ]
+
+        version_number = max_version + 1
+        return version_number
 
 
 class Object(models.Model):

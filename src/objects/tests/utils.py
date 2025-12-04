@@ -55,6 +55,118 @@ def mock_objecttype(url: str, attrs=None) -> dict:
     return response
 
 
+def mock_objecttypes(uuid1, uuid2):
+    return {
+        "count": 3,
+        "next": None,
+        "previous": None,
+        "results": [
+            {
+                "url": f"http://127.0.0.1:8000/api/v2/objecttypes/{uuid1}",
+                "uuid": uuid1,
+                "name": "Melding",
+                "namePlural": "Meldingen",
+                "description": "",
+                "dataClassification": "intern",
+                "maintainerOrganization": "Dimpact",
+                "maintainerDepartment": "",
+                "contactPerson": "Ad Alarm",
+                "contactEmail": "",
+                "source": "",
+                "updateFrequency": "unknown",
+                "providerOrganization": "",
+                "documentationUrl": "",
+                "labels": {},
+                "linkableToZaken": False,
+                "createdAt": "2020-12-01",
+                "modifiedAt": "2020-12-01",
+                "allowGeometry": True,
+                "versions": [
+                    f"http://127.0.0.1:8000/api/v2/objecttypes/{uuid1}/versions/1",
+                    f"http://127.0.0.1:8000/api/v2/objecttypes/{uuid1}/versions/2",
+                ],
+            },
+            {
+                "url": f"http://127.0.0.1:8000/api/v2/objecttypes/{uuid2}",
+                "uuid": uuid2,
+                "name": "Straatverlichting",
+                "namePlural": "Straatverlichting",
+                "description": "",
+                "dataClassification": "open",
+                "maintainerOrganization": "Maykin Media",
+                "maintainerDepartment": "",
+                "contactPerson": "Desiree Lumen",
+                "contactEmail": "",
+                "source": "",
+                "updateFrequency": "unknown",
+                "providerOrganization": "",
+                "documentationUrl": "",
+                "labels": {},
+                "linkableToZaken": False,
+                "createdAt": "2020-12-01",
+                "modifiedAt": "2020-12-01",
+                "allowGeometry": True,
+                "versions": [
+                    f"http://127.0.0.1:8000/api/v2/objecttypes/{uuid2}/versions/1",
+                    f"http://127.0.0.1:8000/api/v2/objecttypes/{uuid2}/versions/2",
+                ],
+            },
+        ],
+    }
+
+
+def mock_objecttype_versions(objecttype_uuid: str):
+    return {
+        "count": 3,
+        "next": None,
+        "previous": None,
+        "results": [
+            {
+                "url": f"http://127.0.0.1:8000/api/v2/objecttypes/{objecttype_uuid}/versions/2",
+                "version": 2,
+                "objectType": f"http://127.0.0.1:8000/api/v2/objecttypes/{objecttype_uuid}",
+                "status": "published",
+                "jsonSchema": {
+                    "type": "object",
+                    "title": "Tree",
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "required": ["description"],
+                    "properties": {
+                        "description": {
+                            "type": "string",
+                            "description": "Explanation what happened",
+                        }
+                    },
+                },
+                "createdAt": "2020-11-12",
+                "modifiedAt": "2020-11-27",
+                "publishedAt": "2020-11-27",
+            },
+            {
+                "url": f"http://127.0.0.1:8000/api/v2/objecttypes/{objecttype_uuid}/versions/1",
+                "version": 1,
+                "objectType": f"http://127.0.0.1:8000/api/v2/objecttypes/{objecttype_uuid}",
+                "status": "published",
+                "jsonSchema": {
+                    "type": "object",
+                    "title": "Melding",
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "required": ["description"],
+                    "properties": {
+                        "description": {
+                            "type": "string",
+                            "description": "Explanation what happened",
+                        }
+                    },
+                },
+                "createdAt": "2020-12-01",
+                "modifiedAt": "2020-12-01",
+                "publishedAt": "2020-10-02",
+            },
+        ],
+    }
+
+
 def mock_objecttype_version(url: str, attrs=None) -> dict:
     attrs = attrs or {}
     response = {
