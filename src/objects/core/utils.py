@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 
 import jsonschema
 import requests
+from jsonschema.exceptions import SchemaError
+from jsonschema.validators import validator_for
 
 from objects.core import models
 from objects.utils.cache import cache
@@ -27,8 +29,8 @@ def check_objecttype_cached(
                 )
 
     try:
-        vesion_data = get_objecttype_version_response()
-        jsonschema.validate(data, vesion_data["jsonSchema"])
+        version_data = get_objecttype_version_response()
+        jsonschema.validate(data, version_data["jsonSchema"])
     except KeyError:
         raise ValidationError(
             f"{object_type.versions_url} does not appear to be a valid objecttype.",
@@ -49,3 +51,11 @@ def can_connect_to_objecttypes() -> bool:
             if not client.can_connect:
                 return False
     return True
+
+
+def check_json_schema(json_schema: dict):
+    schema_validator = validator_for(json_schema)
+    try:
+        schema_validator.check_schema(json_schema)
+    except SchemaError as exc:
+        raise ValidationError(exc.args[0]) from exc

@@ -8,7 +8,7 @@ import factory
 from factory.fuzzy import BaseFuzzyAttribute
 from zgw_consumers.test.factories import ServiceFactory
 
-from ..models import Object, ObjectRecord, ObjectType
+from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
 
 
 class ObjectTypeFactory(factory.django.DjangoModelFactory):
@@ -16,8 +16,26 @@ class ObjectTypeFactory(factory.django.DjangoModelFactory):
     uuid = factory.LazyFunction(uuid.uuid4)
     _name = factory.Faker("word")
 
+    name = factory.Faker("word")
+    name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")
+    description = factory.Faker("bs")
+
     class Meta:
         model = ObjectType
+
+
+class ObjectTypeVersionFactory(factory.django.DjangoModelFactory):
+    object_type = factory.SubFactory(ObjectTypeFactory)
+    json_schema = {
+        "type": "object",
+        "title": "Tree",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": ["diameter"],
+        "properties": {"diameter": {"type": "integer", "description": "size in cm."}},
+    }
+
+    class Meta:
+        model = ObjectTypeVersion
 
 
 class FuzzyPoint(BaseFuzzyAttribute):
