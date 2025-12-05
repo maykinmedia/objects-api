@@ -36,6 +36,12 @@ class ObjectType(models.Model):
         help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
     )
 
+    is_imported = models.BooleanField(
+        _("Is imported"),
+        default=False,
+        editable=False,
+    )  # TODO temp
+
     name = models.CharField(
         _("name"),
         max_length=100,

@@ -75,6 +75,7 @@ class Command(BaseCommand):
             update_conflicts=True,
             unique_fields=["uuid", "service"],  # TODO remove service
             update_fields=[
+                "is_imported",
                 "name",
                 "name_plural",
                 "description",
@@ -120,6 +121,7 @@ class Command(BaseCommand):
             objecttype.pop("versions")
             objecttype.pop("url")
             objecttype["service"] = service
+            objecttype["is_imported"] = True
             data.append(ObjectType(**underscoreize(objecttype)))
         return data
 

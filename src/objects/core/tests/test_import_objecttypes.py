@@ -74,6 +74,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(ObjectType.objects.count(), 2)
 
         objecttype = ObjectType.objects.get(uuid=uuid1)
+        self.assertEqual(objecttype.is_imported, True)
         self.assertEqual(objecttype.name, "Melding")
         self.assertEqual(objecttype.name_plural, "Meldingen")
         self.assertEqual(objecttype.description, "")
@@ -137,6 +138,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(ObjectTypeVersion.objects.count(), 4)
 
         objecttype = ObjectType.objects.get(uuid=objecttype1.uuid)
+        self.assertEqual(objecttype.is_imported, True)
         self.assertEqual(objecttype.name, "Melding")
 
         version = ObjectTypeVersion.objects.get(object_type=objecttype, version=1)
