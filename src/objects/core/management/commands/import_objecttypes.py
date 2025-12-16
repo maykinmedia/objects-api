@@ -16,9 +16,7 @@ MIN_OBJECTTYPES_VERSION = "3.4.0"  # added boolean field linkable_to_zaken to Ob
 
 
 class Command(BaseCommand):
-    help = (
-        "Import ObjectTypes & ObjectTypeVersions from an Objecttypes API based on the service identifier.",
-    )
+    help = "Import ObjectTypes & ObjectTypeVersions from an Objecttypes API based on the service identifier."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -80,7 +78,7 @@ class Command(BaseCommand):
     def _bulk_create_or_update_objecttypes(self, data):
         ObjectType.objects.bulk_create(
             data,
-            update_conflicts=True,
+            update_conflicts=True,  # Updates existing Objecttypes based on unique_fields
             unique_fields=[
                 "uuid",
                 "service",
