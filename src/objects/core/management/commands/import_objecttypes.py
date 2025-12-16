@@ -6,20 +6,24 @@ from django.utils.translation import gettext as _
 
 from djangorestframework_camel_case.util import underscoreize
 from packaging.version import Version
-from requests.exceptions import HTTPError
+from requests.exceptions import RequestException
 from zgw_consumers.models import Service
 
 from objects.core.models import ObjectType, ObjectTypeVersion
 from objects.utils.client import get_objecttypes_client
 
-MIN_OBJECTTYPES_VERSION = "2.2.2"
+MIN_OBJECTTYPES_VERSION = "3.4.0"  # added boolean field linkable_to_zaken to ObjectType
 
 
 class Command(BaseCommand):
+    help = (
+        "Import ObjectTypes & ObjectTypeVersions from an Objecttypes API based on the service identifier.",
+    )
+
     def add_arguments(self, parser):
         parser.add_argument(
             "service_slug",
-            help=_("Slug of the service"),
+            help=_("Identifier/slug of Objecttypes API service"),
         )
 
     @transaction.atomic
@@ -49,8 +53,12 @@ class Command(BaseCommand):
                         % (len(data), objecttype.name)
                     )
 
-            except HTTPError as e:
-                raise CommandError(_("Request failed: {}").format(e))
+            except RequestException as e:
+                raise CommandError(
+                    _(
+                        "Something went wrong while making requests to Objecttypes API: {}"
+                    ).format(e)
+                )
 
     def _get_service(self, slug):
         try:
@@ -73,7 +81,10 @@ class Command(BaseCommand):
         ObjectType.objects.bulk_create(
             data,
             update_conflicts=True,
-            unique_fields=["uuid", "service"],  # TODO remove service
+            unique_fields=[
+                "uuid",
+                "service",
+            ],  # TODO remove service from unique_fields after objecttype migration since it will no longer be part of the ObjectType model.
             update_fields=[
                 "is_imported",
                 "name",

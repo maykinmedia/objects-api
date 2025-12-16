@@ -34,26 +34,26 @@ class ObjectType(models.Model):
     _name = models.CharField(
         max_length=100,
         help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
-    )
+    )  # TODO can be removed after objecttype migration
 
     is_imported = models.BooleanField(
         _("Is imported"),
         default=False,
         editable=False,
-    )  # TODO temp
+    )  # TODO temp field to track if object was imported, can be removed after objecttype migration
 
     name = models.CharField(
         _("name"),
         max_length=100,
         help_text=_("Name of the object type"),
-        blank=True,  # TODO temp
+        blank=True,  # TODO blank=False after objecttype migration
     )
 
     name_plural = models.CharField(
         _("name plural"),
         max_length=100,
         help_text=_("Plural name of the object type"),
-        blank=True,  # TODO temp
+        blank=True,  # TODO blank=False after objecttype migration
     )
     description = models.CharField(
         _("description"),
@@ -130,16 +130,16 @@ class ObjectType(models.Model):
     )
     created_at = models.DateField(
         _("created at"),
-        auto_now_add=False,  # TODO temp
-        blank=True,  # TODO temp
-        null=True,  # TODO temp
+        auto_now_add=False,  # TODO auto_now_add=True after migration
+        blank=True,  # TODO blank=False after migration
+        null=True,  # TODO null=False after migration
         help_text=_("Date when the object type was created"),
     )
     modified_at = models.DateField(
         _("modified at"),
-        auto_now=False,  # TODO temp
-        blank=True,  # TODO temp
-        null=True,  # TODO temp
+        auto_now=False,  # TODO auto_now=True after migration
+        blank=True,  # TODO blank=False after migration
+        null=True,  # TODO null=False after migration
         help_text=_("Last date when the object type was modified"),
     )
     allow_geometry = models.BooleanField(
@@ -208,16 +208,16 @@ class ObjectTypeVersion(models.Model):
     )
     created_at = models.DateField(
         _("created at"),
-        auto_now_add=False,  # TODO temp
-        blank=True,  # TODO temp
-        null=True,  # TODO temp
+        auto_now_add=False,  # TODO auto_now_add=True after migration
+        blank=True,  # TODO blank=False after migration
+        null=True,  # TODO null=False after migration
         help_text=_("Date when the version was created"),
     )
     modified_at = models.DateField(
         _("modified at"),
-        auto_now=False,  # TODO temp
-        blank=True,  # TODO temp
-        null=True,  # TODO temp
+        auto_now=False,  # TODO auto_now=True after migration
+        blank=True,  # TODO blank=False after migration
+        null=True,  # TODO null=False after migration
         help_text=_("Last date when the version was modified"),
     )
     published_at = models.DateField(

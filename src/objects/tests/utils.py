@@ -57,7 +57,7 @@ def mock_objecttype(url: str, attrs=None) -> dict:
 
 def mock_objecttypes(uuid1, uuid2):
     return {
-        "count": 3,
+        "count": 2,
         "next": None,
         "previous": None,
         "results": [
@@ -117,7 +117,7 @@ def mock_objecttypes(uuid1, uuid2):
 
 def mock_objecttype_versions(objecttype_uuid: str):
     return {
-        "count": 3,
+        "count": 2,
         "next": None,
         "previous": None,
         "results": [
