@@ -8,3 +8,4 @@ Manual
    :caption: Further reading
 
    scripts
+   migration

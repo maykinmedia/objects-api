@@ -80,6 +80,11 @@ class ObjecttypesClient(NLXClient):
         response.raise_for_status()
         return response.json()
 
+    def get_objecttypes_api_version(self) -> str | None:
+        response = self.head("")
+        response.raise_for_status()
+        return response.headers.get("api-version")
+
 
 def get_objecttypes_client(service) -> ObjecttypesClient:
     assert service is not None
