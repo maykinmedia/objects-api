@@ -37,6 +37,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "django.contrib.sites",
     # External applications.
     "rest_framework_gis",
+    "jsonsuit.apps.JSONSuitConfig",
     # Project applications.
     "objects.accounts",
     "objects.setup_configuration",

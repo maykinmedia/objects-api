@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     objecttype_versions = client.list_objecttype_versions(
                         objecttype.uuid
                     )
-                    data = self._parse_objectversion_data(
+                    data = self._parse_objecttypeversion_data(
                         objecttype_versions, objecttype
                     )
                     self._bulk_create_or_update_objecttype_versions(data)
@@ -139,7 +139,7 @@ class Command(BaseCommand):
             data.append(ObjectType(**underscoreize(objecttype)))
         return data
 
-    def _parse_objectversion_data(
+    def _parse_objecttypeversion_data(
         self, objecttype_versions: list[dict[str, Any]], objecttype
     ) -> list[ObjectTypeVersion]:
         data = []

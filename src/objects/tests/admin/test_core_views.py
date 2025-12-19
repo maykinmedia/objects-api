@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.urls import reverse
 
 import requests_mock
@@ -13,6 +15,7 @@ from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_g
 
 @disable_admin_mfa()
 @requests_mock.Mocker()
+@skip("outdated")  # TODO view was removed
 class ObjectTypeAdminVersionsTests(WebTest):
     def test_valid_response_view(self, m):
         objecttypes_api = "https://example.com/objecttypes/v1/"

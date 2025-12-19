@@ -1,4 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.http import Http404
 
 from notifications_api_common.viewsets import (
     NotificationCreateMixin,
@@ -8,6 +10,7 @@ from notifications_api_common.viewsets import (
 )
 from rest_framework.exceptions import NotAcceptable
 from rest_framework.renderers import BrowsableAPIRenderer
+from rest_framework_nested.viewsets import NestedViewSetMixin as _NestedViewSetMixin
 from vng_api_common.exceptions import PreconditionFailed
 from vng_api_common.geo import (
     DEFAULT_CRS,
@@ -16,6 +19,20 @@ from vng_api_common.geo import (
     GeoMixin as _GeoMixin,
     extract_header,
 )
+
+
+class NestedViewSetMixin(_NestedViewSetMixin):
+    def get_queryset(self):
+        """
+        catch validation errors if parent_lookup_kwargs have incorrect format
+        and return 404
+        """
+        try:
+            queryset = super().get_queryset()
+        except ValidationError:
+            raise Http404
+
+        return queryset
 
 
 class GeoMixin(_GeoMixin):

@@ -11,11 +11,16 @@ from rest_framework.test import APITestCase
 from vng_api_common.tests import get_validation_errors
 
 from objects.core.models import Object
-from objects.core.tests.factories import ObjectRecordFactory, ObjectTypeFactory
+from objects.core.tests.factories import (
+    ObjectRecordFactory,
+    ObjectTypeFactory,
+    ObjectTypeVersionFactory,
+)
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import ClearCachesMixin, TokenAuthMixin
 
+from ...core.constants import ObjectTypeVersionStatus
 from ..constants import GEO_WRITE_KWARGS
 from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse
@@ -589,3 +594,113 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
         self.assertEqual(error["reason"], "An object with this UUID already exists.")
         self.assertEqual(error["code"], "unique")
+
+    # TODO from objecttypes
+    def test_patch_objecttype_with_uuid_fail(self):
+        object_type = ObjectTypeFactory.create()
+        url = reverse("objecttype-detail", args=[object_type.uuid])
+
+        response = self.client.patch(url, {"uuid": uuid.uuid4()})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(data["uuid"], ["This field can't be changed"])
+
+    def test_delete_objecttype_with_versions_fail(self):
+        object_type = ObjectTypeFactory.create()
+        ObjectTypeVersionFactory.create(object_type=object_type)
+        url = reverse("objecttype-detail", args=[object_type.uuid])
+
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        self.assertEqual(
+            data["non_field_errors"],
+            [
+                "All related versions should be destroyed before destroying the objecttype"
+            ],
+        )
+
+    class ObjectTypeVersionValidationTests(TokenAuthMixin, APITestCase):
+        def test_create_version_with_incorrect_schema_fail(self):
+            object_type = ObjectTypeFactory.create()
+            url = reverse("objecttypeversion-list", args=[object_type.uuid])
+            data = {
+                "jsonSchema": {
+                    "title": "Tree",
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "type": "any",
+                }
+            }
+
+            response = self.client.post(url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertTrue("jsonSchema" in response.json())
+
+        def test_create_version_with_incorrect_objecttype_fail(self):
+            url = reverse("objecttypeversion-list", args=[uuid.uuid4()])
+            data = {
+                "jsonSchema": {
+                    "title": "Tree",
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "properties": {
+                        "diameter": {"type": "integer", "description": "size in cm."}
+                    },
+                }
+            }
+
+            response = self.client.post(url, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json()["non_field_errors"], ["Objecttype url is invalid"]
+            )
+
+        def test_update_published_version_fail(self):
+            object_type = ObjectTypeFactory.create()
+            object_version = ObjectTypeVersionFactory.create(
+                object_type=object_type, status=ObjectTypeVersionStatus.published
+            )
+            url = reverse(
+                "objecttypeversion-detail",
+                args=[object_type.uuid, object_version.version],
+            )
+            new_json_schema = {
+                "type": "object",
+                "title": "Tree",
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "required": ["diameter"],
+                "properties": {"diameter": {"type": "number"}},
+            }
+
+            response = self.client.put(url, {"jsonSchema": new_json_schema})
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            data = response.json()
+            self.assertEqual(
+                data["non_field_errors"], ["Only draft versions can be changed"]
+            )
+
+        def test_delete_puclished_version_fail(self):
+            object_type = ObjectTypeFactory.create()
+            object_version = ObjectTypeVersionFactory.create(
+                object_type=object_type, status=ObjectTypeVersionStatus.published
+            )
+            url = reverse(
+                "objecttypeversion-detail",
+                args=[object_type.uuid, object_version.version],
+            )
+
+            response = self.client.delete(url)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            data = response.json()
+            self.assertEqual(
+                data["non_field_errors"], ["Only draft versions can be destroyed"]
+            )

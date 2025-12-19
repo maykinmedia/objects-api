@@ -12,13 +12,12 @@ from objects.core.constants import ReferenceType
 
 from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Reference
 
-
 class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
-    service = factory.SubFactory(ServiceFactory)
-    uuid = factory.LazyFunction(uuid.uuid4)
+    service = factory.SubFactory(ServiceFactory)  # TODO remove
+    uuid = factory.LazyFunction(uuid.uuid4)  # TODO remove
+    _name = factory.Faker("word")  # TODO remove
 
     name = factory.Faker("word")
-    _name = factory.LazyAttribute(lambda x: x.name)
     name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")
     description = factory.Faker("bs")
 
