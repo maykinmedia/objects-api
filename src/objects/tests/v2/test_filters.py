@@ -18,6 +18,7 @@ from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
+from ...core.constants import DataClassificationChoices
 from .utils import reverse, reverse_lazy
 
 OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
@@ -1133,3 +1134,27 @@ class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
 
         data = response.json()["results"]
         self.assertEqual(len(data), 0)
+
+
+class FilterTests(TokenAuthMixin, APITestCase):
+    url = reverse_lazy("objecttype-list")
+
+    def test_filter_public_data(self):
+        object_type_1 = ObjectTypeFactory.create(
+            data_classification=DataClassificationChoices.open
+        )
+        ObjectTypeFactory.create(data_classification=DataClassificationChoices.intern)
+
+        response = self.client.get(
+            self.url, {"dataClassification": DataClassificationChoices.open}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"],
+            f"http://testserver{reverse('objecttype-detail', args=[object_type_1.uuid])}",
+        )
