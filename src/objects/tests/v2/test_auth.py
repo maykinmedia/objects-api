@@ -15,6 +15,7 @@ from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory, TokenAuthFactory
 from objects.utils.test import TokenAuthMixin
 
+from ...token.models import TokenAuth
 from ..constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse, reverse_lazy
@@ -482,3 +483,36 @@ class SuperUserTests(TokenAuthMixin, APITestCase):
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class ObjectTypeAuthTests(APITestCase):
+    def setUp(self) -> None:
+        object_type = ObjectTypeFactory.create()
+        self.urls = [
+            reverse("objecttype-list"),
+            reverse("objecttype-detail", args=[object_type.uuid]),
+        ]
+
+    def test_non_auth(self):
+        for url in self.urls:
+            with self.subTest(url=url):
+                response = self.client.get(url)
+                self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_invalid_token(self):
+        TokenAuth.objects.create(contact_person="John Smith", email="smith@bomen.nl")
+        for url in self.urls:
+            with self.subTest(url=url):
+                response = self.client.get(url, HTTP_AUTHORIZATION="Token 12345")
+                self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_valid_token(self):
+        token_auth = TokenAuth.objects.create(
+            contact_person="John Smith", email="smith@bomen.nl"
+        )
+        for url in self.urls:
+            with self.subTest(url=url):
+                response = self.client.get(
+                    url, HTTP_AUTHORIZATION=f"Token {token_auth.token}"
+                )
+                self.assertEqual(response.status_code, status.HTTP_200_OK)

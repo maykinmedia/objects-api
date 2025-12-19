@@ -8,8 +8,23 @@ from rest_framework.fields import get_attribute
 from objects.core.utils import check_objecttype_cached
 from objects.utils.client import get_objecttypes_client
 
+from ..core.constants import ObjectTypeVersionStatus
 from .constants import Operators
 from .utils import merge_patch, string_to_value
+
+
+class VersionUpdateValidator:
+    message = _("Only draft versions can be changed")
+    code = "non-draft-version-update"
+    requires_context = True
+
+    def __call__(self, attrs, serializer):
+        instance = getattr(serializer, "instance", None)
+        if not instance:
+            return
+
+        if instance.status != ObjectTypeVersionStatus.draft:
+            raise serializers.ValidationError(self.message, code=self.code)
 
 
 class JsonSchemaValidator:

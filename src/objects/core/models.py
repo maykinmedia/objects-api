@@ -19,7 +19,7 @@ from objects.utils.client import get_objecttypes_client
 
 from .constants import (
     DataClassificationChoices,
-    ObjectVersionStatus,
+    ObjectTypeVersionStatus,
     ReferenceType,
     UpdateFrequencyChoices,
 )
@@ -176,6 +176,17 @@ class ObjectType(models.Model):
         return f"{self.service.label}: {self._name}"
 
     @property
+    def last_version(self):
+        if not self.versions:
+            return None
+
+        return self.versions.order_by("-version").first()
+
+    @property
+    def ordered_versions(self):
+        return self.versions.order_by("-version")
+
+    @property
     def url(self):
         # zds_client.get_operation_url() can be used here but it increases HTTP overhead
         return f"{self.service.api_root}objecttypes/{self.uuid}"
@@ -235,8 +246,8 @@ class ObjectTypeVersion(models.Model):
     status = models.CharField(
         _("status"),
         max_length=20,
-        choices=ObjectVersionStatus.choices,
-        default=ObjectVersionStatus.draft,
+        choices=ObjectTypeVersionStatus.choices,
+        default=ObjectTypeVersionStatus.draft,
         help_text=_("Status of the object type version"),
     )
 
@@ -260,7 +271,7 @@ class ObjectTypeVersion(models.Model):
             ObjectTypeVersion.objects.get(id=self.id).status if self.id else None
         )
         if (
-            self.status == ObjectVersionStatus.published
+            self.status == ObjectTypeVersionStatus.published
             and previous_status != self.status
         ):
             self.published_at = datetime.date.today()
