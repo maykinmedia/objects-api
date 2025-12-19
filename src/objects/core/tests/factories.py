@@ -12,9 +12,9 @@ from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
 
 
 class ObjectTypeFactory(factory.django.DjangoModelFactory):
-    service = factory.SubFactory(ServiceFactory)
-    uuid = factory.LazyFunction(uuid.uuid4)
-    _name = factory.Faker("word")
+    service = factory.SubFactory(ServiceFactory)  # TODO remove
+    uuid = factory.LazyFunction(uuid.uuid4)  # TODO remove
+    _name = factory.Faker("word")  # TODO remove
 
     name = factory.Faker("word")
     name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")

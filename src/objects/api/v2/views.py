@@ -3,7 +3,9 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.utils.dateparse import parse_date
+from django.utils.translation import gettext_lazy as _
 
+import structlog
 from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiTypes,
@@ -12,14 +14,22 @@ from drf_spectacular.utils import (
 )
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from vng_api_common.filters_backend import Backend as FilterBackend
 from vng_api_common.search import SearchMixin
 
-from objects.core.models import ObjectRecord
-from objects.token.models import Permission
-from objects.token.permissions import ObjectTypeBasedPermission
+from objects.api.metrics import (
+    objecttype_create_counter,
+    objecttype_delete_counter,
+    objecttype_update_counter,
+)
+from objects.core.constants import ObjectTypeVersionStatus
+from objects.core.models import ObjectRecord, ObjectType, ObjectTypeVersion
+from objects.token.models import Permission, TokenAuth
+from objects.token.permissions import IsTokenAuthenticated, ObjectTypeBasedPermission
 
 from ..filter_backends import OrderingBackend
 from ..kanalen import KANAAL_OBJECTEN
@@ -28,16 +38,25 @@ from ..metrics import (
     objects_delete_counter,
     objects_update_counter,
 )
-from ..mixins import GeoMixin, ObjectNotificationMixin
+from ..mixins import GeoMixin, NestedViewSetMixin, ObjectNotificationMixin
 from ..pagination import DynamicPageSizePagination
 from ..serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,
     ObjectSerializer,
+    ObjectTypeSerializer,
+    ObjectTypeVersionSerializer,
     PermissionSerializer,
 )
 from ..utils import is_date
-from .filters import DATA_ATTR_HELP_TEXT, DATA_ATTRS_HELP_TEXT, ObjectRecordFilterSet
+from .filters import (
+    DATA_ATTR_HELP_TEXT,
+    DATA_ATTRS_HELP_TEXT,
+    ObjectRecordFilterSet,
+    ObjectTypeFilterSet,
+)
+
+logger = structlog.stdlib.get_logger(__name__)
 
 # manually override OAS because of "deprecated" attribute
 data_attrs_parameter = OpenApiParameter(
@@ -56,6 +75,148 @@ data_attr_parameter = OpenApiParameter(
     description=DATA_ATTR_HELP_TEXT,
     explode=True,
 )
+
+
+@extend_schema_view(
+    retrieve=extend_schema(operation_id="objecttype_read"),
+    destroy=extend_schema(operation_id="objecttype_delete"),
+)
+class ObjectTypeViewSet(viewsets.ModelViewSet):
+    queryset = ObjectType.objects.prefetch_related("versions").order_by("-pk")
+    serializer_class = ObjectTypeSerializer
+    lookup_field = "uuid"
+    filterset_class = ObjectTypeFilterSet
+    pagination_class = DynamicPageSizePagination
+    permission_classes = [IsTokenAuthenticated]
+
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth: TokenAuth = self.request.auth
+        logger.info(
+            "objecttype_created",
+            uuid=str(obj.uuid),
+            name=obj.name,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+        objecttype_create_counter.add(1)
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth: TokenAuth = self.request.auth
+        logger.info(
+            "objecttype_updated",
+            uuid=str(obj.uuid),
+            name=obj.name,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+        objecttype_update_counter.add(1)
+
+    def perform_destroy(self, instance):
+        if instance.versions.exists():
+            raise ValidationError(
+                {
+                    api_settings.NON_FIELD_ERRORS_KEY: [
+                        _(
+                            "All related versions should be destroyed before destroying the objecttype"
+                        )
+                    ]
+                },
+                code="pending-versions",
+            )
+
+        super().perform_destroy(instance)
+        token_auth: TokenAuth = self.request.auth
+        logger.info(
+            "objecttype_deleted",
+            uuid=str(instance.uuid),
+            name=instance.name,
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+        objecttype_delete_counter.add(1)
+
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        operation_id="objecttypeversion_read",
+        description=_("Retrieve an OBJECTTYPE with the given version."),
+    ),
+    list=extend_schema(
+        operation_id="objecttypeversion_list",
+        description=_("Retrieve all versions of an OBJECTTYPE"),
+    ),
+    create=extend_schema(
+        operation_id="objecttypeversion_create",
+        description=_("Create an OBJECTTYPE with the given version."),
+    ),
+    destroy=extend_schema(
+        operation_id="objecttypeversion_delete",
+        description=_("Destroy the given OBJECTTYPE."),
+    ),
+    update=extend_schema(
+        operation_id="objecttypeversion_update",
+        description=_("Update an OBJECTTYPE with the given version."),
+    ),
+    partial_update=extend_schema(
+        operation_id="objecttypeversion_partial_update",
+        description=_("Partially update an OBJECTTYPE with the given version."),
+    ),
+)
+class ObjectTypeVersionViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+    queryset = ObjectTypeVersion.objects.order_by("object_type", "-version")
+    serializer_class = ObjectTypeVersionSerializer
+    lookup_field = "version"
+    pagination_class = DynamicPageSizePagination
+    permission_classes = [IsTokenAuthenticated]
+
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "object_version_created",
+            version=str(obj.version),
+            objecttype_uuid=str(obj.object_type.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        obj = serializer.instance
+        token_auth = self.request.auth
+        logger.info(
+            "object_version_updated",
+            version=str(obj.version),
+            objecttype_uuid=str(obj.object_type.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
+
+    def perform_destroy(self, instance):
+        if instance.status != ObjectTypeVersionStatus.draft:
+            raise ValidationError(
+                {
+                    api_settings.NON_FIELD_ERRORS_KEY: [
+                        _("Only draft versions can be destroyed")
+                    ]
+                },
+                code="non-draft-version-destroy",
+            )
+
+        super().perform_destroy(instance)
+        token_auth = self.request.auth
+        logger.info(
+            "object_version_deleted",
+            version=str(instance.version),
+            objecttype_uuid=str(instance.object_type.uuid),
+            token_identifier=token_auth.identifier,
+            token_application=token_auth.application,
+        )
 
 
 @extend_schema_view(
