@@ -1,5 +1,12 @@
 import os
 
+from upgrade_check.constraints import (
+    CommandCheck,
+    UpgradeCheck,
+    UpgradePaths,
+    VersionRange,
+)
+
 os.environ["_USE_STRUCTLOG"] = "True"
 
 from open_api_framework.conf.base import *  # noqa
@@ -166,3 +173,11 @@ CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
 # Note: the LOGIN_URL Django setting is not used because you could have
 # multiple login urls defined.
 LOGIN_URLS = [reverse_lazy("admin:login")]
+
+
+UPGRADE_CHECK_PATHS: UpgradePaths = {
+    "4.0.0": UpgradeCheck(
+        VersionRange(minimum="3.6.0"),
+        code_checks=[CommandCheck("check_for_external_objecttypes")],
+    ),
+}
