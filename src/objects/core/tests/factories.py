@@ -1,22 +1,16 @@
 import random
-import uuid
 from datetime import date, timedelta
 
 from django.contrib.gis.geos import Point
 
 import factory
 from factory.fuzzy import BaseFuzzyAttribute
-from zgw_consumers.test.factories import ServiceFactory
 
 from objects.core.constants import ReferenceType
 
 from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Reference
 
 class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
-    service = factory.SubFactory(ServiceFactory)  # TODO remove
-    uuid = factory.LazyFunction(uuid.uuid4)  # TODO remove
-    _name = factory.Faker("word")  # TODO remove
-
     name = factory.Faker("word")
     name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")
     description = factory.Faker("bs")
