@@ -2,20 +2,13 @@ from __future__ import annotations
 
 import datetime
 import uuid
-from typing import ClassVar, Iterable
+from typing import ClassVar
 
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.indexes import GinIndex
-from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-import requests
-from requests.exceptions import ConnectionError
-from zgw_consumers.models import Service
-
-from objects.utils.client import get_objecttypes_client
 
 from .constants import (
     DataClassificationChoices,
@@ -28,35 +21,22 @@ from .utils import check_json_schema, check_objecttype_cached
 
 
 class ObjectType(models.Model):
-    service = models.ForeignKey(
-        Service, on_delete=models.PROTECT, related_name="object_types"
-    )
     uuid = models.UUIDField(
-        help_text=_("Unique identifier (UUID4) of the OBJECTTYPE in Objecttypes API")
+        help_text=_("Unique identifier (UUID4) of the OBJECTTYPE in Objecttypes API"),
+        unique=True,
+        default=uuid.uuid4,
     )
-    _name = models.CharField(
-        max_length=100,
-        help_text=_("Cached name of the objecttype retrieved from the Objecttype API"),
-    )  # TODO can be removed after objecttype migration
-
-    is_imported = models.BooleanField(
-        _("Is imported"),
-        default=False,
-        editable=False,
-    )  # TODO temp field to track if object was imported, can be removed after objecttype migration
 
     name = models.CharField(
         _("name"),
         max_length=100,
         help_text=_("Name of the object type"),
-        blank=True,  # TODO blank=False after objecttype migration
     )
 
     name_plural = models.CharField(
         _("name plural"),
         max_length=100,
         help_text=_("Plural name of the object type"),
-        blank=True,  # TODO blank=False after objecttype migration
     )
     description = models.CharField(
         _("description"),
@@ -133,16 +113,12 @@ class ObjectType(models.Model):
     )
     created_at = models.DateField(
         _("created at"),
-        auto_now_add=False,  # TODO auto_now_add=True after migration
-        blank=True,  # TODO blank=False after migration
-        null=True,  # TODO null=False after migration
+        auto_now_add=True,
         help_text=_("Date when the object type was created"),
     )
     modified_at = models.DateField(
         _("modified at"),
-        auto_now=False,  # TODO auto_now=True after migration
-        blank=True,  # TODO blank=False after migration
-        null=True,  # TODO null=False after migration
+        auto_now=True,
         help_text=_("Last date when the object type was modified"),
     )
     allow_geometry = models.BooleanField(
@@ -158,9 +134,6 @@ class ObjectType(models.Model):
 
     objects = ObjectTypeQuerySet.as_manager()
 
-    class Meta:
-        unique_together = ("service", "uuid")
-
     def __str__(self):
         return f"{self.service.label}: {self.name or self._name}"
 
@@ -175,32 +148,6 @@ class ObjectType(models.Model):
     def ordered_versions(self):
         return self.versions.order_by("-version")
 
-    @property
-    def url(self):
-        # zds_client.get_operation_url() can be used here but it increases HTTP overhead
-        return f"{self.service.api_root}objecttypes/{self.uuid}"
-
-    @property
-    def versions_url(self):
-        return f"{self.url}/versions"
-
-    def clean_fields(self, exclude: Iterable[str] | None = None) -> None:
-        super().clean_fields(exclude=exclude)
-
-        if exclude and "service" in exclude:
-            return
-
-        with get_objecttypes_client(self.service) as client:
-            try:
-                object_type_data = client.get_objecttype(self.uuid)
-            except (requests.RequestException, ConnectionError, ValueError) as exc:
-                raise ValidationError(f"Objecttype can't be requested: {exc}")
-            except requests.exceptions.JSONDecodeError:
-                raise ValidationError("Object type version didn't have any data")
-
-        if not self._name:
-            self._name = object_type_data["name"]
-
 
 class ObjectTypeVersion(models.Model):
     object_type = models.ForeignKey(
@@ -211,16 +158,12 @@ class ObjectTypeVersion(models.Model):
     )
     created_at = models.DateField(
         _("created at"),
-        auto_now_add=False,  # TODO auto_now_add=True after migration
-        blank=True,  # TODO blank=False after migration
-        null=True,  # TODO null=False after migration
+        auto_now_add=True,
         help_text=_("Date when the version was created"),
     )
     modified_at = models.DateField(
         _("modified at"),
-        auto_now=False,  # TODO auto_now=True after migration
-        blank=True,  # TODO blank=False after migration
-        null=True,  # TODO null=False after migration
+        auto_now=True,
         help_text=_("Last date when the version was modified"),
     )
     published_at = models.DateField(
