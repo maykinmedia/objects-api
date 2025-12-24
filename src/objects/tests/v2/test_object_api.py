@@ -25,7 +25,6 @@ from .utils import reverse, reverse_lazy
 
 
 @freeze_time("2020-08-08")
-@requests_mock.Mocker()
 class ObjectApiTests(TokenAuthMixin, APITestCase):
     maxDiff = None
 
@@ -44,7 +43,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             token_auth=cls.token_auth,
         )
 
-    def test_list_actual_objects(self, m):
+    def test_list_actual_objects(self):
         object_record1 = ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date.today(),
@@ -90,7 +89,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             },
         )
 
-    def test_retrieve_object(self, m):
+    def test_retrieve_object(self):
         object = ObjectFactory.create(object_type=self.object_type)
         object_record = ObjectRecordFactory.create(
             object=object,
@@ -126,7 +125,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             },
         )
 
-    def test_retrieve_by_index(self, m):
+    def test_retrieve_by_index(self):
         record1 = ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date(2020, 1, 1),
@@ -188,7 +187,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                 },
             )
 
-    def test_create_object(self, m):
+    def test_create_object(self):
         url = reverse("object-list")
         data = {
             "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
@@ -220,7 +219,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(record.geometry.coords, (4.910649523925713, 52.37240093589432))
         self.assertIsNone(record.end_at)
 
-    def test_update_object(self, m):
+    def test_update_object(self):
         # other object - to check that correction works when there is another record with the same index
         ObjectRecordFactory.create(object__object_type=self.object_type)
         initial_record = ObjectRecordFactory.create(
@@ -273,7 +272,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
-    def test_patch_object_record(self, m):
+    def test_patch_object_record(self):
         initial_record = ObjectRecordFactory.create(
             version=1,
             object__object_type=self.object_type,
@@ -316,7 +315,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
-    def test_patch_validates_merged_object_rather_than_partial_object(self, m):
+    def test_patch_validates_merged_object_rather_than_partial_object(self):
         initial_record = ObjectRecordFactory.create(
             version=1,
             object__object_type=self.object_type,
@@ -349,7 +348,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},
         )
 
-    def test_delete_object(self, m):
+    def test_delete_object(self):
         record = ObjectRecordFactory.create(object__object_type=self.object_type)
         object = record.object
         url = reverse("object-detail", args=[object.uuid])
@@ -359,7 +358,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Object.objects.count(), 0)
 
-    def test_history_object(self, m):
+    def test_history_object(self):
         record1 = ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date(2020, 1, 1),
@@ -412,7 +411,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
     # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we discovered that updating an object \
     # where the startAt value has been modified with an earlier date causes an 500 response.
-    def test_updating_object_after_changing_the_startAt_value_returns_200(self, m):
+    def test_updating_object_after_changing_the_startAt_value_returns_200(self):
         object_uuid = uuid.uuid4()
 
         url_object_list = reverse("object-list")
@@ -466,7 +465,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         )
 
     # regression test for https://github.com/maykinmedia/objects-api/issues/268
-    def test_update_object_correctionFor(self, m):
+    def test_update_object_correctionFor(self):
         initial_record = ObjectRecordFactory.create(
             object__object_type=self.object_type, version=1
         )
