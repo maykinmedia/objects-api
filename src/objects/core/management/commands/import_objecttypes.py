@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 self._check_objecttypes_api_version(client)
 
                 objecttypes = client.list_objecttypes()
-                data = self._parse_objecttype_data(objecttypes, service)
+                data = self._parse_objecttype_data(objecttypes)
                 self._bulk_create_or_update_objecttypes(data)
                 self.stdout.write("Successfully imported %s objecttypes" % len(data))
 
@@ -81,10 +81,8 @@ class Command(BaseCommand):
             update_conflicts=True,  # Updates existing Objecttypes based on unique_fields
             unique_fields=[
                 "uuid",
-                "service",
-            ],  # TODO remove service from unique_fields after objecttype migration since it will no longer be part of the ObjectType model.
+            ],
             update_fields=[
-                "is_imported",
                 "name",
                 "name_plural",
                 "description",
@@ -123,14 +121,12 @@ class Command(BaseCommand):
         )
 
     def _parse_objecttype_data(
-        self, objecttypes: list[dict[str, Any]], service: Service
+        self, objecttypes: list[dict[str, Any]]
     ) -> list[ObjectType]:
         data = []
         for objecttype in objecttypes:
             objecttype.pop("versions")
             objecttype.pop("url")
-            objecttype["service"] = service
-            objecttype["is_imported"] = True
             data.append(ObjectType(**underscoreize(objecttype)))
         return data
 

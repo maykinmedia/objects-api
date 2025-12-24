@@ -7,8 +7,6 @@ from django_setup_configuration.exceptions import (
     PrerequisiteFailed,
 )
 from django_setup_configuration.test_utils import execute_single_step
-from zgw_consumers.models import Service
-from zgw_consumers.test.factories import ServiceFactory
 
 from objects.core.models import ObjectType
 from objects.core.tests.factories import ObjectTypeFactory
@@ -21,21 +19,17 @@ DIR_FILES = (Path(__file__).parent / "files/token_auth").resolve()
 
 class TokenTestCase(TestCase):
     def setUp(self):
-        self.service = ServiceFactory.create(slug="service")
         ObjectTypeFactory.create(
-            service=self.service,
             uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d",
-            _name="Object Type 001",
+            name="Object Type 001",
         )
         ObjectTypeFactory.create(
-            service=self.service,
             uuid="ca754b52-3f37-4c49-837c-130e8149e337",
-            _name="Object Type 002",
+            name="Object Type 002",
         )
         ObjectTypeFactory.create(
-            service=self.service,
             uuid="feeaa795-d212-4fa2-bb38-2c34996e5702",
-            _name="Object Type 003",
+            name="Object Type 003",
         )
 
 
@@ -435,7 +429,6 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
     def test_valid_setup_default_without_permissions(self):
         self.assertEqual(TokenAuth.objects.count(), 0)
         self.assertEqual(Permission.objects.count(), 0)
-        self.assertEqual(Service.objects.count(), 1)
         self.assertEqual(ObjectType.objects.count(), 3)
 
         execute_single_step(
@@ -470,7 +463,6 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
     def test_valid_setup_complete(self):
         self.assertEqual(TokenAuth.objects.count(), 0)
         self.assertEqual(Permission.objects.count(), 0)
-        self.assertEqual(Service.objects.count(), 1)
         self.assertEqual(ObjectType.objects.count(), 3)
 
         execute_single_step(
@@ -493,7 +485,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(token.object_types.count(), 2)
         self.assertEqual(token_permissions.count(), 2)
         object_type = ObjectType.objects.get(
-            uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d", service=self.service
+            uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d"
         )
         permission = token_permissions.get(object_type=object_type)
         self.assertTrue(object_type in token.object_types.all())
@@ -507,7 +499,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertTrue("record__data__leeftijd" in permission.fields["1"])
         self.assertTrue("record__data__kiemjaar" in permission.fields["1"])
         object_type = ObjectType.objects.get(
-            uuid="ca754b52-3f37-4c49-837c-130e8149e337", service=self.service
+            uuid="ca754b52-3f37-4c49-837c-130e8149e337"
         )
         permission = token_permissions.get(object_type=object_type)
         self.assertTrue(object_type in token.object_types.all())
@@ -528,7 +520,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(token.permissions.count(), 1)
         self.assertEqual(token.object_types.count(), 1)
         object_type = ObjectType.objects.get(
-            uuid="feeaa795-d212-4fa2-bb38-2c34996e5702", service=self.service
+            uuid="feeaa795-d212-4fa2-bb38-2c34996e5702"
         )
         permission = token_permissions.get(object_type=object_type)
         self.assertTrue(object_type in token.object_types.all())
@@ -584,7 +576,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(token.permissions.count(), 1)
         self.assertEqual(token.object_types.count(), 1)
         object_type = ObjectType.objects.get(
-            uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d", service=self.service
+            uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d"
         )
         permission = token.permissions.get(object_type=object_type)
         self.assertTrue(object_type in token.object_types.all())
@@ -623,7 +615,6 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
     def test_valid_idempotent_step(self):
         self.assertEqual(TokenAuth.objects.count(), 0)
         self.assertEqual(Permission.objects.count(), 0)
-        self.assertEqual(Service.objects.count(), 1)
         self.assertEqual(ObjectType.objects.count(), 3)
 
         execute_single_step(
@@ -647,7 +638,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
         self.assertEqual(old_token.object_types.count(), 2)
         self.assertEqual(old_token_permissions.count(), 2)
         object_type = ObjectType.objects.get(
-            uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d", service=self.service
+            uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d"
         )
         old_permission = old_token_permissions.get(object_type=object_type)
         self.assertTrue(object_type in old_token.object_types.all())
@@ -695,7 +686,7 @@ class TokenAuthConfigurationStepWithPermissionsTests(TokenTestCase):
     def test_invalid_permissions_object_type_does_not_exist(self):
         self.assertFalse(
             ObjectType.objects.filter(
-                uuid="69feca90-6c3d-4628-ace8-19e4b0ae4065", service=self.service
+                uuid="69feca90-6c3d-4628-ace8-19e4b0ae4065"
             ).exists()
         )
         object_source = {

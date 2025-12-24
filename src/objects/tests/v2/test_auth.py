@@ -1,15 +1,13 @@
 from django.contrib.gis.geos import Point
 
-import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.models import ObjectType
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
-    ServiceFactory,
+    ObjectTypeVersionFactory,
 )
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory, TokenAuthFactory
@@ -17,10 +15,7 @@ from objects.utils.test import TokenAuthMixin
 
 from ...token.models import TokenAuth
 from ..constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
-from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse, reverse_lazy
-
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 class TokenAuthTests(APITestCase):
@@ -50,7 +45,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
 
     def test_retrieve_no_object_permission(self):
         object = ObjectFactory.create()
@@ -171,25 +166,10 @@ class PermissionTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_create_with_unknown_objecttype_service(self):
-        url = reverse("object-list")
-        data = {
-            "type": "https://other-api.nl/v1/objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
-            "record": {
-                "typeVersion": 1,
-                "data": {"plantDate": "2020-04-12"},
-                "startDate": "2020-01-01",
-            },
-        }
-
-        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
-
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
     def test_create_with_unknown_objecttype_uuid(self):
         url = reverse("object-list")
         data = {
-            "type": f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
+            "type": "objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12"},
@@ -207,7 +187,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
 
     def test_list_objects_without_object_permissions(self):
         ObjectFactory.create_batch(2)
@@ -254,7 +234,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
                         "coordinates": [POLYGON_AMSTERDAM_CENTRUM],
                     }
                 },
-                "type": self.object_type.url,
+                "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             },
             **GEO_WRITE_KWARGS,
         )
@@ -283,7 +263,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
                         "coordinates": [POLYGON_AMSTERDAM_CENTRUM],
                     }
                 },
-                "type": self.object_type.url,
+                "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             },
             **GEO_WRITE_KWARGS,
         )
@@ -355,112 +335,48 @@ class SuperUserTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    @requests_mock.Mocker()
-    def test_create_superuser(self, m):
-        object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+    def test_create_superuser(self):
+        object_type = ObjectTypeFactory.create()
+        ObjectTypeVersionFactory.create(object_type=object_type)
         url = reverse("object-list")
         data = {
-            "type": f"{object_type.url}",
+            "type": f"https://testserver{reverse('objecttype-detail', args=[object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
                 "startAt": "2020-01-01",
             },
         }
-        # mocks
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{object_type.url}/versions/1",
-            json=mock_objecttype_version(object_type.url),
-        )
 
         response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_create_superuser_no_service(self):
-        url = reverse("object-list")
-        data = {
-            "type": f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2",
-            "record": {
-                "typeVersion": 1,
-                "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "startAt": "2020-01-01",
-            },
-        }
-
-        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    @requests_mock.Mocker()
-    def test_create_superuser_no_object_type(self, m):
-        objecttype_url = (
-            f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2"
-        )
-        service = ServiceFactory.create(api_root=OBJECT_TYPES_API)
-        url = reverse("object-list")
-        data = {
-            "type": objecttype_url,
-            "record": {
-                "typeVersion": 1,
-                "data": {"plantDate": "2020-04-12", "diameter": 30},
-                "startAt": "2020-01-01",
-            },
-        }
-        # mocks
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(objecttype_url, json=mock_objecttype(objecttype_url))
-        m.get(
-            f"{objecttype_url}/versions/1",
-            json=mock_objecttype_version(objecttype_url),
-        )
-
-        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # check created object type
-        object_type = ObjectType.objects.get()
-        self.assertEqual(object_type.service, service)
-        self.assertEqual(object_type.url, objecttype_url)
-
-    @requests_mock.Mocker()
-    def test_update_superuser(self, m):
-        object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+    def test_update_superuser(self):
+        object_type = ObjectTypeFactory.create()
+        ObjectTypeVersionFactory.create(object_type=object_type)
         record = ObjectRecordFactory.create(object__object_type=object_type, version=1)
         url = reverse("object-detail", args=[record.object.uuid])
         data = {
-            "type": f"{object_type.url}",
+            "type": f"https://testserver{reverse('objecttype-detail', args=[object_type.uuid])}",
             "record": {
                 "typeVersion": record.version,
                 "data": record.data,
                 "startAt": record.start_at,
             },
         }
-        # mocks
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{object_type.url}/versions/1",
-            json=mock_objecttype_version(object_type.url),
-        )
 
         response = self.client.put(url, data=data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    @requests_mock.Mocker()
-    def test_patch_superuser(self, m):
-        object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+    def test_patch_superuser(self):
+        object_type = ObjectTypeFactory.create()
+        ObjectTypeVersionFactory.create(object_type=object_type)
         record = ObjectRecordFactory.create(
             object__object_type=object_type, version=1, data__name="old"
         )
         url = reverse("object-detail", args=[record.object.uuid])
-        # mocks
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{object_type.url}/versions/1",
-            json=mock_objecttype_version(object_type.url),
-        )
 
         response = self.client.patch(
             url,

@@ -20,8 +20,6 @@ from objects.utils.test import TokenAuthMixin
 from ...core.constants import DataClassificationChoices
 from .utils import reverse, reverse_lazy
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
@@ -30,10 +28,8 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
-        cls.another_object_type = ObjectTypeFactory.create(
-            service=cls.object_type.service
-        )
+        cls.object_type = ObjectTypeFactory.create()
+        cls.another_object_type = ObjectTypeFactory.create()
 
         PermissionFactory.create(
             object_type=cls.object_type,
@@ -51,7 +47,12 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
         ObjectRecordFactory.create(object=object)
         ObjectFactory.create(object_type=self.another_object_type)
 
-        response = self.client.get(self.url, {"type": self.object_type.url})
+        response = self.client.get(
+            self.url,
+            {
+                "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
+            },
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -69,27 +70,6 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json()["type"], ["Invalid value."])
 
-    def test_filter_unknown_objecttype(self):
-        objecttype_url = (
-            f"{OBJECT_TYPES_API}objecttypes/8be76be2-6567-4f5c-a17b-05217ab6d7b2"
-        )
-        response = self.client.get(self.url, {"type": objecttype_url})
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.json()["type"],
-            [
-                f"Select a valid object type. {objecttype_url} is not one of the available choices."
-            ],
-        )
-
-    def test_filter_too_long_object_type(self):
-        object_type_long = f"{OBJECT_TYPES_API}{'a' * 1000}/{self.object_type.uuid}"
-        response = self.client.get(self.url, {"type": object_type_long})
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json()["type"], ["The value has too many characters"])
-
 
 class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
@@ -98,7 +78,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -446,7 +426,7 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -839,7 +819,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -974,7 +954,7 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -1052,7 +1032,7 @@ class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
