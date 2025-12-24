@@ -8,6 +8,8 @@ furl
 # Django libraries
 django-capture-tag
 
+django-jsonsuit
+
 # Common ground libraries
 django-setup-configuration>=0.5.0
 notifications-api-common[setup-configuration]

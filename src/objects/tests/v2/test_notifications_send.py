@@ -2,7 +2,6 @@ from unittest.mock import patch
 
 from django.test import override_settings
 
-import requests_mock
 from freezegun import freeze_time
 from notifications_api_common.models import NotificationsConfig
 from rest_framework import status
@@ -14,27 +13,26 @@ from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
+    ObjectTypeVersionFactory,
 )
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
-from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse
-
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 @freeze_time("2018-09-07T00:00:00Z")
 @override_settings(NOTIFICATIONS_DISABLED=False)
-@requests_mock.Mocker()
 class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory()
+        ObjectTypeVersionFactory.create(object_type=cls.object_type)
+
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
@@ -59,20 +57,14 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         config.save()
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
-    def test_send_notif_create_object(self, mocker, mock_task):
+    def test_send_notif_create_object(self, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         url = reverse("object-list")
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -100,29 +92,23 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "create",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
             },
         )
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
-    def test_send_notif_update_object(self, mocker, mock_task):
+    def test_send_notif_update_object(self, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         obj = ObjectFactory.create(object_type=self.object_type)
         ObjectRecordFactory.create(object=obj)
         url = reverse("object-detail", args=[obj.uuid])
 
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -150,29 +136,23 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "update",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
             },
         )
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
-    def test_send_notif_partial_update_object(self, mocker, mock_task):
+    def test_send_notif_partial_update_object(self, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         obj = ObjectFactory.create(object_type=self.object_type)
         ObjectRecordFactory.create(object=obj)
         url = reverse("object-detail", args=[obj.uuid])
 
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -200,21 +180,16 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "partial_update",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
             },
         )
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
-    def test_send_notif_delete_object(self, mocker, mock_task):
+    def test_send_notif_delete_object(self, mock_task):
         """
         Check if notifications will be send when Object is created
         """
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
 
         obj = ObjectFactory.create(object_type=self.object_type)
         ObjectRecordFactory.create(object=obj)
@@ -237,7 +212,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "destroy",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
             },
         )

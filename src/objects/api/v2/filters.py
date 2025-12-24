@@ -8,10 +8,12 @@ from django.utils.translation import gettext_lazy as _
 from django_filters import filters
 from rest_framework import serializers
 from vng_api_common.filtersets import FilterSet
+from vng_api_common.utils import get_help_text
 
 from objects.core.models import ObjectRecord, ObjectType
 from objects.utils.filters import ManyCharFilter, ObjectTypeFilter
 
+from ...core.constants import DataClassificationChoices
 from ..constants import Operators
 from ..utils import display_choice_values_for_help_text, string_to_value
 from ..validators import validate_data_attr, validate_data_attrs
@@ -134,6 +136,18 @@ def filter_data_attr_value_part(
     return filter_queryset_by_data_attr(
         queryset, key, operator, str_value, field_prefix=field_prefix
     )
+
+
+class ObjectTypeFilterSet(FilterSet):
+    dataClassification = filters.ChoiceFilter(
+        field_name="data_classification",
+        choices=DataClassificationChoices.choices,
+        help_text=get_help_text("core.ObjectType", "data_classification"),
+    )
+
+    class Meta:
+        model = ObjectType
+        fields = ("dataClassification",)
 
 
 class ObjectRecordFilterForm(forms.Form):
