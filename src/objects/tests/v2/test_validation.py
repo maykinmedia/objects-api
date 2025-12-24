@@ -307,7 +307,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         ObjectTypeVersionFactory.create(object_type=self.object_type)
 
         initial_record = ObjectRecordFactory.create(
-            object__object_type=self.object_type, geometry=None
+            object__object_type=self.object_type, geometry=None, data={"diameter": 20}
         )
         object = initial_record.object
 
