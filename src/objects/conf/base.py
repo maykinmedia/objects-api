@@ -66,17 +66,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Europe/Amsterdam"
 
 #
-# Caches
-#
-
-OBJECTTYPE_VERSION_CACHE_TIMEOUT = config(
-    "OBJECTTYPE_VERSION_CACHE_TIMEOUT",
-    default=5 * 60,  # 300 seconds
-    help_text="Timeout in seconds for cache when retrieving objecttype versions.",
-    group="Cache",
-)
-
-#
 # Additional Django settings
 #
 
