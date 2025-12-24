@@ -285,7 +285,6 @@ class ObjectViewSet(
     queryset = (
         ObjectRecord.objects.select_related(
             "_object_type",
-            "_object_type__service",
             "correct",
             "corrected",
         )

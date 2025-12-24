@@ -14,12 +14,13 @@ from objects.core.models import Object, ObjectRecord, ObjectType, ObjectTypeVers
 from objects.token.models import Permission, TokenAuth
 from objects.utils.serializers import DynamicFieldsMixin
 
-from .fields import CachedObjectUrlField, ObjectSlugRelatedField, ObjectTypeField
+from .fields import CachedObjectUrlField, ObjectSlugRelatedField
 from .utils import merge_patch
 from .validators import (
     GeometryValidator,
     IsImmutableValidator,
     JsonSchemaValidator,
+    ObjectTypeSchemaValidator,
     VersionUpdateValidator,
 )
 
@@ -42,11 +43,11 @@ class ObjectTypeVersionSerializer(NestedHyperlinkedModelSerializer):
             "publishedAt",
         )
         extra_kwargs = {
-            # "url": {"lookup_field": "version"},
+            "url": {"lookup_field": "version"},
             "version": {"read_only": True},
             "objectType": {
                 "source": "object_type",
-                # "lookup_field": "uuid",
+                "lookup_field": "uuid",
                 "read_only": True,
             },
             "jsonSchema": {
@@ -97,7 +98,7 @@ class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
     versions = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        # lookup_field="version",
+        lookup_field="version",
         view_name="objecttypeversion-detail",
         parent_lookup_kwargs={"objecttype_uuid": "object_type__uuid"},
         help_text=_("list of URLs for the OBJECTTYPE versions"),
@@ -128,7 +129,7 @@ class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "versions",
         )
         extra_kwargs = {
-            # "url": {"lookup_field": "uuid"},
+            "url": {"lookup_field": "uuid"},
             "uuid": {"validators": [IsImmutableValidator()]},
             "namePlural": {"source": "name_plural"},
             "dataClassification": {"source": "data_classification"},
@@ -239,12 +240,13 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         ],
         help_text=_("Unique identifier (UUID4)"),
     )
-    type = ObjectTypeField(
-        min_length=1,
-        max_length=1000,
+    type = serializers.HyperlinkedRelatedField(
         source="_object_type",
         queryset=ObjectType.objects.all(),
-        help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
+        view_name="objecttype-detail",
+        help_text=_("Url reference to OBJECTTYPE"),
+        lookup_url_kwarg="uuid",
+        lookup_field="uuid",
         validators=[IsImmutableValidator()],
     )
     record = ObjectRecordSerializer(
@@ -257,7 +259,7 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         extra_kwargs = {
             "url": {"lookup_field": "object.uuid"},
         }
-        validators = [JsonSchemaValidator(), GeometryValidator()]
+        validators = [ObjectTypeSchemaValidator(), GeometryValidator()]
 
     @transaction.atomic
     def create(self, validated_data):
@@ -332,12 +334,14 @@ class ObjectSearchSerializer(serializers.Serializer):
 
 
 class PermissionSerializer(serializers.ModelSerializer):
-    type = ObjectTypeField(
-        min_length=1,
-        max_length=1000,
+    type = serializers.HyperlinkedRelatedField(
         source="object_type",
         queryset=ObjectType.objects.all(),
-        help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
+        view_name="objecttype-detail",
+        help_text=_("Url reference to OBJECTTYPE"),
+        lookup_url_kwarg="uuid",
+        lookup_field="uuid",
+        validators=[IsImmutableValidator()],
     )
 
     class Meta:

@@ -1,7 +1,13 @@
 from django.db import models
 
+from vng_api_common.utils import get_uuid_from_path
+
 
 class ObjectTypeQuerySet(models.QuerySet):
+    def get_by_url(self, url):
+        uuid = get_uuid_from_path(url)
+        return self.get(uuid=uuid)
+
     def create_from_schema(self, json_schema: dict, **kwargs):
         object_type_data = {
             "name": json_schema.get("title", "").title(),

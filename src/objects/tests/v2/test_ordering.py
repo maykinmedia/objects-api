@@ -11,8 +11,6 @@ from objects.utils.test import TokenAuthMixin
 
 from .utils import reverse_lazy
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class OrderingTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
@@ -21,7 +19,7 @@ class OrderingTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
 
         PermissionFactory.create(
             object_type=cls.object_type,
@@ -129,7 +127,7 @@ class OrderingAllowedTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
 
     def test_not_allowed_field(self):
         PermissionFactory.create(

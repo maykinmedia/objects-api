@@ -18,15 +18,13 @@ from objects.utils.test import TokenAuthMixin
 from ..constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 from .utils import reverse, reverse_lazy
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
 
     def test_retrieve_without_query(self):
         PermissionFactory.create(
@@ -49,7 +47,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             response.json(),
             {
                 "url": f"http://testserver{url}",
-                "type": self.object_type.url,
+                "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 "record": {"startAt": record.start_at.isoformat()},
             },
         )
@@ -89,7 +87,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             response.json(),
             {
                 "url": f"http://testserver{url}",
-                "type": self.object_type.url,
+                "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 "record": {"data": {"name": record.data["name"]}},
             },
         )
@@ -140,7 +138,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
             {
                 "url": f"http://testserver{url}",
                 "record": {"data": {"name": "some"}},
-                "type": self.object_type.url,
+                "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             },
         )
         self.assertEqual(
@@ -175,8 +173,8 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
-        cls.other_object_type = ObjectTypeFactory.create()
+        cls.object_type = ObjectTypeFactory.create()
+        cls.other_object_type = ObjectTypeFactory()
 
     def test_list_without_query_different_object_types(self):
         PermissionFactory.create(
@@ -226,7 +224,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
                 },
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[record1.object.uuid])}",
-                    "type": self.object_type.url,
+                    "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                     "record": {
                         "index": record1.index,
                         "typeVersion": record1.version,
@@ -244,7 +242,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         )
         self.assertEqual(
             response.headers["x-unauthorized-fields"],
-            f"{self.other_object_type.url}(1)=type; {self.object_type.url}(1)=uuid",
+            f"http://testserver{reverse('objecttype-detail', args=[self.other_object_type.uuid])}(1)=type; http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}(1)=uuid",
         )
 
     def test_list_with_query_fields(self):
@@ -405,7 +403,7 @@ class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
 
     def test_search_with_fields_auth(self):
         PermissionFactory.create(
@@ -440,7 +438,7 @@ class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):
             [
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[record.object.uuid])}",
-                    "type": self.object_type.url,
+                    "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                     "record": {
                         "geometry": {
                             "type": "Point",

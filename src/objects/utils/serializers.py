@@ -3,6 +3,7 @@ from collections import defaultdict
 from glom import SKIP, GlomError, glom
 from rest_framework import fields, serializers
 
+from objects.tests.v2.utils import reverse
 from objects.token.constants import PermissionModes
 
 ALL_FIELDS = ["*"]
@@ -106,7 +107,13 @@ class DynamicFieldsMixin:
             not_allowed = set(get_field_names(data)) - set(get_field_names(result_data))
             if not_allowed:
                 self.not_allowed[
-                    f"{instance._object_type.url}({instance.version})"
+                    f"{
+                        self.context['request'].build_absolute_uri(
+                            reverse(
+                                'objecttype-detail', args=[instance._object_type.uuid]
+                            )
+                        )
+                    }({instance.version})"
                 ] |= not_allowed
         else:
             spec_query = build_spec(query_fields)
@@ -121,7 +128,13 @@ class DynamicFieldsMixin:
             )
             if not_allowed:
                 self.not_allowed[
-                    f"{instance._object_type.url}({instance.version})"
+                    f"{
+                        self.context['request'].build_absolute_uri(
+                            reverse(
+                                'objecttype-detail', args=[instance._object_type.uuid]
+                            )
+                        )
+                    }({instance.version})"
                 ] |= not_allowed
 
         return result_data

@@ -4,7 +4,6 @@ from typing import Sequence
 from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
-from django.contrib.admin import SimpleListFilter
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
 from django.http import HttpRequest, HttpResponseRedirect
@@ -246,26 +245,6 @@ class ObjectRecordInline(admin.TabularInline):
     get_corrected_by.short_description = "corrected by"
 
 
-class ObjectTypeFilter(SimpleListFilter):
-    """
-    List filters do not use `ModelAdmin.list_select_related` unfortunately, so to avoid
-    additional queries for each ObjectType.service, the filter's queryset is explicitly
-    overridden
-    """
-
-    title = "object type"
-    parameter_name = "object_type__id__exact"
-
-    def lookups(self, request, model_admin):
-        qs = ObjectType.objects.select_related("service")
-        return [(ot.pk, str(ot)) for ot in qs]
-
-    def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(object_type__id=self.value())
-        return queryset
-
-
 @admin.register(Object)
 class ObjectAdmin(admin.ModelAdmin):
     list_display = (
@@ -279,7 +258,7 @@ class ObjectAdmin(admin.ModelAdmin):
     )
     search_fields = ("uuid",)
     inlines = (ObjectRecordInline,)
-    list_filter = (ObjectTypeFilter, "created_on", "modified_on")
+    list_filter = ("object_type", "created_on", "modified_on")
 
     def get_search_fields(self, request: HttpRequest) -> Sequence[str]:
         if settings.OBJECTS_ADMIN_SEARCH_DISABLED:
