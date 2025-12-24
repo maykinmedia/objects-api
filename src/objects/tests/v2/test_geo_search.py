@@ -11,8 +11,6 @@ from objects.utils.test import TokenAuthMixin
 from ..constants import GEO_WRITE_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 from .utils import reverse, reverse_lazy
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class GeoSearchTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-search")
@@ -21,10 +19,8 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
-        cls.another_object_type = ObjectTypeFactory.create(
-            service=cls.object_type.service
-        )
+        cls.object_type = ObjectTypeFactory.create()
+        cls.another_object_type = ObjectTypeFactory.create()
 
         PermissionFactory.create(
             object_type=cls.object_type,
@@ -90,7 +86,7 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
                         "coordinates": [POLYGON_AMSTERDAM_CENTRUM],
                     }
                 },
-                "type": self.object_type.url,
+                "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             },
             **GEO_WRITE_KWARGS,
         )
@@ -110,7 +106,9 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
         ObjectRecordFactory.create(object__object_type=self.another_object_type)
         response = self.client.post(
             self.url,
-            {"type": self.object_type.url},
+            {
+                "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}"
+            },
             **GEO_WRITE_KWARGS,
         )
 

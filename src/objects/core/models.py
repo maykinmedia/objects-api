@@ -17,7 +17,7 @@ from .constants import (
     UpdateFrequencyChoices,
 )
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
-from .utils import check_json_schema, check_objecttype_cached
+from .utils import check_json_schema, check_objecttype
 
 
 class ObjectType(models.Model):
@@ -135,7 +135,7 @@ class ObjectType(models.Model):
     objects = ObjectTypeQuerySet.as_manager()
 
     def __str__(self):
-        return f"{self.service.label}: {self.name or self._name}"
+        return f"{self.name}"
 
     @property
     def last_version(self):
@@ -352,7 +352,7 @@ class ObjectRecord(models.Model):
         super().clean()
 
         if hasattr(self.object, "object_type") and self.version and self.data:
-            check_objecttype_cached(self.object.object_type, self.version, self.data)
+            check_objecttype(self.object.object_type, self.version, self.data)
 
     def save(self, *args, **kwargs):
         if not self.id and self.object.last_record:

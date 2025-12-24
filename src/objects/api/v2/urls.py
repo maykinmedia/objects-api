@@ -23,6 +23,7 @@ router.register(
     r"objecttypes",
     ObjectTypeViewSet,
     [routers.Nested("versions", ObjectTypeVersionViewSet)],
+    basename="objecttype",
 )
 
 router.register(r"objects", ObjectViewSet, basename="object")
