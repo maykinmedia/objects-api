@@ -25,11 +25,14 @@ class ObjectTypeVersionFactory(factory.django.DjangoModelFactory):
         "title": "Tree",
         "$schema": "http://json-schema.org/draft-07/schema#",
         "required": ["diameter"],
-        "properties": {"diameter": {"type": "integer", "description": "size in cm."}, "plantDate": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "Date the tree was planted.",
-                },},
+        "properties": {
+            "diameter": {"type": "integer", "description": "size in cm."},
+            "plantDate": {
+                "type": "string",
+                "format": "date",
+                "description": "Date the tree was planted.",
+            },
+        },
     }
 
     class Meta:
