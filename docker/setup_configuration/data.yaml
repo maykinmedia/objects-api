@@ -36,14 +36,15 @@ tokenauth:
       organization: Organization 1
       application: Application 1
       administration: Administration 1
-      permissions:
-        - object_type: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
-          mode: read_only
-          use_fields: true
-          fields:
-            '1':
-              - record__data__leeftijd
-              - record__data__kiemjaar
+# TODO
+#      permissions:
+#        - object_type: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
+#          mode: read_only
+#          use_fields: true
+#          fields:
+#            '1':
+#              - record__data__leeftijd
+#              - record__data__kiemjaar
         # additional permissions can be added like this:
         # - object_type: b427ef84-189d-43aa-9efd-7bb2c459e281
         #   mode: read_and_write
