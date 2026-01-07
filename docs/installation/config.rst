@@ -98,12 +98,6 @@ Content Security Policy
 * ``CSP_REPORT_PERCENTAGE``: Fraction (between 0 and 1) of requests to include report-uri directive. Defaults to: ``0.0``.
 
 
-Cache
------
-
-* ``OBJECTTYPE_VERSION_CACHE_TIMEOUT``: Timeout in seconds for cache when retrieving objecttype versions. Defaults to: ``300``.
-
-
 Optional
 --------
 

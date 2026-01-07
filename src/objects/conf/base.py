@@ -1,5 +1,12 @@
 import os
 
+from upgrade_check.constraints import (
+    CommandCheck,
+    UpgradeCheck,
+    UpgradePaths,
+    VersionRange,
+)
+
 os.environ["_USE_STRUCTLOG"] = "True"
 
 from open_api_framework.conf.base import *  # noqa
@@ -36,6 +43,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "django.contrib.sites",
     # External applications.
     "rest_framework_gis",
+    "jsonsuit.apps.JSONSuitConfig",
     # Project applications.
     "objects.accounts",
     "objects.setup_configuration",
@@ -55,17 +63,6 @@ MIDDLEWARE += [
 LANGUAGE_CODE = "en-us"
 # FIXME should this be UTC?
 TIME_ZONE = "Europe/Amsterdam"
-
-#
-# Caches
-#
-
-OBJECTTYPE_VERSION_CACHE_TIMEOUT = config(
-    "OBJECTTYPE_VERSION_CACHE_TIMEOUT",
-    default=5 * 60,  # 300 seconds
-    help_text="Timeout in seconds for cache when retrieving objecttype versions.",
-    group="Cache",
-)
 
 #
 # Additional Django settings
@@ -143,7 +140,6 @@ SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
-    "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
     "objects.setup_configuration.steps.token_auth.TokenAuthConfigurationStep",
 )
 
@@ -165,3 +161,11 @@ CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
 # Note: the LOGIN_URL Django setting is not used because you could have
 # multiple login urls defined.
 LOGIN_URLS = [reverse_lazy("admin:login")]
+
+
+UPGRADE_CHECK_PATHS: UpgradePaths = {
+    "4.0.0": UpgradeCheck(
+        VersionRange(minimum="3.6.0"),
+        code_checks=[CommandCheck("check_for_external_objecttypes")],
+    ),
+}

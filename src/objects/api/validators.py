@@ -1,18 +1,41 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-import requests
 from rest_framework import serializers
 from rest_framework.fields import get_attribute
 
-from objects.core.utils import check_objecttype_cached
-from objects.utils.client import get_objecttypes_client
+from objects.core.utils import check_json_schema, check_objecttype
 
+from ..core.constants import ObjectTypeVersionStatus
 from .constants import Operators
 from .utils import merge_patch, string_to_value
 
 
+class VersionUpdateValidator:
+    message = _("Only draft versions can be changed")
+    code = "non-draft-version-update"
+    requires_context = True
+
+    def __call__(self, attrs, serializer):
+        instance = getattr(serializer, "instance", None)
+        if not instance:
+            return
+
+        if instance.status != ObjectTypeVersionStatus.draft:
+            raise serializers.ValidationError(self.message, code=self.code)
+
+
 class JsonSchemaValidator:
+    code = "invalid-json-schema"
+
+    def __call__(self, value):
+        try:
+            check_json_schema(value)
+        except ValidationError as exc:
+            raise serializers.ValidationError(exc.args[0], code=self.code) from exc
+
+
+class ObjectTypeSchemaValidator:
     code = "invalid-json-schema"
     requires_context = True
 
@@ -41,7 +64,7 @@ class JsonSchemaValidator:
         if not object_type or not version:
             return
         try:
-            check_objecttype_cached(object_type, version, data)
+            check_objecttype(object_type, version, data)
         except ValidationError as exc:
             raise serializers.ValidationError(exc.args[0], code=self.code) from exc
 
@@ -130,14 +153,5 @@ class GeometryValidator:
         if not geometry:
             return
 
-        with get_objecttypes_client(object_type.service) as client:
-            try:
-                response_data = client.get_objecttype(object_type.uuid)
-            except requests.RequestException as exc:
-                msg = f"Object type can not be retrieved: {exc.args[0]}"
-                raise ValidationError(msg)
-
-        allow_geometry = response_data.get("allowGeometry", True)
-
-        if geometry and not allow_geometry:
+        if geometry and not object_type.allow_geometry:
             raise serializers.ValidationError(self.message, code=self.code)
