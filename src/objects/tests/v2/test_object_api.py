@@ -291,7 +291,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
 
         initial_record.refresh_from_db()
 
@@ -335,7 +335,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         }
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
         self.assertEqual(
             response.json()["record"]["data"],
             {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},

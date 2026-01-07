@@ -21,20 +21,22 @@ class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
 
 class ObjectTypeVersionFactory(factory.django.DjangoModelFactory[ObjectTypeVersion]):
     object_type = factory.SubFactory(ObjectTypeFactory)
-    json_schema = {
-        "type": "object",
-        "title": "Tree",
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "required": ["diameter"],
-        "properties": {
-            "diameter": {"type": "integer", "description": "size in cm."},
-            "plantDate": {
-                "type": "string",
-                "format": "date",
-                "description": "Date the tree was planted.",
+    json_schema = factory.Dict(
+        {
+            "type": "object",
+            "title": "Tree",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": ["diameter"],
+            "properties": {
+                "diameter": {"type": "integer", "description": "size in cm."},
+                "plantDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Date the tree was planted.",
+                },
             },
-        },
-    }
+        }
+    )
 
     class Meta:
         model = ObjectTypeVersion
