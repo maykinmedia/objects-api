@@ -2,7 +2,6 @@ import json
 import uuid
 from datetime import date, timedelta
 
-import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
