@@ -374,7 +374,7 @@ face==20.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   glom
-factory-boy==3.2.0
+factory-boy==3.3.3
     # via
     #   -r requirements/performance-tests.in
     #   -r requirements/test-tools.in
