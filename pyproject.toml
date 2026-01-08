@@ -1,5 +1,7 @@
 [project]
-requires-python = "== 3.12"
+requires-python = "~= 3.12.12"
+version = "3.5.0"
+name= "objects-api"
 
 # Bumpversion configuration
 
@@ -12,6 +14,9 @@ pre_commit_hooks = [
 ]
 
 # Defines the files to be updated.
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+
 [[tool.bumpversion.files]]
 filename = "src/objects/__init__.py"
 
