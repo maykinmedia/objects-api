@@ -37,7 +37,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         cls.object = ObjectFactory.create(object_type=cls.object_type)
         PermissionFactory.create(
             object_type=cls.object_type,
@@ -288,7 +288,7 @@ class Stuf22Tests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         cls.object = ObjectFactory.create(object_type=cls.object_type)
         cls.record_1 = ObjectRecordFactory.create(
             object=cls.object,
@@ -417,7 +417,7 @@ class Stuf23Tests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         cls.object = ObjectFactory.create(object_type=cls.object_type)
         cls.record_1 = ObjectRecordFactory.create(
             object=cls.object,

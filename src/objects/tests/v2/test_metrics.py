@@ -1,4 +1,3 @@
-from typing import cast
 from unittest.mock import MagicMock, patch
 
 import requests_mock
@@ -10,7 +9,6 @@ from objects.api.metrics import (
     objects_delete_counter,
     objects_update_counter,
 )
-from objects.core.models import ObjectType
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
@@ -32,9 +30,7 @@ class ObjectMetricsTests(TokenAuthMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        cls.object_type = cast(
-            ObjectType, ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
-        )
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,

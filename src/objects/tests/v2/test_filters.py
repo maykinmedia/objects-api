@@ -29,8 +29,10 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
-        cls.another_object_type = ObjectTypeFactory(service=cls.object_type.service)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.another_object_type = ObjectTypeFactory.create(
+            service=cls.object_type.service
+        )
 
         PermissionFactory.create(
             object_type=cls.object_type,
@@ -95,7 +97,7 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -443,7 +445,7 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -836,7 +838,7 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -971,7 +973,7 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,
@@ -1049,7 +1051,7 @@ class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,

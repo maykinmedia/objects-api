@@ -117,8 +117,8 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(str(version.status), "published")
 
     def test_existing_objecttypes_are_updated(self):
-        objecttype1 = ObjectTypeFactory(service=self.service)
-        objecttype2 = ObjectTypeFactory(service=self.service)
+        objecttype1 = ObjectTypeFactory.create(service=self.service)
+        objecttype2 = ObjectTypeFactory.create(service=self.service)
 
         self.m.get(
             f"{self.url}objecttypes",

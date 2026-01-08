@@ -1,14 +1,13 @@
 import json
 import uuid
 from datetime import date, timedelta
-from typing import cast
 
 import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.models import Object, ObjectType
+from objects.core.models import Object
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
@@ -34,9 +33,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = cast(
-            ObjectType, ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
-        )
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,

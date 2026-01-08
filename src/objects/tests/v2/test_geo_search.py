@@ -21,8 +21,10 @@ class GeoSearchTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
-        cls.another_object_type = ObjectTypeFactory(service=cls.object_type.service)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.another_object_type = ObjectTypeFactory.create(
+            service=cls.object_type.service
+        )
 
         PermissionFactory.create(
             object_type=cls.object_type,

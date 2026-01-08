@@ -17,8 +17,8 @@ TEST_FILES = (Path(__file__).parent / "files").resolve()
 
 class ObjectTypesConfigurationStepTests(TestCase):
     def test_empty_database(self):
-        service_1 = ServiceFactory(slug="service-1")
-        service_2 = ServiceFactory(slug="service-2")
+        service_1 = ServiceFactory.create(slug="service-1")
+        service_2 = ServiceFactory.create(slug="service-2")
 
         test_file_path = str(TEST_FILES / "objecttypes_empty_database.yaml")
 
@@ -43,15 +43,15 @@ class ObjectTypesConfigurationStepTests(TestCase):
     def test_existing_objecttype(self):
         test_file_path = str(TEST_FILES / "objecttypes_existing_objecttype.yaml")
 
-        service_1: Service = ServiceFactory(slug="service-1")
-        service_2: Service = ServiceFactory(slug="service-2")
+        service_1: Service = ServiceFactory.create(slug="service-1")
+        service_2: Service = ServiceFactory.create(slug="service-2")
 
-        objecttype_1: ObjectType = ObjectTypeFactory(
+        objecttype_1: ObjectType = ObjectTypeFactory.create(
             service=service_1,
             uuid="b427ef84-189d-43aa-9efd-7bb2c459e281",
             _name="Object Type 001",
         )
-        objecttype_2: ObjectType = ObjectTypeFactory(
+        objecttype_2: ObjectType = ObjectTypeFactory.create(
             service=service_2,
             uuid="b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2",
             _name="Object Type 002",
@@ -82,9 +82,9 @@ class ObjectTypesConfigurationStepTests(TestCase):
         self.assertEqual(objecttype_3.service, service_2)
 
     def test_unknown_service(self):
-        service = ServiceFactory(slug="service-1")
+        service = ServiceFactory.create(slug="service-1")
 
-        objecttype: ObjectType = ObjectTypeFactory(
+        objecttype: ObjectType = ObjectTypeFactory.create(
             uuid="b427ef84-189d-43aa-9efd-7bb2c459e281",
             _name="Object Type 001",
             service=service,
@@ -108,9 +108,9 @@ class ObjectTypesConfigurationStepTests(TestCase):
     def test_invalid_uuid(self):
         test_file_path = str(TEST_FILES / "objecttypes_invalid_uuid.yaml")
 
-        service: Service = ServiceFactory(slug="service-1")
+        service: Service = ServiceFactory.create(slug="service-1")
 
-        objecttype: ObjectType = ObjectTypeFactory(
+        objecttype: ObjectType = ObjectTypeFactory.create(
             service=service,
             uuid="b427ef84-189d-43aa-9efd-7bb2c459e281",
             _name="Object Type 001",
@@ -131,8 +131,8 @@ class ObjectTypesConfigurationStepTests(TestCase):
         self.assertEqual(objecttype.service, service)
 
     def test_idempotent_step(self):
-        service_1 = ServiceFactory(slug="service-1")
-        service_2 = ServiceFactory(slug="service-2")
+        service_1 = ServiceFactory.create(slug="service-1")
+        service_2 = ServiceFactory.create(slug="service-2")
 
         test_file_path = str(TEST_FILES / "objecttypes_idempotent.yaml")
 

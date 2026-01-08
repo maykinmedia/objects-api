@@ -21,18 +21,18 @@ DIR_FILES = (Path(__file__).parent / "files/token_auth").resolve()
 
 class TokenTestCase(TestCase):
     def setUp(self):
-        self.service = ServiceFactory(slug="service")
-        ObjectTypeFactory(
+        self.service = ServiceFactory.create(slug="service")
+        ObjectTypeFactory.create(
             service=self.service,
             uuid="3a82fb7f-fc9b-4104-9804-993f639d6d0d",
             _name="Object Type 001",
         )
-        ObjectTypeFactory(
+        ObjectTypeFactory.create(
             service=self.service,
             uuid="ca754b52-3f37-4c49-837c-130e8149e337",
             _name="Object Type 002",
         )
-        ObjectTypeFactory(
+        ObjectTypeFactory.create(
             service=self.service,
             uuid="feeaa795-d212-4fa2-bb38-2c34996e5702",
             _name="Object Type 003",
@@ -104,7 +104,7 @@ class TokenAuthConfigurationStepTests(TokenTestCase):
         self.assertTrue(token.is_superuser)
 
     def test_valid_update_existing_tokens(self):
-        TokenAuthFactory(
+        TokenAuthFactory.create(
             identifier="token-1",
             token="18b2b74ef994314b84021d47b9422e82b685d82f",
             contact_person="Person 1",
@@ -114,7 +114,7 @@ class TokenAuthConfigurationStepTests(TokenTestCase):
             administration="Administration XYZ",
         )
 
-        TokenAuthFactory(
+        TokenAuthFactory.create(
             identifier="token-2",
             token="1cad42916dfa439af8c69000bf7b6af6a66782af",
             contact_person="Person 3",

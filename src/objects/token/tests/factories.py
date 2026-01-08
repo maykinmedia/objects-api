@@ -1,24 +1,24 @@
 import factory
-import factory.fuzzy
 
 from objects.core.tests.factories import ObjectTypeFactory
 
 from ..constants import PermissionModes
+from ..models import Permission, TokenAuth
 
 
-class TokenAuthFactory(factory.django.DjangoModelFactory):
+class TokenAuthFactory(factory.django.DjangoModelFactory[TokenAuth]):
     identifier = factory.Sequence(lambda sequence: f"token-{sequence}")
     contact_person = factory.Faker("name")
     email = factory.Faker("email")
 
     class Meta:
-        model = "token.TokenAuth"
+        model = TokenAuth
 
 
-class PermissionFactory(factory.django.DjangoModelFactory):
+class PermissionFactory(factory.django.DjangoModelFactory[Permission]):
     token_auth = factory.SubFactory(TokenAuthFactory)
     object_type = factory.SubFactory(ObjectTypeFactory)
     mode = PermissionModes.read_and_write
 
     class Meta:
-        model = "token.Permission"
+        model = Permission

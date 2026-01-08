@@ -13,7 +13,7 @@ from objects.utils.tests.keycloak import KEYCLOAK_BASE_URL
 User = get_user_model()
 
 
-class UserFactory(DjangoModelFactory):
+class UserFactory(DjangoModelFactory[User]):
     username = factory.Sequence(lambda n: f"user-{n}")
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")

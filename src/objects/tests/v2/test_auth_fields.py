@@ -25,7 +25,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
 
     def test_retrieve_without_query(self):
         PermissionFactory.create(
@@ -170,8 +170,8 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
-        cls.other_object_type = ObjectTypeFactory()
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.other_object_type = ObjectTypeFactory.create()
 
     def test_list_without_query_different_object_types(self):
         PermissionFactory.create(
@@ -241,7 +241,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         )
 
     def test_list_with_query_fields(self):
-        other_object_type = ObjectTypeFactory()
+        other_object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=self.object_type,
             mode=PermissionModes.read_only,
@@ -388,7 +388,7 @@ class SearchAuthFieldsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
 
     def test_search_with_fields_auth(self):
         PermissionFactory.create(

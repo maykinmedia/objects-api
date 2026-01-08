@@ -17,7 +17,7 @@ class PermissionAdminTests(VCRMixin, TestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = UserFactory(superuser=True)
+        self.user = UserFactory.create(superuser=True)
         self.client.force_login(self.user)
         self.url = reverse("admin:token_permission_add")
 
@@ -27,13 +27,13 @@ class PermissionAdminTests(VCRMixin, TestCase):
         Regression test for #449.
         Test if Permission admin can handle objecttypes API V2 which added pagination
         """
-        v2_service = ServiceFactory(
+        v2_service = ServiceFactory.create(
             api_root=self.object_types_api.format(version="v2"),
             auth_type=AuthTypes.api_key,
             header_key="Authorization",
             header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
         )
-        object_type = ObjectTypeFactory(
+        object_type = ObjectTypeFactory.create(
             service=v2_service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
 
