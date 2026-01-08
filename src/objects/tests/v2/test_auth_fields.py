@@ -65,6 +65,7 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
                 "record__geometry__coordinates",
                 "record__geometry__type",
                 "record__typeVersion",
+                "record__references",
             },
         )
 
@@ -216,6 +217,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
                         "registrationAt": record2.registration_at.isoformat(),
                         "correctionFor": None,
                         "correctedBy": None,
+                        "references": [],
                     },
                 },
                 {
@@ -231,6 +233,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
                         "registrationAt": record1.registration_at.isoformat(),
                         "correctionFor": None,
                         "correctedBy": None,
+                        "references": [],
                     },
                 },
             ],

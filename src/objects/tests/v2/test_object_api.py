@@ -79,6 +79,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                             "registrationAt": object_record1.registration_at.isoformat(),
                             "correctionFor": None,
                             "correctedBy": None,
+                            "references": [],
                         },
                     }
                 ],
@@ -116,6 +117,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     "registrationAt": object_record.registration_at.isoformat(),
                     "correctionFor": None,
                     "correctedBy": None,
+                    "references": [],
                 },
             },
         )

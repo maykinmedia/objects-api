@@ -23,3 +23,7 @@ class UpdateFrequencyChoices(models.TextChoices):
     monthly = "monthly", _("Monthly")
     yearly = "yearly", _("Yearly")
     unknown = "unknown", _("Unknown")
+
+
+class ReferenceType(models.TextChoices):
+    zaak = "zaak", _("Zaak")

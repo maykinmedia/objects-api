@@ -5,7 +5,7 @@ import structlog
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
-from objects.core.models import Object, ObjectRecord, ObjectType
+from objects.core.models import Object, ObjectRecord, ObjectType, Reference
 from objects.token.models import Permission, TokenAuth
 from objects.utils.serializers import DynamicFieldsMixin
 
@@ -14,6 +14,12 @@ from .utils import merge_patch
 from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValidator
 
 logger = structlog.stdlib.get_logger(__name__)
+
+
+class ReferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reference
+        fields = ["type", "url"]
 
 
 class ObjectRecordSerializer(serializers.ModelSerializer):
@@ -30,6 +36,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
         read_only=True,
         help_text=_("Index of the record, which corrects the current record"),
     )
+    references = ReferenceSerializer(many=True, read_only=False, required=False)
 
     class Meta:
         model = ObjectRecord
@@ -38,6 +45,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "typeVersion",
             "data",
             "geometry",
+            "references",
             "startAt",
             "endAt",
             "registrationAt",

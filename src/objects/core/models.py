@@ -18,6 +18,7 @@ from objects.utils.client import get_objecttypes_client
 from .constants import (
     DataClassificationChoices,
     ObjectVersionStatus,
+    ReferenceType,
     UpdateFrequencyChoices,
 )
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
@@ -418,3 +419,22 @@ class ObjectRecord(models.Model):
         self._object_type = self.object.object_type
 
         super().save(*args, **kwargs)
+
+
+class Reference(models.Model):
+    record = models.ForeignKey(
+        ObjectRecord, on_delete=models.CASCADE, related_name="references"
+    )
+    type = models.CharField(
+        max_length=4, choices=ReferenceType.choices, null=False, blank=False
+    )
+    url = models.URLField()
+
+    class Meta:
+        indexes = [models.Index(fields=["url"])]
+        constraints = [
+            models.UniqueConstraint(fields=["record", "url"], name="unique_ref_url")
+        ]
+
+    def __str__(self):
+        return f"{self.type}: {self.url}"
