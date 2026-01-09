@@ -23,23 +23,23 @@ class ObjectAdminTests(WebTest):
     def setUp(self):
         super().setUp()
 
-        self.user = UserFactory(superuser=True)
+        self.user = UserFactory.create(superuser=True)
 
     @tag("gh-615")
     def test_object_changelist_filter_by_objecttype(self):
-        service = ServiceFactory(
+        service = ServiceFactory.create(
             api_root="http://objecttypes.local/api/v1/",
             auth_type=AuthTypes.api_key,
             header_key="Authorization",
             header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
         )
-        object_type = ObjectTypeFactory(
+        object_type = ObjectTypeFactory.create(
             service=service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
         # Create 100 unused ObjectTypes, which creates 100 Services as well
         ObjectTypeFactory.create_batch(100)
-        object1 = ObjectFactory(object_type=object_type)
-        object2 = ObjectFactory()
+        object1 = ObjectFactory.create(object_type=object_type)
+        object2 = ObjectFactory.create()
 
         # Verify that the number of queries doesn't scale with the number of objecttypes
         with self.assertNumQueries(22):
@@ -94,20 +94,20 @@ class ObjectAdminTests(WebTest):
 
     @tag("gh-677")
     def test_add_new_objectrecord(self):
-        service = ServiceFactory(
+        service = ServiceFactory.create(
             api_root="http://objecttypes.local/api/v1/",
             auth_type=AuthTypes.api_key,
             header_key="Authorization",
             header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
         )
-        object_type = ObjectTypeFactory(
+        object_type = ObjectTypeFactory.create(
             service=service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
         object_type_url = (
             "http://objecttypes.local/api/v1/"
             "objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions/1"
         )
-        object = ObjectFactory(object_type=object_type)
+        object = ObjectFactory.create(object_type=object_type)
 
         self.assertEqual(object.records.count(), 0)
 
@@ -133,23 +133,23 @@ class ObjectAdminTests(WebTest):
 
     @tag("gh-621")
     def test_object_admin_search_json_key_operator_value(self):
-        object1 = ObjectFactory()
-        ObjectRecordFactory(
+        object1 = ObjectFactory.create()
+        ObjectRecordFactory.create(
             object=object1,
             data={"id_nummer": 1, "naam": "Boomgaard", "plantDate": "2025-01-01"},
         )
-        object2 = ObjectFactory()
-        ObjectRecordFactory(
+        object2 = ObjectFactory.create()
+        ObjectRecordFactory.create(
             object=object2,
             data={"id_nummer": 2, "naam": "Appelboom", "plantDate": "2025-06-15"},
         )
-        object3 = ObjectFactory()
-        ObjectRecordFactory(
+        object3 = ObjectFactory.create()
+        ObjectRecordFactory.create(
             object=object3,
             data={"id_nummer": 3, "naam": "Peren", "plantDate": "2025-12-31"},
         )
-        object4 = ObjectFactory()
-        ObjectRecordFactory(
+        object4 = ObjectFactory.create()
+        ObjectRecordFactory.create(
             object=object4,
             data={
                 "id_nummer": 4,

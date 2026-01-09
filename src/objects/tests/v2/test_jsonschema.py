@@ -1,10 +1,7 @@
-from typing import cast
-
 import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.models import ObjectType
 from objects.core.tests.factories import ObjectTypeFactory
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
@@ -25,9 +22,7 @@ class JsonSchemaTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = cast(
-            ObjectType, ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
-        )
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,

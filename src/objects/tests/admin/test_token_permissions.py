@@ -21,7 +21,7 @@ class AddPermissionTests(WebTest):
     url = reverse_lazy("admin:token_permission_add")
 
     def setUp(self):
-        user = UserFactory(is_superuser=True, is_staff=True)
+        user = UserFactory.create(is_superuser=True, is_staff=True)
         self.app.set_user(user)
 
     def test_add_permission_choices_without_properties(self, m):
@@ -62,7 +62,7 @@ class AddPermissionTests(WebTest):
         self.assertEqual(response.status_code, 200)
 
     def test_token_auth_is_preselected_in_select(self, m):
-        token = TokenAuthFactory()
+        token = TokenAuthFactory.create()
         url = f"{self.url}?token_auth={token.pk}"
         page = self.app.get(url)
 

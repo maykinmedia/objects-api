@@ -28,7 +28,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
@@ -104,7 +104,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
                 self.assertEqual(m.call_count, 2)
 
     def test_create_object_with_not_found_objecttype_url(self, m):
-        object_type_invalid = ObjectTypeFactory(service=self.object_type.service)
+        object_type_invalid = ObjectTypeFactory.create(service=self.object_type.service)
         PermissionFactory.create(
             object_type=object_type_invalid,
             mode=PermissionModes.read_and_write,
@@ -449,7 +449,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         )
 
     def test_update_object_type_invalid(self, m):
-        old_object_type = ObjectTypeFactory(service=self.object_type.service)
+        old_object_type = ObjectTypeFactory.create(service=self.object_type.service)
         PermissionFactory.create(
             object_type=old_object_type,
             mode=PermissionModes.read_and_write,

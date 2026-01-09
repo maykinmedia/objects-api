@@ -49,7 +49,7 @@ class PermissionTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
 
     def test_retrieve_no_object_permission(self):
         object = ObjectFactory.create()
@@ -206,7 +206,7 @@ class FilterAuthTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
 
     def test_list_objects_without_object_permissions(self):
         ObjectFactory.create_batch(2)
@@ -425,7 +425,7 @@ class SuperUserTests(TokenAuthMixin, APITestCase):
 
     @requests_mock.Mocker()
     def test_update_superuser(self, m):
-        object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         record = ObjectRecordFactory.create(object__object_type=object_type, version=1)
         url = reverse("object-detail", args=[record.object.uuid])
         data = {
@@ -449,7 +449,7 @@ class SuperUserTests(TokenAuthMixin, APITestCase):
 
     @requests_mock.Mocker()
     def test_patch_superuser(self, m):
-        object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         record = ObjectRecordFactory.create(
             object__object_type=object_type, version=1, data__name="old"
         )

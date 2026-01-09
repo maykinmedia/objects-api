@@ -11,7 +11,7 @@ from zgw_consumers.test.factories import ServiceFactory
 from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
 
 
-class ObjectTypeFactory(factory.django.DjangoModelFactory):
+class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
     service = factory.SubFactory(ServiceFactory)
     uuid = factory.LazyFunction(uuid.uuid4)
     _name = factory.Faker("word")
@@ -24,7 +24,7 @@ class ObjectTypeFactory(factory.django.DjangoModelFactory):
         model = ObjectType
 
 
-class ObjectTypeVersionFactory(factory.django.DjangoModelFactory):
+class ObjectTypeVersionFactory(factory.django.DjangoModelFactory[ObjectTypeVersion]):
     object_type = factory.SubFactory(ObjectTypeFactory)
     json_schema = {
         "type": "object",
@@ -51,14 +51,14 @@ class ObjectDataFactory(factory.DictFactory):
     diameter = factory.LazyAttribute(lambda x: random.randrange(1, 10_000))
 
 
-class ObjectFactory(factory.django.DjangoModelFactory):
+class ObjectFactory(factory.django.DjangoModelFactory[Object]):
     object_type = factory.SubFactory(ObjectTypeFactory)
 
     class Meta:
         model = Object
 
 
-class ObjectRecordFactory(factory.django.DjangoModelFactory):
+class ObjectRecordFactory(factory.django.DjangoModelFactory[ObjectRecord]):
     object = factory.SubFactory(ObjectFactory)
     version = factory.Sequence(lambda n: n)
     data = factory.SubFactory(ObjectDataFactory)

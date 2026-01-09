@@ -34,7 +34,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
