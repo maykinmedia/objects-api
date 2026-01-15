@@ -15,6 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from vng_api_common.filters_backend import Backend as FilterBackend
+from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.search import SearchMixin
 
 from objects.core.models import ObjectRecord
@@ -29,7 +30,6 @@ from ..metrics import (
     objects_update_counter,
 )
 from ..mixins import GeoMixin, ObjectNotificationMixin
-from ..pagination import DynamicPageSizePagination
 from ..serializers import (
     HistoryRecordSerializer,
     ObjectSearchSerializer,

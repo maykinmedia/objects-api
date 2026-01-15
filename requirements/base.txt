@@ -60,7 +60,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.10.5
+commonground-api-common==2.10.7
     # via
     #   -r requirements/base.in
     #   open-api-framework
