@@ -73,7 +73,7 @@ class TokenAuth(models.Model):
         verbose_name_plural = _("token authorizations")
 
     def __str__(self):
-        return self.contact_person
+        return self.identifier
 
     def save(self, *args, **kwargs):
         if not self.token:
