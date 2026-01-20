@@ -250,7 +250,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
     )
-    def test_send_cloudevent_adding_zaak(self, mocker, _notification, mock_event):
+    def test_send_cloudevent_adding_zaak(self, mocker, mock_notification, mock_event):
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -296,12 +296,29 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         )
 
+        mock_notification.assert_called_once_with(
+            {
+                "kanaal": "objecten",
+                "source": "objects-api-test",
+                "hoofdObject": data["url"],
+                "resource": "object",
+                "resourceUrl": data["url"],
+                "actie": "create",
+                "aanmaakdatum": "2018-09-07T02:00:00+02:00",
+                "kenmerken": {
+                    "objectType": self.object_type.url,
+                },
+            },
+        )
+
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
     )
-    def test_send_cloudevents_changing_zaak(self, mocker, _notification, mock_event):
+    def test_send_cloudevents_changing_zaak(
+        self, mocker, mock_notification, mock_event
+    ):
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -375,12 +392,29 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             },
         )
 
+        mock_notification.assert_called_once_with(
+            {
+                "kanaal": "objecten",
+                "hoofdObject": f"http://testserver{url}",
+                "resource": "object",
+                "resourceUrl": f"http://testserver{url}",
+                "actie": "partial_update",
+                "aanmaakdatum": "2018-09-07T02:00:00+02:00",
+                "kenmerken": {
+                    "objectType": self.object_type.url,
+                },
+                "source": "objects-api-test",
+            },
+        )
+
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
     )
-    def test_send_cloudevents_deleting_object(self, mocker, _notification, mock_event):
+    def test_send_cloudevents_deleting_object(
+        self, mocker, mock_notification, mock_event
+    ):
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
         mocker.get(
             f"{self.object_type.url}/versions/1",
@@ -419,3 +453,140 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             "https://example.com/zaak/1",
             "https://example.com/zaak/2",
         }
+
+        mock_notification.assert_called_once_with(
+            {
+                "kanaal": "objecten",
+                "hoofdObject": f"http://testserver{url}",
+                "resource": "object",
+                "resourceUrl": f"http://testserver{url}",
+                "actie": "destroy",
+                "aanmaakdatum": "2018-09-07T02:00:00+02:00",
+                "kenmerken": {
+                    "objectType": self.object_type.url,
+                },
+                "source": "objects-api-test",
+            },
+        )
+
+    @patch("notifications_api_common.tasks.send_cloudevent.delay")
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    @override_settings(
+        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+    )
+    def test_send_cloudevents_deleting_object_archiving_only_zaak(
+        self, mocker, mock_notification, mock_event
+    ):
+        "Open Archiefbeheer DELETEs with zaak queryparam when archiving"
+        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
+        mocker.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        zaak_1 = "https://example.com/zaak/1"
+
+        obj = ObjectFactory.create(object_type=self.object_type)
+        ReferenceFactory.create(type="zaak", url=zaak_1, record__object=obj)
+
+        url = reverse("object-detail", args=[obj.uuid])
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.delete(
+                f"{url}?{urlencode({'zaak': zaak_1})}", *GEO_WRITE_KWARGS
+            )
+
+        self.assertEqual(
+            response.status_code, status.HTTP_204_NO_CONTENT, response.data
+        )
+
+        self.assertEqual(mock_event.call_count, 1)
+
+        events = [args[0][0] for args in mock_event.call_args_list]
+
+        assert {event["type"] for event in events} == {ZAAK_ONTKOPPELD}
+        assert {event["data"]["linkTo"] for event in events} == {
+            f"http://testserver{url}"
+        }
+        assert {event["data"]["linkObjectType"] for event in events} == {"object"}
+
+        assert {event["data"]["zaak"] for event in events} == {
+            "https://example.com/zaak/1"
+        }
+
+        mock_notification.assert_called_once_with(
+            {
+                "kanaal": "objecten",
+                "hoofdObject": f"http://testserver{url}",
+                "resource": "object",
+                "resourceUrl": f"http://testserver{url}",
+                "actie": "destroy",
+                "aanmaakdatum": "2018-09-07T02:00:00+02:00",
+                "kenmerken": {
+                    "objectType": self.object_type.url,
+                },
+                "source": "objects-api-test",
+            },
+        )
+
+    @patch("notifications_api_common.tasks.send_cloudevent.delay")
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    @override_settings(
+        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+    )
+    def test_send_cloudevents_deleting_object_archiving_a_zaak(
+        self, mocker, mock_notification, mock_event
+    ):
+        "Open Archiefbeheer DELETEs with zaak queryparam when archiving"
+        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
+        mocker.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        zaak_1 = "https://example.com/zaak/1"
+
+        obj = ObjectFactory.create(object_type=self.object_type)
+        ref = ReferenceFactory.create(type="zaak", url=zaak_1, record__object=obj)
+        ReferenceFactory.create(
+            type="zaak", url="https://example.com/zaak/2", record=ref.record
+        )
+
+        url = reverse("object-detail", args=[obj.uuid])
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.delete(
+                f"{url}?{urlencode({'zaak': zaak_1})}", *GEO_WRITE_KWARGS
+            )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
+
+        self.assertEqual(mock_event.call_count, 1)
+
+        event = mock_event.call_args_list[0][0][0]
+
+        assert event["type"] == ZAAK_ONTKOPPELD
+        assert event["data"]["linkTo"] == f"http://testserver{url}"
+
+        assert event["data"]["linkObjectType"] == "object"
+
+        assert event["data"]["zaak"] == "https://example.com/zaak/1"
+
+        # check correct notification
+
+        mock_notification.assert_called_once_with(
+            {
+                "kanaal": "objecten",
+                "hoofdObject": f"http://testserver{url}",
+                "resource": "object",
+                "resourceUrl": f"http://testserver{url}",
+                "actie": "update",  # wasn't destroyed, but changed!
+                "aanmaakdatum": "2018-09-07T02:00:00+02:00",
+                "kenmerken": {
+                    "objectType": self.object_type.url,
+                },
+                "source": "objects-api-test",
+            },
+        )

@@ -12,7 +12,7 @@ from drf_spectacular.utils import (
     extend_schema_view,
 )
 from notifications_api_common.cloudevents import process_cloudevent
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -176,20 +176,22 @@ class ObjectViewSet(
             object_url = self.request.build_absolute_uri(object_path)
             send_zaak_events.delay(record.pk, object_url)
 
-    def perform_destroy(self, instance):
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        notification_data = self.get_serializer(instance).data
         obj: Object = instance.object
 
         object_path = reverse("v2:object-detail", kwargs={"uuid": str(obj.uuid)})
         object_url = self.request.build_absolute_uri(object_path)
+        zaak_references = obj.last_record.references.filter(type=ReferenceType.zaak)
 
-        zaak_urls = list(
-            obj.last_record.references.filter(type=ReferenceType.zaak).values_list(
-                "url", flat=True
-            )
-        )
-
-        def send_events():
-            for zaak_url in zaak_urls:
+        if zaak_urls := list(zaak_references.values_list("url", flat=True)):
+            if (zaak_url := request.query_params.get("zaak")) and zaak_urls != [
+                zaak_url
+            ]:
+                # OAB is archiving one of many ZAKEN attached to this object;
+                # just remove this single zaak reference.
+                zaak_references.filter(url="zaak_url").delete()
                 process_cloudevent(
                     ZAAK_ONTKOPPELD,
                     data={
@@ -199,10 +201,32 @@ class ObjectViewSet(
                     },
                 )
 
-        transaction.on_commit(send_events)
+                response = Response(
+                    {"behouden": [object_url]}, status=status.HTTP_200_OK
+                )
+                self.action = "update"  # change action for notification
+                self.notify(response.status_code, notification_data, instance=instance)
+                return response
+
+            def send_events():
+                for zaak_url in zaak_urls:
+                    process_cloudevent(
+                        ZAAK_ONTKOPPELD,
+                        data={
+                            "zaak": zaak_url,
+                            "linkTo": object_url,
+                            "linkObjectType": "object",
+                        },
+                    )
+
+            transaction.on_commit(send_events)
 
         obj.delete()
         objects_delete_counter.add(1)
+
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        self.notify(response.status_code, notification_data, instance=instance)
+        return response
 
     @extend_schema(
         description="Retrieve all RECORDs of an OBJECT.",
