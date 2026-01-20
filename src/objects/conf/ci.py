@@ -32,3 +32,9 @@ mute_logging(LOGGING)
 AXES_BEHIND_REVERSE_PROXY = False
 
 NOTIFICATIONS_DISABLED = True
+
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    # when running in CI with a deliberately broken broker URL, tests should fail/error
+    # instead of retrying forever if the broker isn't available (which it won't be).
+    "max_retries": 0,
+}
