@@ -524,11 +524,41 @@ paths:
           format: uuid
           description: Unique identifier (UUID4)
         required: true
+      - in: query
+        name: zaak
+        schema:
+          type: string
+          format: uri
+        description: '**Experimental** When destructing for archiving a ztc.ZAAK pass
+          in the ZAAK URL that is being destroyed. If this OBJECT''s current RECORD
+          has other ZAAK references, then object destruction is cancelled and only
+          this ZAAK URL is removed from the RECORD''s references.'
       tags:
       - objects
       security:
       - tokenAuth: []
       responses:
+        '200':
+          headers:
+            Content-Crs:
+              schema:
+                type: string
+                enum:
+                - EPSG:4326
+              description: 'The ''Coordinate Reference System'' (CRS) of the request
+                data. According to the GeoJSON spec, WGS84 is the default (EPSG: 4326
+                is the same as WGS84).'
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BehoudenResponse'
+          description: OBJECT kept because it has multiple ZAKEN. Specified ZAAK parameter
+            removed from RECORD.
         '204':
           headers:
             API-version:
@@ -536,7 +566,7 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          description: No response body
+          description: OBJECT and all its RECORDs deleted.
   /objects/{uuid}/{index}:
     get:
       operationId: object_history_detail
@@ -857,6 +887,17 @@ paths:
           description: OK
 components:
   schemas:
+    BehoudenResponse:
+      type: object
+      properties:
+        behouden:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Kept OBJECT URLs
+      required:
+      - behouden
     GeoJSONGeometry:
       title: GeoJSONGeometry
       type: object
@@ -886,7 +927,7 @@ components:
       properties:
         type:
           allOf:
-          - $ref: '#/components/schemas/TypeEnum'
+          - $ref: '#/components/schemas/GeometryTypeEnum'
           description: The geometry type
     GeometryCollection:
       type: object
@@ -903,6 +944,18 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Geometry'
+    GeometryTypeEnum:
+      type: string
+      enum:
+      - Point
+      - MultiPoint
+      - LineString
+      - MultiLineString
+      - Polygon
+      - MultiPolygon
+      - Feature
+      - FeatureCollection
+      - GeometryCollection
     HistoryRecord:
       type: object
       properties:
@@ -1087,6 +1140,11 @@ components:
             of the object. Geometry can be added only if the related OBJECTTYPE allows
             this (`OBJECTTYPE.allowGeometry = true` or `OBJECTTYPE.allowGeometry`
             doesn't exist)
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reference'
+          default: []
         startAt:
           type: string
           format: date
@@ -1287,18 +1345,23 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Point2D'
-    TypeEnum:
-      type: string
+    Reference:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ReferenceTypeEnum'
+        url:
+          type: string
+          format: uri
+          maxLength: 200
+      required:
+      - type
+      - url
+    ReferenceTypeEnum:
       enum:
-      - Point
-      - MultiPoint
-      - LineString
-      - MultiLineString
-      - Polygon
-      - MultiPolygon
-      - Feature
-      - FeatureCollection
-      - GeometryCollection
+      - zaak
+      type: string
+      description: '* `zaak` - Zaak'
   securitySchemes:
     tokenAuth:
       type: apiKey

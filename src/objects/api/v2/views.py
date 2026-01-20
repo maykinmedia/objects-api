@@ -7,12 +7,14 @@ from django.utils.dateparse import parse_date
 
 from drf_spectacular.utils import (
     OpenApiParameter,
+    OpenApiResponse,
     OpenApiTypes,
     extend_schema,
     extend_schema_view,
+    inline_serializer,
 )
 from notifications_api_common.cloudevents import process_cloudevent
-from rest_framework import mixins, status, viewsets
+from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -85,6 +87,32 @@ data_attr_parameter = OpenApiParameter(
     destroy=extend_schema(
         description="Delete an OBJECT and all RECORDs belonging to it.",
         operation_id="object_delete",
+        parameters=[
+            OpenApiParameter(
+                name="zaak",
+                description=(
+                    "**Experimental** When destructing for archiving a ztc.ZAAK "
+                    "pass in the ZAAK URL that is being destroyed. "
+                    "If this OBJECT's current RECORD has other ZAAK references, "
+                    "then object destruction is cancelled "
+                    "and only this ZAAK URL is removed from the RECORD's references."
+                ),
+            )
+        ],
+        responses={
+            200: OpenApiResponse(
+                description="OBJECT kept because it has multiple ZAKEN. Specified ZAAK parameter removed from RECORD references.",
+                response=inline_serializer(
+                    name="BehoudenResponse",
+                    fields={
+                        "behouden": serializers.ListField(
+                            child=serializers.URLField(), help_text="Kept OBJECT URLs"
+                        )
+                    },
+                ),
+            ),
+            204: OpenApiResponse(description="OBJECT and all its RECORDs deleted."),
+        },
     ),
 )
 class ObjectViewSet(
