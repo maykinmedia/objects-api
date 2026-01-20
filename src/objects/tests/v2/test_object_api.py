@@ -7,11 +7,12 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from objects.core.models import Object
+from objects.core.models import Object, Reference
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
+    ReferenceFactory,
 )
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
@@ -530,6 +531,210 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         last_record = object.last_record
         self.assertIsNone(last_record.correct)
+
+    def test_create_object_with_references(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+                "references": [{"type": "zaak", "url": "https://example.com/zaak/1"}],
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        assert (record := Object.objects.get().record)
+
+        self.assertSetEqual(
+            {(r.type, r.url) for r in record.references.all()},
+            {("zaak", "https://example.com/zaak/1")},
+        )
+
+    def test_update_object_with_references(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        # other object - to check that correction works when there is another record with the same index
+        ObjectRecordFactory.create(object__object_type=self.object_type)
+        initial_record = ObjectRecordFactory.create(
+            object__object_type=self.object_type
+        )
+        object = initial_record.object
+
+        assert initial_record.end_at is None
+
+        url = reverse("object-detail", args=[object.uuid])
+        data = {
+            "type": object.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+                "correctionFor": initial_record.index,
+                "references": [{"type": "zaak", "url": "https://example.com/zaak/2"}],
+            },
+        }
+
+        response = self.client.put(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        object.refresh_from_db()
+        initial_record.refresh_from_db()
+
+        self.assertEqual(object.object_type, self.object_type)
+        self.assertEqual(object.records.count(), 2)
+
+        current_record = object.current_record
+
+        self.assertSetEqual(
+            {(r.type, r.url) for r in current_record.references.all()},
+            {("zaak", "https://example.com/zaak/2")},
+        )
+
+        self.assertEqual(current_record.version, 1)
+        self.assertEqual(
+            current_record.data, {"plantDate": "2020-04-12", "diameter": 30}
+        )
+        self.assertEqual(current_record.start_at, date(2020, 1, 1))
+        self.assertEqual(current_record.registration_at, date(2020, 8, 8))
+        self.assertIsNone(current_record.end_at)
+        self.assertEqual(current_record.correct, initial_record)
+        # assert changes to initial record
+        self.assertNotEqual(current_record, initial_record)
+        self.assertEqual(initial_record.corrected, current_record)
+        self.assertEqual(initial_record.end_at, date(2020, 1, 1))
+
+    def test_patch_object_record_with_references(self, m):
+        # NOTE: An almost standard JSON Merge PATCH algorithm is applied,
+        # but *only* on record.data, not on the record itself!
+
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        initial_record = ObjectRecordFactory.create(
+            version=1,
+            object__object_type=self.object_type,
+            start_at=date.today(),
+            data={"name": "Name", "diameter": 20},
+        )
+        object = initial_record.object
+
+        url = reverse("object-detail", args=[object.uuid])
+        data = {
+            "record": {
+                "data": {"plantDate": "2020-04-12", "diameter": 30, "name": None},
+                "startAt": "2020-01-01",
+                "correctionFor": initial_record.index,
+                "references": [{"type": "zaak", "url": "https://example.com/zaak/3"}],
+            },
+        }
+
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        initial_record.refresh_from_db()
+
+        self.assertEqual(object.records.count(), 2)
+
+        current_record = object.current_record
+
+        self.assertSetEqual(
+            {(r.type, r.url) for r in current_record.references.all()},
+            {("zaak", "https://example.com/zaak/3")},
+        )
+
+        self.assertEqual(current_record.version, initial_record.version)
+        # The actual behavior of the data merging is in test_merge_patch.py:
+        self.assertEqual(
+            current_record.data,
+            {"plantDate": "2020-04-12", "diameter": 30, "name": None},
+        )
+        self.assertEqual(current_record.start_at, date(2020, 1, 1))
+        self.assertEqual(current_record.registration_at, date(2020, 8, 8))
+        self.assertIsNone(current_record.end_at)
+        self.assertEqual(current_record.correct, initial_record)
+        # assert changes to initial record
+        self.assertNotEqual(current_record, initial_record)
+        self.assertEqual(initial_record.corrected, current_record)
+        self.assertEqual(initial_record.end_at, date(2020, 1, 1))
+
+    def test_patch_validates_merged_object_rather_than_partial_object_with_references(
+        self, m
+    ):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        initial_record = ObjectRecordFactory.create(
+            version=1,
+            object__object_type=self.object_type,
+            start_at=date.today(),
+            data={"name": "Name", "diameter": 20},
+        )
+
+        url = reverse("object-detail", args=[initial_record.object.uuid])
+        data = {
+            "record": {
+                "references": [{"type": "zaak", "url": "https://example.com/zaak/4"}]
+            },
+        }
+        self.client.patch(url, data, **GEO_WRITE_KWARGS)
+
+        data = {
+            "record": {"data": {"plantDate": "2020-04-10"}},
+        }
+        response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json()["record"]["data"],
+            {"plantDate": "2020-04-10", "diameter": 20, "name": "Name"},
+        )
+
+        last_record = initial_record.object.last_record
+        self.assertSetEqual(
+            {(r.type, r.url) for r in last_record.references.all()},
+            {("zaak", "https://example.com/zaak/4")},
+        )
+        self.assertEqual(
+            last_record.data,
+            {"plantDate": "2020-04-10", "diameter": 20, "name": "Name"},
+        )
+
+    def test_delete_object_with_references(self, m):
+        record = ObjectRecordFactory.create(object__object_type=self.object_type)
+        ReferenceFactory.create_batch(2, record=record)
+        object = record.object
+        url = reverse("object-detail", args=[object.uuid])
+
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Object.objects.count(), 0)
+        self.assertEqual(Reference.objects.count(), 0)
 
 
 @freeze_time("2024-08-31")

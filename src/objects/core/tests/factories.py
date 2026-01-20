@@ -8,7 +8,9 @@ import factory
 from factory.fuzzy import BaseFuzzyAttribute
 from zgw_consumers.test.factories import ServiceFactory
 
-from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
+from objects.core.constants import ReferenceType
+
+from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Reference
 
 
 class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
@@ -70,3 +72,12 @@ class ObjectRecordFactory(factory.django.DjangoModelFactory[ObjectRecord]):
 
     class Meta:
         model = ObjectRecord
+
+
+class ReferenceFactory(factory.django.DjangoModelFactory[Reference]):
+    type = ReferenceType.zaak
+    url = factory.Faker("url")
+    record = factory.SubFactory(ObjectRecordFactory)
+
+    class Meta:
+        model = Reference
