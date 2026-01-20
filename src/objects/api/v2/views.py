@@ -1,7 +1,8 @@
 import datetime
 
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
+from django.urls import reverse
 from django.utils.dateparse import parse_date
 
 from drf_spectacular.utils import (
@@ -10,6 +11,7 @@ from drf_spectacular.utils import (
     extend_schema,
     extend_schema_view,
 )
+from notifications_api_common.cloudevents import process_cloudevent
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -18,7 +20,10 @@ from vng_api_common.filters_backend import Backend as FilterBackend
 from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.search import SearchMixin
 
-from objects.core.models import ObjectRecord
+from objects.cloud_events.constants import ZAAK_ONTKOPPELD
+from objects.cloud_events.tasks import send_zaak_events
+from objects.core.constants import ReferenceType
+from objects.core.models import Object, ObjectRecord
 from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
@@ -153,12 +158,50 @@ class ObjectViewSet(
         super().perform_create(serializer)
         objects_create_counter.add(1)
 
+        if record := serializer.instance:
+            object_path = reverse(
+                "v2:object-detail", kwargs={"uuid": str(record.object.uuid)}
+            )
+            object_url = self.request.build_absolute_uri(object_path)
+            send_zaak_events.delay(record.pk, object_url)
+
     def perform_update(self, serializer):
         super().perform_update(serializer)
         objects_update_counter.add(1)
 
+        if record := serializer.instance:
+            object_path = reverse(
+                "v2:object-detail", kwargs={"uuid": str(record.object.uuid)}
+            )
+            object_url = self.request.build_absolute_uri(object_path)
+            send_zaak_events.delay(record.pk, object_url)
+
     def perform_destroy(self, instance):
-        instance.object.delete()
+        obj: Object = instance.object
+
+        object_path = reverse("v2:object-detail", kwargs={"uuid": str(obj.uuid)})
+        object_url = self.request.build_absolute_uri(object_path)
+
+        zaak_urls = list(
+            obj.last_record.references.filter(type=ReferenceType.zaak).values_list(
+                "url", flat=True
+            )
+        )
+
+        def send_events():
+            for zaak_url in zaak_urls:
+                process_cloudevent(
+                    ZAAK_ONTKOPPELD,
+                    data={
+                        "zaak": zaak_url,
+                        "linkTo": object_url,
+                        "linkObjectType": "object",
+                    },
+                )
+
+        transaction.on_commit(send_events)
+
+        obj.delete()
         objects_delete_counter.add(1)
 
     @extend_schema(

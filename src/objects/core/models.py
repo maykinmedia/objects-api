@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import datetime
 import uuid
-from typing import Iterable
+from typing import ClassVar, Iterable
 
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.indexes import GinIndex
@@ -296,17 +298,18 @@ class Object(models.Model):
     )
 
     objects = ObjectQuerySet.as_manager()
+    records: ClassVar[ObjectRecordQuerySet]
 
     @property
-    def current_record(self):
+    def current_record(self) -> ObjectRecord | None:
         return self.records.filter_for_date(datetime.date.today()).first()
 
     @property
-    def last_record(self):
+    def last_record(self) -> ObjectRecord | None:
         return self.records.order_by("-index").first()
 
     @property
-    def record(self):
+    def record(self) -> ObjectRecord | None:
         # `actual_records` attribute is set in ObjectViewSet.get_queryset
         if getattr(self, "actual_records", None):
             return self.actual_records[0]
@@ -379,6 +382,7 @@ class ObjectRecord(models.Model):
     )
 
     objects = ObjectRecordQuerySet.as_manager()
+    references: ClassVar[models.QuerySet[Reference]]
 
     class Meta:
         unique_together = ("object", "index")
