@@ -214,7 +214,9 @@ class ObjectViewSet(
         object_url = self.request.build_absolute_uri(object_path)
         zaak_references = obj.last_record.references.filter(type=ReferenceType.zaak)
 
-        match list(zaak_references.values_list("url", flat=True)):
+        match not settings.NOTIFICATIONS_DISABLED and list(
+            zaak_references.values_list("url", flat=True)
+        ):
             case [*zaak_urls] if (
                 archiving_zaak_url := request.query_params.get("zaak")
             ) and len(zaak_urls) > 1:

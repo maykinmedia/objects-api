@@ -25,7 +25,7 @@ def send_zaak_events(object_record_id: int, object_url: str):
             .prefetch_related("references")
             .get(pk=object_record_id)
         )
-    except ObjectRecord.DoesNotExist:
+    except ObjectRecord.DoesNotExist:  # pragma: no cover
         return
 
     object = record.object

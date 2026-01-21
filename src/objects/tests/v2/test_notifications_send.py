@@ -599,3 +599,40 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "source": "objects-api-test",
             },
         )
+
+    @override_settings(
+        NOTIFICATIONS_DISABLED=True,
+        CELERY_TASK_ALWAYS_EAGER=True,
+        NOTIFICATIONS_SOURCE="objects-api-test",
+    )
+    @patch("notifications_api_common.tasks.send_cloudevent.delay")
+    @patch("notifications_api_common.viewsets.send_notification.delay")
+    def test_no_notifications_sent_when_disabled(
+        self, mocker, mock_notification, mock_events
+    ):
+        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
+        mocker.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
+
+        url = reverse("object-list")
+        data = {
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+                "references": [{"type": "zaak", "url": "https://example.com/zaak/1"}],
+            },
+        }
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+            data = response.json()
+            self.client.put(url, data, **GEO_WRITE_KWARGS)
+            self.client.delete(data["url"])
+
+        assert mock_notification.call_args_list == []
+        assert mock_events.call_args_list == []
