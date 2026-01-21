@@ -12,6 +12,7 @@ from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
 
 from objects.cloud_events.constants import ZAAK_GEKOPPELD, ZAAK_ONTKOPPELD
+from objects.core.models import Reference
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
@@ -439,6 +440,8 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             response.status_code, status.HTTP_204_NO_CONTENT, response.data
         )
 
+        assert not Reference.objects.exists()
+
         self.assertEqual(mock_event.call_count, 2)
 
         events = [args[0][0] for args in mock_event.call_args_list]
@@ -501,6 +504,8 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             response.status_code, status.HTTP_204_NO_CONTENT, response.data
         )
 
+        assert not Reference.objects.exists()
+
         self.assertEqual(mock_event.call_count, 1)
 
         events = [args[0][0] for args in mock_event.call_args_list]
@@ -562,6 +567,10 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
             )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
+
+        assert {ref.url for ref in Reference.objects.all()} == {
+            "https://example.com/zaak/2"
+        }
 
         self.assertEqual(mock_event.call_count, 1)
 

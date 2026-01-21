@@ -213,17 +213,17 @@ class ObjectViewSet(
         object_url = self.request.build_absolute_uri(object_path)
         zaak_references = obj.last_record.references.filter(type=ReferenceType.zaak)
 
-        if zaak_urls := list(zaak_references.values_list("url", flat=True)):
-            if (zaak_url := request.query_params.get("zaak")) and zaak_urls != [
-                zaak_url
-            ]:
+        match list(zaak_references.values_list("url", flat=True)):
+            case [*zaak_urls] if (
+                archiving_zaak_url := request.query_params.get("zaak")
+            ) and len(zaak_urls) > 1:
                 # OAB is archiving one of many ZAKEN attached to this object;
-                # just remove this single zaak reference.
-                zaak_references.filter(url="zaak_url").delete()
+                # just remove this single zaak reference; don't delete the object
+                zaak_references.filter(url=archiving_zaak_url).delete()
                 process_cloudevent(
                     ZAAK_ONTKOPPELD,
                     data={
-                        "zaak": zaak_url,
+                        "zaak": archiving_zaak_url,
                         "linkTo": object_url,
                         "linkObjectType": "object",
                     },
@@ -236,18 +236,20 @@ class ObjectViewSet(
                 self.notify(response.status_code, notification_data, instance=instance)
                 return response
 
-            def send_events():
-                for zaak_url in zaak_urls:
-                    process_cloudevent(
-                        ZAAK_ONTKOPPELD,
-                        data={
-                            "zaak": zaak_url,
-                            "linkTo": object_url,
-                            "linkObjectType": "object",
-                        },
-                    )
+            case [*zaak_urls] if zaak_urls:
 
-            transaction.on_commit(send_events)
+                def send_events():
+                    for zaak_url in zaak_urls:
+                        process_cloudevent(
+                            ZAAK_ONTKOPPELD,
+                            data={
+                                "zaak": zaak_url,
+                                "linkTo": object_url,
+                                "linkObjectType": "object",
+                            },
+                        )
+
+                transaction.on_commit(send_events)
 
         obj.delete()
         objects_delete_counter.add(1)
