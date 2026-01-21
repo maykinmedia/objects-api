@@ -97,11 +97,12 @@ data_attr_parameter = OpenApiParameter(
                     "then object destruction is cancelled "
                     "and only this ZAAK URL is removed from the RECORD's references."
                 ),
+                type=OpenApiTypes.URI,
             )
         ],
         responses={
             200: OpenApiResponse(
-                description="OBJECT kept because it has multiple ZAKEN. Specified ZAAK parameter removed from RECORD references.",
+                description="OBJECT kept because it has multiple ZAKEN. Specified ZAAK parameter removed from RECORD.",
                 response=inline_serializer(
                     name="BehoudenResponse",
                     fields={
@@ -125,7 +126,7 @@ class ObjectViewSet(
             "correct",
             "corrected",
         )
-        .prefetch_related("object")
+        .prefetch_related("object", "references")
         .order_by("-pk")
     )
     serializer_class = ObjectSerializer
