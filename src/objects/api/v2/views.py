@@ -5,6 +5,7 @@ from django.db import models, transaction
 from django.urls import reverse
 from django.utils.dateparse import parse_date
 
+import structlog
 from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiResponse,
@@ -63,6 +64,8 @@ data_attr_parameter = OpenApiParameter(
     description=DATA_ATTR_HELP_TEXT,
     explode=True,
 )
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 @extend_schema_view(
@@ -193,6 +196,8 @@ class ObjectViewSet(
             )
             object_url = self.request.build_absolute_uri(object_path)
             send_zaak_events.delay(record.pk, object_url)
+        else:
+            logger.warning("missing_record")  # will this happen?
 
     def perform_update(self, serializer):
         super().perform_update(serializer)
@@ -204,6 +209,8 @@ class ObjectViewSet(
             )
             object_url = self.request.build_absolute_uri(object_path)
             send_zaak_events.delay(record.pk, object_url)
+        else:
+            logger.warning("missing_record")  # will this happen?
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
