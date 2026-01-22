@@ -16,7 +16,7 @@ def send_zaak_events(object_record_id: int, object_url: str):
     In order to not slow down the object API endpoint with extra queries and
     multiple cloudevent schedules, this is done in a task.
     """
-    if settings.NOTIFICATIONS_DISABLED:
+    if not settings.ENABLE_CLOUD_EVENTS:
         return
 
     try:

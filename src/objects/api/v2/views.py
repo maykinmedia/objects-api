@@ -214,7 +214,7 @@ class ObjectViewSet(
         object_url = self.request.build_absolute_uri(object_path)
         zaak_references = obj.last_record.references.filter(type=ReferenceType.zaak)
 
-        match not settings.NOTIFICATIONS_DISABLED and list(
+        match settings.ENABLE_CLOUD_EVENTS and list(
             zaak_references.values_list("url", flat=True)
         ):
             case [*zaak_urls] if (

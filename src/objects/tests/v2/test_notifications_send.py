@@ -249,7 +249,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
-        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+        CELERY_TASK_ALWAYS_EAGER=True,
+        ENABLE_CLOUD_EVENTS=True,
+        NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevent_adding_zaak(self, mocker, mock_notification, mock_event):
         mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
@@ -315,7 +317,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
-        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+        CELERY_TASK_ALWAYS_EAGER=True,
+        ENABLE_CLOUD_EVENTS=True,
+        NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevents_changing_zaak(
         self, mocker, mock_notification, mock_event
@@ -411,7 +415,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
-        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+        CELERY_TASK_ALWAYS_EAGER=True,
+        ENABLE_CLOUD_EVENTS=True,
+        NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevents_deleting_object(
         self, mocker, mock_notification, mock_event
@@ -475,7 +481,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
-        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+        CELERY_TASK_ALWAYS_EAGER=True,
+        ENABLE_CLOUD_EVENTS=True,
+        NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevents_deleting_object_archiving_only_zaak(
         self, mocker, mock_notification, mock_event
@@ -538,7 +546,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
     @override_settings(
-        CELERY_TASK_ALWAYS_EAGER=True, NOTIFICATIONS_SOURCE="objects-api-test"
+        CELERY_TASK_ALWAYS_EAGER=True,
+        ENABLE_CLOUD_EVENTS=True,
+        NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevents_deleting_object_archiving_a_zaak(
         self, mocker, mock_notification, mock_event
@@ -601,9 +611,8 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         )
 
     @override_settings(
-        NOTIFICATIONS_DISABLED=True,
         CELERY_TASK_ALWAYS_EAGER=True,
-        NOTIFICATIONS_SOURCE="objects-api-test",
+        ENABLE_CLOUD_EVENTS=False,
     )
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
@@ -630,9 +639,12 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
 
         with self.captureOnCommitCallbacks(execute=True):
             response = self.client.post(url, data, **GEO_WRITE_KWARGS)
-            data = response.json()
-            self.client.put(url, data, **GEO_WRITE_KWARGS)
-            self.client.delete(data["url"])
+            object_url = response.json()["url"]
+            put_reponse = self.client.put(object_url, data, **GEO_WRITE_KWARGS)
+            delete_response = self.client.delete(object_url)
 
-        assert mock_notification.call_args_list == []
+        assert put_reponse.status_code == status.HTTP_200_OK
+        assert delete_response.status_code == status.HTTP_204_NO_CONTENT
+
+        assert mock_notification.call_count == 3
         assert mock_events.call_args_list == []
