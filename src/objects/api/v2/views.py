@@ -1,16 +1,21 @@
 import datetime
 
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
+from django.urls import reverse
 from django.utils.dateparse import parse_date
 
+import structlog
 from drf_spectacular.utils import (
     OpenApiParameter,
+    OpenApiResponse,
     OpenApiTypes,
     extend_schema,
     extend_schema_view,
+    inline_serializer,
 )
-from rest_framework import mixins, viewsets
+from notifications_api_common.cloudevents import process_cloudevent
+from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -18,7 +23,10 @@ from vng_api_common.filters_backend import Backend as FilterBackend
 from vng_api_common.pagination import DynamicPageSizePagination
 from vng_api_common.search import SearchMixin
 
-from objects.core.models import ObjectRecord
+from objects.cloud_events.constants import ZAAK_ONTKOPPELD
+from objects.cloud_events.tasks import send_zaak_events
+from objects.core.constants import ReferenceType
+from objects.core.models import Object, ObjectRecord
 from objects.token.models import Permission
 from objects.token.permissions import ObjectTypeBasedPermission
 
@@ -57,6 +65,8 @@ data_attr_parameter = OpenApiParameter(
     explode=True,
 )
 
+logger = structlog.stdlib.get_logger(__name__)
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -80,6 +90,33 @@ data_attr_parameter = OpenApiParameter(
     destroy=extend_schema(
         description="Delete an OBJECT and all RECORDs belonging to it.",
         operation_id="object_delete",
+        parameters=[
+            OpenApiParameter(
+                name="zaak",
+                description=(
+                    "**Experimental** When destructing for archiving a ztc.ZAAK "
+                    "pass in the ZAAK URL that is being destroyed. "
+                    "If this OBJECT's current RECORD has other ZAAK references, "
+                    "then object destruction is cancelled "
+                    "and only this ZAAK URL is removed from the RECORD's references."
+                ),
+                type=OpenApiTypes.URI,
+            )
+        ],
+        responses={
+            200: OpenApiResponse(
+                description="OBJECT kept because it has multiple ZAKEN. Specified ZAAK parameter removed from RECORD.",
+                response=inline_serializer(
+                    name="BehoudenResponse",
+                    fields={
+                        "behouden": serializers.ListField(
+                            child=serializers.URLField(), help_text="Kept OBJECT URLs"
+                        )
+                    },
+                ),
+            ),
+            204: OpenApiResponse(description="OBJECT and all its RECORDs deleted."),
+        },
     ),
 )
 class ObjectViewSet(
@@ -92,7 +129,7 @@ class ObjectViewSet(
             "correct",
             "corrected",
         )
-        .prefetch_related("object")
+        .prefetch_related("object", "references")
         .order_by("-pk")
     )
     serializer_class = ObjectSerializer
@@ -153,13 +190,83 @@ class ObjectViewSet(
         super().perform_create(serializer)
         objects_create_counter.add(1)
 
+        if record := serializer.instance:
+            object_path = reverse(
+                "v2:object-detail", kwargs={"uuid": str(record.object.uuid)}
+            )
+            object_url = self.request.build_absolute_uri(object_path)
+            send_zaak_events.delay(record.pk, object_url)
+        else:
+            logger.warning("missing_record")  # will this happen?
+
     def perform_update(self, serializer):
         super().perform_update(serializer)
         objects_update_counter.add(1)
 
-    def perform_destroy(self, instance):
-        instance.object.delete()
+        if record := serializer.instance:
+            object_path = reverse(
+                "v2:object-detail", kwargs={"uuid": str(record.object.uuid)}
+            )
+            object_url = self.request.build_absolute_uri(object_path)
+            send_zaak_events.delay(record.pk, object_url)
+        else:
+            logger.warning("missing_record")  # will this happen?
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        notification_data = self.get_serializer(instance).data
+        obj: Object = instance.object
+
+        object_path = reverse("v2:object-detail", kwargs={"uuid": str(obj.uuid)})
+        object_url = self.request.build_absolute_uri(object_path)
+        zaak_references = obj.last_record.references.filter(type=ReferenceType.zaak)
+
+        match settings.ENABLE_CLOUD_EVENTS and list(
+            zaak_references.values_list("url", flat=True)
+        ):
+            case [*zaak_urls] if (
+                archiving_zaak_url := request.query_params.get("zaak")
+            ) and len(zaak_urls) > 1:
+                # OAB is archiving one of many ZAKEN attached to this object;
+                # just remove this single zaak reference; don't delete the object
+                zaak_references.filter(url=archiving_zaak_url).delete()
+                process_cloudevent(
+                    ZAAK_ONTKOPPELD,
+                    data={
+                        "zaak": archiving_zaak_url,
+                        "linkTo": object_url,
+                        "linkObjectType": "object",
+                    },
+                )
+
+                response = Response(
+                    {"behouden": [object_url]}, status=status.HTTP_200_OK
+                )
+                self.action = "update"  # change action for notification
+                self.notify(response.status_code, notification_data, instance=instance)
+                return response
+
+            case [*zaak_urls] if zaak_urls:
+
+                def send_events():
+                    for zaak_url in zaak_urls:
+                        process_cloudevent(
+                            ZAAK_ONTKOPPELD,
+                            data={
+                                "zaak": zaak_url,
+                                "linkTo": object_url,
+                                "linkObjectType": "object",
+                            },
+                        )
+
+                transaction.on_commit(send_events)
+
+        obj.delete()
         objects_delete_counter.add(1)
+
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        self.notify(response.status_code, notification_data, instance=instance)
+        return response
 
     @extend_schema(
         description="Retrieve all RECORDs of an OBJECT.",

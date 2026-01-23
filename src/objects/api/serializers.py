@@ -5,7 +5,7 @@ import structlog
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
-from objects.core.models import Object, ObjectRecord, ObjectType
+from objects.core.models import Object, ObjectRecord, ObjectType, Reference
 from objects.token.models import Permission, TokenAuth
 from objects.utils.serializers import DynamicFieldsMixin
 
@@ -16,7 +16,13 @@ from .validators import GeometryValidator, IsImmutableValidator, JsonSchemaValid
 logger = structlog.stdlib.get_logger(__name__)
 
 
-class ObjectRecordSerializer(serializers.ModelSerializer):
+class ReferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reference
+        fields = ["type", "url"]
+
+
+class ObjectRecordSerializer(serializers.ModelSerializer[ObjectRecord]):
     correctionFor = ObjectSlugRelatedField(
         source="correct",
         slug_field="index",
@@ -30,6 +36,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
         read_only=True,
         help_text=_("Index of the record, which corrects the current record"),
     )
+    references = ReferenceSerializer(many=True, read_only=False, default=[])
 
     class Meta:
         model = ObjectRecord
@@ -38,6 +45,7 @@ class ObjectRecordSerializer(serializers.ModelSerializer):
             "typeVersion",
             "data",
             "geometry",
+            "references",
             "startAt",
             "endAt",
             "registrationAt",
@@ -125,7 +133,11 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         object = Object.objects.create(**object_data)
 
         validated_data["object"] = object
+        references = validated_data.pop("references", [])
         record = super().create(validated_data)
+        Reference.objects.bulk_create(
+            Reference(record=record, **ref_data) for ref_data in references
+        )
         token_auth: TokenAuth = self.context["request"].auth
         logger.info(
             "object_created",
@@ -149,11 +161,19 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         if "start_at" not in validated_data:
             validated_data["start_at"] = instance.start_at
 
-        if self.partial and "data" in validated_data:
+        if self.partial:
             # Apply JSON Merge Patch for record data
-            validated_data["data"] = merge_patch(instance.data, validated_data["data"])
+            validated_data["data"] = merge_patch(
+                instance.data, validated_data.pop("data", {})
+            )
 
+        references = validated_data.pop(
+            "references", instance.references.values("type", "url")
+        )
         record = super().create(validated_data)
+        Reference.objects.bulk_create(
+            Reference(record=record, **ref_data) for ref_data in references
+        )
         token_auth: TokenAuth = self.context["request"].auth
         logger.info(
             "object_updated",

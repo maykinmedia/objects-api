@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import datetime
 import uuid
-from typing import Iterable
+from typing import ClassVar, Iterable
 
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.indexes import GinIndex
@@ -18,6 +20,7 @@ from objects.utils.client import get_objecttypes_client
 from .constants import (
     DataClassificationChoices,
     ObjectVersionStatus,
+    ReferenceType,
     UpdateFrequencyChoices,
 )
 from .query import ObjectQuerySet, ObjectRecordQuerySet, ObjectTypeQuerySet
@@ -295,17 +298,18 @@ class Object(models.Model):
     )
 
     objects = ObjectQuerySet.as_manager()
+    records: ClassVar[ObjectRecordQuerySet]
 
     @property
-    def current_record(self):
+    def current_record(self) -> ObjectRecord | None:
         return self.records.filter_for_date(datetime.date.today()).first()
 
     @property
-    def last_record(self):
+    def last_record(self) -> ObjectRecord | None:
         return self.records.order_by("-index").first()
 
     @property
-    def record(self):
+    def record(self) -> ObjectRecord | None:
         # `actual_records` attribute is set in ObjectViewSet.get_queryset
         if getattr(self, "actual_records", None):
             return self.actual_records[0]
@@ -378,6 +382,7 @@ class ObjectRecord(models.Model):
     )
 
     objects = ObjectRecordQuerySet.as_manager()
+    references: ClassVar[models.QuerySet[Reference]]
 
     class Meta:
         unique_together = ("object", "index")
@@ -418,3 +423,22 @@ class ObjectRecord(models.Model):
         self._object_type = self.object.object_type
 
         super().save(*args, **kwargs)
+
+
+class Reference(models.Model):
+    record = models.ForeignKey(
+        ObjectRecord, on_delete=models.CASCADE, related_name="references"
+    )
+    type = models.CharField(
+        max_length=4, choices=ReferenceType.choices, null=False, blank=False
+    )
+    url = models.URLField()
+
+    class Meta:
+        indexes = [models.Index(fields=["url"])]
+        constraints = [
+            models.UniqueConstraint(fields=["record", "url"], name="unique_ref_url")
+        ]
+
+    def __str__(self):
+        return f"{self.type}: {self.url}"

@@ -47,6 +47,11 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
+      redis:
+        image: redis:8
+        ports:
+          - 6379:6379
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up backend environment
@@ -62,10 +67,14 @@ jobs:
           coverage run src/manage.py test src
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
+          DEBUG: 'true'
           SECRET_KEY: dummy
           DB_USER: postgres
           DB_PASSWORD: ''
           DB_POOL_ENABLED: ${{ matrix.use_pooling }}
+
+          CELERY_BROKER_URL: 'redis://localhost:6379/0'
+          CELERY_ONCE_REDIS_URL: 'redis://localhost:6379/0'
 
       - name: Publish coverage report
         uses: codecov/codecov-action@v4

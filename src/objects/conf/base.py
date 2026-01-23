@@ -2,11 +2,12 @@ import os
 
 os.environ["_USE_STRUCTLOG"] = "True"
 
+from django.core.exceptions import ImproperlyConfigured
+
 from open_api_framework.conf.base import *  # noqa
 from open_api_framework.conf.utils import config
 
 from .api import *  # noqa
-
 
 DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = config(
     "DB_DISABLE_SERVER_SIDE_CURSORS",
@@ -113,6 +114,24 @@ TWO_FACTOR_WEBAUTHN_RP_NAME = "objects api"
 
 # settings for sending notifications
 NOTIFICATIONS_KANAAL = "objecten"
+
+ENABLE_CLOUD_EVENTS = config(
+    "ENABLE_CLOUD_EVENTS",
+    default=False,
+    add_to_docs=False,
+    cast=bool,
+    help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations on Zaak (not ready for use in production)",
+)
+
+NOTIFICATIONS_SOURCE = config(
+    "NOTIFICATIONS_SOURCE",
+    default="",
+    add_to_docs=False,
+    help_text="**EXPERIMENTAL**: the identifier of this application to use as the source in notifications and cloudevents",
+)
+
+if ENABLE_CLOUD_EVENTS and not NOTIFICATIONS_SOURCE:
+    raise ImproperlyConfigured("NOTIFICATIONS_SOURCE is REQUIRED for CloudEvents")
 
 CELERY_RESULT_EXPIRES = config(
     "CELERY_RESULT_EXPIRES",
