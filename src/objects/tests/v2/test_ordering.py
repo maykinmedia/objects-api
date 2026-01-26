@@ -2,6 +2,7 @@ from datetime import date
 
 from rest_framework import status
 from rest_framework.test import APITestCase
+from vng_api_common.tests import get_validation_errors
 
 from objects.core.tests.factories import ObjectRecordFactory, ObjectTypeFactory
 from objects.token.constants import PermissionModes
@@ -140,11 +141,13 @@ class OrderingAllowedTests(TokenAuthMixin, APITestCase):
         )
 
         response = self.client.get(self.url, {"ordering": "record__data__length"})
-
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        ordering_error = get_validation_errors(response, "")
+
         self.assertEqual(
-            response.json(),
-            ["You are not allowed to sort on following fields: record__data__length"],
+            ordering_error["reason"],
+            "You are not allowed to sort on following fields: record__data__length",
         )
 
     def test_allowed_field(self):

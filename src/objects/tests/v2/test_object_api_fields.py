@@ -2,6 +2,7 @@ from datetime import date
 
 from rest_framework import status
 from rest_framework.test import APITestCase
+from vng_api_common.tests import get_validation_errors
 
 from objects.core.tests.factories import (
     ObjectFactory,
@@ -106,9 +107,12 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = response.json()
+        self.assertEqual(data["status"], 400)
+        self.assertEqual(data["code"], "invalid")
+        self.assertEqual(data["title"], "Invalid input.")
+
+        error = get_validation_errors(response, "")
         self.assertEqual(
-            data,
-            [
-                "'fields' query parameter has invalid or unauthorized values: 'someField'"
-            ],
+            error["reason"],
+            "'fields' query parameter has invalid or unauthorized values: 'someField'",
         )

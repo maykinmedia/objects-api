@@ -6,6 +6,7 @@ import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
+from vng_api_common.tests import get_validation_errors
 
 from objects.core.models import Object, Reference
 from objects.core.tests.factories import (
@@ -869,7 +870,21 @@ class ObjectsAvailableRecordsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"date": "2024-31-08"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), {"date": ["Enter a valid date."]})
+
+        data = response.json()
+
+        self.assertEqual(data["status"], 400)
+        self.assertEqual(data["code"], "invalid")
+        self.assertEqual(data["title"], "Invalid input.")
+        error = get_validation_errors(response, "date")
+        self.assertEqual(
+            error["name"],
+            "date",
+        )
+        self.assertEqual(
+            error["reason"],
+            "Enter a valid date.",
+        )
 
     def test_list_available_for_registration_date(self):
         with self.subTest("filter on old name"):
@@ -903,4 +918,20 @@ class ObjectsAvailableRecordsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"registrationDate": "2024-31-08"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), {"registrationDate": ["Enter a valid date."]})
+
+        data = response.json()
+
+        self.assertEqual(data["status"], 400)
+        self.assertEqual(data["code"], "invalid")
+        self.assertEqual(data["title"], "Invalid input.")
+
+        error = get_validation_errors(response, "registrationDate")
+
+        self.assertEqual(
+            error["name"],
+            "registrationDate",
+        )
+        self.assertEqual(
+            error["reason"],
+            "Enter a valid date.",
+        )

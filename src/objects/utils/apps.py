@@ -30,3 +30,6 @@ class UtilsConfig(AppConfig):
 
         field_mapping = ModelSerializer.serializer_field_mapping
         field_mapping[models.JSONField] = JSONObjectField
+        from .views import register_handlers
+
+        register_handlers()
