@@ -5,8 +5,7 @@ import sentry_sdk
 from rest_framework.test import APITestCase
 from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.transport import Transport
-
-from ..views import exception_handler
+from vng_api_common.exception_handling import exception_handler
 
 
 class InMemoryTransport(Transport):
