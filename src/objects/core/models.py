@@ -22,10 +22,16 @@ from .utils import check_json_schema, check_objecttype
 
 class ObjectType(models.Model):
     uuid = models.UUIDField(
-        help_text=_("Unique identifier (UUID4) of the OBJECTTYPE in Objecttypes API"),
+        help_text=_("Unique identifier (UUID4)"),
         unique=True,
         default=uuid.uuid4,
     )
+
+    is_imported = models.BooleanField(
+        _("Is imported"),
+        default=False,
+        editable=False,
+    )  # TODO temp field to track if object was imported, can be removed after objecttype migration (in 4.1.0)
 
     name = models.CharField(
         _("name"),
@@ -232,7 +238,7 @@ class Object(models.Model):
     object_type = models.ForeignKey(
         ObjectType,
         on_delete=models.PROTECT,
-        help_text=_("OBJECTTYPE in Objecttypes API"),
+        help_text=_("OBJECTTYPE"),
     )
 
     created_on = models.DateTimeField(auto_now_add=True, help_text=_("Creation date"))
@@ -318,7 +324,7 @@ class ObjectRecord(models.Model):
     _object_type = models.ForeignKey(
         ObjectType,
         on_delete=models.PROTECT,
-        help_text=_("OBJECTTYPE in Objecttypes API"),
+        help_text=_("OBJECTTYPE"),
         null=False,
         blank=False,
         db_index=True,

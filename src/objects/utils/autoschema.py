@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
@@ -5,6 +7,7 @@ from drf_spectacular.extensions import OpenApiFilterExtension
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
 from drf_spectacular.plumbing import build_parameter_type, get_view_model
 from drf_spectacular.utils import OpenApiParameter
+from rest_framework_nested.viewsets import NestedViewSetMixin
 from vng_api_common.constants import VERSION_HEADER
 from vng_api_common.geo import DEFAULT_CRS, HEADER_ACCEPT, HEADER_CONTENT
 from vng_api_common.schema import HTTP_STATUS_CODE_TITLES
@@ -43,9 +46,15 @@ class AutoSchema(_AutoSchema):
         geo_headers = self.get_geo_headers()
         content_type_headers = self.get_content_type_headers()
         version_headers = self.get_version_headers()
+        parent_path_headers = self.get_parent_path_headers()
         field_params = self.get_fields_params()
         return (
-            params + geo_headers + content_type_headers + version_headers + field_params
+            params
+            + geo_headers
+            + content_type_headers
+            + version_headers
+            + parent_path_headers
+            + field_params
         )
 
     def _get_filter_parameters(self):
@@ -216,6 +225,29 @@ class AutoSchema(_AutoSchema):
                     self.view
                 )
         return parameters
+
+    def get_parent_path_headers(self) -> list:
+        """for nested viewsets"""
+        if not isinstance(self.view, NestedViewSetMixin):
+            return []
+
+        parent_lookup_kwargs = self.view._get_parent_lookup_kwargs()
+        path_params = list(parent_lookup_kwargs.keys())
+
+        return [
+            OpenApiParameter(
+                name=path_param,
+                type=UUID if "uuid" in path_param else str,
+                location=OpenApiParameter.PATH,
+                required=True,
+                description=(
+                    _("Unique identifier (UUID4)")
+                    if "uuid" in path_param
+                    else _("Unique identifier")
+                ),
+            )
+            for path_param in path_params
+        ]
 
     def _resolve_path_parameters(self, variables):
         object_path = "uuid"

@@ -174,7 +174,7 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         super().setUpTestData()
 
         cls.object_type = ObjectTypeFactory.create()
-        cls.other_object_type = ObjectTypeFactory()
+        cls.other_object_type = ObjectTypeFactory.create()
 
     def test_list_without_query_different_object_types(self):
         PermissionFactory.create(
