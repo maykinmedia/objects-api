@@ -34,6 +34,25 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             token_auth=self.token_auth,
         )
 
+    def test_create_object_with_invalid_length(self):
+        data = {
+            "type": f"https://testserver/{'a' * 1000}/{reverse('objecttype-detail', args=[self.object_type.uuid])}",
+            "record": {
+                "typeVersion": 1,
+                "data": {"plantDate": "2020-04-12", "diameter": 30},
+                "startAt": "2020-01-01",
+            },
+        }
+        url = reverse("object-list")
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Object.objects.count(), 0)
+
+        data = response.json()
+        self.assertEqual(data["type"], ["The value has too many characters"])
+
     def test_create_object_no_version(self):
         url = reverse("object-list")
         data = {
