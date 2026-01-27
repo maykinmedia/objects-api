@@ -12,7 +12,9 @@ from zgw_consumers.models import Service
 from objects.core.models import ObjectType, ObjectTypeVersion
 from objects.utils.client import get_objecttypes_client
 
-MIN_OBJECTTYPES_VERSION = "3.4.0"  # added boolean field linkable_to_zaken to ObjectType
+MIN_OBJECTTYPES_API_VERSION = (
+    "2.2.2"  # added boolean field linkable_to_zaken to ObjectType
+)
 
 
 class Command(BaseCommand):
@@ -68,10 +70,10 @@ class Command(BaseCommand):
         api_version = client.get_objecttypes_api_version()
         if api_version is None or Version(
             client.get_objecttypes_api_version()
-        ) < Version(MIN_OBJECTTYPES_VERSION):
+        ) < Version(MIN_OBJECTTYPES_API_VERSION):
             raise CommandError(
                 _("Object types API version must be {} or higher.").format(
-                    MIN_OBJECTTYPES_VERSION
+                    MIN_OBJECTTYPES_API_VERSION
                 )
             )
 

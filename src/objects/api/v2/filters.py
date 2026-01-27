@@ -170,7 +170,7 @@ class ObjectRecordFilterForm(forms.Form):
 class ObjectRecordFilterSet(FilterSet):
     type = ObjectTypeFilter(
         field_name="_object_type",
-        help_text=_("Url reference to OBJECTTYPE in Objecttypes API"),
+        help_text=_("Url reference to OBJECTTYPE"),
         queryset=ObjectType.objects.all(),
         min_length=1,
         max_length=1000,

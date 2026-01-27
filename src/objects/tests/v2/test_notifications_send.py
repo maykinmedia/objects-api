@@ -16,8 +16,8 @@ from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
-    ReferenceFactory,
     ObjectTypeVersionFactory,
+    ReferenceFactory,
 )
 from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory
@@ -228,17 +228,10 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         ENABLE_CLOUD_EVENTS=True,
         NOTIFICATIONS_SOURCE="objects-api-test",
     )
-    def test_send_cloudevent_adding_zaak(self, mocker, mock_notification, mock_event):
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_send_cloudevent_adding_zaak(self, mock_notification, mock_event):
         url = reverse("object-list")
         data = {
-            "type": self.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -284,7 +277,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "create",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
             },
         )
@@ -296,16 +289,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         ENABLE_CLOUD_EVENTS=True,
         NOTIFICATIONS_SOURCE="objects-api-test",
     )
-    def test_send_cloudevents_changing_zaak(
-        self, mocker, mock_notification, mock_event
-    ):
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_send_cloudevents_changing_zaak(self, mock_notification, mock_event):
         obj = ObjectFactory.create(object_type=self.object_type)
         ref = ReferenceFactory.create(
             type="zaak", url="https://example.com/zaak/1", record__object=obj
@@ -317,7 +301,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         url = reverse("object-detail", args=[obj.uuid])
 
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -381,7 +365,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "partial_update",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
                 "source": "objects-api-test",
             },
@@ -394,16 +378,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         ENABLE_CLOUD_EVENTS=True,
         NOTIFICATIONS_SOURCE="objects-api-test",
     )
-    def test_send_cloudevents_deleting_object(
-        self, mocker, mock_notification, mock_event
-    ):
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_send_cloudevents_deleting_object(self, mock_notification, mock_event):
         obj = ObjectFactory.create(object_type=self.object_type)
         ref = ReferenceFactory.create(
             type="zaak", url="https://example.com/zaak/1", record__object=obj
@@ -447,7 +422,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "destroy",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
                 "source": "objects-api-test",
             },
@@ -461,15 +436,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevents_deleting_object_archiving_only_zaak(
-        self, mocker, mock_notification, mock_event
+        self, mock_notification, mock_event
     ):
         "Open Archiefbeheer DELETEs with zaak queryparam when archiving"
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         zaak_1 = "https://example.com/zaak/1"
 
@@ -512,7 +481,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "destroy",
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
                 "source": "objects-api-test",
             },
@@ -526,15 +495,9 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         NOTIFICATIONS_SOURCE="objects-api-test",
     )
     def test_send_cloudevents_deleting_object_archiving_a_zaak(
-        self, mocker, mock_notification, mock_event
+        self, mock_notification, mock_event
     ):
         "Open Archiefbeheer DELETEs with zaak queryparam when archiving"
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
 
         zaak_1 = "https://example.com/zaak/1"
 
@@ -579,7 +542,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "actie": "update",  # wasn't destroyed, but changed!
                 "aanmaakdatum": "2018-09-07T02:00:00+02:00",
                 "kenmerken": {
-                    "objectType": self.object_type.url,
+                    "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
                 "source": "objects-api-test",
             },
@@ -591,19 +554,10 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     )
     @patch("notifications_api_common.tasks.send_cloudevent.delay")
     @patch("notifications_api_common.viewsets.send_notification.delay")
-    def test_no_notifications_sent_when_disabled(
-        self, mocker, mock_notification, mock_events
-    ):
-        mock_service_oas_get(mocker, OBJECT_TYPES_API, "objecttypes")
-        mocker.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        mocker.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_no_notifications_sent_when_disabled(self, mock_notification, mock_events):
         url = reverse("object-list")
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},

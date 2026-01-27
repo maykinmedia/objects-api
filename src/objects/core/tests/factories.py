@@ -10,6 +10,7 @@ from objects.core.constants import ReferenceType
 
 from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Reference
 
+
 class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
     name = factory.Faker("word")
     name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")

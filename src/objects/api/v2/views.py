@@ -31,10 +31,9 @@ from objects.api.metrics import (
     objecttype_delete_counter,
     objecttype_update_counter,
 )
-
 from objects.cloud_events.constants import ZAAK_ONTKOPPELD
 from objects.cloud_events.tasks import send_zaak_events
-from objects.core.constants import ReferenceType, ObjectTypeVersionStatus
+from objects.core.constants import ObjectTypeVersionStatus, ReferenceType
 from objects.core.models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
 from objects.token.models import Permission, TokenAuth
 from objects.token.permissions import IsTokenAuthenticated, ObjectTypeBasedPermission

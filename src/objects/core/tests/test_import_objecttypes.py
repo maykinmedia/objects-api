@@ -25,7 +25,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.m.start()
 
         self.service = Service.objects.create(api_root=self.url, slug="objecttypes-api")
-        self.m.head(self.url, status_code=200, headers={"api-version": "3.4.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.2.2"})
 
     def tearDown(self):
         self.m.stop()
@@ -37,15 +37,15 @@ class TestImportObjectTypesCommand(TestCase):
         self.m.head(self.url, status_code=200)
 
         with self.assertRaisesMessage(
-            CommandError, "API version must be 3.4.0 or higher"
+            CommandError, "API version must be 2.2.2 or higher"
         ):
             self._call_command()
 
     def test_api_version_must_be_greater_than_constant(self):
-        self.m.head(self.url, status_code=200, headers={"api-version": "3.2.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.2.1"})
 
         with self.assertRaisesMessage(
-            CommandError, "API version must be 3.4.0 or higher"
+            CommandError, "API version must be 2.2.2 or higher"
         ):
             self._call_command()
 
