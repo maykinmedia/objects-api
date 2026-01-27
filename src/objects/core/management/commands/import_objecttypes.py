@@ -87,6 +87,7 @@ class Command(BaseCommand):
             ],  # TODO remove service from unique_fields after objecttype migration since it will no longer be part of the ObjectType model.
             update_fields=[
                 "is_imported",
+                "_name",
                 "name",
                 "name_plural",
                 "description",
@@ -134,6 +135,7 @@ class Command(BaseCommand):
             objecttype.pop("linkableToZaken", None)
             objecttype["service"] = service
             objecttype["is_imported"] = True
+            objecttype["_name"] = objecttype["name"]
             data.append(ObjectType(**underscoreize(objecttype)))
         return data
 

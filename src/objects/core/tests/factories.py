@@ -16,9 +16,9 @@ from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Refere
 class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
     service = factory.SubFactory(ServiceFactory)
     uuid = factory.LazyFunction(uuid.uuid4)
-    _name = factory.Faker("word")
 
     name = factory.Faker("word")
+    _name = factory.LazyAttribute(lambda x: x.name)
     name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")
     description = factory.Faker("bs")
 

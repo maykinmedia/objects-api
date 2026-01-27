@@ -162,7 +162,7 @@ class ObjectType(models.Model):
         unique_together = ("service", "uuid")
 
     def __str__(self):
-        return f"{self.service.label}: {self._name}"
+        return f"{self.service.label}: {self.name or self._name}"
 
     @property
     def url(self):
