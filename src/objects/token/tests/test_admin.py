@@ -23,7 +23,9 @@ class PermissionAdminTests(VCRMixin, TestCase):
         Regression test for #449.
         Test if Permission admin can handle objecttypes API V2 which added pagination
         """
-        object_type = ObjectTypeFactory.create(uuid="71a2452a-66c3-4030-b5ec-a06035102e9e")
+        object_type = ObjectTypeFactory.create(
+            uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
+        )
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)

@@ -10,11 +10,17 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from vng_api_common.utils import get_help_text
 
-from objects.core.models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Reference
+from objects.core.models import (
+    Object,
+    ObjectRecord,
+    ObjectType,
+    ObjectTypeVersion,
+    Reference,
+)
 from objects.token.models import Permission, TokenAuth
 from objects.utils.serializers import DynamicFieldsMixin
 
-from .fields import CachedObjectUrlField, ObjectSlugRelatedField
+from .fields import CachedObjectUrlField, ObjectSlugRelatedField, ObjectTypeField
 from .utils import merge_patch
 from .validators import (
     GeometryValidator,
@@ -146,10 +152,12 @@ class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "modifiedAt": {"source": "modified_at", "read_only": True},
         }
 
+
 class ReferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reference
         fields = ["type", "url"]
+
 
 class ObjectRecordSerializer(serializers.ModelSerializer[ObjectRecord]):
     correctionFor = ObjectSlugRelatedField(
@@ -240,13 +248,11 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
         ],
         help_text=_("Unique identifier (UUID4)"),
     )
-    type = serializers.HyperlinkedRelatedField(
+    type = ObjectTypeField(
+        min_length=1,
+        max_length=1000,
         source="_object_type",
-        queryset=ObjectType.objects.all(),
-        view_name="objecttype-detail",
         help_text=_("Url reference to OBJECTTYPE"),
-        lookup_url_kwarg="uuid",
-        lookup_field="uuid",
         validators=[IsImmutableValidator()],
     )
     record = ObjectRecordSerializer(
@@ -334,13 +340,11 @@ class ObjectSearchSerializer(serializers.Serializer):
 
 
 class PermissionSerializer(serializers.ModelSerializer):
-    type = serializers.HyperlinkedRelatedField(
+    type = ObjectTypeField(
+        min_length=1,
+        max_length=1000,
         source="object_type",
-        queryset=ObjectType.objects.all(),
-        view_name="objecttype-detail",
         help_text=_("Url reference to OBJECTTYPE"),
-        lookup_url_kwarg="uuid",
-        lookup_field="uuid",
         validators=[IsImmutableValidator()],
     )
 

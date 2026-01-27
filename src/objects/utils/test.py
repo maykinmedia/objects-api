@@ -8,7 +8,7 @@ class TokenAuthMixin:
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.token_auth = TokenAuthFactory(
+        cls.token_auth = TokenAuthFactory.create(
             contact_person="testsuite", email="test@letmein.nl"
         )
 

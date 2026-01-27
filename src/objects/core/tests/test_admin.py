@@ -24,7 +24,9 @@ class ObjectAdminTests(WebTest):
 
     @tag("gh-615")
     def test_object_changelist_filter_by_objecttype(self):
-        object_type = ObjectTypeFactory.create(uuid="71a2452a-66c3-4030-b5ec-a06035102e9e")
+        object_type = ObjectTypeFactory.create(
+            uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
+        )
         # Create 100 unused ObjectTypes
         ObjectTypeFactory.create_batch(100)
         object1 = ObjectFactory.create(object_type=object_type)
@@ -83,7 +85,9 @@ class ObjectAdminTests(WebTest):
 
     @tag("gh-677")
     def test_add_new_objectrecord(self):
-        object_type = ObjectTypeFactory.create(uuid="71a2452a-66c3-4030-b5ec-a06035102e9e")
+        object_type = ObjectTypeFactory.create(
+            uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
+        )
         ObjectTypeVersionFactory.create(object_type=object_type)
         object = ObjectFactory.create(object_type=object_type)
 

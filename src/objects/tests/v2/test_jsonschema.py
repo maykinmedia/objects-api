@@ -1,7 +1,5 @@
-import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
-
 
 from objects.core.tests.factories import ObjectTypeFactory, ObjectTypeVersionFactory
 from objects.token.constants import PermissionModes

@@ -25,7 +25,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.m.start()
 
         self.service = Service.objects.create(api_root=self.url, slug="objecttypes-api")
-        self.m.head(self.url, status_code=200, headers={"api-version": "3.4.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.2.2"})
 
     def tearDown(self):
         self.m.stop()
@@ -42,7 +42,7 @@ class TestImportObjectTypesCommand(TestCase):
             self._call_command()
 
     def test_api_version_must_be_greater_than_constant(self):
-        self.m.head(self.url, status_code=200, headers={"api-version": "2.1.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.2.1"})
 
         with self.assertRaisesMessage(
             CommandError, "API version must be 2.2.2 or higher"
@@ -77,7 +77,6 @@ class TestImportObjectTypesCommand(TestCase):
 
         objecttype = ObjectType.objects.get(uuid=uuid1)
         self.assertEqual(objecttype.name, "Melding")
-        self.assertEqual(objecttype._name, "Melding")
         self.assertEqual(objecttype.name_plural, "Meldingen")
         self.assertEqual(objecttype.description, "")
         self.assertEqual(objecttype.data_classification, "intern")
@@ -90,6 +89,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(objecttype.provider_organization, "")
         self.assertEqual(objecttype.documentation_url, "")
         self.assertEqual(objecttype.labels, {})
+        self.assertEqual(objecttype.linkable_to_zaken, False)
         self.assertEqual(str(objecttype.created_at), "2020-12-01")
         self.assertEqual(str(objecttype.modified_at), "2020-12-01")
         self.assertEqual(objecttype.allow_geometry, True)
@@ -140,7 +140,6 @@ class TestImportObjectTypesCommand(TestCase):
 
         objecttype = ObjectType.objects.get(uuid=objecttype1.uuid)
         self.assertEqual(objecttype.name, "Melding")
-        self.assertEqual(objecttype._name, "Melding")
 
         version = ObjectTypeVersion.objects.get(object_type=objecttype, version=1)
         self.assertEqual(

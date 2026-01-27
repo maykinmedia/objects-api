@@ -197,8 +197,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -216,7 +215,7 @@ paths:
           format: uri
           maxLength: 1000
           minLength: 1
-        description: Url reference to OBJECTTYPE in Objecttypes API
+        description: Url reference to OBJECTTYPE
       - in: query
         name: typeVersion
         schema:
@@ -640,8 +639,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: path
@@ -717,8 +715,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -737,7 +734,7 @@ paths:
                     format: uri
                     maxLength: 1000
                     minLength: 1
-                    description: Url reference to OBJECTTYPE in Objecttypes API
+                    description: Url reference to OBJECTTYPE
                   data_attrs:
                     type: string
                     description: |
@@ -849,6 +846,470 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedObjectList'
           description: OK
+  /objecttypes:
+    get:
+      operationId: objecttype_list
+      parameters:
+      - in: query
+        name: dataClassification
+        schema:
+          type: string
+          enum:
+          - confidential
+          - intern
+          - open
+          - strictly_confidential
+        description: |-
+          Confidential level of the object type
+
+          * `open` - Open
+          * `intern` - Intern
+          * `confidential` - Confidential
+          * `strictly_confidential` - Strictly confidential
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
+        schema:
+          type: integer
+      tags:
+      - objecttypes
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedObjectTypeList'
+          description: OK
+    post:
+      operationId: objecttype_create
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum:
+          - application/json
+        description: Content type of the request body.
+        required: true
+      tags:
+      - objecttypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectType'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectType'
+          description: Created
+  /objecttypes/{objecttype_uuid}/versions:
+    get:
+      operationId: objecttypeversion_list
+      description: Retrieve all versions of an OBJECTTYPE
+      parameters:
+      - in: path
+        name: objecttype_uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unique identifier (UUID4)
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pageSize
+        required: false
+        in: query
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
+        schema:
+          type: integer
+      tags:
+      - objecttypes
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedObjectTypeVersionList'
+          description: OK
+    post:
+      operationId: objecttypeversion_create
+      description: Create an OBJECTTYPE with the given version.
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum:
+          - application/json
+        description: Content type of the request body.
+        required: true
+      - in: path
+        name: objecttype_uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unique identifier (UUID4)
+        required: true
+      tags:
+      - objecttypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectTypeVersion'
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectTypeVersion'
+          description: Created
+  /objecttypes/{objecttype_uuid}/versions/{version}:
+    get:
+      operationId: objecttypeversion_read
+      description: Retrieve an OBJECTTYPE with the given version.
+      parameters:
+      - in: path
+        name: objecttype_uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unique identifier (UUID4)
+        required: true
+      - in: path
+        name: version
+        schema:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          description: Integer version of the OBJECTTYPE
+        required: true
+      tags:
+      - objecttypes
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectTypeVersion'
+          description: OK
+    put:
+      operationId: objecttypeversion_update
+      description: Update an OBJECTTYPE with the given version.
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum:
+          - application/json
+        description: Content type of the request body.
+        required: true
+      - in: path
+        name: objecttype_uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unique identifier (UUID4)
+        required: true
+      - in: path
+        name: version
+        schema:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          description: Integer version of the OBJECTTYPE
+        required: true
+      tags:
+      - objecttypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectTypeVersion'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectTypeVersion'
+          description: OK
+    patch:
+      operationId: objecttypeversion_partial_update
+      description: Partially update an OBJECTTYPE with the given version.
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum:
+          - application/json
+        description: Content type of the request body.
+        required: true
+      - in: path
+        name: objecttype_uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unique identifier (UUID4)
+        required: true
+      - in: path
+        name: version
+        schema:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          description: Integer version of the OBJECTTYPE
+        required: true
+      tags:
+      - objecttypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectTypeVersion'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectTypeVersion'
+          description: OK
+    delete:
+      operationId: objecttypeversion_delete
+      description: Destroy the given OBJECTTYPE.
+      parameters:
+      - in: path
+        name: objecttype_uuid
+        schema:
+          type: string
+          format: uuid
+        description: Unique identifier (UUID4)
+        required: true
+      - in: path
+        name: version
+        schema:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          description: Integer version of the OBJECTTYPE
+        required: true
+      tags:
+      - objecttypes
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          description: No response body
+  /objecttypes/{uuid}:
+    get:
+      operationId: objecttype_read
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        required: true
+      tags:
+      - objecttypes
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectType'
+          description: OK
+    put:
+      operationId: objecttype_update
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum:
+          - application/json
+        description: Content type of the request body.
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        required: true
+      tags:
+      - objecttypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectType'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectType'
+          description: OK
+    patch:
+      operationId: objecttype_partial_update
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum:
+          - application/json
+        description: Content type of the request body.
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        required: true
+      tags:
+      - objecttypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectType'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectType'
+          description: OK
+    delete:
+      operationId: objecttype_delete
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        required: true
+      tags:
+      - objecttypes
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          description: No response body
   /permissions:
     get:
       operationId: permission_list
@@ -863,8 +1324,7 @@ paths:
       - name: pageSize
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -898,6 +1358,18 @@ components:
           description: Kept OBJECT URLs
       required:
       - behouden
+    DataClassificationEnum:
+      enum:
+      - open
+      - intern
+      - confidential
+      - strictly_confidential
+      type: string
+      description: |-
+        * `open` - Open
+        * `intern` - Intern
+        * `confidential` - Confidential
+        * `strictly_confidential` - Strictly confidential
     GeoJSONGeometry:
       title: GeoJSONGeometry
       type: object
@@ -1108,7 +1580,7 @@ components:
           format: uri
           minLength: 1
           maxLength: 1000
-          description: Url reference to OBJECTTYPE in Objecttypes API
+          description: Url reference to OBJECTTYPE
         record:
           allOf:
           - $ref: '#/components/schemas/ObjectRecord'
@@ -1180,6 +1652,188 @@ components:
       properties:
         geometry:
           $ref: '#/components/schemas/GeoWithin'
+    ObjectType:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          minLength: 1
+          maxLength: 1000
+          description: URL reference to this object. This is the unique identification
+            and location of this object.
+        uuid:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        name:
+          type: string
+          description: Name of the object type
+          maxLength: 100
+        namePlural:
+          type: string
+          description: Plural name of the object type
+          maxLength: 100
+        description:
+          type: string
+          description: The description of the object type
+          maxLength: 1000
+        dataClassification:
+          allOf:
+          - $ref: '#/components/schemas/DataClassificationEnum'
+          description: |-
+            Confidential level of the object type
+
+            * `open` - Open
+            * `intern` - Intern
+            * `confidential` - Confidential
+            * `strictly_confidential` - Strictly confidential
+        maintainerOrganization:
+          type: string
+          description: Organization which is responsible for the object type
+          maxLength: 200
+        maintainerDepartment:
+          type: string
+          description: Business department which is responsible for the object type
+          maxLength: 200
+        contactPerson:
+          type: string
+          description: Name of the person in the organization who can provide information
+            about the object type
+          maxLength: 200
+        contactEmail:
+          type: string
+          description: Email of the person in the organization who can provide information
+            about the object type
+          maxLength: 200
+        source:
+          type: string
+          description: Name of the system from which the object type originates
+          maxLength: 200
+        updateFrequency:
+          allOf:
+          - $ref: '#/components/schemas/UpdateFrequencyEnum'
+          description: |-
+            Indicates how often the object type is updated
+
+            * `real_time` - Real-time
+            * `hourly` - Hourly
+            * `daily` - Daily
+            * `weekly` - Weekly
+            * `monthly` - Monthly
+            * `yearly` - Yearly
+            * `unknown` - Unknown
+        providerOrganization:
+          type: string
+          description: Organization which is responsible for publication of the object
+            type
+          maxLength: 200
+        documentationUrl:
+          type: string
+          format: uri
+          description: Link to the documentation for the object type
+          maxLength: 200
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value pairs of keywords related for the object type
+        linkableToZaken:
+          type: boolean
+          description: |-
+            Objects of this type can have a link to 1 or more Zaken.
+            True indicates the lifetime of the object is linked to the lifetime of linked zaken, i.e., when all linked Zaken to an object are archived/destroyed, the object will also be archived/destroyed.
+        createdAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Date when the object type was created
+        modifiedAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Last date when the object type was modified
+        allowGeometry:
+          type: boolean
+          description: 'Shows whether the related objects can have geographic coordinates.
+            If the value is ''false'' the related objects are not allowed to have
+            coordinates and the creation/update of objects with `geometry` property
+            will raise an error '
+        versions:
+          type: array
+          items:
+            type: string
+            format: uri
+            minLength: 1
+            maxLength: 1000
+          readOnly: true
+          description: list of URLs for the OBJECTTYPE versions
+      required:
+      - name
+      - namePlural
+    ObjectTypeVersion:
+      type: object
+      description: |-
+        A type of `ModelSerializer` that uses hyperlinked relationships with compound keys instead
+        of primary key relationships.  Specifically:
+
+        * A 'url' field is included instead of the 'id' field.
+        * Relationships to other instances are hyperlinks, instead of primary keys.
+
+        NOTE: this only works with DRF 3.1.0 and above.
+      properties:
+        url:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 1000
+          description: URL reference to this object. This is the unique identification
+            and location of this object.
+          readOnly: true
+        version:
+          type: integer
+          readOnly: true
+          description: Integer version of the OBJECTTYPE
+        objectType:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 1000
+          description: URL reference to this object. This is the unique identification
+            and location of this object.
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          description: |-
+            Status of the object type version
+
+            * `published` - Published
+            * `draft` - Draft
+            * `deprecated` - Deprecated
+        jsonSchema:
+          type: object
+          additionalProperties: true
+          title: JSON schema
+          description: JSON schema for Object validation
+        createdAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Date when the version was created
+        modifiedAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Last date when the version was modified
+        publishedAt:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Published_at
+          description: Date when the version was published
     PaginatedHistoryRecordList:
       type: object
       required:
@@ -1226,6 +1880,52 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Object'
+    PaginatedObjectTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectType'
+    PaginatedObjectTypeVersionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectTypeVersion'
     PaginatedPermissionList:
       type: object
       required:
@@ -1272,11 +1972,190 @@ components:
           format: uri
           minLength: 1
           maxLength: 1000
-          description: Url reference to OBJECTTYPE in Objecttypes API
+          description: Url reference to OBJECTTYPE
         record:
           allOf:
           - $ref: '#/components/schemas/ObjectRecord'
           description: State of the OBJECT at a certain time
+    PatchedObjectType:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          minLength: 1
+          maxLength: 1000
+          description: URL reference to this object. This is the unique identification
+            and location of this object.
+        uuid:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID4)
+        name:
+          type: string
+          description: Name of the object type
+          maxLength: 100
+        namePlural:
+          type: string
+          description: Plural name of the object type
+          maxLength: 100
+        description:
+          type: string
+          description: The description of the object type
+          maxLength: 1000
+        dataClassification:
+          allOf:
+          - $ref: '#/components/schemas/DataClassificationEnum'
+          description: |-
+            Confidential level of the object type
+
+            * `open` - Open
+            * `intern` - Intern
+            * `confidential` - Confidential
+            * `strictly_confidential` - Strictly confidential
+        maintainerOrganization:
+          type: string
+          description: Organization which is responsible for the object type
+          maxLength: 200
+        maintainerDepartment:
+          type: string
+          description: Business department which is responsible for the object type
+          maxLength: 200
+        contactPerson:
+          type: string
+          description: Name of the person in the organization who can provide information
+            about the object type
+          maxLength: 200
+        contactEmail:
+          type: string
+          description: Email of the person in the organization who can provide information
+            about the object type
+          maxLength: 200
+        source:
+          type: string
+          description: Name of the system from which the object type originates
+          maxLength: 200
+        updateFrequency:
+          allOf:
+          - $ref: '#/components/schemas/UpdateFrequencyEnum'
+          description: |-
+            Indicates how often the object type is updated
+
+            * `real_time` - Real-time
+            * `hourly` - Hourly
+            * `daily` - Daily
+            * `weekly` - Weekly
+            * `monthly` - Monthly
+            * `yearly` - Yearly
+            * `unknown` - Unknown
+        providerOrganization:
+          type: string
+          description: Organization which is responsible for publication of the object
+            type
+          maxLength: 200
+        documentationUrl:
+          type: string
+          format: uri
+          description: Link to the documentation for the object type
+          maxLength: 200
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value pairs of keywords related for the object type
+        linkableToZaken:
+          type: boolean
+          description: |-
+            Objects of this type can have a link to 1 or more Zaken.
+            True indicates the lifetime of the object is linked to the lifetime of linked zaken, i.e., when all linked Zaken to an object are archived/destroyed, the object will also be archived/destroyed.
+        createdAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Date when the object type was created
+        modifiedAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Last date when the object type was modified
+        allowGeometry:
+          type: boolean
+          description: 'Shows whether the related objects can have geographic coordinates.
+            If the value is ''false'' the related objects are not allowed to have
+            coordinates and the creation/update of objects with `geometry` property
+            will raise an error '
+        versions:
+          type: array
+          items:
+            type: string
+            format: uri
+            minLength: 1
+            maxLength: 1000
+          readOnly: true
+          description: list of URLs for the OBJECTTYPE versions
+    PatchedObjectTypeVersion:
+      type: object
+      description: |-
+        A type of `ModelSerializer` that uses hyperlinked relationships with compound keys instead
+        of primary key relationships.  Specifically:
+
+        * A 'url' field is included instead of the 'id' field.
+        * Relationships to other instances are hyperlinks, instead of primary keys.
+
+        NOTE: this only works with DRF 3.1.0 and above.
+      properties:
+        url:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 1000
+          description: URL reference to this object. This is the unique identification
+            and location of this object.
+          readOnly: true
+        version:
+          type: integer
+          readOnly: true
+          description: Integer version of the OBJECTTYPE
+        objectType:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 1000
+          description: URL reference to this object. This is the unique identification
+            and location of this object.
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          description: |-
+            Status of the object type version
+
+            * `published` - Published
+            * `draft` - Draft
+            * `deprecated` - Deprecated
+        jsonSchema:
+          type: object
+          additionalProperties: true
+          title: JSON schema
+          description: JSON schema for Object validation
+        createdAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Date when the version was created
+        modifiedAt:
+          type: string
+          format: date
+          readOnly: true
+          description: Last date when the version was modified
+        publishedAt:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Published_at
+          description: Date when the version was published
     Permission:
       type: object
       properties:
@@ -1285,7 +2164,7 @@ components:
           format: uri
           minLength: 1
           maxLength: 1000
-          description: Url reference to OBJECTTYPE in Objecttypes API
+          description: Url reference to OBJECTTYPE
         mode:
           allOf:
           - $ref: '#/components/schemas/ModeEnum'
@@ -1362,6 +2241,34 @@ components:
       - zaak
       type: string
       description: '* `zaak` - Zaak'
+    StatusEnum:
+      enum:
+      - published
+      - draft
+      - deprecated
+      type: string
+      description: |-
+        * `published` - Published
+        * `draft` - Draft
+        * `deprecated` - Deprecated
+    UpdateFrequencyEnum:
+      enum:
+      - real_time
+      - hourly
+      - daily
+      - weekly
+      - monthly
+      - yearly
+      - unknown
+      type: string
+      description: |-
+        * `real_time` - Real-time
+        * `hourly` - Hourly
+        * `daily` - Daily
+        * `weekly` - Weekly
+        * `monthly` - Monthly
+        * `yearly` - Yearly
+        * `unknown` - Unknown
   securitySchemes:
     tokenAuth:
       type: apiKey
@@ -1372,6 +2279,7 @@ servers:
 - url: /api/v2
 tags:
 - name: objects
+- name: objecttypes
 - name: permissions
 externalDocs:
   url: https://objects-and-objecttypes-api.readthedocs.io/

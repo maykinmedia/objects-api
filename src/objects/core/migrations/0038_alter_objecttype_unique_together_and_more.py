@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0036_objecttype_is_imported'),
+        ('core', '0037_reference'),
     ]
 
     operations = [
@@ -58,10 +58,6 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='objecttype',
             name='_name',
-        ),
-        migrations.RemoveField(
-            model_name='objecttype',
-            name='is_imported',
         ),
         migrations.RemoveField(
             model_name='objecttype',

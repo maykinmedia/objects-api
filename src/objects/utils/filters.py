@@ -46,7 +46,7 @@ class ObjectTypeField(filters.ModelChoiceField):
         return result
 
 
-class ObjectTypeFilter(URLModelChoiceFilter):  # TODO remove?
+class ObjectTypeFilter(URLModelChoiceFilter):
     field_class = ObjectTypeField
 
 

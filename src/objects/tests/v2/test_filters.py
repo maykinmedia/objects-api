@@ -1116,7 +1116,7 @@ class FilterTypeVersionTests(TokenAuthMixin, APITestCase):
         self.assertEqual(len(data), 0)
 
 
-class FilterTests(TokenAuthMixin, APITestCase):
+class ObjectTypeFilterTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("objecttype-list")
 
     def test_filter_public_data(self):
