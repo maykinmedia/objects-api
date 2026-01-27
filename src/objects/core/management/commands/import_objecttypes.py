@@ -12,7 +12,9 @@ from zgw_consumers.models import Service
 from objects.core.models import ObjectType, ObjectTypeVersion
 from objects.utils.client import get_objecttypes_client
 
-MIN_OBJECTTYPES_VERSION = "3.4.0"  # added boolean field linkable_to_zaken to ObjectType
+# Minimum Objecttypes application version is 3.4.0, because that version added the
+# version header to the responses
+MIN_OBJECTTYPES_VERSION = "2.2.2"
 
 
 class Command(BaseCommand):
@@ -101,7 +103,6 @@ class Command(BaseCommand):
                 "created_at",
                 "modified_at",
                 "allow_geometry",
-                "linkable_to_zaken",
             ],
         )
 
@@ -129,6 +130,8 @@ class Command(BaseCommand):
         for objecttype in objecttypes:
             objecttype.pop("versions")
             objecttype.pop("url")
+            # This attribute was added in 3.4.0 but removed in 3.4.1
+            objecttype.pop("linkableToZaken", None)
             objecttype["service"] = service
             objecttype["is_imported"] = True
             data.append(ObjectType(**underscoreize(objecttype)))

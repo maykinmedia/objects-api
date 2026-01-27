@@ -11,6 +11,11 @@ Before updating to 4.0.0 all objecttypes from the ObjectTypes API instance need 
 This command will fetch all objecttypes and their versions from an objecttype service based on its identifier/slug (which can be found in the admin interface under ``Configuration > Services``)
 and update existing objecttypes or create new ones if they have not been added to the objecttypes API.
 
+.. note::
+
+    The minimum version of the Objecttypes API application required for this command is
+    3.4.0
+
 .. code-block:: bash
 
     src/manage.py import_objecttypes objecttypes-api

@@ -77,7 +77,6 @@ def mock_objecttypes(uuid1, uuid2):
                 "providerOrganization": "",
                 "documentationUrl": "",
                 "labels": {},
-                "linkableToZaken": False,
                 "createdAt": "2020-12-01",
                 "modifiedAt": "2020-12-01",
                 "allowGeometry": True,
@@ -102,6 +101,8 @@ def mock_objecttypes(uuid1, uuid2):
                 "providerOrganization": "",
                 "documentationUrl": "",
                 "labels": {},
+                # command should be able to handle Objecttypes 3.4.0, which includes
+                # this attribute
                 "linkableToZaken": False,
                 "createdAt": "2020-12-01",
                 "modifiedAt": "2020-12-01",
