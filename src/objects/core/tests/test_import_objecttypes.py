@@ -35,15 +35,15 @@ class TestImportObjectTypesCommand(TestCase):
         self.m.head(self.url, status_code=200)
 
         with self.assertRaisesMessage(
-            CommandError, "API version must be 3.4.0 or higher"
+            CommandError, "API version must be 2.2.2 or higher"
         ):
             self._call_command()
 
     def test_api_version_must_be_greater_than_constant(self):
-        self.m.head(self.url, status_code=200, headers={"api-version": "3.2.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.1.0"})
 
         with self.assertRaisesMessage(
-            CommandError, "API version must be 3.4.0 or higher"
+            CommandError, "API version must be 2.2.2 or higher"
         ):
             self._call_command()
 
@@ -88,7 +88,6 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(objecttype.provider_organization, "")
         self.assertEqual(objecttype.documentation_url, "")
         self.assertEqual(objecttype.labels, {})
-        self.assertEqual(objecttype.linkable_to_zaken, False)
         self.assertEqual(str(objecttype.created_at), "2020-12-01")
         self.assertEqual(str(objecttype.modified_at), "2020-12-01")
         self.assertEqual(objecttype.allow_geometry, True)
