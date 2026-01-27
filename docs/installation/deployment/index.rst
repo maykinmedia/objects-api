@@ -3,17 +3,16 @@
 Deployment
 ==========
 
-Both (*Objects* and *Objecttypes*) APIs are containerized applications and can be
+Open Objecten is an containerized application and can be
 deployed to a `Kubernetes`_ cluster using a `Helm`_ chart.
 
 The documentation includes installation process and the reference configuration.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Deployment
 
-   objects-api/index
-   objecttypes-api/index
+   kubernetes
 
 
 .. _`Helm`: https://helm.sh/
