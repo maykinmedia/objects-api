@@ -35,10 +35,9 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             token_auth=self.token_auth,
         )
 
-    def test_create_object_with_invalid_length(self, m):
-        object_type_long = f"https://testserver{reverse('objecttype-detail')}{'a' * 1000}/{self.object_type.uuid}"
+    def test_create_object_with_invalid_length(self):
         data = {
-            "type": object_type_long,
+            "type": f"https://testserver/{'a' * 1000}/{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -65,7 +64,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             "The value has too many characters",
         )
 
-    def test_create_object_no_version(self, m):
+    def test_create_object_no_version(self):
         url = reverse("object-list")
         data = {
             "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
