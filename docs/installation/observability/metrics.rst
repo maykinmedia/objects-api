@@ -98,7 +98,19 @@ Objects
 ``objects.object.deletes``
     Reports the number of objects deleted via the API.
 
-The objects metrics show how many entities are created, updated, or deleted via the API,
+Objecttypes
+-----------
+
+``objecttypes.objecttype.creates``
+    Reports the number of objects created via the API.
+
+``objecttypes.objecttype.updates``
+    Reports the number of objects updated via the API.
+
+``objecttypes.objecttype.deletes``
+    Reports the number of objects deleted via the API.
+
+The metrics show how many entities are created, updated, or deleted via the API,
 helping to monitor load and the most frequent operations, and allow for various aggregations on the data.
 
     Sample PromQL query:

@@ -7,11 +7,11 @@ API Usage
 In this section, we'll show how to get started with your first object type, and create an object
 for this object type.
 
-Objecttypes API
-===============
-Before continuing, make sure you have an API token to access the Objecttypes API.
+Objecttypes
+===========
+Before continuing, make sure you have an API token.
 :ref:`admin_authentication` document describes how to do it in details.
-In the examples below we use the API token for the Objecttypes API with the value ``1234``.
+In the examples below we use the API token with the value ``1234``.
 
 Let's start with creating an object type. For example, you want to store data
 about trees (Bomen) in your town. First, you need to decide which attributes your data
@@ -76,9 +76,9 @@ Create an object type
 
 Now we need to create an object type which will include this JSON schema. The object type consists
 of metadata of the object type and (a version of) the JSON schema. This separation
-exists because the Objecttypes API supports versioning of the JSON schemas. If you want to change the
+exists because the API supports versioning of the JSON schemas. If you want to change the
 JSON schema in the objecttype, a new version will be created. Therefore you don't need to worry
-that a new version of the Object type schema would not match the exising objects in Objects API since
+that a new version of the Object type schema would not match the exising objects since
 these objects refer to the previous version.
 
 So let's create the object type metadata:
@@ -174,7 +174,7 @@ it anymore, unless you create a new version.
 Publish an object type version
 ------------------------------
 
-Let's publish our object type version. In the Objecttypes API you can do it with a
+Let's publish our object type version. In the API you can do it with a
 PATCH request:
 
 .. code-block:: http
@@ -276,19 +276,18 @@ You can see that ``versions`` attribute includes a list of urls to all the versi
 object type.
 
 
-Objects API
-===========
+Objects
+=======
 
 Now we have an object type containing a JSON schema for tree objects and we are ready to
 create objects. Before going further please, make sure that you configured the proper
 authentication and authorizations in the admin:
 
-* The Objects API can access the Objecttypes API
-* The API token (in the Objects API) has write permissions for the object type "Boom".
+* The API token has write permissions for the object type "Boom".
 
 :ref:`admin_authentication` and :ref:`admin_authorization` document how to do it in details.
 
-In the examples below we use the API token for the Objects API with the value ``5678``.
+In the examples below we use the API token with the value ``5678``.
 
 Create an object
 ----------------
@@ -451,7 +450,7 @@ Once the object is created, it can always be retrieved by its URL:
 Retrieve objects of certain object type
 ---------------------------------------
 
-The Objects API supports different filter and search options.
+The API supports different filter and search options.
 You can filter objects by:
 
 * object type
@@ -498,7 +497,7 @@ To filter the list by a particular object type you can use the ``type`` query pa
 
 Retrieve the history of an object
 ---------------------------------
-The Objects API supports versioning, i.e. when an object is updated, its previous states
+The API supports versioning, i.e. when an object is updated, its previous states
 can also be retrieved. In the API these are called ``records``.
 
 .. code-block:: http
@@ -540,7 +539,7 @@ Retrieve an object (record) for a particular date
 -------------------------------------------------
 
 Since there could be a difference between the real date of
-the object change and its registration in the system, the Objects API support both
+the object change and its registration in the system, the API support both
 material and formal history. The material history describes the history as it should
 be (stored in the ``startAt`` and ``endAt`` attributes). The formal history describes the
 history as it was administratively processed (stored in the ``registeredAt``
@@ -603,4 +602,4 @@ Now let's do the same but from a formal history perspective:
     []
 
 Our tree object was created at 2021-03-03 (``registrationAt``), so it didn't exist
-(administratively speaking) at 2021-02-02 yet. Hence, the Objects API response is an empty list.
+(administratively speaking) at 2021-02-02 yet. Hence, the response is an empty list.

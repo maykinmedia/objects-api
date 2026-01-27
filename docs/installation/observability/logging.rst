@@ -59,7 +59,7 @@ Logging
 Format Objects
 --------------
 
-Objects API emits structured logs (using `structlog <https://www.structlog.org/en/stable/>`_).
+Open Objecten emits structured logs (using `structlog <https://www.structlog.org/en/stable/>`_).
 A log line can be formatted like this:
 
 .. code-block:: json
@@ -75,27 +75,6 @@ A log line can be formatted like this:
         "request_id":"2f9e9a5b-d549-4faa-a411-594aa8a52eee",
         "timestamp":"2025-05-19T14:09:20.339166Z",
         "logger":"objects.api.serializers",
-        "level":"info"
-    }
-
-Format Objecttypes
-------------------
-
-Objecttypes API emits structured logs (using `structlog <https://www.structlog.org/en/stable/>`_).
-A log line can be formatted like this:
-
-.. code-block:: json
-
-    {
-        "uuid":"b427ef84-189d-43aa-9efd-7bb2c459e281",
-        "naam":"test"
-        "token_identifier":"application-test",
-        "token_application":"Application (test)",
-        "event":"objecttype_created",
-        "user_id":null,
-        "request_id":"2f9e9a5b-d549-4faa-a411-594aa8a52eee",
-        "timestamp":"2025-05-19T14:09:20.339166Z",
-        "logger":"objecttypes.api.v2.views",
         "level":"info"
     }
 
