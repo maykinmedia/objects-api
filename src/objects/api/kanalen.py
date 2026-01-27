@@ -7,6 +7,7 @@ from notifications_api_common.kanalen import KANAAL_REGISTRY, Kanaal
 from rest_framework.request import Request
 
 from objects.core.models import ObjectRecord
+from objects.tests.v2.utils import reverse
 
 
 class ObjectKanaal(Kanaal):
@@ -32,7 +33,10 @@ class ObjectKanaal(Kanaal):
         data = data or {}
         return {
             kenmerk: (
-                data.get("type") or obj._object_type.url
+                data.get("type")
+                or request.build_absolute_url(
+                    reverse("objecttype-detail", args=[data.object_type.uuid])
+                )
                 if kenmerk == "object_type"
                 else data.get(kenmerk, getattr(obj, kenmerk))
             )

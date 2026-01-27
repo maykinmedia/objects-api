@@ -63,3 +63,8 @@ class ObjectTypeBasedPermission(BasePermission):
             return True
 
         return bool(object_permission.mode == PermissionModes.read_and_write)
+
+
+class IsTokenAuthenticated(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.auth)

@@ -10,11 +10,10 @@ from objects.token.constants import PermissionModes
 from objects.token.tests.factories import PermissionFactory, TokenAuthFactory
 
 object_type = ObjectTypeFactory.create(
-    service__api_root="http://localhost:8001/api/v2/",
     uuid="f1220670-8ab7-44f1-a318-bd0782e97662",
 )
 
-token = TokenAuthFactory(token="secret", is_superuser=False)
+token = TokenAuthFactory.create(token="secret", is_superuser=False)
 PermissionFactory.create(
     object_type=object_type,
     mode=PermissionModes.read_only,

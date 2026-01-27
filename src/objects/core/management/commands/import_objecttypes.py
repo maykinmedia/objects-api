@@ -12,7 +12,9 @@ from zgw_consumers.models import Service
 from objects.core.models import ObjectType, ObjectTypeVersion
 from objects.utils.client import get_objecttypes_client
 
-MIN_OBJECTTYPES_VERSION = "3.4.0"  # added boolean field linkable_to_zaken to ObjectType
+MIN_OBJECTTYPES_API_VERSION = (
+    "2.2.2"  # added boolean field linkable_to_zaken to ObjectType
+)
 
 
 class Command(BaseCommand):
@@ -34,7 +36,7 @@ class Command(BaseCommand):
                 self._check_objecttypes_api_version(client)
 
                 objecttypes = client.list_objecttypes()
-                data = self._parse_objecttype_data(objecttypes, service)
+                data = self._parse_objecttype_data(objecttypes)
                 self._bulk_create_or_update_objecttypes(data)
                 self.stdout.write("Successfully imported %s objecttypes" % len(data))
 
@@ -42,7 +44,7 @@ class Command(BaseCommand):
                     objecttype_versions = client.list_objecttype_versions(
                         objecttype.uuid
                     )
-                    data = self._parse_objectversion_data(
+                    data = self._parse_objecttypeversion_data(
                         objecttype_versions, objecttype
                     )
                     self._bulk_create_or_update_objecttype_versions(data)
@@ -68,10 +70,10 @@ class Command(BaseCommand):
         api_version = client.get_objecttypes_api_version()
         if api_version is None or Version(
             client.get_objecttypes_api_version()
-        ) < Version(MIN_OBJECTTYPES_VERSION):
+        ) < Version(MIN_OBJECTTYPES_API_VERSION):
             raise CommandError(
                 _("Object types API version must be {} or higher.").format(
-                    MIN_OBJECTTYPES_VERSION
+                    MIN_OBJECTTYPES_API_VERSION
                 )
             )
 
@@ -81,10 +83,8 @@ class Command(BaseCommand):
             update_conflicts=True,  # Updates existing Objecttypes based on unique_fields
             unique_fields=[
                 "uuid",
-                "service",
-            ],  # TODO remove service from unique_fields after objecttype migration since it will no longer be part of the ObjectType model.
+            ],
             update_fields=[
-                "is_imported",
                 "name",
                 "name_plural",
                 "description",
@@ -123,18 +123,16 @@ class Command(BaseCommand):
         )
 
     def _parse_objecttype_data(
-        self, objecttypes: list[dict[str, Any]], service: Service
+        self, objecttypes: list[dict[str, Any]]
     ) -> list[ObjectType]:
         data = []
         for objecttype in objecttypes:
             objecttype.pop("versions")
             objecttype.pop("url")
-            objecttype["service"] = service
-            objecttype["is_imported"] = True
             data.append(ObjectType(**underscoreize(objecttype)))
         return data
 
-    def _parse_objectversion_data(
+    def _parse_objecttypeversion_data(
         self, objecttype_versions: list[dict[str, Any]], objecttype
     ) -> list[ObjectTypeVersion]:
         data = []

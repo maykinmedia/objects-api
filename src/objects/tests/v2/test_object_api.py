@@ -2,7 +2,6 @@ import json
 import uuid
 from datetime import date, timedelta
 
-import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -12,6 +11,7 @@ from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
+    ObjectTypeVersionFactory,
     ReferenceFactory,
 )
 from objects.token.constants import PermissionModes
@@ -19,14 +19,10 @@ from objects.token.tests.factories import PermissionFactory
 from objects.utils.test import TokenAuthMixin
 
 from ..constants import GEO_WRITE_KWARGS
-from ..utils import mock_objecttype, mock_objecttype_version, mock_service_oas_get
 from .utils import reverse, reverse_lazy
-
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
 
 
 @freeze_time("2020-08-08")
-@requests_mock.Mocker()
 class ObjectApiTests(TokenAuthMixin, APITestCase):
     maxDiff = None
 
@@ -34,14 +30,18 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
+        cls.objecttype_version = ObjectTypeVersionFactory.create(
+            object_type=cls.object_type,
+        )
+
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
             token_auth=cls.token_auth,
         )
 
-    def test_list_actual_objects(self, m):
+    def test_list_actual_objects(self):
         object_record1 = ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date.today(),
@@ -69,7 +69,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                     {
                         "url": f"http://testserver{reverse('object-detail', args=[object_record1.object.uuid])}",
                         "uuid": str(object_record1.object.uuid),
-                        "type": object_record1.object.object_type.url,
+                        "type": f"http://testserver{reverse('objecttype-detail', args=[object_record1.object.object_type.uuid])}",
                         "record": {
                             "index": object_record1.index,
                             "typeVersion": object_record1.version,
@@ -87,7 +87,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             },
         )
 
-    def test_retrieve_object(self, m):
+    def test_retrieve_object(self):
         object = ObjectFactory.create(object_type=self.object_type)
         object_record = ObjectRecordFactory.create(
             object=object,
@@ -107,7 +107,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             {
                 "url": f"http://testserver{reverse('object-detail', args=[object.uuid])}",
                 "uuid": str(object.uuid),
-                "type": object.object_type.url,
+                "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 "record": {
                     "index": object_record.index,
                     "typeVersion": object_record.version,
@@ -123,7 +123,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             },
         )
 
-    def test_retrieve_by_index(self, m):
+    def test_retrieve_by_index(self):
         record1 = ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date(2020, 1, 1),
@@ -185,17 +185,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                 },
             )
 
-    def test_create_object(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_create_object(self):
         url = reverse("object-list")
         data = {
-            "type": self.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -209,7 +202,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
         object = Object.objects.get()
 
@@ -224,14 +217,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(record.geometry.coords, (4.910649523925713, 52.37240093589432))
         self.assertIsNone(record.end_at)
 
-    def test_update_object(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_update_object(self):
         # other object - to check that correction works when there is another record with the same index
         ObjectRecordFactory.create(object__object_type=self.object_type)
         initial_record = ObjectRecordFactory.create(
@@ -243,7 +229,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
-            "type": object.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -284,13 +270,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
-    def test_patch_object_record(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-
+    def test_patch_object_record(self):
         initial_record = ObjectRecordFactory.create(
             version=1,
             object__object_type=self.object_type,
@@ -310,7 +290,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
 
         initial_record.refresh_from_db()
 
@@ -333,13 +313,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
-    def test_patch_validates_merged_object_rather_than_partial_object(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-
+    def test_patch_validates_merged_object_rather_than_partial_object(self):
         initial_record = ObjectRecordFactory.create(
             version=1,
             object__object_type=self.object_type,
@@ -360,7 +334,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         }
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
         self.assertEqual(
             response.json()["record"]["data"],
             {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},
@@ -372,7 +346,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             {"plantDate": "2024-10-09", "diameter": 20, "name": "Name"},
         )
 
-    def test_delete_object(self, m):
+    def test_delete_object(self):
         record = ObjectRecordFactory.create(object__object_type=self.object_type)
         object = record.object
         url = reverse("object-detail", args=[object.uuid])
@@ -382,7 +356,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Object.objects.count(), 0)
 
-    def test_history_object(self, m):
+    def test_history_object(self):
         record1 = ObjectRecordFactory.create(
             object__object_type=self.object_type,
             start_at=date(2020, 1, 1),
@@ -435,20 +409,13 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
     # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we discovered that updating an object \
     # where the startAt value has been modified with an earlier date causes an 500 response.
-    def test_updating_object_after_changing_the_startAt_value_returns_200(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_updating_object_after_changing_the_startAt_value_returns_200(self):
         object_uuid = uuid.uuid4()
 
         url_object_list = reverse("object-list")
         start_data = {
             "uuid": object_uuid,
-            "type": self.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -468,7 +435,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         url_object_update = reverse("object-detail", args=[object_uuid])
         modified_data = {
-            "type": self.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -496,14 +463,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         )
 
     # regression test for https://github.com/maykinmedia/objects-api/issues/268
-    def test_update_object_correctionFor(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_update_object_correctionFor(self):
         initial_record = ObjectRecordFactory.create(
             object__object_type=self.object_type, version=1
         )
@@ -513,7 +473,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         url = reverse("object-detail", args=[object.uuid])
         modified_data = {
-            "type": self.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -532,17 +492,10 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         last_record = object.last_record
         self.assertIsNone(last_record.correct)
 
-    def test_create_object_with_references(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_create_object_with_references(self):
         url = reverse("object-list")
         data = {
-            "type": self.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -562,14 +515,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             {("zaak", "https://example.com/zaak/1")},
         )
 
-    def test_update_object_with_references(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-        m.get(self.object_type.url, json=mock_objecttype(self.object_type.url))
-
+    def test_update_object_with_references(self):
         # other object - to check that correction works when there is another record with the same index
         ObjectRecordFactory.create(object__object_type=self.object_type)
         initial_record = ObjectRecordFactory.create(
@@ -581,7 +527,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 
         url = reverse("object-detail", args=[object.uuid])
         data = {
-            "type": object.object_type.url,
+            "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"plantDate": "2020-04-12", "diameter": 30},
@@ -621,15 +567,9 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.corrected, current_record)
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
-    def test_patch_object_record_with_references(self, m):
+    def test_patch_object_record_with_references(self):
         # NOTE: An almost standard JSON Merge PATCH algorithm is applied,
         # but *only* on record.data, not on the record itself!
-
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
 
         initial_record = ObjectRecordFactory.create(
             version=1,
@@ -680,14 +620,8 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
         self.assertEqual(initial_record.end_at, date(2020, 1, 1))
 
     def test_patch_validates_merged_object_rather_than_partial_object_with_references(
-        self, m
+        self,
     ):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-
         initial_record = ObjectRecordFactory.create(
             version=1,
             object__object_type=self.object_type,
@@ -724,7 +658,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             {"plantDate": "2020-04-10", "diameter": 20, "name": "Name"},
         )
 
-    def test_delete_object_with_references(self, m):
+    def test_delete_object_with_references(self):
         record = ObjectRecordFactory.create(object__object_type=self.object_type)
         ReferenceFactory.create_batch(2, record=record)
         object = record.object
@@ -758,7 +692,7 @@ class ObjectsAvailableRecordsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,

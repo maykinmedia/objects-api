@@ -29,6 +29,11 @@ class UserFactory(DjangoModelFactory[User]):
         )
 
 
+class SuperUserFactory(UserFactory):
+    is_staff = True
+    is_superuser = True
+
+
 class StaffUserFactory(UserFactory):
     is_staff = True
 

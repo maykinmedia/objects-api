@@ -1,10 +1,8 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 from django.contrib.admin.utils import unquote
-from django.utils.translation import gettext_lazy as _
 
 from objects.api.serializers import ObjectSerializer
 from objects.core.models import ObjectType
-from objects.core.utils import can_connect_to_objecttypes
 from objects.utils.admin import EditInlineAdminMixin
 from objects.utils.serializers import build_spec, get_field_names
 
@@ -78,18 +76,11 @@ class PermissionAdmin(admin.ModelAdmin):
             "object_type_choices": object_type_choices,
             "mode_choices": mode_choices,
             "form_data": self.get_form_data(request, object_id),
-            "objecttypes_available": can_connect_to_objecttypes(),
         }
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         extra_context = extra_context or {}
         extra_context.update(self.get_extra_context(request, object_id))
-
-        if extra_context["objecttypes_available"] is False:
-            msg = _(
-                "ObjectTypes API is not reachable. Field-based authorization is impossible"
-            )
-            self.message_user(request, msg, messages.WARNING)
 
         return super().change_view(
             request,
@@ -101,12 +92,6 @@ class PermissionAdmin(admin.ModelAdmin):
     def add_view(self, request, form_url="", extra_context=None):
         extra_context = extra_context or {}
         extra_context.update(self.get_extra_context(request, object_id=None))
-
-        if extra_context["objecttypes_available"] is False:
-            msg = _(
-                "ObjectTypes API is not reachable. Field-based authorization is impossible"
-            )
-            self.message_user(request, msg, messages.WARNING)
 
         return super().add_view(request, form_url, extra_context)
 
