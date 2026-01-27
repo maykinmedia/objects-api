@@ -1,6 +1,6 @@
-===========
-Objects API
-===========
+=============
+Open Objecten
+=============
 
 :Version: 3.6.0
 :Source: https://github.com/maykinmedia/objects-api
@@ -8,7 +8,7 @@ Objects API
 
 |docs|
 
-API to manage objects belonging to a certain object type.
+API to manage objecttypes and objects.
 (`Nederlandse versie`_)
 
 Developed by `Maykin Media B.V.`_ commissioned by the Municipality of Utrecht.
@@ -17,13 +17,9 @@ Developed by `Maykin Media B.V.`_ commissioned by the Municipality of Utrecht.
 Introduction
 ============
 
-The Objects API aims to easily store various objects and make them available in
-standardized format. It can be used by any organization to manage
-relevant objects. An organization can also choose to use it to
-expose objects to the public as *Open Data*.
-
-To define the format of objects, so called object types, organizations can use
-a national and/or local `Objecttypes API`_.
+Open Objecten aims to standardize various types of objects in an accessible way and without the need to create a whole new API for
+each (simple) object. instances of objects can be made available in a standardized format. It can be used by any organization to manage relevant objects.
+An organization can also choose to use it to expose objects to the public as *Open Data*.
 
 
 API specification
@@ -162,8 +158,6 @@ Licensed under the EUPL_
 .. _`Nederlandse versie`: README.NL.rst
 
 .. _`Maykin Media B.V.`: https://www.maykinmedia.nl
-
-.. _`Objecttypes API`: https://github.com/maykinmedia/objecttypes-api
 
 .. _`EUPL`: LICENSE.md
 
