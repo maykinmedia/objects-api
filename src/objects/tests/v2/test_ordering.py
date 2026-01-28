@@ -142,9 +142,22 @@ class OrderingAllowedTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"ordering": "record__data__length"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+
+        self.assertEqual(data["status"], 400)
+        self.assertEqual(data["code"], "invalid")
+        self.assertIn("invalid_params", data)
+
+        ordering_error = next(
+            err
+            for err in data["invalid_params"]
+            if "sort on following fields" in err["reason"]
+        )
+
         self.assertEqual(
-            response.json(),
-            ["You are not allowed to sort on following fields: record__data__length"],
+            ordering_error["reason"],
+            "You are not allowed to sort on following fields: record__data__length",
         )
 
     def test_allowed_field(self):

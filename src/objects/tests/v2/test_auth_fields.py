@@ -109,9 +109,13 @@ class RetrieveAuthFieldsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json(),
-            ["Fields in the configured authorization are absent in the data: 'some'"],
+            invalid_params[""],
+            "Fields in the configured authorization are absent in the data: 'some'",
         )
 
     def test_retrieve_query_fields_not_allowed(self):
@@ -304,7 +308,9 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             fields={"1": ["url", "uuid", "record"]},
         )
         ObjectRecordFactory.create(
-            object__object_type=self.object_type, data={"name": "some"}, version=1
+            object__object_type=self.object_type,
+            data={"name": "some"},
+            version=1,
         )
         ObjectRecordFactory.create(
             object__object_type=self.other_object_type,
@@ -315,9 +321,13 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.json(),
-            ["Fields in the configured authorization are absent in the data: 'some'"],
+        data = response.json()
+
+        reasons = [p["reason"] for p in data["invalid_params"]]
+
+        self.assertIn(
+            "Fields in the configured authorization are absent in the data: 'some'",
+            reasons,
         )
 
     def test_retrieve_query_fields_not_allowed(self):
@@ -336,7 +346,9 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
             fields={"1": ["url", "uuid", "record"]},
         )
         ObjectRecordFactory.create(
-            object__object_type=self.object_type, data={"name": "some"}, version=1
+            object__object_type=self.object_type,
+            data={"name": "some"},
+            version=1,
         )
         ObjectRecordFactory.create(
             object__object_type=self.other_object_type,
@@ -347,9 +359,12 @@ class ListAuthFieldsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"fields": "uuid"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+
         self.assertEqual(
-            response.json(),
-            ["'fields' query parameter has invalid or unauthorized values: 'uuid'"],
+            data["invalid_params"][0]["reason"],
+            "'fields' query parameter has invalid or unauthorized values: 'uuid'",
         )
 
     def test_list_no_allowed_fields(self):

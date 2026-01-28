@@ -66,7 +66,14 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"type": "invalid-objecttype-url"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json()["type"], ["Invalid value."])
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
+        self.assertEqual(
+            invalid_params["type"],
+            "Invalid value.",
+        )
 
     def test_filter_unknown_objecttype(self):
         objecttype_url = (
@@ -75,11 +82,13 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"type": objecttype_url})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json()["type"],
-            [
-                f"Select a valid object type. {objecttype_url} is not one of the available choices."
-            ],
+            invalid_params["type"],
+            f"Select a valid object type. {objecttype_url} is not one of the available choices.",
         )
 
     def test_filter_too_long_object_type(self):
@@ -87,7 +96,14 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"type": object_type_long})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json()["type"], ["The value has too many characters"])
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
+        self.assertEqual(
+            invalid_params["type"],
+            "The value has too many characters",
+        )
 
 
 class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
@@ -218,8 +234,13 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"data_attrs": "diameter__lt__value"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json(), ["Operator `lt` supports only dates and/or numeric values"]
+            invalid_params[""],
+            "Operator `lt` supports only dates and/or numeric values",
         )
 
     def test_filter_lte_date(self):
@@ -257,17 +278,22 @@ class FilterDataAttrsTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"data_attrs": "diameter__not__value"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
+
+        data = response.json()
+        self.assertEqual(
+            data["invalid_params"][0]["reason"],
+            "Comparison operator `not` is unknown",
+        )
 
     def test_filter_invalid_param(self):
         response = self.client.get(self.url, {"data_attrs": "diameter__exact"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
         self.assertEqual(
-            response.json(),
-            [
-                "Filter expression 'diameter__exact' doesn't have the shape 'key__operator__value'"
-            ],
+            data["invalid_params"][0]["reason"],
+            "Filter expression 'diameter__exact' doesn't have the shape 'key__operator__value'",
         )
 
     def test_filter_nested_attr(self):
@@ -570,8 +596,12 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"data_attr": "diameter__lt__value"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.json(), ["Operator `lt` supports only dates and/or numeric values"]
+
+        data = response.json()
+        reasons = [p["reason"] for p in data["invalid_params"]]
+
+        self.assertIn(
+            "Operator `lt` supports only dates and/or numeric values", reasons
         )
 
     def test_filter_lte_date(self):
@@ -609,17 +639,24 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
         response = self.client.get(self.url, {"data_attr": "diameter__not__value"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), ["Comparison operator `not` is unknown"])
+
+        data = response.json()
+
+        self.assertEqual(
+            data["invalid_params"][0]["reason"],
+            "Comparison operator `not` is unknown",
+        )
 
     def test_filter_invalid_param(self):
         response = self.client.get(self.url, {"data_attr": "diameter__exact"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+
         self.assertEqual(
-            response.json(),
-            [
-                "Filter expression 'diameter__exact' doesn't have the shape 'key__operator__value'"
-            ],
+            data["invalid_params"][0]["reason"],
+            "Filter expression 'diameter__exact' doesn't have the shape 'key__operator__value'",
         )
 
     def test_filter_nested_attr(self):
@@ -823,13 +860,15 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json(),
-            [
-                "Filter expression 'dimensions__diameter__exact__4,name__exact__demo' "
-                "must have the shape 'key__operator__value', commas can only be present in "
-                "the 'value'"
-            ],
+            invalid_params[""],
+            "Filter expression 'dimensions__diameter__exact__4,name__exact__demo' "
+            "must have the shape 'key__operator__value', commas can only be present in "
+            "the 'value'",
         )
 
 
@@ -941,6 +980,8 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
 
         response = self.client.get(url, {"registrationDate": "2020-07-01"})
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
@@ -958,11 +999,13 @@ class FilterDateTests(TokenAuthMixin, APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json(),
-            [
-                "'date' and 'registrationDate' parameters can't be used in the same request"
-            ],
+            invalid_params[""],
+            "'date' and 'registrationDate' parameters can't be used in the same request",
         )
 
 
@@ -1034,14 +1077,10 @@ class FilterDataIcontainsTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(
-            response.json(),
-            {
-                "code": "error",
-                "title": "Internal Server Error",
-                "status": 500,
-                "detail": "This search operation is not supported by the underlying data store.",
-            },
+            response.data["detail"],
+            "This search operation is not supported by the underlying data store.",
         )
+        self.assertEqual(response.status_code, 500)
 
 
 class FilterTypeVersionTests(TokenAuthMixin, APITestCase):

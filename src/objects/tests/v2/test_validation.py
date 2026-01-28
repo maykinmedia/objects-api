@@ -151,7 +151,19 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
-        self.assertEqual(data["type"], ["The value has too many characters"])
+
+        self.assertEqual(data["status"], 400)
+        self.assertEqual(data["code"], "invalid")
+        self.assertIn("invalid_params", data)
+
+        type_error = next(
+            err for err in data["invalid_params"] if err["name"] == "type"
+        )
+
+        self.assertEqual(
+            type_error["reason"],
+            "The value has too many characters",
+        )
 
     def test_create_object_no_version(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -173,8 +185,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            data["non_field_errors"], ["Object type version can not be retrieved."]
+            invalid_params["nonFieldErrors"],
+            "Object type version can not be retrieved.",
         )
 
     def test_create_object_objecttype_request_error(self, m):
@@ -197,8 +212,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            data["non_field_errors"], ["Object type version can not be retrieved."]
+            invalid_params["nonFieldErrors"],
+            "Object type version can not be retrieved.",
         )
 
     def test_create_object_objecttype_with_no_jsonSchema(self, m):
@@ -225,11 +243,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            data["non_field_errors"],
-            [
-                f"{self.object_type.versions_url} does not appear to be a valid objecttype."
-            ],
+            invalid_params["nonFieldErrors"],
+            f"{self.object_type.versions_url} does not appear to be a valid objecttype.",
         )
 
     def test_create_object_schema_invalid(self, m):
@@ -255,8 +273,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.count(), 0)
 
         data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            data["non_field_errors"], ["'diameter' is a required property"]
+            invalid_params["nonFieldErrors"],
+            "'diameter' is a required property",
         )
 
     def test_create_object_without_record_invalid(self, m):
@@ -297,9 +318,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(Object.objects.exclude(id=record.object.id).count(), 0)
 
         data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            data["record"]["correctionFor"],
-            [f"Object with index={record.index} does not exist."],
+            invalid_params["record.correctionFor"],
+            f"Object with index={record.index} does not exist.",
         )
 
     def test_create_object_geometry_not_allowed(self, m):
@@ -330,9 +353,13 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         response = self.client.post(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json()["non_field_errors"],
-            ["This object type doesn't support geometry"],
+            invalid_params["nonFieldErrors"],
+            "This object type doesn't support geometry",
         )
 
     def test_create_object_with_geometry_without_allowGeometry(self, m):
@@ -443,9 +470,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            data["record"]["correctionFor"],
-            ["Object with index=5 does not exist."],
+            invalid_params["record.correctionFor"],
+            "Object with index=5 does not exist.",
         )
 
     def test_update_object_type_invalid(self, m):
@@ -475,10 +504,16 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = response.json()
-        self.assertEqual(
-            data["type"],
-            ["This field can't be changed"],
+
+        self.assertEqual(data["status"], 400)
+        self.assertEqual(data["code"], "invalid")
+        self.assertIn("invalid_params", data)
+
+        type_error = next(
+            err for err in data["invalid_params"] if err["name"] == "type"
         )
+
+        self.assertEqual(type_error["reason"], "This field can't be changed")
 
     def test_update_uuid_invalid(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -497,7 +532,12 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = response.json()
-        self.assertEqual(data["uuid"], ["This field can't be changed"])
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
+        self.assertEqual(
+            invalid_params["uuid"],
+            "This field can't be changed",
+        )
 
     def test_update_geometry_not_allowed(self, m):
         mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
@@ -531,7 +571,11 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = response.json()
+        invalid_params = {p["name"]: p["reason"] for p in data["invalid_params"]}
+
         self.assertEqual(
-            response.json()["non_field_errors"],
-            ["This object type doesn't support geometry"],
+            invalid_params["nonFieldErrors"],
+            "This object type doesn't support geometry",
         )
