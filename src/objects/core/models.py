@@ -155,17 +155,6 @@ class ObjectType(models.Model):
             "`geometry` property will raise an error "
         ),
     )
-    linkable_to_zaken = models.BooleanField(
-        _("linkable to zaken"),
-        default=False,
-        help_text=_(
-            # TODO Document: how and where these links should be created/maintained
-            "Objects of this type can have a link to 1 or more Zaken.\n"
-            "True indicates the lifetime of the object is linked to the lifetime "
-            "of linked zaken, i.e., when all linked Zaken to an object are "
-            "archived/destroyed, the object will also be archived/destroyed."
-        ),
-    )
 
     objects = ObjectTypeQuerySet.as_manager()
 
@@ -173,7 +162,7 @@ class ObjectType(models.Model):
         unique_together = ("service", "uuid")
 
     def __str__(self):
-        return f"{self.service.label}: {self._name}"
+        return f"{self.service.label}: {self.name or self._name}"
 
     @property
     def url(self):
