@@ -1745,11 +1745,6 @@ components:
           additionalProperties:
             type: string
           description: Key-value pairs of keywords related for the object type
-        linkableToZaken:
-          type: boolean
-          description: |-
-            Objects of this type can have a link to 1 or more Zaken.
-            True indicates the lifetime of the object is linked to the lifetime of linked zaken, i.e., when all linked Zaken to an object are archived/destroyed, the object will also be archived/destroyed.
         createdAt:
           type: string
           format: date
@@ -2070,11 +2065,6 @@ components:
           additionalProperties:
             type: string
           description: Key-value pairs of keywords related for the object type
-        linkableToZaken:
-          type: boolean
-          description: |-
-            Objects of this type can have a link to 1 or more Zaken.
-            True indicates the lifetime of the object is linked to the lifetime of linked zaken, i.e., when all linked Zaken to an object are archived/destroyed, the object will also be archived/destroyed.
         createdAt:
           type: string
           format: date

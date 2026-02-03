@@ -128,7 +128,6 @@ class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "providerOrganization",
             "documentationUrl",
             "labels",
-            "linkableToZaken",
             "createdAt",
             "modifiedAt",
             "allowGeometry",
@@ -147,7 +146,6 @@ class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "providerOrganization": {"source": "provider_organization"},
             "documentationUrl": {"source": "documentation_url"},
             "allowGeometry": {"source": "allow_geometry"},
-            "linkableToZaken": {"source": "linkable_to_zaken"},
             "createdAt": {"source": "created_at", "read_only": True},
             "modifiedAt": {"source": "modified_at", "read_only": True},
         }
