@@ -40,7 +40,6 @@ class ObjectTypeAPITests(TokenAuthMixin, APITestCase):
                 "providerOrganization": object_type.provider_organization,
                 "documentationUrl": object_type.documentation_url,
                 "labels": object_type.labels,
-                "linkableToZaken": False,
                 "createdAt": "2020-01-01",
                 "modifiedAt": "2020-01-01",
                 "allowGeometry": object_type.allow_geometry,
@@ -119,7 +118,6 @@ class ObjectTypeAPITests(TokenAuthMixin, APITestCase):
         self.assertEqual(object_type.contact_person, "John Smith")
         self.assertEqual(object_type.contact_email, "John.Smith@objecttypes.nl")
         self.assertEqual(object_type.source, "tree system")
-        self.assertFalse(object_type.linkable_to_zaken)
         self.assertEqual(object_type.update_frequency, UpdateFrequencyChoices.monthly)
         self.assertEqual(object_type.provider_organization, "tree provider")
         self.assertEqual(object_type.documentation_url, "http://example.com/doc/trees")
@@ -137,7 +135,6 @@ class ObjectTypeAPITests(TokenAuthMixin, APITestCase):
             url,
             {
                 "dataClassification": DataClassificationChoices.open,
-                "linkableToZaken": True,
             },
         )
 
@@ -148,7 +145,6 @@ class ObjectTypeAPITests(TokenAuthMixin, APITestCase):
         self.assertEqual(
             object_type.data_classification, DataClassificationChoices.open
         )
-        self.assertTrue(object_type.linkable_to_zaken)
 
     def test_delete_objecttype(self):
         object_type = ObjectTypeFactory.create()

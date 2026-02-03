@@ -89,7 +89,6 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(objecttype.provider_organization, "")
         self.assertEqual(objecttype.documentation_url, "")
         self.assertEqual(objecttype.labels, {})
-        self.assertEqual(objecttype.linkable_to_zaken, False)
         self.assertEqual(str(objecttype.created_at), "2020-12-01")
         self.assertEqual(str(objecttype.modified_at), "2020-12-01")
         self.assertEqual(objecttype.allow_geometry, True)

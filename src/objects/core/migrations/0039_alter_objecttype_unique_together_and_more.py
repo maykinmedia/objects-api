@@ -9,7 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0037_reference'),
+        ('core', '0038_remove_objecttype_linkable_to_zaken'),
     ]
 
     operations = [
