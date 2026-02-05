@@ -535,3 +535,31 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             response.json()["non_field_errors"],
             ["This object type doesn't support geometry"],
         )
+
+    def test_create_object_with_duplicate_uuid_returns_400(self, m):
+        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
+        m.get(
+            f"{self.object_type.url}/versions/1",
+            json=mock_objecttype_version(self.object_type.url),
+        )
+
+        url = reverse("object-list")
+
+        data = {
+            "uuid": "11111111-1111-1111-1111-111111111111",
+            "type": self.object_type.url,
+            "record": {
+                "typeVersion": 1,
+                "data": {"diameter": 30},
+                "startAt": "2026-02-05",
+            },
+        }
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = self.client.post(url, data, **GEO_WRITE_KWARGS)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()["uuid"], ["An object with this UUID already exists."]
+        )
