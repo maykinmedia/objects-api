@@ -9,7 +9,7 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
-asgiref==3.8.1
+asgiref==3.11.0
     # via
     #   django
     #   django-axes
@@ -29,7 +29,7 @@ boltons==21.0.0
     # via
     #   face
     #   glom
-cbor2==5.6.2
+cbor2==5.8.0
     # via webauthn
 celery==5.5.3
     # via
@@ -71,7 +71,7 @@ cryptography==44.0.1
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.8
+django==5.2.11
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -267,7 +267,7 @@ notifications-api-common==0.10.0
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.13.2
+open-api-framework==0.13.3
     # via -r requirements/base.in
 opentelemetry-api==1.38.0
     # via
@@ -335,7 +335,7 @@ prometheus-client==0.20.0
     # via flower
 prompt-toolkit==3.0.43
     # via click-repl
-protobuf==6.33.1
+protobuf==6.33.5
     # via
     #   googleapis-common-protos
     #   opentelemetry-proto
@@ -447,7 +447,7 @@ tzdata==2025.2
     # via kombu
 uritemplate==3.0.1
     # via drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   elastic-apm
     #   requests

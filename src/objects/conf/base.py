@@ -118,7 +118,6 @@ NOTIFICATIONS_KANAAL = "objecten"
 ENABLE_CLOUD_EVENTS = config(
     "ENABLE_CLOUD_EVENTS",
     default=False,
-    add_to_docs=False,
     cast=bool,
     help_text="**EXPERIMENTAL**: indicates whether or not cloud events should be sent to the configured endpoint for specific operations on Zaak (not ready for use in production)",
 )
@@ -126,7 +125,6 @@ ENABLE_CLOUD_EVENTS = config(
 NOTIFICATIONS_SOURCE = config(
     "NOTIFICATIONS_SOURCE",
     default="",
-    add_to_docs=False,
     help_text="**EXPERIMENTAL**: the identifier of this application to use as the source in notifications and cloudevents",
 )
 
