@@ -2,6 +2,54 @@
 Change history
 ==============
 
+3.6.0 (2026-02-06)
+------------------
+
+**New features**
+
+* [:objects-api:`564`] Add ObjectType fields & ObjectTypeVersion model
+* [:objects-api:`564`] Add command to import objecttypes from API for 4.0.0 migration (see :ref:`objecttype_migration` for more information)
+* [:objects-api:`712`] Ensure token authorization display name is unique identifier in admin
+* [:objects-api:`708`] Support Open Archiefbeheer destruction in objects api
+
+    * Add ``references`` field to ObjectRecord to link objecten to zaken
+    * Emit ``zaak-gekoppeld`` and ``zaak-ontkoppeld`` cloud events when an object is linked
+      to or unlinked from a zaak (can be enabled with ``ENABLE_CLOUD_EVENTS`` environment variable)
+
+.. warning::
+
+    The ``zaak-gekoppeld`` and ``zaak-ontkoppeld`` pattern is still under active development
+    and could be subject to change in future releases. It is not recommended to rely on this pattern
+    in production yet.
+
+
+* [:objects-api:`724`] Remove ``linkable_to_zaken`` from ObjectType
+
+**Maintenance**
+
+* Fix factory invocations
+* Avoid using event key in uwsgi logs
+* [:open-api-framework:`197`] use commonground-api-common pagination
+
+* Upgrade python dependencies
+
+    * asgiref to 3.11.0
+    * cbor2 to 5.8.0
+    * django to 5.2.11
+    * open-api-framework to 0.13.3
+    * urllib3 to 2.6.3
+    * wheel to 0.46.3
+    * protobuf to 6.33.5
+    * pip to 26.1
+    * virtualenv to 20.36.1
+    * filelock to 3.20.3
+    * factory-boy to 3.3.3
+    * [:open-api-framework:`197`] commonground-api-common to 2.10.7
+
+**Documentation**
+
+* [:objects-api:`171`] Add connection pooling changelog warning
+
 3.5.0 (2025-12-01)
 ------------------
 
