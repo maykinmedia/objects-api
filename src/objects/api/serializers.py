@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 import structlog
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from rest_framework_gis.serializers import GeometryField
 
 from objects.core.models import Object, ObjectRecord, ObjectType, Reference
@@ -102,7 +103,13 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
     uuid = serializers.UUIDField(
         source="object.uuid",
         required=False,
-        validators=[IsImmutableValidator()],
+        validators=[
+            IsImmutableValidator(),
+            UniqueValidator(
+                queryset=Object.objects.all(),
+                message=_("An object with this UUID already exists."),
+            ),
+        ],
         help_text=_("Unique identifier (UUID4)"),
     )
     type = ObjectTypeField(
@@ -128,13 +135,16 @@ class ObjectSerializer(DynamicFieldsMixin, serializers.HyperlinkedModelSerialize
     @transaction.atomic
     def create(self, validated_data):
         object_data = validated_data.pop("object", {})
-        if object_type := validated_data.pop("_object_type"):
+
+        if object_type := validated_data.pop("_object_type", None):
             object_data["object_type"] = object_type
+
         object = Object.objects.create(**object_data)
 
         validated_data["object"] = object
         references = validated_data.pop("references", [])
         record = super().create(validated_data)
+
         Reference.objects.bulk_create(
             Reference(record=record, **ref_data) for ref_data in references
         )
