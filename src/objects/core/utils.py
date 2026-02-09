@@ -15,7 +15,7 @@ def check_objecttype(
         jsonschema.validate(data, version_data.json_schema)
     except models.ObjectTypeVersion.DoesNotExist:
         raise ValidationError(
-            f"{object_type} version: {version} does not appear to exist.",
+            f"Object type {object_type} version: {version} does not appear to exist.",
             code="invalid_key",
         )
     except jsonschema.exceptions.ValidationError as exc:

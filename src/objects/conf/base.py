@@ -157,6 +157,7 @@ SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
+    "objects.setup_configuration.steps.objecttypes.ObjectTypesConfigurationStep",
     "objects.setup_configuration.steps.token_auth.TokenAuthConfigurationStep",
 )
 
