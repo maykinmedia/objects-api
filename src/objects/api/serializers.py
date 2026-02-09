@@ -135,7 +135,12 @@ class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
-            "uuid": {"validators": [IsImmutableValidator()]},
+            "uuid": {
+                "validators": [
+                    IsImmutableValidator(),
+                    UniqueValidator(queryset=ObjectType.objects.all()),
+                ]
+            },
             "namePlural": {"source": "name_plural"},
             "dataClassification": {"source": "data_classification"},
             "maintainerOrganization": {"source": "maintainer_organization"},
