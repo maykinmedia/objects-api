@@ -12,9 +12,9 @@ from zgw_consumers.models import Service
 from objects.core.models import ObjectType, ObjectTypeVersion
 from objects.utils.client import get_objecttypes_client
 
-MIN_OBJECTTYPES_API_VERSION = (
-    "2.2.2"  # added boolean field linkable_to_zaken to ObjectType
-)
+# Minimum Objecttypes application version is 3.4.0, because that version added the
+# version header to the responses
+MIN_OBJECTTYPES_API_VERSION = "2.2.2"
 
 
 class Command(BaseCommand):

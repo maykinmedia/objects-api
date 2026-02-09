@@ -108,7 +108,6 @@ SPECTACULAR_SETTINGS = {
         "drf_spectacular.hooks.postprocess_schema_enums",
         "maykin_common.drf_spectacular.hooks.remove_invalid_url_defaults",
     ],
-    # "GET_MOCK_REQUEST": "objecttypes.utils.autoschema.build_mock_request", # TODO
     "TAGS": [
         {"name": "objects"},
         {"name": "objecttypes"},

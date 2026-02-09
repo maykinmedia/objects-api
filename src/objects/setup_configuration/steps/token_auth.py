@@ -51,8 +51,6 @@ class TokenAuthConfigurationStep(
                     "token_auth": token,
                     "object_type": ObjectType.objects.get(uuid=permission.object_type),
                     "mode": permission.mode,
-                    "use_fields": permission.use_fields,
-                    "fields": permission.fields,
                 }
             except ObjectDoesNotExist as exception:
                 raise ConfigurationRunFailed(
@@ -68,8 +66,6 @@ class TokenAuthConfigurationStep(
                     object_type=permission_kwargs["object_type"],
                     defaults={
                         "mode": permission_kwargs["mode"],
-                        "use_fields": permission_kwargs["use_fields"],
-                        "fields": permission_kwargs["fields"],
                     },
                 )
             except IntegrityError as exception:
