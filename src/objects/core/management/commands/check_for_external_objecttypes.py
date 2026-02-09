@@ -16,13 +16,13 @@ class Command(BaseCommand):
         ObjectType = self._get_objecttype()
 
         external_object_count = 0
-        service = set()
+        external_uuids = set()
         for objecttype in ObjectType.objects.iterator():
             if not objecttype.is_imported:
                 external_object_count += 1
-                service.add(objecttype.service)
+                external_uuids.add(objecttype.uuid)
 
-        msg = f"{external_object_count} objectypes have not been imported from the service(s): {service}"
+        msg = f"{external_object_count} objectype(s) have not been imported: {external_uuids}"
 
         self.stdout.write(self.style.ERROR(msg))
 

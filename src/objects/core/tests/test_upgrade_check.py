@@ -11,7 +11,7 @@ from objects.core.tests.factories import ObjectTypeFactory
 from objects.token.tests.test_migrations import BaseMigrationTest
 
 
-class TestUpgradeCheck(BaseMigrationTest):
+class TestUpgradeCheckBefore40(BaseMigrationTest):
     app = "core"
     migrate_from = "0036_objecttype_is_imported"
     migrate_to = "0037_alter_objecttype_unique_together_and_more"
@@ -96,6 +96,21 @@ class TestUpgradeCheck(BaseMigrationTest):
 
 
 class TestUpgradeCheckAfter40(TestCase):
+    @override_settings(RELEASE="4.0.0")
+    def test_upgrade_from_36_to_40_with_non_imported(self):
+        Version.objects.create(version="3.6.0", git_sha="test")
+        ObjectTypeFactory.create(is_imported=False)
+
+        with self.assertRaises(SystemCheckError):
+            call_command("check")
+
+    @override_settings(RELEASE="4.0.0")
+    def test_upgrade_from_36_to_40_with_imported(self):
+        Version.objects.create(version="3.6.0", git_sha="test")
+        ObjectTypeFactory.create(is_imported=True)
+
+        call_command("check")
+
     @override_settings(RELEASE="4.1.0")
     def test_upgrade_from_40_to_41_with_all_imported(self):
         """
