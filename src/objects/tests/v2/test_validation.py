@@ -84,7 +84,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
         self.assertEqual(
             error["reason"],
-            "Object type version can not be retrieved.",
+            f"Object type {self.object_type} version: 10 does not appear to exist.",
         )
 
     def test_create_object_schema_invalid(self):
@@ -270,7 +270,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         obj = initial_record.object
 
         url = reverse("object-detail", args=[obj.uuid])
-        data = {"type": self.object_type.url}
+        data = {"type": reverse("objecttype-detail", args=[self.object_type.uuid])}
 
         response = self.client.patch(url, data, **GEO_WRITE_KWARGS)
 
@@ -334,22 +334,17 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
             "This object type doesn't support geometry",
         )
 
-    def test_create_object_with_duplicate_uuid_returns_400(self, m):
-        mock_service_oas_get(m, OBJECT_TYPES_API, "objecttypes")
-        m.get(
-            f"{self.object_type.url}/versions/1",
-            json=mock_objecttype_version(self.object_type.url),
-        )
-
+    def test_create_object_with_duplicate_uuid_returns_400(self):
+        ObjectTypeVersionFactory.create(object_type=self.object_type)
         url = reverse("object-list")
 
         data = {
             "uuid": "11111111-1111-1111-1111-111111111111",
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"diameter": 30},
-                "startAt": "2026-02-05",
+                "startAt": "2020-01-01",
             },
         }
 
@@ -372,8 +367,10 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["uuid"], ["This field can't be changed"])
+        error = get_validation_errors(response, "uuid")
+
+        self.assertEqual(error["reason"], "This field can't be changed")
+        self.assertEqual(error["code"], "immutable-field")
 
     def test_delete_objecttype_with_versions_fail(self):
         object_type = ObjectTypeFactory.create()
@@ -384,13 +381,13 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
+        error = get_validation_errors(response, "nonFieldErrors")
+
         self.assertEqual(
-            data["non_field_errors"],
-            [
-                "All related versions should be destroyed before destroying the objecttype"
-            ],
+            error["reason"],
+            "All related versions should be destroyed before destroying the objecttype",
         )
+        self.assertEqual(error["code"], "pending-versions")
 
 
 class ObjectTypeVersionValidationTests(TokenAuthMixin, APITestCase):
@@ -408,7 +405,13 @@ class ObjectTypeVersionValidationTests(TokenAuthMixin, APITestCase):
         response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue("jsonSchema" in response.json())
+
+        error = get_validation_errors(response, "jsonSchema")
+
+        self.assertEqual(error["code"], "invalid-json-schema")
+        self.assertEqual(
+            error["reason"], "'any' is not valid under any of the given schemas"
+        )
 
     def test_create_version_with_incorrect_objecttype_fail(self):
         url = reverse("objecttypeversion-list", args=[uuid.uuid4()])
@@ -425,9 +428,11 @@ class ObjectTypeVersionValidationTests(TokenAuthMixin, APITestCase):
         response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.json()["non_field_errors"], ["Objecttype url is invalid"]
-        )
+
+        error = get_validation_errors(response, "nonFieldErrors")
+
+        self.assertEqual(error["code"], "invalid-objecttype")
+        self.assertEqual(error["reason"], "Objecttype url is invalid")
 
     def test_update_published_version_fail(self):
         object_type = ObjectTypeFactory.create()
@@ -450,10 +455,10 @@ class ObjectTypeVersionValidationTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["non_field_errors"], ["Only draft versions can be changed"]
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+
+        self.assertEqual(error["code"], "non-draft-version-update")
+        self.assertEqual(error["reason"], "Only draft versions can be changed")
 
     def test_delete_puclished_version_fail(self):
         object_type = ObjectTypeFactory.create()
@@ -469,7 +474,7 @@ class ObjectTypeVersionValidationTests(TokenAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["non_field_errors"], ["Only draft versions can be destroyed"]
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+
+        self.assertEqual(error["code"], "non-draft-version-destroy")
+        self.assertEqual(error["reason"], "Only draft versions can be destroyed")
