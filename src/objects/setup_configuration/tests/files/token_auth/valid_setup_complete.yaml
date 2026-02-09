@@ -11,11 +11,6 @@ tokenauth:
       permissions:
         - object_type: 3a82fb7f-fc9b-4104-9804-993f639d6d0d
           mode: read_only
-          use_fields: true
-          fields:
-            '1':
-              - record__data__leeftijd
-              - record__data__kiemjaar
 
         - object_type: ca754b52-3f37-4c49-837c-130e8149e337
           mode: read_and_write
