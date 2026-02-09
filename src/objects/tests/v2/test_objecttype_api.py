@@ -125,6 +125,30 @@ class ObjectTypeAPITests(TokenAuthMixin, APITestCase):
         self.assertEqual(object_type.created_at, date(2020, 1, 1))
         self.assertEqual(object_type.modified_at, date(2020, 1, 1))
 
+    def test_create_objecttype_with_duplicate_uuid(self):
+        object_type = ObjectTypeFactory.create()
+
+        url = reverse("objecttype-list")
+        data = {
+            "uuid": object_type.uuid,
+            "name": "boom",
+            "namePlural": "bomen",
+            "description": "tree type description",
+            "dataClassification": DataClassificationChoices.intern,
+            "maintainerOrganization": "tree municipality",
+            "maintainerDepartment": "object types department",
+            "contactPerson": "John Smith",
+            "contactEmail": "John.Smith@objecttypes.nl",
+            "source": "tree system",
+            "updateFrequency": UpdateFrequencyChoices.monthly,
+            "providerOrganization": "tree provider",
+            "documentationUrl": "http://example.com/doc/trees",
+            "labels": {"key1": "value1"},
+        }
+
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_update_objecttype(self):
         object_type = ObjectTypeFactory.create(
             data_classification=DataClassificationChoices.intern
