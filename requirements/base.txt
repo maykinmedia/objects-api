@@ -267,7 +267,7 @@ notifications-api-common==0.10.0
     # via
     #   -r requirements/base.in
     #   commonground-api-common
-open-api-framework==0.13.3
+open-api-framework==0.13.4
     # via -r requirements/base.in
 opentelemetry-api==1.38.0
     # via
