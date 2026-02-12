@@ -18,6 +18,7 @@ projects: ["maykinmedia/15"]
   - [ ] Update READMEs with release dates + links
 - [ ] Bump version number with `bin/bump-my-version.sh bump <major|minor|patch>`
 - [ ] Update changelog
+- [ ] Update ``docs/introduction/versioning.rst``
 - [ ] Check the impact of this release on the Helm charts and make issues for this in https://github.com/maykinmedia/charts if needed, e.g.
   - [ ] New environment variables were added
   - [ ] New setup configuration steps or changes to format
