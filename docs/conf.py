@@ -115,6 +115,7 @@ linkcheck_ignore = [
     "https://sparxsystems.com/products/ea/trial/request.html",  # this raises 403 for crawlers probably?
     "https://data.overheid.nl/",
     "https://github.com/maykinmedia/django-setup-configuration/blob/main/README.rst#environment-variable-substitution",
+    r"https://opentelemetry\.io/docs/.*",  # times out frequently, even with 30s timeouts
 ]
 
 extlinks = {
