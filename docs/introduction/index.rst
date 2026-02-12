@@ -34,4 +34,5 @@ configuration or development needed.
    features
    team
    open-source/index
+   versioning
 
