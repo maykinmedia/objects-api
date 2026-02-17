@@ -17,8 +17,8 @@ services:
       - objects-dev
 
   web:
-    image: maykinmedia/objects-api:latest
-    build: &web_build
+    image: maykinmedia/objects-api:${TAG:-latest}
+    build:
       context: .
     environment: &web_env
       DJANGO_SETTINGS_MODULE: objects.conf.docker
@@ -37,7 +37,7 @@ services:
       SUBPATH: ${SUBPATH}
       DB_CONN_MAX_AGE: "0"
       DB_POOL_ENABLED: True
-      
+
       # Enabling Open Telemetry requires the services in docker/docker-compose.observability.yaml
       # to be up and running.
       OTEL_SDK_DISABLED: ${OTEL_SDK_DISABLED:-true}
@@ -73,8 +73,7 @@ services:
       service: web
 
   web-init:
-    image: maykinmedia/objects-api:latest
-    build: *web_build
+    image: maykinmedia/objects-api:${TAG:-latest}
     environment:
       <<: *web_env
       #
@@ -128,8 +127,7 @@ services:
       - objects-dev
 
   celery:
-    image: maykinmedia/objects-api:latest
-    build: *web_build
+    image: maykinmedia/objects-api:${TAG:-latest}
     environment: *web_env
     command: /celery_worker.sh
     healthcheck:
@@ -146,8 +144,7 @@ services:
       - objects-dev
 
   celery-flower:
-    image: maykinmedia/objects-api:latest
-    build: *web_build
+    image: maykinmedia/objects-api:${TAG:-latest}
     environment: *web_env
     command: /celery_flower.sh
     ports:
