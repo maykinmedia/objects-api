@@ -3,7 +3,6 @@ from django.db import IntegrityError
 
 from django_setup_configuration.configuration import BaseConfigurationStep
 from django_setup_configuration.exceptions import ConfigurationRunFailed
-from zgw_consumers.models import Service
 
 from objects.core.models import ObjectType
 from objects.setup_configuration.models.objecttypes import ObjectTypesConfigurationModel
@@ -26,25 +25,16 @@ class ObjectTypesConfigurationStep(BaseConfigurationStep):
 
     def execute(self, model: ObjectTypesConfigurationModel) -> None:
         for item in model.items:
-            try:
-                service = Service.objects.get(slug=item.service_identifier)
-            except Service.DoesNotExist:
-                raise ConfigurationRunFailed(
-                    f"No service found with identifier {item.service_identifier}"
-                )
-
             objecttype_kwargs = dict(
-                service=service,
                 uuid=item.uuid,
-                _name=item.name,
+                name=item.name,
+                name_plural=f"{item.name}s",
             )
 
             objecttype_instance = ObjectType(**objecttype_kwargs)
 
             try:
-                objecttype_instance.full_clean(
-                    exclude=("id", "service"), validate_unique=False
-                )
+                objecttype_instance.full_clean(exclude=("id"), validate_unique=False)
             except ValidationError as exception:
                 exception_message = (
                     f"Validation error(s) occured for objecttype {item.uuid}."

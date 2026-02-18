@@ -15,8 +15,6 @@ from objects.utils.test import TokenAuthMixin
 
 from .utils import reverse
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class DynamicFieldsTests(TokenAuthMixin, APITestCase):
     maxDiff = None
@@ -25,7 +23,7 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
@@ -54,12 +52,12 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
             [
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[object_record2.object.uuid])}",
-                    "type": self.object_type.url,
+                    "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                     "record": {"index": 1, "typeVersion": object_record2.version},
                 },
                 {
                     "url": f"http://testserver{reverse('object-detail', args=[object_record1.object.uuid])}",
-                    "type": self.object_type.url,
+                    "type": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                     "record": {"index": 1, "typeVersion": object_record1.version},
                 },
             ],
@@ -84,7 +82,7 @@ class DynamicFieldsTests(TokenAuthMixin, APITestCase):
             data,
             {
                 "url": f"http://testserver{reverse('object-detail', args=[object.uuid])}",
-                "type": object.object_type.url,
+                "type": f"http://testserver{reverse('objecttype-detail', args=[object.object_type.uuid])}",
                 "record": {
                     "geometry": {
                         "type": "Point",

@@ -8,15 +8,6 @@ sites_config:
 zgw_consumers_config_enable: true
 zgw_consumers:
   services:
-  - identifier: objecttypes-api
-    label: Objecttypes API
-    api_root: http://objecttypes-web:8000/api/v2/
-    api_connection_check_path: objecttypes
-    api_type: orc
-    auth_type: api_key
-    header_key: Authorization
-    header_value: Token b9f100590925b529664ed9d370f5f8da124b2c20
-
   - identifier: notifications-api
     label: Notificaties API
     api_root: http://notificaties.local/api/v1/
@@ -40,11 +31,9 @@ objecttypes:
   items:
     - uuid: b427ef84-189d-43aa-9efd-7bb2c459e281
       name: Object Type 1
-      service_identifier: objecttypes-api
 
     - uuid: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
       name: Object Type 2
-      service_identifier: objecttypes-api
 
 
 tokenauth_config_enable: true
@@ -60,11 +49,6 @@ tokenauth:
       permissions:
         - object_type: b0e8553f-8b1a-4d55-ab90-6d02f1bcf2c2
           mode: read_only
-          use_fields: true
-          fields:
-            '1':
-              - record__data__leeftijd
-              - record__data__kiemjaar
         # additional permissions can be added like this:
         # - object_type: b427ef84-189d-43aa-9efd-7bb2c459e281
         #   mode: read_and_write
