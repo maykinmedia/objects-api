@@ -1,4 +1,3 @@
-from typing import Any
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -122,7 +121,7 @@ class Command(BaseCommand):
         )
 
     def _parse_objecttype_data(
-        self, objecttypes: list[dict[str, Any]]
+        self, objecttypes: list[dict[str, object]]
     ) -> list[ObjectType]:
         data = []
         for objecttype in objecttypes:
@@ -134,7 +133,7 @@ class Command(BaseCommand):
         return data
 
     def _parse_objecttypeversion_data(
-        self, objecttype_versions: list[dict[str, Any]], objecttype
+        self, objecttype_versions: list[dict[str, object]], objecttype
     ) -> list[ObjectTypeVersion]:
         data = []
         for objecttype_version in objecttype_versions:

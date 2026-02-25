@@ -1,5 +1,4 @@
 from datetime import date as date_
-from typing import Any
 
 from django import forms
 from django.db.models import Q, QuerySet
@@ -66,7 +65,7 @@ Example: `data_attr=height__exact__100&data_attr=naam__icontains__boom`
 ) % {"value_part_help_text": DATA_ATTR_VALUE_HELP_TEXT}
 
 
-def build_nested_dict(path: str, value: Any) -> dict[str, Any]:
+def build_nested_dict(path: str, value: object) -> dict[str, object]:
     """
     Converts a dot-separated path into a nested dictionary suitable for data__contains.
     Example:

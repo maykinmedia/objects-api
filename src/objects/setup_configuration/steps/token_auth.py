@@ -1,4 +1,3 @@
-from typing import Any
 
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
@@ -33,7 +32,7 @@ class TokenAuthConfigurationStep(
     verbose_name = "Configuration to set up authentication tokens for objects"
     config_model = TokenAuthGroupConfigurationModel
 
-    def _full_clean(self, instance: Any) -> None:
+    def _full_clean(self, instance: object) -> None:
         try:
             instance.full_clean(exclude=("id",), validate_unique=False)
         except ValidationError as exception:
