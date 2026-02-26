@@ -44,7 +44,7 @@ certifi==2024.7.4
     #   elastic-apm
     #   requests
     #   sentry-sdk
-cffi==1.16.0
+cffi==2.0.0
     # via cryptography
 charset-normalizer==3.3.2
     # via requests
@@ -64,7 +64,7 @@ commonground-api-common==2.11.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
-cryptography==44.0.1
+cryptography==46.0.5
     # via
     #   django-simple-certmanager
     #   josepy
@@ -364,7 +364,7 @@ pyjwt==2.10.1
     # via
     #   commonground-api-common
     #   zgw-consumers
-pyopenssl==24.3.0
+pyopenssl==25.3.0
     # via
     #   django-simple-certmanager
     #   josepy
@@ -445,6 +445,7 @@ typing-extensions==4.9.0
     #   psycopg-pool
     #   pydantic
     #   pydantic-core
+    #   pyopenssl
     #   zgw-consumers
 tzdata==2025.2
     # via kombu

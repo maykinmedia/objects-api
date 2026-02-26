@@ -76,7 +76,7 @@ certifi==2024.7.4
     #   elastic-apm
     #   requests
     #   sentry-sdk
-cffi==1.16.0
+cffi==2.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -121,7 +121,7 @@ coverage==7.10.1
     # via
     #   -r requirements/test-tools.in
     #   codecov
-cryptography==44.0.1
+cryptography==46.0.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -664,7 +664,7 @@ pyjwt==2.10.1
     #   -r requirements/performance-tests.in
     #   commonground-api-common
     #   zgw-consumers
-pyopenssl==24.3.0
+pyopenssl==25.3.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -854,6 +854,7 @@ typing-extensions==4.9.0
     #   psycopg-pool
     #   pydantic
     #   pydantic-core
+    #   pyopenssl
     #   zgw-consumers
 tzdata==2025.2
     # via
