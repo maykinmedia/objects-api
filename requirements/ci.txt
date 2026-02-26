@@ -819,7 +819,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-sqlparse==0.5.0
+sqlparse==0.5.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
