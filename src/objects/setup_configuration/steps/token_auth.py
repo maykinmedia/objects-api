@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
 
@@ -33,7 +31,7 @@ class TokenAuthConfigurationStep(
     verbose_name = "Configuration to set up authentication tokens for objects"
     config_model = TokenAuthGroupConfigurationModel
 
-    def _full_clean(self, instance: Any) -> None:
+    def _full_clean(self, instance: object) -> None:
         try:
             instance.full_clean(exclude=("id",), validate_unique=False)
         except ValidationError as exception:
@@ -51,8 +49,6 @@ class TokenAuthConfigurationStep(
                     "token_auth": token,
                     "object_type": ObjectType.objects.get(uuid=permission.object_type),
                     "mode": permission.mode,
-                    "use_fields": permission.use_fields,
-                    "fields": permission.fields,
                 }
             except ObjectDoesNotExist as exception:
                 raise ConfigurationRunFailed(
@@ -68,8 +64,6 @@ class TokenAuthConfigurationStep(
                     object_type=permission_kwargs["object_type"],
                     defaults={
                         "mode": permission_kwargs["mode"],
-                        "use_fields": permission_kwargs["use_fields"],
-                        "fields": permission_kwargs["fields"],
                     },
                 )
             except IntegrityError as exception:

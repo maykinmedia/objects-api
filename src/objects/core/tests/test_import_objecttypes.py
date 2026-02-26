@@ -4,6 +4,7 @@ from django.core.management import CommandError, call_command
 from django.test import TestCase
 
 import requests_mock
+from freezegun import freeze_time
 from zgw_consumers.models import Service
 
 from objects.core.models import ObjectType, ObjectTypeVersion
@@ -14,6 +15,7 @@ from objects.tests.utils import (
 )
 
 
+@freeze_time("2020-12-01")
 class TestImportObjectTypesCommand(TestCase):
     def setUp(self):
         super().setUp()
@@ -23,7 +25,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.m.start()
 
         self.service = Service.objects.create(api_root=self.url, slug="objecttypes-api")
-        self.m.head(self.url, status_code=200, headers={"api-version": "3.4.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.2.2"})
 
     def tearDown(self):
         self.m.stop()
@@ -40,7 +42,7 @@ class TestImportObjectTypesCommand(TestCase):
             self._call_command()
 
     def test_api_version_must_be_greater_than_constant(self):
-        self.m.head(self.url, status_code=200, headers={"api-version": "2.1.0"})
+        self.m.head(self.url, status_code=200, headers={"api-version": "2.2.1"})
 
         with self.assertRaisesMessage(
             CommandError, "API version must be 2.2.2 or higher"
@@ -74,9 +76,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(ObjectType.objects.count(), 2)
 
         objecttype = ObjectType.objects.get(uuid=uuid1)
-        self.assertEqual(objecttype.is_imported, True)
         self.assertEqual(objecttype.name, "Melding")
-        self.assertEqual(objecttype._name, "Melding")
         self.assertEqual(objecttype.name_plural, "Meldingen")
         self.assertEqual(objecttype.description, "")
         self.assertEqual(objecttype.data_classification, "intern")
@@ -117,8 +117,8 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(str(version.status), "published")
 
     def test_existing_objecttypes_are_updated(self):
-        objecttype1 = ObjectTypeFactory.create(service=self.service)
-        objecttype2 = ObjectTypeFactory.create(service=self.service)
+        objecttype1 = ObjectTypeFactory.create()
+        objecttype2 = ObjectTypeFactory.create()
 
         self.m.get(
             f"{self.url}objecttypes",
@@ -138,9 +138,7 @@ class TestImportObjectTypesCommand(TestCase):
         self.assertEqual(ObjectTypeVersion.objects.count(), 4)
 
         objecttype = ObjectType.objects.get(uuid=objecttype1.uuid)
-        self.assertEqual(objecttype.is_imported, True)
         self.assertEqual(objecttype.name, "Melding")
-        self.assertEqual(objecttype._name, "Melding")
 
         version = ObjectTypeVersion.objects.get(object_type=objecttype, version=1)
         self.assertEqual(

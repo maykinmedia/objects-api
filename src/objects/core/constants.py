@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class ObjectVersionStatus(models.TextChoices):
+class ObjectTypeVersionStatus(models.TextChoices):
     published = "published", _("Published")
     draft = "draft", _("Draft")
     deprecated = "deprecated", _("Deprecated")

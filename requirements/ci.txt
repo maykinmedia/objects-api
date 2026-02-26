@@ -145,6 +145,7 @@ django==5.2.11
     #   django-filter
     #   django-formtools
     #   django-jsonform
+    #   django-jsonsuit
     #   django-log-outgoing-requests
     #   django-markup
     #   django-otp
@@ -222,6 +223,10 @@ django-jsonform==2.22.0
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
     #   open-api-framework
+django-jsonsuit==0.5.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-log-outgoing-requests==0.6.1
     # via
     #   -c requirements/base.txt

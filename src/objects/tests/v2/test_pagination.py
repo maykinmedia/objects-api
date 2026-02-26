@@ -10,8 +10,6 @@ from objects.utils.test import TokenAuthMixin
 
 from .utils import reverse_lazy
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     url = reverse_lazy("object-list")
@@ -20,7 +18,7 @@ class FilterObjectTypeTests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_only,

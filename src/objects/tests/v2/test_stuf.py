@@ -20,8 +20,6 @@ from objects.utils.test import TokenAuthMixin
 
 from .utils import reverse
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class Stuf21Tests(TokenAuthMixin, APITestCase):
     """# noqa
@@ -37,7 +35,7 @@ class Stuf21Tests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         cls.object = ObjectFactory.create(object_type=cls.object_type)
         PermissionFactory.create(
             object_type=cls.object_type,
@@ -288,7 +286,7 @@ class Stuf22Tests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         cls.object = ObjectFactory.create(object_type=cls.object_type)
         cls.record_1 = ObjectRecordFactory.create(
             object=cls.object,
@@ -417,7 +415,7 @@ class Stuf23Tests(TokenAuthMixin, APITestCase):
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         cls.object = ObjectFactory.create(object_type=cls.object_type)
         cls.record_1 = ObjectRecordFactory.create(
             object=cls.object,

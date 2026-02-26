@@ -3,19 +3,16 @@ import re
 from django.test import override_settings, tag
 from django.urls import reverse
 
-import requests_mock
 from django_webtest import WebTest
 from maykin_2fa.test import disable_admin_mfa
-from zgw_consumers.constants import AuthTypes
-from zgw_consumers.test.factories import ServiceFactory
 
 from objects.accounts.tests.factories import UserFactory
 from objects.core.tests.factories import (
     ObjectFactory,
     ObjectRecordFactory,
     ObjectTypeFactory,
+    ObjectTypeVersionFactory,
 )
-from objects.tests.utils import mock_objecttype_version
 
 
 @disable_admin_mfa()
@@ -27,16 +24,10 @@ class ObjectAdminTests(WebTest):
 
     @tag("gh-615")
     def test_object_changelist_filter_by_objecttype(self):
-        service = ServiceFactory.create(
-            api_root="http://objecttypes.local/api/v1/",
-            auth_type=AuthTypes.api_key,
-            header_key="Authorization",
-            header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
-        )
         object_type = ObjectTypeFactory.create(
-            service=service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
+            uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
-        # Create 100 unused ObjectTypes, which creates 100 Services as well
+        # Create 100 unused ObjectTypes
         ObjectTypeFactory.create_batch(100)
         object1 = ObjectFactory.create(object_type=object_type)
         object2 = ObjectFactory.create()
@@ -94,19 +85,10 @@ class ObjectAdminTests(WebTest):
 
     @tag("gh-677")
     def test_add_new_objectrecord(self):
-        service = ServiceFactory.create(
-            api_root="http://objecttypes.local/api/v1/",
-            auth_type=AuthTypes.api_key,
-            header_key="Authorization",
-            header_value="Token 5cebbb33ffa725b6ed5e9e98300061218ba98d71",
-        )
         object_type = ObjectTypeFactory.create(
-            service=service, uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
+            uuid="71a2452a-66c3-4030-b5ec-a06035102e9e"
         )
-        object_type_url = (
-            "http://objecttypes.local/api/v1/"
-            "objecttypes/71a2452a-66c3-4030-b5ec-a06035102e9e/versions/1"
-        )
+        ObjectTypeVersionFactory.create(object_type=object_type)
         object = ObjectFactory.create(object_type=object_type)
 
         self.assertEqual(object.records.count(), 0)
@@ -125,10 +107,7 @@ class ObjectAdminTests(WebTest):
         form["records-0-version"] = 1
         form["records-0-start_at"] = "2025-01-01"
 
-        with requests_mock.Mocker() as m:
-            m.get(object_type_url, json=mock_objecttype_version(object_type_url))
-            response = form.submit()
-
+        form.submit()
         self.assertEqual(object.records.count(), 1)
 
     @tag("gh-621")

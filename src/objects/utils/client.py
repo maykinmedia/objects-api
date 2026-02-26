@@ -1,4 +1,3 @@
-from typing import Any
 from uuid import UUID
 
 import requests
@@ -14,13 +13,13 @@ class ObjecttypesClient(NLXClient):
         endpoint: str,
         page: int | None = None,
         page_size: int | None = None,
-        query_params: dict[Any, Any] | None = None,
+        query_params: dict[object, object] | None = None,
     ):
         query_params = query_params or {}
         if page is None and page_size is None:
             response = self.get(endpoint, params=query_params)
             response.raise_for_status()
-            data: PaginatedResponseData[dict[str, Any]] = response.json()
+            data: PaginatedResponseData[dict[str, object]] = response.json()
             all_data = pagination_helper(self, data)
             return list(all_data)
 
@@ -46,7 +45,7 @@ class ObjecttypesClient(NLXClient):
         self,
         page: int | None = None,
         page_size: int | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, object]]:
         return self._get_paginated(
             "objecttypes",
             page=page,
@@ -56,7 +55,7 @@ class ObjecttypesClient(NLXClient):
     def get_objecttype(
         self,
         objecttype_uuid: str | UUID,
-    ) -> dict[str, Any]:
+    ) -> dict[str, object]:
         response = self.get(f"objecttypes/{objecttype_uuid}")
         response.raise_for_status()
         return response.json()
@@ -66,7 +65,7 @@ class ObjecttypesClient(NLXClient):
         objecttype_uuid: str | UUID,
         page: int | None = None,
         page_size: int | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, object]]:
         return self._get_paginated(
             f"objecttypes/{objecttype_uuid}/versions", page=page, page_size=page_size
         )
@@ -75,7 +74,7 @@ class ObjecttypesClient(NLXClient):
         self,
         objecttype_uuid: str | UUID,
         version: int,
-    ) -> dict[str, Any]:
+    ) -> dict[str, object]:
         response = self.get(f"objecttypes/{objecttype_uuid}/versions/{version}")
         response.raise_for_status()
         return response.json()

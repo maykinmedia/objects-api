@@ -1,12 +1,10 @@
 import random
-import uuid
 from datetime import date, timedelta
 
 from django.contrib.gis.geos import Point
 
 import factory
 from factory.fuzzy import BaseFuzzyAttribute
-from zgw_consumers.test.factories import ServiceFactory
 
 from objects.core.constants import ReferenceType
 
@@ -14,11 +12,7 @@ from ..models import Object, ObjectRecord, ObjectType, ObjectTypeVersion, Refere
 
 
 class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
-    service = factory.SubFactory(ServiceFactory)
-    uuid = factory.LazyFunction(uuid.uuid4)
-
     name = factory.Faker("word")
-    _name = factory.LazyAttribute(lambda x: x.name)
     name_plural = factory.LazyAttribute(lambda x: f"{x.name}s")
     description = factory.Faker("bs")
 
@@ -28,13 +22,22 @@ class ObjectTypeFactory(factory.django.DjangoModelFactory[ObjectType]):
 
 class ObjectTypeVersionFactory(factory.django.DjangoModelFactory[ObjectTypeVersion]):
     object_type = factory.SubFactory(ObjectTypeFactory)
-    json_schema = {
-        "type": "object",
-        "title": "Tree",
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "required": ["diameter"],
-        "properties": {"diameter": {"type": "integer", "description": "size in cm."}},
-    }
+    json_schema = factory.Dict(
+        {
+            "type": "object",
+            "title": "Tree",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": ["diameter"],
+            "properties": {
+                "diameter": {"type": "integer", "description": "size in cm."},
+                "plantDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Date the tree was planted.",
+                },
+            },
+        }
+    )
 
     class Meta:
         model = ObjectTypeVersion

@@ -3,7 +3,7 @@ from django.urls import include, path
 from drf_spectacular.views import (
     SpectacularRedocView,
 )
-from rest_framework import routers
+from vng_api_common import routers
 
 from objects.utils.oas_extensions.views import (
     DeprecationRedirectView,
@@ -11,9 +11,21 @@ from objects.utils.oas_extensions.views import (
     SpectacularYAMLAPIView,
 )
 
-from .views import ObjectViewSet, PermissionViewSet
+from .views import (
+    ObjectTypeVersionViewSet,
+    ObjectTypeViewSet,
+    ObjectViewSet,
+    PermissionViewSet,
+)
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(
+    r"objecttypes",
+    ObjectTypeViewSet,
+    [routers.Nested("versions", ObjectTypeVersionViewSet)],
+    basename="objecttype",
+)
+
 router.register(r"objects", ObjectViewSet, basename="object")
 router.register(r"permissions", PermissionViewSet)
 

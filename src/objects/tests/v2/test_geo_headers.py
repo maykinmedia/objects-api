@@ -13,15 +13,13 @@ from objects.utils.test import TokenAuthMixin
 from ..constants import GEO_READ_KWARGS, POLYGON_AMSTERDAM_CENTRUM
 from .utils import reverse
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class GeoHeaderTests(TokenAuthMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
 
-        cls.object_type = ObjectTypeFactory.create(service__api_root=OBJECT_TYPES_API)
+        cls.object_type = ObjectTypeFactory.create()
         PermissionFactory.create(
             object_type=cls.object_type,
             mode=PermissionModes.read_and_write,
@@ -62,7 +60,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
 
     def test_create_without_geo_headers(self):
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"diameter": 30},
@@ -79,7 +77,7 @@ class GeoHeaderTests(TokenAuthMixin, APITestCase):
         object = ObjectFactory.create(object_type=self.object_type)
         url = reverse("object-detail", args=[object.uuid])
         data = {
-            "type": self.object_type.url,
+            "type": f"https://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
             "record": {
                 "typeVersion": 1,
                 "data": {"diameter": 30},

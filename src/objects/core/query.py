@@ -1,14 +1,24 @@
 from django.db import models
 
 from vng_api_common.utils import get_uuid_from_path
-from zgw_consumers.models import Service
 
 
 class ObjectTypeQuerySet(models.QuerySet):
     def get_by_url(self, url):
-        service = Service.get_service(url)
         uuid = get_uuid_from_path(url)
-        return self.get(service=service, uuid=uuid)
+        return self.get(uuid=uuid)
+
+    def create_from_schema(self, json_schema: dict, **kwargs):
+        object_type_data = {
+            "name": json_schema.get("title", "").title(),
+            "description": json_schema.get("description", ""),
+        }
+        object_type_data.update(kwargs)
+        objecttype = self.create(**object_type_data)
+
+        objecttype.versions.create(json_schema=json_schema)
+
+        return objecttype
 
 
 class ObjectQuerySet(models.QuerySet):

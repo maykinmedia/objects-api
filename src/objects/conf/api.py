@@ -108,7 +108,11 @@ SPECTACULAR_SETTINGS = {
         "drf_spectacular.hooks.postprocess_schema_enums",
         "maykin_common.drf_spectacular.hooks.remove_invalid_url_defaults",
     ],
-    "TAGS": [{"name": "objects"}, {"name": "permissions"}],
+    "TAGS": [
+        {"name": "objects"},
+        {"name": "objecttypes"},
+        {"name": "permissions"},
+    ],  # TODO
     "SERVERS": [{"url": "/api/v2"}],
 }
 

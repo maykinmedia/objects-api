@@ -7,8 +7,6 @@ from objects.utils.test import TokenAuthMixin
 
 from .utils import reverse
 
-OBJECT_TYPES_API = "https://example.com/objecttypes/v1/"
-
 
 class ObjectApiTests(TokenAuthMixin, APITestCase):
     maxDiff = None
@@ -45,13 +43,13 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
                 "previous": None,
                 "results": [
                     {
-                        "type": permission1.object_type.url,
+                        "type": f"http://testserver{reverse('objecttype-detail', args=[permission1.object_type.uuid])}",
                         "mode": PermissionModes.read_and_write,
                         "use_fields": False,
                         "fields": {},
                     },
                     {
-                        "type": permission2.object_type.url,
+                        "type": f"http://testserver{reverse('objecttype-detail', args=[permission2.object_type.uuid])}",
                         "mode": "read_only",
                         "use_fields": True,
                         "fields": {"1": ["url", "uuid"], "2": ["url", "record"]},
@@ -83,7 +81,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             data,
             [
                 {
-                    "type": permission1.object_type.url,
+                    "type": f"http://testserver{reverse('objecttype-detail', args=[permission1.object_type.uuid])}",
                     "mode": PermissionModes.read_and_write,
                     "use_fields": False,
                     "fields": {},

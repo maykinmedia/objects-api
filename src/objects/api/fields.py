@@ -1,13 +1,9 @@
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from vng_api_common.serializers import CachedHyperlinkedIdentityField
-from vng_api_common.utils import get_uuid_from_path
-from zgw_consumers.models import Service
 
-from objects.core.models import ObjectRecord
+from objects.core.models import ObjectRecord, ObjectType
 
 
 class ObjectSlugRelatedField(serializers.SlugRelatedField):
@@ -15,7 +11,6 @@ class ObjectSlugRelatedField(serializers.SlugRelatedField):
         queryset = ObjectRecord.objects.select_related(
             "object",
             "object__object_type",
-            "object__object_type__service",
             "correct",
             "corrected",
         ).order_by("-pk")
@@ -27,17 +22,20 @@ class ObjectSlugRelatedField(serializers.SlugRelatedField):
         return queryset.filter(object=record_instance.object)
 
 
-class ObjectTypeField(serializers.RelatedField):
+class ObjectTypeField(serializers.HyperlinkedRelatedField):
     default_error_messages = {
         "max_length": _("The value has too many characters"),
         "min_length": _("The value has too few characters"),
-        "does_not_exist": _("ObjectType with url={value} is not configured."),
-        "invalid": _("Invalid value."),
     }
 
     def __init__(self, **kwargs):
         self.max_length = kwargs.pop("max_length", None)
         self.min_length = kwargs.pop("min_length", None)
+
+        kwargs.setdefault("queryset", ObjectType.objects.all())
+        kwargs.setdefault("view_name", "objecttype-detail")
+        kwargs.setdefault("lookup_field", "uuid")
+        kwargs.setdefault("lookup_url_kwarg", "uuid")
 
         super().__init__(**kwargs)
 
@@ -48,43 +46,7 @@ class ObjectTypeField(serializers.RelatedField):
         if self.min_length and len(data) < self.min_length:
             self.fail("min_length")
 
-        try:
-            return self.get_queryset().get_by_url(data)
-        except ObjectDoesNotExist:
-            # if service is configured, but object_type is missing
-            # let's try to create an ObjectType
-            service = Service.get_service(data)
-            if not service:
-                self.fail("does_not_exist", value=smart_str(data))
-
-            uuid = get_uuid_from_path(data)
-            object_type = self.get_queryset().model(service=service, uuid=uuid)
-
-            try:
-                object_type.clean()
-            except ValidationError:
-                self.fail("does_not_exist", value=smart_str(data))
-
-            object_type.save()
-            return object_type
-
-        except (TypeError, ValueError):
-            self.fail("invalid")
-
-    def to_representation(self, obj):
-        return obj.url
-
-
-class ObjectUrlField(serializers.HyperlinkedIdentityField):
-    lookup_field = "uuid"
-
-    def get_url(self, obj, view_name, request, format):
-        if hasattr(obj, "pk") and obj.pk in (None, ""):
-            return None
-
-        lookup_value = getattr(obj.object, "uuid")
-        kwargs = {self.lookup_url_kwarg: lookup_value}
-        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
+        return super().to_internal_value(data)
 
 
 class CachedObjectUrlField(CachedHyperlinkedIdentityField):

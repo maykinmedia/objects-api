@@ -12,6 +12,9 @@ os.environ.setdefault("ENVIRONMENT", "ci")
 os.environ.setdefault("OTEL_SDK_DISABLED", "true")
 os.environ.setdefault("OTEL_SERVICE_NAME", "objects-ci")
 
+os.environ.setdefault("DB_USER", "postgres")
+os.environ.setdefault("DB_PASSWORD", "postgres")
+
 from .base import *  # noqa isort:skip
 
 CACHES = {
