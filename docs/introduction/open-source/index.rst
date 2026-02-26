@@ -3,10 +3,10 @@
 Open-source
 ===========
 
-Both the Objects API and the Objecttypes API are open-source and available 
+Open Objecten is open-source and available
 under the `EUPL license`_.
 
-In addition, this project makes use of various open-source `Python libraries`_ 
+In addition, this project makes use of various open-source `Python libraries`_
 and `npm packages`_ under the hood.
 
 

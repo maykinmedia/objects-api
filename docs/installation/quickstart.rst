@@ -13,53 +13,8 @@ started quickly and these should never be used for anything besides testing:
 
 With the above remarks in mind, let's go:
 
-Objecttypes API
----------------
-
-1. Create a project folder:
-
-   .. code:: shell
-
-      $ mkdir objecttypes-api
-      $ cd objecttypes-api
-
-2. Download the ``docker-compose`` file:
-
-   .. tabs::
-
-      .. tab:: Linux
-
-         .. code:: shell
-
-            $  wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose.yml
-
-      .. tab:: Windows Powershell 3
-
-         .. code:: shell
-
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objecttypes-api/master/docker-compose.yml
-
-3. Start the Docker containers:
-
-   .. code:: shell
-
-      $ docker compose up -d --no-build
-
-4. Import a demo set of objecttypes:
-
-   .. code:: shell
-
-      $ docker compose exec web src/manage.py loaddata demodata
-
-5. Create a superuser
-
-   .. code:: shell
-
-      $ docker compose exec web src/manage.py createsuperuser
-
-
-Objects API
------------
+Open Objecten
+-------------
 
 1. Create a project folder:
 
