@@ -42,10 +42,7 @@ FROM python:3.12-slim-trixie AS production
 # install all the dependencies for GeoDjango
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         postgresql-client \
-        binutils \
-        libproj-dev \
         gdal-bin \
-        libgdal-dev \
         gettext \
         libpcre2-8-0 \
     && rm -rf /var/lib/apt/lists/*

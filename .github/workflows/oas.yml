@@ -16,7 +16,7 @@ jobs:
     uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@v6
     with:
       python-version: '3.12'
-      apt-packages: 'libgdal-dev gdal-bin'
+      apt-packages: 'gdal-bin'
       django-settings-module: objects.conf.ci
       oas-generate-command: ./bin/generate_schema.sh
       schema-path: src/objects/api/v2/openapi.yaml
