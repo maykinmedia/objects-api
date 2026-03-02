@@ -34,8 +34,8 @@ class PermissionAdminTests(VCRMixin, TestCase):
         choices = list(form.fields["object_type"].choices)
 
         self.assertEqual(
-            choices[1][0].value,
-            object_type.id,
+            str(choices[1][0].value),
+            str(object_type.uuid),
         )
         self.assertEqual(
             choices[1][1],

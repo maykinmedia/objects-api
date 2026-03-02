@@ -6,7 +6,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
     "DEFAULT_FILTER_BACKENDS": ["vng_api_common.filters_backend.Backend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "objects.token.authentication.TokenAuthentication"
+        "objects.token.authentication.TokenAuthentication",
     ],
     "DEFAULT_SCHEMA_CLASS": "objects.utils.autoschema.AutoSchema",
     "PAGINATION_CLASS": "vng_api_common.pagination.DynamicPageSizePagination",

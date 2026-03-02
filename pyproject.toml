@@ -157,4 +157,7 @@ line-ending = "lf"
 [tool.coverage.run]
 branch = true
 source = ["src"]
-omit = ["*/test_*.py"]
+omit = [
+    "*/test_*.py",
+    "src/objects/tests/playwright.py",
+]

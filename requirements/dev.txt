@@ -466,6 +466,11 @@ googleapis-common-protos==1.72.0
     #   opentelemetry-exporter-otlp-proto-http
 gprof2dot==2024.6.6
     # via django-silk
+greenlet==3.3.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   playwright
 grpcio==1.74.0
     # via
     #   -c requirements/ci.txt
@@ -696,6 +701,10 @@ pip-tools==7.4.1
     # via -r requirements/dev.in
 platformdirs==4.3.8
     # via virtualenv
+playwright==1.58.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 pluggy==1.5.0
     # via
     #   -c requirements/ci.txt
@@ -764,6 +773,11 @@ pydantic-settings==2.6.1
     #   -r requirements/ci.txt
     #   bump-my-version
     #   django-setup-configuration
+pyee==13.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   playwright
 pygments==2.18.0
     # via
     #   -c requirements/ci.txt
@@ -1040,6 +1054,7 @@ typing-extensions==4.9.0
     #   psycopg-pool
     #   pydantic
     #   pydantic-core
+    #   pyee
     #   pyopenssl
     #   rich-click
     #   zgw-consumers

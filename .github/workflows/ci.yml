@@ -59,12 +59,13 @@ jobs:
         with:
           apt-packages: 'gdal-bin'
           python-version: '3.12'
-          setup-node: true
+          setup-node:  'yes'
 
-      - name: Run tests
+      - name: Run Django tests (without Playwright)
         run: |
+          rm -rf static
           python src/manage.py collectstatic --noinput --link
-          coverage run src/manage.py test src
+          coverage run src/manage.py test src --exclude-tag=playwright
         env:
           DJANGO_SETTINGS_MODULE: objects.conf.ci
           DEBUG: 'true'
@@ -73,6 +74,23 @@ jobs:
           DB_PASSWORD: ''
           DB_POOL_ENABLED: ${{ matrix.use_pooling }}
 
+          CELERY_BROKER_URL: 'redis://localhost:6379/0'
+          CELERY_ONCE_REDIS_URL: 'redis://localhost:6379/0'
+
+      - name: Install Playwright browsers
+        if: ${{ matrix.postgres == '17' && matrix.postgis == '3.5' && matrix.use_pooling == false }}
+        run: playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        if: ${{ matrix.postgres == '17' && matrix.postgis == '3.5' && matrix.use_pooling == false }}
+        run: coverage run -a src/manage.py test src --tag=playwright
+        env:
+          DJANGO_SETTINGS_MODULE: objects.conf.ci
+          DEBUG: 'true'
+          SECRET_KEY: dummy
+          DB_USER: postgres
+          DB_PASSWORD: ''
+          DB_POOL_ENABLED: ${{ matrix.use_pooling }}
           CELERY_BROKER_URL: 'redis://localhost:6379/0'
           CELERY_ONCE_REDIS_URL: 'redis://localhost:6379/0'
 
