@@ -394,7 +394,7 @@ Change history
 * Upgrade npm packages to fix vulnerabilities
 * Fixed admin logout button
 * [:objects-api:`550`] Implement cache for objecttypes
-* [:objects-api:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable (see `documentation for environment variables for caching <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#cache>`_)
+* [:objects-api:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable (see `documentation for environment variables for caching <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html>`_)
 * [:objects-api:`572`] Add db connection pooling environment variables (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
 
   * DB_POOL_ENABLED

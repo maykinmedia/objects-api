@@ -57,7 +57,7 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
-          apt-packages: 'libgdal-dev gdal-bin'
+          apt-packages: 'gdal-bin'
           python-version: '3.12'
           setup-node: true
 
@@ -101,7 +101,7 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
-          apt-packages: "libgdal-dev gdal-bin postgresql-client"
+          apt-packages: "gdal-bin postgresql-client"
           python-version: "3.12"
           optimize-postgres: "no"
           setup-node: "no"
@@ -181,7 +181,7 @@ jobs:
       - name: Set up backend environment
         uses: maykinmedia/setup-django-backend@v1.3
         with:
-          apt-packages: 'libgdal-dev gdal-bin'
+          apt-packages: 'gdal-bin'
           python-version: '3.12'
           setup-node: false
 
@@ -214,7 +214,7 @@ jobs:
       - store-reusable-workflow-vars
     with:
       main-branch: 'master'
-      apt-packages: 'libgdal-dev gdal-bin graphviz graphviz-dev'
+      apt-packages: 'gdal-bin graphviz graphviz-dev'
       run-docs: true
       django-settings-module: objects.conf.ci
       python-version: '3.12'
