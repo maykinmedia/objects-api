@@ -4,7 +4,7 @@
 Authentication
 ==============
 
-Both the Objecttypes API and the Objects API support token authentication (or bearer
+Open Objecten supports token authentication (or bearer
 authentication), which means that everyone who has the security token can access the API.
 Tokens are configured in the admin.
 
@@ -15,7 +15,7 @@ the HTTP request.
 .. image:: _assets/img/authentication_objects_main.png
     :alt: Click on the "add" button for "Token authorizations"
 
-In the admin of the Objects API click on the "add" button for "Token authorizations"
+In the admin of the API click on the "add" button for "Token authorizations"
 resource.
 
 .. image:: _assets/img/authentication_objects_add.png
@@ -28,7 +28,7 @@ After the form is filled in and submitted the token would be created. The token
 itself is a sequence of 40 letters and digits. It's value is generated automatically
 when the form is submitted. In this example we will use ``5678`` as a token value.
 
-Now we can use the created token to request the Objects API. The token should be
+Now we can use the created token to request the API. The token should be
 included into "Authorization" header: ``Authorization: Token 5678``
 
 .. code-block:: http
@@ -40,6 +40,6 @@ included into "Authorization" header: ``Authorization: Token 5678``
 
     []
 
-If you want to know how to use Objects API you can follow :ref:`api_usage`
+If you want to know how to use the API you can follow :ref:`api_usage`
 
-Now you can configure :ref:`admin_authorization` for the Objects API.
+Now you can configure :ref:`admin_authorization` for the API.

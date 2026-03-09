@@ -1,8 +1,8 @@
 Documentation
 =============
 
-Open Objecten consists of two API's. The :ref:`Objecttypes API` & the :ref:`Objects API`.
-The Objecttypes api contains the object definitions and the Objects API the instances.
+Open Objecten consists of two parts. :ref:`Objecttypes` & :ref:`Objects`.
+Objecttypes contains the object definitions and Objects the instances.
 
 Designed in line with the `Common Ground`_ model, they can be used by other APIs that need
 to store object specific data.
@@ -22,19 +22,18 @@ To get you started, you might find some of these links relevant:
 * Want to know how the admin interface works? Go to the :ref:`admin_index`
 
 
-.. _Objecttypes API:
+.. _Objecttypes:
 
-Objecttypes API
----------------
+Objecttypes
+-----------
 
 Standardize various types of objects in an accessible way and without the need to create
 a whole new API for each (simple) object.
 
-.. _Objects API:
-.. _Objects APIs:
+.. _Objects:
 
-Objects API
------------
+Objects
+-------
 
 Easily store and expose various objects and make them
 available in a standardized format. It can be used by any

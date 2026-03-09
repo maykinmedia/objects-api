@@ -3,7 +3,7 @@
 Versioning policy
 =================
 
-New version releases for Objects API and Objecttypes API are done every two months, at the start of the month.
+New version releases for Open Objecten are done every two months, at the start of the month.
 Major releases occur every two years.
 
 Each major version is supported until 24 months after the release of the next major version.
@@ -18,8 +18,8 @@ is actively maintained and under active development. Older versions only receive
 The table below shows each major and minor version and until what date they can receive
 patches.
 
-Objects API
-===========
+Open Objecten API
+=================
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |

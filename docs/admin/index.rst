@@ -4,7 +4,9 @@ Admin interface
 ===============
 
 Open Objecten has an admin interface that allows you to configure
-the Objects and Objecttypes APIs and to manage objects and related object types.
+the API and to manage objects and related object types.
+
+Below, you can find tutorials how to use the admin interface to manage the API.
 
 .. toctree::
    :maxdepth: 1

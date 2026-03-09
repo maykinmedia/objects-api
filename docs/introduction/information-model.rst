@@ -2,7 +2,7 @@
 Information model
 =================
 
-The Objects and Objecttypes APIs can be represented as an information model
+The Open Objecten API can be represented as an information model
 (IM). The IM shows the relations between classes from both APIs and makes use
 of the Dutch standard `Metamodel Informatiemodellering`_ (MIM).
 

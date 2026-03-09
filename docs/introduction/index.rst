@@ -24,13 +24,11 @@ configuration or development needed.
    :maxdepth: 1
    :caption: Further reading
 
-   vision
    background
    definitions
    information-model
    uml-diagram
    metadata
-   visualization
    features
    team
    open-source/index
