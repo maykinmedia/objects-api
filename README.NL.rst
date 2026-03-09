@@ -3,7 +3,7 @@ Open Objecten
 =============
 
 :Version: 3.6.0
-:Source: https://github.com/maykinmedia/objecttypes-api
+:Source: https://github.com/maykinmedia/objects-api
 :Keywords: objecten, assets, zaakobjecten
 
 |docs|

@@ -20,19 +20,3 @@ has 3 trees. That means there are 3 *objects* of *objecttype* ``tree``:
 #. ``height``: 5.1m, ``type``: oak
 #. ``height``: 5.0m, ``type``: pine tree
 
-Objecttypes API
----------------
-
-- An API to retrieve (one or more) *objecttypes*.
-
-Standardize various types of objects, on a national
-or just as easily on a local municipality level, and make them accessible as
-resources for other applications.
-
-Objects API
------------
-
-- An API to retrieve, filter, search, write, update or delete *objects*.
-
-Easily store and expose various objects according to
-the related *objecttype* resource in the *Objecttypes API*.

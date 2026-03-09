@@ -4,7 +4,7 @@
 Metrics
 =======
 
-Objects API produces application metrics (using Open Telemetry).
+Open Objecten API produces application metrics (using Open Telemetry).
 
 .. note:: The exact metric names that show up may be transformed, e.g. Prometheus replaces
    periods with underscores, and processing pipelines may add prefixes or suffixes.

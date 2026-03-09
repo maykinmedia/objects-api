@@ -79,7 +79,7 @@ several instances.
 Postgresql database minimum requirements
 ----------------------------------------
 
-The performance of Objects API under load is very much dependant on the performance of the Postgresql database. The number of requests per second and the total number of objects may affect the duration of the API calls. In order to avoid performance issues in production and aid in resolving performance issues we recommend to optimize the resources available and fine-tune the Postgresql with the help of `pgbench`. This built-in Postgresql tool gives an indication of the performance of the database setup.
+The performance of the Open Objecten API under load is very much dependant on the performance of the Postgresql database. The number of requests per second and the total number of objects may affect the duration of the API calls. In order to avoid performance issues in production and aid in resolving performance issues we recommend to optimize the resources available and fine-tune the Postgresql with the help of `pgbench`. This built-in Postgresql tool gives an indication of the performance of the database setup.
 
 An example run using `pgbench`::
 

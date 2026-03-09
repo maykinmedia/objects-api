@@ -124,7 +124,7 @@ well tested and available as Docker image.
 Quickstart
 ----------
 
-1. Download and run the Objects API:
+1. Download and run the Open Objecten API:
 
    .. code:: bash
 
