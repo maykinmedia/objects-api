@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -120,6 +120,11 @@ class ObjectTypeAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         my_urls = [
             path(
+                "<int:objecttype_id>/_versions/",
+                self.admin_site.admin_view(self.versions_view),
+                name="objecttype_versions",
+            ),
+            path(
                 "import-from-url/",
                 self.admin_site.admin_view(self.import_from_url_view),
                 name="import_from_url",
@@ -131,6 +136,12 @@ class ObjectTypeAdmin(admin.ModelAdmin):
             ),
         ]
         return my_urls + urls
+
+    def versions_view(self, request, objecttype_id):
+        versions = []
+        if objecttype := self.get_object(request, objecttype_id):
+            versions = list(objecttype.versions.values("version", "json_schema"))
+        return JsonResponse(versions, safe=False)
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = super().get_readonly_fields(request, obj)
