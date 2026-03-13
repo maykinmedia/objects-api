@@ -22,3 +22,19 @@ and update existing objecttypes or create new ones if they have not been added t
 
 Please note that after the update the objecttypes API is still being used in Objects API version <4.0.0, the command only fetches and imports the data.
 From 4.0.0 onwards it will use the imported objecttypes.
+
+Setup configuration
+-------------------
+
+Because of the migration the setup configuration models have also changed. Please make sure to update the config before upgrading to 4.0.0
+
+Objecttypes
+^^^^^^^^^^^
+
+- removed service_identifier
+
+TokenAuth
+^^^^^^^^^
+
+- removed use_fields
+- removed fields

@@ -20,7 +20,7 @@ class Command(BaseCommand):
         for objecttype in ObjectType.objects.iterator():
             if not objecttype.is_imported:
                 external_object_count += 1
-                external_uuids.add(objecttype.uuid)
+                external_uuids.add(str(objecttype.uuid))
 
         msg = f"{external_object_count} objectype(s) have not been imported: {external_uuids}"
 
