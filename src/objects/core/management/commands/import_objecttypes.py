@@ -83,6 +83,7 @@ class Command(BaseCommand):
                 "uuid",
             ],
             update_fields=[
+                "is_imported",
                 "name",
                 "name_plural",
                 "description",
@@ -128,6 +129,7 @@ class Command(BaseCommand):
             objecttype.pop("linkableToZaken", None)
             objecttype.pop("versions")
             objecttype.pop("url")
+            objecttype["is_imported"] = True
             data.append(ObjectType(**underscoreize(objecttype)))
         return data
 

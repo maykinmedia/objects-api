@@ -24,7 +24,8 @@ class Command(BaseCommand):
 
         msg = f"{external_object_count} objectype(s) have not been imported: {external_uuids}"
 
-        self.stdout.write(self.style.ERROR(msg))
-
         if external_object_count > 0:
+            self.stdout.write(self.style.ERROR(msg))
             raise CommandError(msg)
+        else:
+            self.stdout.write(self.style.SUCCESS("No external objecttypes found!"))
