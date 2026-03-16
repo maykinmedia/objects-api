@@ -153,10 +153,11 @@ class ObjectTypeAdmin(admin.ModelAdmin):
 
         return HttpResponseRedirect(request.path)
 
-    def add_new_version(self, request, obj):
+    def add_new_version(self, request, obj: ObjectType):
         new_version = obj.last_version
+        assert new_version
         new_version.pk = None
-        new_version.version = new_version.version + 1
+        new_version.version = None
         new_version.status = ObjectTypeVersionStatus.draft
         new_version.save()
 
