@@ -9,7 +9,7 @@ API                     Specification version(s)
 ======================  ==========================================
 `Open Objecten`_        2.6.0 (
                         `Redoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.6.0/src/objects/api/v2/openapi.yaml>`__,
-                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.6.0/src/objects/api/v2/openapi.yaml>`__
+                        `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/objects-api/3.6.0/src/objects/api/v2/openapi.yaml>`__)
 ======================  ==========================================
 
 See their respective repositories for the latest and previous versions.

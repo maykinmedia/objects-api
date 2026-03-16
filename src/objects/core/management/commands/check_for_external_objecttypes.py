@@ -22,10 +22,9 @@ class Command(BaseCommand):
                 external_object_count += 1
                 external_uuids.add(str(objecttype.uuid))
 
-        msg = f"{external_object_count} objectype(s) have not been imported: {external_uuids}"
-
         if external_object_count > 0:
-            self.stdout.write(self.style.ERROR(msg))
-            raise CommandError(msg)
+            raise CommandError(
+                f"{external_object_count} objectype(s) have not been imported: {', '.join(external_uuids)}"
+            )
         else:
-            self.stdout.write(self.style.SUCCESS("No external objecttypes found!"))
+            self.stdout.write(self.style.SUCCESS("OK"))

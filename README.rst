@@ -18,7 +18,7 @@ Introduction
 ============
 
 Open Objecten aims to standardize various types of objects in an accessible way and without the need to create a whole new API for
-each (simple) object. instances of objects can be made available in a standardized format. It can be used by any organization to manage relevant objects.
+each (simple) object. Instances of these object types can be made available in a standardized format. It can be used by any organization to manage relevant objects.
 An organization can also choose to use it to expose objects to the public as *Open Data*.
 
 
@@ -124,7 +124,7 @@ well tested and available as Docker image.
 Quickstart
 ----------
 
-1. Download and run the Open Objecten API:
+1. Download and run Open Objecten:
 
    .. code:: bash
 

@@ -9,7 +9,7 @@ describes how to do it in detail. But it's also possible to manage objects in th
 admin interface. In this tutorial we will create and update objects using the Objects
 admin.
 
-Create bject type
+Create an object type
 ---------------------
 
 Each object must belong to a particular object type.
@@ -61,7 +61,7 @@ corrected in the "Correction" field of the next record.
 .. image:: _assets/img/object_create_record.png
     :alt: Add an object record
 
-In the API you always see one record, which contains data of a certain time (by default
+In the API you always see one record for a specific object, which contains data of a certain time (by default
 the latest one). However in the admin interface you can see all the records created for the object.
 
 .. _admin_objects_search:
