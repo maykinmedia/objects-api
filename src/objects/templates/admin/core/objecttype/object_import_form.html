@@ -12,10 +12,15 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{% trans 'Import from URL' %}</h1>
+    <h1>{% blocktrans with source=source|default:'URL' %}Import from {{ source }}{% endblocktrans %}</h1>
     <div>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="errorlist nonfield">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
             <fieldset class="module aligned">
                 {% for field in form %}
                     <div class="form-row">
@@ -23,8 +28,8 @@
                         <label class="{% if field.field.required %}required{% endif %}">{{ field.label|capfirst }}:</label>
                         {{ field }}
                         {% if field.field.help_text %}&nbsp;
-                            <div class="help">{{ field.field.help_text }}</div>
-                                 {% endif %}
+                            <div class="help"><div>{{ field.field.help_text }}</div></div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </fieldset>
