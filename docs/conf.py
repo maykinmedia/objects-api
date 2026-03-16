@@ -59,7 +59,6 @@ extensions = [
     "django_setup_configuration.documentation.setup_config_example",
     "django_setup_configuration.documentation.setup_config_usage",
     "vng_api_common.diagrams.uml_images",
-    "sphinx_markdown_tables",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
