@@ -150,7 +150,7 @@ variables. The user will only be created if it doesn't exist yet.
 Initial configuration
 ---------------------
 
-Open objecten supports the `setup_configuration` management command,
+Open Objecten supports the `setup_configuration` management command,
 which allows configuration via environment variables.
 All these environment variables are described at :ref:`command line <installation_config_cli>`.
 

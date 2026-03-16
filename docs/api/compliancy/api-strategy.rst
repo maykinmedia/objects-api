@@ -23,7 +23,7 @@ defined in `API Designrules`_, which is a part of `Nederlandse API Strategie`_.
    API-17,Publish documentation in Dutch unless there is existing documentation in English or there is an official English glossary available,"No, Open Objecten API has English documentation"
    API-18,Include a deprecation schedule when publishing API changes,Yes
    API-19,Allow for a maximum 1 year transition period to a new API version,Yes (6 month)
-   API-20,API-20: Include the major version number only in ihe URI,Yes
+   API-20,API-20: Include the major version number only in the URI,Yes
    API-48,Leave off trailing slashes from API endpoints,Yes
    API-51,Publish OAS at the base-URI in JSON-format,Yes
 

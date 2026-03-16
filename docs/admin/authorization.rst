@@ -71,7 +71,7 @@ Superuser permissions
 ----------------------
 
 It's possible to set up superuser permissions in the API. A client with such permissions
-is able to request objects for all objecttypes.
+is able to perform any operation on any object or objecttype.
 
 In the admin page go to the "Token authorizations" resource and click on
 a token, which should have superuser permissions. Check "is superuser" field. Now this token

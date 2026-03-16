@@ -19,7 +19,7 @@ The tests run under the following conditions:
 * 4 unique objecttypes.
 * A single user simulates requests for a duration of 5 minutes.
 
-We run the tests after every major version of the Open Objecten API.
+We run the tests after every major version of Open Objecten.
 After that, we report and document the stats. This careful analysis allows us to showcase our high-quality optimization process.
 
 Results

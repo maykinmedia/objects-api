@@ -19,7 +19,7 @@ The table below shows each major and minor version and until what date they can 
 patches.
 
 Open Objecten API
-=================
+-----------------
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |
@@ -61,9 +61,11 @@ Open Objecten API
 |       | 1.0.x   | 2021-01-13    | 2021-07-13               |
 +-------+---------+---------------+--------------------------+
 
-
 Objecttypes API
-===============
+---------------
+
+.. note:: Objects API was changed to Open Objecten in 4.0.0 which includes the Objecttypes API.
+    Support for the standalone Objecttypes API will stop in the coming future.
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |
