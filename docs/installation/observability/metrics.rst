@@ -89,26 +89,26 @@ Accounts
 Objects
 -------
 
-``objects.object.creates``
+``openobjecten.object.creates``
     Reports the number of objects created via the API.
 
-``objects.object.updates``
+``openobjecten.object.updates``
     Reports the number of objects updated via the API.
 
-``objects.object.deletes``
+``openobjecten.object.deletes``
     Reports the number of objects deleted via the API.
 
 Objecttypes
 -----------
 
-``objecttypes.objecttype.creates``
-    Reports the number of objects created via the API.
+``openobjecten.objecttype.creates``
+    Reports the number of objecttypes created via the API.
 
-``objecttypes.objecttype.updates``
-    Reports the number of objects updated via the API.
+``openobjecten.objecttype.updates``
+    Reports the number of objecttypes updated via the API.
 
-``objecttypes.objecttype.deletes``
-    Reports the number of objects deleted via the API.
+``openobjecten.objecttype.deletes``
+    Reports the number of objecttypes deleted via the API.
 
 The metrics show how many entities are created, updated, or deleted via the API,
 helping to monitor load and the most frequent operations, and allow for various aggregations on the data.
