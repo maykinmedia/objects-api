@@ -95,7 +95,7 @@ class LabelsField(serializers.JSONField):
     pass
 
 
-class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ObjectTypeSerializer(serializers.HyperlinkedModelSerializer[ObjectType]):
     labels = LabelsField(
         required=False,
         help_text=get_help_text("core.ObjectType", "labels"),
