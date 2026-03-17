@@ -20,6 +20,10 @@ on:
   schedule:
     - cron: '36 0 * * 0'
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   open-api-workflow-code-analysis:
     uses: maykinmedia/open-api-workflows/.github/workflows/code-analysis.yml@v6
