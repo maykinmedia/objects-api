@@ -17,9 +17,11 @@ from drf_spectacular.utils import (
 )
 from notifications_api_common.cloudevents import process_cloudevent
 from rest_framework import mixins, serializers, status, viewsets
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from vng_api_common.filters_backend import Backend as FilterBackend
@@ -35,6 +37,7 @@ from objects.cloud_events.constants import ZAAK_ONTKOPPELD
 from objects.cloud_events.tasks import send_zaak_events
 from objects.core.constants import ObjectTypeVersionStatus, ReferenceType
 from objects.core.models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
+from objects.token.authentication import TokenAuthentication
 from objects.token.models import Permission, TokenAuth
 from objects.token.permissions import IsTokenAuthenticated, ObjectTypeBasedPermission
 
@@ -179,7 +182,27 @@ class ObjectTypeVersionViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = ObjectTypeVersionSerializer
     lookup_field = "version"
     pagination_class = DynamicPageSizePagination
-    permission_classes = [IsTokenAuthenticated]
+
+    def get_authenticators(self):
+        request = getattr(self, "request", None)
+
+        if request and request.method in ("GET", "HEAD", "OPTIONS"):
+            return [
+                SessionAuthentication(),
+                TokenAuthentication(),
+            ]
+
+        return [TokenAuthentication()]
+
+    def get_permissions(self):
+        request = self.request
+
+        if request and request.method in ("GET", "HEAD", "OPTIONS"):
+            permission_class = IsAuthenticated | IsTokenAuthenticated
+        else:
+            permission_class = IsTokenAuthenticated
+
+        return [permission_class()]
 
     def perform_create(self, serializer):
         super().perform_create(serializer)

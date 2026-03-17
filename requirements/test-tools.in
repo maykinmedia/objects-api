@@ -16,3 +16,7 @@ vcrpy
 
 # Code formatting
 ruff
+
+
+# user interface testing
+playwright

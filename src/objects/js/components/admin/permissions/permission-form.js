@@ -17,14 +17,25 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
     const [dataFieldChoices, setDataFieldChoices] = useState({});
 
     const fetchObjecttypeVersions = (objecttype_id) => {
-        fetch(`/admin/core/objecttype/${objecttype_id}/_versions/`, {
+        fetch(`/api/v2/objecttypes/${objecttype_id}/versions`, {
             method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+            }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(response_data => {
-            if (response_data?.length > 0) {
+            const results = response_data.results || response_data;
+
+            if (Array.isArray(results) && results.length > 0) {
                 const objecttypes = {
-                    [objecttype_id]: response_data.reduce((acc, version) => {
+                    [objecttype_id]: results.reduce((acc, version) => {
                         const properties = Object.keys(version?.jsonSchema?.properties || {});
                         acc[version.version] = properties.reduce((propsAcc, prop) => {
                             propsAcc[prop] = `record__data__${prop}`;
@@ -33,11 +44,12 @@ const PermissionForm = ({objectFields, tokenChoices, objecttypeChoices, modeChoi
                         return acc;
                     }, {})
                 };
-            setDataFieldChoices(objecttypes);
-            }  
+
+                setDataFieldChoices(objecttypes);
+            }
         })
         .catch(error => {
-            console.error('An error occurred while fetching the Objecttype versions endpoint:', error);
+            console.error('An error occurred while fetching the Objecttype versions:', error);
         });
     };
     useEffect(() => {

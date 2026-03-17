@@ -1,7 +1,24 @@
 .permission-fields {
-    margin-left: 170px;
-
     &__nested {
         margin-left: 30px;
+    }
+
+    .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .checkbox-row label {
+        display: inline;
+        width: auto;
+        min-width: 0;
+        padding: 0;
+    }
+
+    h3 {
+        margin-top: 12px;
+        margin-bottom: 6px;
     }
 }

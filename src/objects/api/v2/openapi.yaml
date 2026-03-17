@@ -961,6 +961,7 @@ paths:
       tags:
       - objecttypes
       security:
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1039,6 +1040,7 @@ paths:
       tags:
       - objecttypes
       security:
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2266,6 +2268,10 @@ components:
         * `yearly` - Yearly
         * `unknown` - Unknown
   securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: objects_sessionid
     tokenAuth:
       type: apiKey
       in: header

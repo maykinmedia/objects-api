@@ -49,6 +49,8 @@ class PermissionAdmin(admin.ModelAdmin):
         form.is_valid()
 
         values = {field.name: field.value() for field in form}
+        if obj and obj.object_type:
+            values["object_type"] = str(obj.object_type.uuid)
         errors = (
             {
                 field: [
@@ -67,7 +69,7 @@ class PermissionAdmin(admin.ModelAdmin):
             (token.pk, str(token)) for token in TokenAuth.objects.all()
         ]
         object_type_choices = [EMPTY_FIELD_CHOICE] + [
-            (object_type.pk, str(object_type))
+            (str(object_type.uuid), str(object_type))
             for object_type in ObjectType.objects.all()
         ]
         return {
@@ -94,6 +96,17 @@ class PermissionAdmin(admin.ModelAdmin):
         extra_context.update(self.get_extra_context(request, object_id=None))
 
         return super().add_view(request, form_url, extra_context)
+
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form = super().get_form(request, obj, change, **kwargs)
+
+        # Although Permission.object_type is stored as a ForeignKey to the PK of ObjectType,
+        # the admin form now submits the UUID as the choice value.
+        # to_field_name = "uuid" tells Django to resolve the submitted UUID to the correct ObjectType instance.
+        # Django then automatically stores its PK internally
+        form.base_fields["object_type"].to_field_name = "uuid"
+
+        return form
 
 
 class PermissionInline(EditInlineAdminMixin, admin.TabularInline):
