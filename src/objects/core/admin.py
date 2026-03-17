@@ -226,14 +226,10 @@ class ObjectTypeAdmin(admin.ModelAdmin):
             {"form": form, "source": "file"},
         )
 
-    @admin.action(description="Export selected objecttypes as a file")
+    @admin.action(description=_("Export selected objecttypes as a file"))
     def export_objecttypes_action(
         self, request: HttpRequest, queryset: models.QuerySet[ObjectType]
-    ) -> HttpResponse | None:
-        if not queryset.exists():
-            self.message_user(request, "No objecttypes selected for export.")
-            return None
-
+    ) -> HttpResponse:
         output = io.BytesIO()
         export_data(output, objecttypes=queryset)
 

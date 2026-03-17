@@ -1,13 +1,15 @@
 import json
 from io import BytesIO
 
+from django.core.files.uploadedfile import SimpleUploadedFile
+
 import hypothesis.strategies as st
 import jsonschema_specifications
 from hypothesis import HealthCheck, given, settings
 from hypothesis.extra.django import TestCase, from_model
 from hypothesis_jsonschema import from_schema
 
-from ..import_export import export_data, import_data
+from ..import_export import export_data, import_data, import_upload
 from ..models import ObjectType, ObjectTypeVersion
 from ..utils import check_json_schema
 
@@ -267,3 +269,34 @@ class RoundTripExportImportTests(TestCase):
             assert imported_version.json_schema == original_version.json_schema
             assert imported_version.status == original_version.status
             assert imported_version.published_at == original_version.published_at
+
+    @given(objecttypes(), objecttypes())
+    @settings(suppress_health_check=[HealthCheck.too_slow])
+    def test_import_upload_list_of_files(self, ot1, ot2):
+        output1 = BytesIO()
+        output2 = BytesIO()
+
+        export_data(output1, objecttypes=[ot1])
+        export_data(output2, objecttypes=[ot2])
+
+        file1 = SimpleUploadedFile(
+            "file1.zip", output1.getvalue(), content_type="application/zip"
+        )
+        file2 = SimpleUploadedFile(
+            "file2.zip", output2.getvalue(), content_type="application/zip"
+        )
+
+        ObjectType.objects.all().delete()
+
+        errors = []
+
+        def report_error(msg):
+            errors.append(msg)
+
+        import_upload([file1, file2], keep_uuid=True, report_error_to_user=report_error)
+
+        assert set(ObjectType.objects.all().values_list("name", flat=True)) == {
+            ot1.name.strip(),
+            ot2.name.strip(),
+        }
+        assert errors == []

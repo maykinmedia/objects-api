@@ -114,8 +114,10 @@ def _strip_uuid(data: object):
             return [_strip_uuid(m) for m in members]
         case {"uuid": _, **rest}:
             return rest
-        case _:
-            return data
+        case _:  # pragma: no cover
+            raise Exception(
+                "If you want to reuse this for whatever you're doing, make it recursive"
+            )
 
 
 @transaction.atomic
@@ -181,12 +183,13 @@ def import_upload(
                     report_error_to_user(
                         _("{file} is not a supported file type").format(file=file.name),
                     )
-                except Exception:
+                except Exception:  # pragma: no cover
                     report_error_to_user(
                         _(
                             "Something unexpected happened during import.\n"
-                            "If you think the file should be correct, "
-                            "please include the file in your bug report.\n"
+                            "Please try again. If it fails again and you think "
+                            "the file should be correct, please include the "
+                            "file in your bug report.\n"
                         ).format()
                     )
                     logger.exception("unhandled import exception")
@@ -197,7 +200,7 @@ def import_upload(
                 for f in fs
                 for resource in import_upload(f, keep_uuid, report_error_to_user)
             }
-        case _:  # pragma: no-cover
+        case _:  # pragma: no cover
             logger.exception("unexected type in upload", contents=file)
             raise SuspiciousFileOperation("Unexpected type in upload")
 
