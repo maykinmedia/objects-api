@@ -4,18 +4,17 @@
 Objects
 =======
 
-Creating and updating objects is usually done using the Objects API. :ref:`api_usage`
+Creating and updating objects is usually done using the API. :ref:`api_usage`
 describes how to do it in detail. But it's also possible to manage objects in the
 admin interface. In this tutorial we will create and update objects using the Objects
 admin.
 
-Relate an object type
+Create an object type
 ---------------------
 
-Each object must belong to a particular object type created in the Objecttypes API.
+Each object must belong to a particular object type.
 The access to objects (the authorization) is also based on the related object types.
-Therefore before creating the object we need to make the object type from the Objecttypes API
-available in the admin interface of the Objects API. The section "Add an object type" of the
+Therefore before creating the object we need to make an object type. The section "Add an object type" of the
 :ref:`admin_authorization` describes how to do it.
 
 Create an object
@@ -62,7 +61,7 @@ corrected in the "Correction" field of the next record.
 .. image:: _assets/img/object_create_record.png
     :alt: Add an object record
 
-In the Objects API you always see one record, which contains data of a certain time (by default
+In the API you always see one record for a specific object, which contains data of a certain time (by default
 the latest one). However in the admin interface you can see all the records created for the object.
 
 .. _admin_objects_search:

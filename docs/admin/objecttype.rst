@@ -4,7 +4,7 @@
 Object types
 ============
 
-Creating and changing object types are common tasks for the Objecttypes API.
+Creating and changing object types are common tasks for the API.
 :ref:`api_usage` describes how to do it with HTTP requests. But you can also
 use the Objecttypes admin to create, publish and update object types.
 

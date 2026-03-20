@@ -1,7 +1,7 @@
-Who's behind Objects and Objecttypes API?
-=========================================
+Who's behind the Open Objecten API?
+===================================
 
-The Objects and Objecttypes API project was initiated by six organizations to
+The Open Objecten API project was initiated by six organizations to
 standardize common "other" objects that are currently not exposed via an API.
 
 In alphabetical order, they are:

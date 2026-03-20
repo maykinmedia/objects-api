@@ -20,11 +20,11 @@ class Command(BaseCommand):
         for objecttype in ObjectType.objects.iterator():
             if not objecttype.is_imported:
                 external_object_count += 1
-                external_uuids.add(objecttype.uuid)
-
-        msg = f"{external_object_count} objectype(s) have not been imported: {external_uuids}"
-
-        self.stdout.write(self.style.ERROR(msg))
+                external_uuids.add(str(objecttype.uuid))
 
         if external_object_count > 0:
-            raise CommandError(msg)
+            raise CommandError(
+                f"{external_object_count} objectype(s) have not been imported: {', '.join(external_uuids)}"
+            )
+        else:
+            self.stdout.write(self.style.SUCCESS("OK"))

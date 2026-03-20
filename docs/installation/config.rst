@@ -5,7 +5,7 @@ Environment configuration reference
 ===================================
 
 
-The Objects and Objecttypes APIs can be run both as a Docker container or a VPS / dedicated server.
+Open Objecten can be run as a Docker container or a VPS / dedicated server.
 It relies on other services, such as database and cache backends, which can be configured through environment variables.
 
 
@@ -133,10 +133,10 @@ Optional
 Initial superuser creation (Docker only)
 ----------------------------------------
 
-A clean installation of Objects API comes without pre-installed or pre-configured admin
+A clean installation of Open Objecten comes without pre-installed or pre-configured admin
 user by default.
 
-Users of Objects API can opt-in to provision an initial superuser via environment
+Users can opt-in to provision an initial superuser via environment
 variables. The user will only be created if it doesn't exist yet.
 
 * ``OBJECTS_SUPERUSER_USERNAME``: specify the username of the superuser to create. Setting
@@ -150,7 +150,7 @@ variables. The user will only be created if it doesn't exist yet.
 Initial configuration
 ---------------------
 
-Both Objects API and Objecttypes API support `setup_configuration` management command,
+Open Objecten supports the `setup_configuration` management command,
 which allows configuration via environment variables.
 All these environment variables are described at :ref:`command line <installation_config_cli>`.
 
