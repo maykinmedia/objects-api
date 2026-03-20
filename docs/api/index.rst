@@ -22,6 +22,5 @@ See their respective repositories for the latest and previous versions.
    :caption: Further reading
 
    usage
-   performance
    compliancy/api-strategy
    compliancy/vng

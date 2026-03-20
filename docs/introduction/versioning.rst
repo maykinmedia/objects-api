@@ -18,8 +18,8 @@ is actively maintained and under active development. Older versions only receive
 The table below shows each major and minor version and until what date they can receive
 patches.
 
-Open Objecten API
------------------
+Open Objecten
+-------------
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |
@@ -65,7 +65,7 @@ Objecttypes API
 ---------------
 
 .. note:: Objects API was changed to Open Objecten in 4.0.0 which includes the Objecttypes API.
-    Support for the standalone Objecttypes API will stop in the coming future.
+    Active development for the standalone Objecttypes API application has stopped since version 3.4. Patches can still be applied if needed.
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |

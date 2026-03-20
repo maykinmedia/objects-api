@@ -14,13 +14,6 @@ repository also describes these dependencies.
 PostgreSQL with Postgis
 -----------------------
 
-.. warning::
-
-   Before Open Objecten the API was split into two applications which allowed PostgreSQL 13 but since Objects API version 3.0.4 and Objecttypes API version 3.0.4,
-   PostgreSQL version 14 or higher is required. Attempting to deploy these versions
-   with PostgreSQL 13 or lower will result in errors!
-
-
 Open Objecten currently only supports PostgreSQL as datastore and is is geo-capable,
 which requires the postgis_ extension to be enabled.
 
