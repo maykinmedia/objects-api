@@ -126,7 +126,7 @@ goed getest en beschikbaar als Docker image.
 Quickstart
 ----------
 
-1. Download en start de Objecten API:
+1. Download en start Open Objecten:
 
    .. code:: bash
 

@@ -12,8 +12,8 @@ class ObjectTypesConfigurationStep(BaseConfigurationStep):
     """
     Configure references to objecttypes in Open Objecten.
 
-    .. note:: This configuration was previously used to preconfigure objecttypes from an separate Objecttypes API,
-        since 4.0.0 Objecttypes and Objects have been merged into one and this only there to preload objecttype names & uuids.
+    .. note:: This step was previously used to preconfigure objecttypes from a separate Objecttypes API,
+        since 4.0.0 Objecttypes and Objects have been merged into one, and this step is only for preloading of objecttype names & uuids.
     """
 
     config_model = ObjectTypesConfigurationModel

@@ -63,7 +63,7 @@ Open Objecten
 
    .. code::
 
-      http://localhost:8000/api/v1/objects/
+      http://localhost:8000/api/v2/objects/
 
 
 After you have Open Objecten running you can configure

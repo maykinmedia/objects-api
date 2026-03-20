@@ -33,7 +33,7 @@ included into "Authorization" header: ``Authorization: Token 5678``
 
 .. code-block:: http
 
-    GET /api/v1/objects HTTP/1.1
+    GET /api/v2/objects HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK

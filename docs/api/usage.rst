@@ -85,7 +85,7 @@ So let's create the object type metadata:
 
 .. code-block:: http
 
-    POST /api/v1/objecttypes HTTP/1.1
+    POST /api/v2/objecttypes HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -111,7 +111,7 @@ a list of versions of the JSON schema, which is initially empty.
     HTTP/1.1 201 Created
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "name": "boom",
         "namePlural": "bomen",
         "description": "Bomen in de publieke ruimte.",
@@ -134,7 +134,7 @@ Now we can add our JSON schema to the created object type as its version:
 
 .. code-block:: http
 
-    POST /api/v1/objecttypes/<object-type-uuid>/versions HTTP/1.1
+    POST /api/v2/objecttypes/<object-type-uuid>/versions HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -153,9 +153,9 @@ The response contains the url of the created version of the object type.
     HTTP/1.1 201 OK
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>/versions/1",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>/versions/1",
         "version": 1,
-        "objectType": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "objectType": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "status": "draft",
         "jsonSchema": {
             "$schema": "http://json-schema.org/draft-07/schema",
@@ -179,7 +179,7 @@ PATCH request:
 
 .. code-block:: http
 
-    PATCH /api/v1/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
+    PATCH /api/v2/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -193,9 +193,9 @@ In the response you can see that ``publishedAt`` attribute now contains the curr
     HTTP/1.1 200 OK
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>/versions/1",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>/versions/1",
         "version": 1,
-        "objectType": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "objectType": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "status": "published",
         "jsonSchema": {
             "$schema": "http://json-schema.org/draft-07/schema",
@@ -213,7 +213,7 @@ For example:
 
 .. code-block:: http
 
-    PATCH /api/v1/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
+    PATCH /api/v2/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -245,13 +245,13 @@ Once the object type is created it can always be retrieved by its url:
 
 .. code-block:: http
 
-    GET /api/v1/objecttypes/<object-type-uuid> HTTP/1.1
+    GET /api/v2/objecttypes/<object-type-uuid> HTTP/1.1
     Authorization: Token 1234
 
     HTTP/1.1 200 OK
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "name": "boom",
         "namePlural": "bomen",
         "description": "Bomen in de publieke ruimte.",
@@ -268,7 +268,7 @@ Once the object type is created it can always be retrieved by its url:
         "createdAt": "2021-03-03",
         "modifiedAt": "2021-03-03",
         "versions": [
-            "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>/versions/1"
+            "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>/versions/1"
         ]
     }
 
@@ -312,12 +312,12 @@ system you are using.
 
 .. code-block:: http
 
-    POST /api/v1/objects HTTP/1.1
+    POST /api/v2/objects HTTP/1.1
     Authorization: Token 5678
     Content-Crs: EPSG:4326
 
     {
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "typeVersion": 1,
             "startAt": "2021-01-01",
@@ -343,8 +343,8 @@ initial version. The response contains the URL of the object:
     HTTP/1.1 201 Created
 
     {
-        "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "index": 1,
             "typeVersion": 1,
@@ -377,12 +377,12 @@ For example, let's try to create the following object:
 
 .. code-block:: http
 
-    POST /api/v1/objects HTTP/1.1
+    POST /api/v2/objects HTTP/1.1
     Authorization: Token 5678
     Content-Crs: EPSG:4326
 
     {
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "typeVersion": 1,
             "startAt": "2021-03-03",
@@ -415,14 +415,14 @@ Once the object is created, it can always be retrieved by its URL:
 
 .. code-block:: http
 
-    GET /api/v1/objects/<object-uuid> HTTP/1.1
+    GET /api/v2/objects/<object-uuid> HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
 
     {
-        "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "index": 1,
             "typeVersion": 1,
@@ -461,15 +461,15 @@ To filter the list by a particular object type you can use the ``type`` query pa
 
 .. code-block:: http
 
-    GET /api/v1/objects?type=http://<object-type-host>/api/v1/objecttypes/<object-type-uuid> HTTP/1.1
+    GET /api/v2/objects?type=http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid> HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
 
     [
         {
-            "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-            "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+            "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+            "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
             "record": {
                 "index": 1,
                 "typeVersion": 1,
@@ -502,7 +502,7 @@ can also be retrieved. In the API these are called ``records``.
 
 .. code-block:: http
 
-    GET /api/v1/objects/<object-uuid>/history HTTP/1.1
+    GET /api/v2/objects/<object-uuid>/history HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
@@ -553,15 +553,15 @@ First, let's do it from the material history perspective:
 
 .. code-block:: http
 
-    GET /api/v1/objects?date=2021-02-02 HTTP/1.1
+    GET /api/v2/objects?date=2021-02-02 HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
 
     [
         {
-            "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-            "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+            "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+            "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
             "record": {
                 "index": 1,
                 "typeVersion": 1,
@@ -594,7 +594,7 @@ Now let's do the same but from a formal history perspective:
 
 .. code-block:: http
 
-    GET /api/v1/objects?registrationDate=2021-02-02 HTTP/1.1
+    GET /api/v2/objects?registrationDate=2021-02-02 HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
