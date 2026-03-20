@@ -1,4 +1,8 @@
+from __future__ import annotations
+
+import io
 import json
+from functools import partial
 from typing import Sequence
 
 from django import forms
@@ -6,7 +10,7 @@ from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -19,7 +23,8 @@ from vng_api_common.utils import get_help_text
 from objects.api.v2.filters import filter_queryset_by_data_attr
 
 from .constants import ObjectTypeVersionStatus
-from .forms import ObjectTypeVersionForm, UrlImportForm
+from .forms import FileImportForm, ObjectTypeVersionForm, UrlImportForm
+from .import_export import export_data, import_upload
 from .models import Object, ObjectRecord, ObjectType, ObjectTypeVersion
 from .widgets import JSONSuit
 
@@ -109,6 +114,8 @@ class ObjectTypeAdmin(admin.ModelAdmin):
 
     change_list_template = "admin/core/objecttype/object_list.html"
 
+    actions = ["export_objecttypes_action"]
+
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
@@ -116,6 +123,11 @@ class ObjectTypeAdmin(admin.ModelAdmin):
                 "import-from-url/",
                 self.admin_site.admin_view(self.import_from_url_view),
                 name="import_from_url",
+            ),
+            path(
+                "import-from-file/",
+                self.admin_site.admin_view(self.import_from_file_view),
+                name="import_from_file",
             ),
         ]
         return my_urls + urls
@@ -141,10 +153,11 @@ class ObjectTypeAdmin(admin.ModelAdmin):
 
         return HttpResponseRedirect(request.path)
 
-    def add_new_version(self, request, obj):
+    def add_new_version(self, request, obj: ObjectType):
         new_version = obj.last_version
+        assert new_version
         new_version.pk = None
-        new_version.version = new_version.version + 1
+        new_version.version = None
         new_version.status = ObjectTypeVersionStatus.draft
         new_version.save()
 
@@ -183,10 +196,53 @@ class ObjectTypeAdmin(admin.ModelAdmin):
             request, "admin/core/objecttype/object_import_form.html", {"form": form}
         )
 
+    def import_from_file_view(self, request: HttpRequest) -> HttpResponse:
+        if request.method == "POST":
+            form = FileImportForm(request.POST, files=request.FILES)
+            if form.is_valid():
+                imported_types = import_upload(
+                    form.files["export_file"],
+                    form.cleaned_data["keep_uuid"],
+                    partial(form.add_error, "export_file"),
+                )
+                if not form.errors and not imported_types:
+                    form.add_error(
+                        "export_file", _("Found nothing importable in that file")
+                    )
+                if not form.errors:
+                    self.message_user(
+                        request,
+                        _("{resource_types} imported successfully.").format(
+                            resource_types=",".join(imported_types)
+                        ),
+                    )
+                    return redirect(reverse("admin:core_objecttype_changelist"))
+        else:
+            form = FileImportForm()
+
+        return render(
+            request,
+            "admin/core/objecttype/object_import_form.html",
+            {"form": form, "source": "file"},
+        )
+
+    @admin.action(description=_("Export selected objecttypes as a file"))
+    def export_objecttypes_action(
+        self, request: HttpRequest, queryset: models.QuerySet[ObjectType]
+    ) -> HttpResponse:
+        output = io.BytesIO()
+        export_data(output, objecttypes=queryset)
+
+        response = HttpResponse(output.getvalue(), content_type="application/zip")
+        response["Content-Disposition"] = (
+            'attachment; filename="objecttypes-export.zip"'
+        )
+        return response
+
 
 class ObjectRecordForm(forms.ModelForm):
     class Meta:
-        model: ObjectRecord
+        model = ObjectRecord
         help_texts = {
             "geometry": get_help_text("core.ObjectRecord", "geometry")
             + "\n\n format: SRID=4326;POINT|LINESTRING|POLYGON (LAT LONG, ...)"

@@ -58,6 +58,20 @@ class UrlImportForm(forms.Form):
         self.cleaned_data["json"] = response_json
 
 
+class FileImportForm(forms.Form):
+    export_file = forms.FileField(
+        label=_("Object type export file"),
+        required=True,
+        help_text=_("The file exported with the Export option from the Action menu."),
+    )
+    keep_uuid = forms.BooleanField(
+        label=_("Keep the UUIDs the same"),
+        help_text=_("Import keeping the same UUIDs as in the export."),
+        initial=False,
+        required=False,
+    )
+
+
 class ObjectTypeVersionForm(forms.ModelForm):
     class Meta:
         model = ObjectTypeVersion

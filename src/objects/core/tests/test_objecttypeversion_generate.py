@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from objects.core.models import ObjectTypeVersion
@@ -31,3 +32,15 @@ class GenerateVersionTests(TestCase):
         )
 
         self.assertEqual(object_version.version, 2)
+
+    def test_version_bounds_check(self):
+        object_type = ObjectTypeFactory.create()
+        max_sql_smallint = (1 << 15) - 1
+        ObjectTypeVersionFactory.create(
+            object_type=object_type, version=max_sql_smallint
+        )
+
+        with self.assertRaises(ValidationError):
+            ObjectTypeVersion.objects.create(
+                json_schema=JSON_SCHEMA, object_type=object_type
+            )
