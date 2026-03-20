@@ -66,7 +66,7 @@ class FileImportForm(forms.Form):
     )
     keep_uuid = forms.BooleanField(
         label=_("Keep the UUIDs the same"),
-        help_text=_("Import keeping the same UUID as in the export."),
+        help_text=_("Import keeping the same UUIDs as in the export."),
         initial=False,
         required=False,
     )
