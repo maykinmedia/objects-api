@@ -57,7 +57,7 @@ class ObjectTypeSerializer(_ObjectTypeSerializer):
 
     class Meta(_ObjectTypeSerializer.Meta):
         fields = [
-            field for field in _ObjectTypeSerializer.Meta.fields if field not in ["url"]
+            field for field in _ObjectTypeSerializer.Meta.fields if field != "url"
         ]
         extra_kwargs = {
             f: kwargs | {"read_only": False}
