@@ -38,10 +38,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "capture_tag",
     # Optional applications.
     "django.contrib.gis",
-    # `django.contrib.sites` added at the project level because it has been removed at the packages level.
-    # This component is deprecated and should be completely removed.
-    # To determine the project's domain, use the `SITE_DOMAIN` environment variable.
-    "django.contrib.sites",
     # External applications.
     "rest_framework_gis",
     "jsonsuit.apps.JSONSuitConfig",
@@ -165,7 +161,6 @@ CELERY_TASK_TIME_LIMIT = config(
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
-    "django_setup_configuration.contrib.sites.steps.SitesConfigurationStep",
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
