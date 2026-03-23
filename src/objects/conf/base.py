@@ -194,3 +194,21 @@ UPGRADE_CHECK_PATHS: UpgradePaths = {
         code_checks=[CommandCheck("check_for_external_objecttypes")],
     ),
 }
+
+#
+# DJANGO-LOG-OUTGOING-REQUESTS
+#
+# XXX: Overrides to bring envvars in line with Open Forms, this is currently defined in
+# open-api-framework using `LOG_REQUESTS`
+LOG_OUTGOING_REQUESTS = config(
+    "LOG_OUTGOING_REQUESTS",
+    default=False,
+    help_text=(
+        "enable logging of the outgoing requests. "
+        "This must be enabled along with `LOG_OUTGOING_REQUESTS_DB_SAVE` to save outgoing request logs in the database."
+    ),
+    group="Logging",
+)
+LOGGING["loggers"]["log_outgoing_requests"]["handlers"] = (
+    ["log_outgoing_requests", "save_outgoing_requests"] if LOG_OUTGOING_REQUESTS else []
+)
