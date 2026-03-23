@@ -1,0 +1,6 @@
+bsdutils -> useful for debugging
+dirmngr
+libblkid1
+libmariadb3 -> used by gdal?
+mariadb-common
+libheif-plugin-dav1d
