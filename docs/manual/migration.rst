@@ -42,6 +42,16 @@ With ``check_for_external_objecttypes`` you can check if there are any remaining
 
     src/manage.py check_for_external_objecttypes
 
+.. note::
+
+    The API now ignores the domain used in objecttype URLs and only checks
+    if an objecttype exists for that UUID in the Open Object database. This means that applications that
+    still use URLs that have the domain of the old Objecttypes API instance for requests
+    to Open Object will not break.
+
+    For example: doing a POST on ``/objects`` with a ``type`` like ``https://<objecttypes-api-domain>/api/v2/objecttypes/<uuid>``,
+    will still succeed if an objecttype with the specified UUID exists in the Open Object database.
+
 Setup configuration
 -------------------
 
