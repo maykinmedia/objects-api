@@ -12,7 +12,7 @@ os.environ["_USE_STRUCTLOG"] = "True"
 from django.core.exceptions import ImproperlyConfigured
 
 from open_api_framework.conf.base import *  # noqa
-from open_api_framework.conf.utils import config
+from open_api_framework.conf.utils import ENVVAR_REGISTRY, config
 
 from .api import *  # noqa
 
@@ -212,3 +212,32 @@ LOG_OUTGOING_REQUESTS = config(
 LOGGING["loggers"]["log_outgoing_requests"]["handlers"] = (
     ["log_outgoing_requests", "save_outgoing_requests"] if LOG_OUTGOING_REQUESTS else []
 )
+
+#
+# DJANGO-STRUCTLOG
+#
+# Make sure the old envvar no longer shows up in the documentation
+for i, var in enumerate(ENVVAR_REGISTRY):
+    if var.name == "ENABLE_STRUCTLOG_REQUESTS":
+        ENVVAR_REGISTRY.pop(i)
+
+# XXX: Overrides to bring envvars in line with Open Forms, this is currently defined in
+# open-api-framework using `ENABLE_STRUCTLOG_REQUESTS`
+LOG_REQUESTS = config(
+    "LOG_REQUESTS",
+    default=True,
+    help_text=("enable structured logging of requests"),
+    group="Logging",
+)
+
+LOGGING["loggers"]["django.server"]["level"] = "WARNING" if LOG_REQUESTS else "INFO"
+
+# If the old envvar `ENABLE_STRUCTLOG_REQUESTS` was used, avoid duplicate middleware
+if "django_structlog.middlewares.RequestMiddleware" in MIDDLEWARE:
+    MIDDLEWARE.remove("django_structlog.middlewares.RequestMiddleware")
+
+if LOG_REQUESTS:
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware") + 1,
+        "django_structlog.middlewares.RequestMiddleware",
+    )
