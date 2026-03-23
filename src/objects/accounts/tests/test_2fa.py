@@ -1,4 +1,3 @@
-from django.contrib.sites.models import Site
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import resolve
 
@@ -11,10 +10,6 @@ class TwoFactorQRGeneratorTestCase(TestCase):
         Testing the actual QR code output is too much of a hassle, so instead retrieve
         the view class based on the URL and check if `get_issuer` behaves as expected
         """
-        site = Site.objects.get_current()
-        site.domain = "testserver"
-        site.save()
-
         qr_generator_view_class = resolve("/admin/mfa/qrcode/").func.view_class
         issuer = qr_generator_view_class(
             request=RequestFactory().get("/", headers={"Host": "some-domain.local"})
