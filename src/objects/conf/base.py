@@ -128,6 +128,18 @@ NOTIFICATIONS_SOURCE = config(
 if ENABLE_CLOUD_EVENTS and not NOTIFICATIONS_SOURCE:
     raise ImproperlyConfigured("NOTIFICATIONS_SOURCE is REQUIRED for CloudEvents")
 
+#
+# CELERY
+#
+# TODO: this is an override because `open-api-framework` incorrectly uses the
+# `CELERY_RESULT_BACKEND` envvar for the `CELERY_BROKER_URL` setting. This should be
+# moved to OAF once all projects have made this breaking change
+CELERY_BROKER_URL = config(
+    "CELERY_BROKER_URL",
+    "redis://localhost:6379/1",
+    group="Celery",
+    help_text="the URL of the broker that will be used by Celery to send the notifications",
+)
 CELERY_RESULT_EXPIRES = config(
     "CELERY_RESULT_EXPIRES",
     3600,
