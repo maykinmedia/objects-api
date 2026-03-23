@@ -2,6 +2,100 @@
 Change history
 ==============
 
+4.0.0 (2026-04-09)
+------------------
+
+Major release
+
+.. warning::
+
+    This version combines the Objects API and Objecttypes into a single application named
+    Open Object. This application no longer supports objecttypes hosted in an external application.
+    Before upgrading to 4.0.0, it is required to first update to Objects API version 3.6.0 and run an import command
+    to locally import the objecttypes (make sure to read :ref:`objecttype_migration` for more details).
+
+.. warning::
+
+  From version 4.0.0 onward, the Docker images for Open Object will be published under the
+  Dockerhub repository ``maykinmedia/open-object``. If you want to use Open Object and you are
+  using ``maykinmedia/objects-api``, make sure to change to the new repository before deploying.
+
+**💥 Breaking changes**
+
+* [:objects-api:`564`] Combine Objects API and Objecttypes API into Open Object and only allow usage of local objecttypes
+
+.. note::
+
+    The API now ignores the domain used in objecttype URLs and only checks
+    if an objecttype exists for that UUID in the Open Object database. This means that applications that
+    still use URLs that have the domain of the old Objecttypes API instance for requests
+    to Open Object will not break.
+
+* Changes for Open Telemetry
+
+  * Change namespace for metrics from ``objects`` to ``openobject`` and add metrics for Objecttypes (see :ref:`installation_observability_metrics`)
+  * Change default for environment variable ``OTEL_SERVICE_NAME`` from ``objects`` to ``openobject`` (with postfixes for celery, flower)
+
+* Changes to ``setup_configuration`` (see :ref:`installation_config_cli`)
+
+  * Remove the ``SitesConfigurationStep``, make sure to remove the namespace ``sites_config``
+    from your ``setup_configuration`` data
+  * Remove the attribute ``service_identifier`` for ``ObjectTypesConfigurationStep`` (namespace ``objecttypes``)
+  * Remove the attribute ``fields`` and ``use_fields`` for ``TokenAuthConfigurationStep`` (namespace ``tokenauth``)
+
+* Changes to environment variables
+
+  * [:objects-api:`730`] Rename ``ENABLE_STRUCTLOG_REQUESTS`` to ``LOG_REQUESTS``
+  * [:objects-api:`730`] Rename ``LOG_REQUESTS`` to ``LOG_OUTGOING_REQUESTS``
+  * [:objects-api:`730`] Use the environment variable ``CELERY_BROKER_URL`` for the Celery broker URL setting,
+    previously this incorrectly used ``CELERY_RESULT_BACKEND`` for this setting.
+  * [:objects-api:`730`] Remove django.contrib.sites and related code, this makes ``SITE_DOMAIN`` a required environment variable!
+
+* [:objects-api:`730`] Remove redirect for deprecated API schema URLs. The schema is now only available
+  under ``/api/v2/openapi.json`` or ``/api/v2/openapi.yaml``
+* [:commonground-api-common:`142`] Update API response error format to be compliant with ``application/problem+json``
+
+**New features**
+
+* [:objects-api:`565`] Implement import-export functionality for Objecttypes with optional UUID retention (see :ref:`import_export_objecttypes`)
+
+**Bugfixes**
+
+* [:objects-api:`718`] Fix 500 error on duplicate UUID when creating objects
+* Fix styling for ``account_blocked`` page
+
+**Maintenance**
+
+* [:open-api-framework:`211`] Optimize memory usage for uWSGI and celery-flower
+
+  * Make sure uWSGI workers restart after 1000 requests
+  * Set ``FLOWER_MAX_TASKS=1000`` and ``FLOWER_MAX_WORKERS=50``
+
+* Upgrade python dependencies
+
+  * ``django`` to 5.2.13
+  * ``pyjwt`` to 2.12.1
+  * ``open-api-framework`` to 0.13.4
+  * ``cryptography`` to 46.0.6
+  * ``pyopenssl`` to 26.0.0
+  * ``mozilla-django-oidc`` to 5.0.2
+  * ``mozilla-django-oidc-db`` to 2.0.1
+  * ``commonground-api-common`` to 2.11.0
+    * ``attrs`` to 25.4.0
+  * ``cbor2`` to 5.9.0
+  * ``cffi`` to 2.0.0
+  * ``requests`` to 2.33.1
+
+* Upgrade npm dependencies
+* [:objects-api:`728`] Improve setup for bencher
+* Removed unnecessary dev packages from docker build
+* Fix CodeQL warning for codeql-analysis action
+* Add explicit least privilege permissions for each workflow
+
+**Documentation**
+
+* [:open-api-framework:`205`] Describe version policy + supported versions in documentation (see :ref:`versioning_policy`)
+
 3.6.0 (2026-02-06)
 ------------------
 
