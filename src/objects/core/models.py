@@ -6,6 +6,7 @@ from typing import ClassVar
 
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -139,6 +140,7 @@ class ObjectType(models.Model):
     )
 
     objects = ObjectTypeQuerySet.as_manager()
+    versions: models.QuerySet[ObjectTypeVersion]
 
     def __str__(self):
         return f"{self.name}"
@@ -217,6 +219,7 @@ class ObjectTypeVersion(models.Model):
         super().save(*args, **kwargs)
 
     def generate_version_number(self) -> int:
+        # XXX: this is racing other queries!
         existed_versions = ObjectTypeVersion.objects.filter(
             object_type=self.object_type
         )
@@ -228,6 +231,10 @@ class ObjectTypeVersion(models.Model):
             ]
 
         version_number = max_version + 1
+        if version_number > 32767:  # Postgrest has no USMALLINT, only SMALLINT
+            raise ValidationError(
+                _("Maximum version number 32767 has been reached for this objecttype")
+            )
         return version_number
 
 

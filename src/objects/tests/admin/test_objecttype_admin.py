@@ -1,5 +1,7 @@
 import json
+import zipfile
 from datetime import date
+from io import BytesIO
 
 from django.urls import reverse, reverse_lazy
 
@@ -7,6 +9,7 @@ import requests_mock
 from django_webtest import WebTest
 from freezegun import freeze_time
 from maykin_2fa.test import disable_admin_mfa
+from webtest import Upload
 
 from objects.accounts.tests.factories import SuperUserFactory
 from objects.core.constants import (
@@ -14,6 +17,7 @@ from objects.core.constants import (
     ObjectTypeVersionStatus,
     UpdateFrequencyChoices,
 )
+from objects.core.import_export import export_data
 from objects.core.models import ObjectType
 from objects.core.tests.factories import ObjectTypeFactory, ObjectTypeVersionFactory
 
@@ -35,6 +39,7 @@ JSON_SCHEMA = {
 class AdminAddTests(WebTest):
     url = reverse_lazy("admin:core_objecttype_add")
     import_from_url = reverse_lazy("admin:import_from_url")
+    import_from_file = reverse_lazy("admin:import_from_file")
 
     @classmethod
     def setUpTestData(cls):
@@ -247,6 +252,123 @@ class AdminAddTests(WebTest):
         self.assertIn("The Objecttype URL does not exist.", response.text)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ObjectType.objects.count(), 0)
+
+    def test_create_import_from_file_requires_authentication(self):
+        self.app.set_user(None)
+        import_view = self.app.get(self.import_from_file, expect_errors=True)
+        self.assertEqual(import_view.status_code, 302)
+        self.assertIn("/admin/login", import_view.location)
+
+    def test_create_import_from_file(self):
+        # setup an export file for import
+        objecttype = ObjectTypeFactory.create()
+        output = BytesIO()
+        export_data(output, objecttypes=[objecttype])
+        export_file_content = output.getvalue()
+
+        # submit the import form with the export file
+        import_view = self.app.get(self.import_from_file)
+        form = import_view.form
+        form["export_file"] = Upload(
+            "test-export.zip", export_file_content, "application/zip"
+        )
+        response = form.submit()
+
+        # verify redirection after successful import
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, "/admin/core/objecttype/")
+
+        # check that the objecttype was imported
+        self.assertEqual(ObjectType.objects.count(), 2)
+
+    def test_create_import_from_file_invalid_zip(self):
+        objecttype = ObjectTypeFactory.create()
+        output = BytesIO()
+        export_data(output, objecttypes=[objecttype])
+        # corrupt the zip content by truncating it
+        export_file_content = output.getvalue()[:10]
+
+        import_view = self.app.get(self.import_from_file)
+        form = import_view.form
+        form["export_file"] = Upload(
+            "test-export.zip", export_file_content, "application/zip"
+        )
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "is not a supported file type")
+
+    def test_create_import_from_file_empty(self):
+        import_view = self.app.get(self.import_from_file)
+        form = import_view.form
+        # create an empty zip file
+        empty_zip = BytesIO()
+        with zipfile.ZipFile(empty_zip, "w") as zf:
+            zf.writestr("README.md", b"This is the wrong file")
+        empty_zip.seek(0)
+
+        form["export_file"] = Upload("empty.zip", empty_zip.read(), "application/zip")
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Found nothing importable in that file")
+
+    def test_create_import_from_file_validation_error(self):
+        objecttype = ObjectTypeFactory.create()
+
+        # invalidate some property
+        objecttype.update_frequency = 1024 * "x"
+
+        output = BytesIO()
+        export_data(output, objecttypes=[objecttype])
+        export_file_content = output.getvalue()
+
+        import_view = self.app.get(self.import_from_file)
+        form = import_view.form
+        form["export_file"] = Upload(
+            "corrupted-export.zip", export_file_content, "application/zip"
+        )
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Row")
+        # this error is there if no other errors were found, but nothing was
+        # imported, because some random zip was uploaded
+        self.assertNotContains(response, "Found nothing importable in that file")
+
+    def test_create_import_from_file_no_file_selected(self):
+        import_view = self.app.get(self.import_from_file)
+        form = import_view.form
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This field is required.")
+
+    def test_export_action(self):
+        objecttype1 = ObjectTypeFactory.create(name="Tree 1")
+        objecttype2 = ObjectTypeFactory.create(name="Tree 2")
+
+        response = self.app.get(reverse("admin:core_objecttype_changelist"))
+        form = response.forms["changelist-form"]
+        form["action"] = "export_objecttypes_action"
+        form["_selected_action"] = [objecttype1.pk, objecttype2.pk]
+        response = form.submit()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/zip")
+        self.assertIn(
+            'attachment; filename="objecttypes-export.zip"',
+            response["Content-Disposition"],
+        )
+
+        # verify the exported content
+        output = BytesIO(response.content)
+        with zipfile.ZipFile(output, "r") as zf:
+            self.assertIn("objectTypes.json", zf.namelist())
+
+            with zf.open("objectTypes.json") as f:
+                data = json.load(f)
+                self.assertEqual({d["name"] for d in data}, {"Tree 1", "Tree 2"})
 
 
 @disable_admin_mfa()

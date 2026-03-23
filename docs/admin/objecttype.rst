@@ -128,3 +128,31 @@ if you click on the "history" button in the top right corner of the object type 
     :alt: Show the history of changes.
 
 You can see all the versions, their statuses, the creation dates and the related JSON shemas.
+
+
+Export and import object types
+------------------------------
+
+To export object types including their history, select the desired object types in the Objecttypes changelist
+dashboard, then use the "Export selected objecttypes as a file" action from the Action dropdown menu and click
+"Go". This will download an archive containing the selected object types with all versions.
+
+To import object types, navigate to the Objecttypes changelist and select the "Import from file" action.
+Upload the archive previously exported, optionally keeping the original UUIDs by checking the
+corresponding checkbox. After successful import, you will see a confirmation message.
+
+.. image:: _assets/img/objecttype_export_import.png
+    :alt: Export and import
+
+
+.. note::
+   If UUIDs are kept during import, existing object types with matching UUIDs should **not** exist.
+   You cannot overwrite existing objects types. If no objects exist for the types, you should be able to
+   delete the object type and proceed with importing.
+
+   If UUIDs are not kept, new UUIDs will be generated and existing object types with the same name
+   will not be overwritten.
+
+.. note::
+   When importing multiple object types, either the whole import succeeds, or the whole import fails.
+   There are no partial imports.
