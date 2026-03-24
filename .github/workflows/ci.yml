@@ -9,6 +9,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+# least privilege as default, should be overridden per job if necessary
+permissions:
+  contents: read
+
 env:
   IMAGE_NAME: maykinmedia/objects-api
 
@@ -102,6 +106,10 @@ jobs:
   performance-tests:
     name: Run the performance test suite
     runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      pull-requests: write  # to add comments to the PR
 
     services:
       postgres:
