@@ -10,11 +10,10 @@ from objects.setup_configuration.models.objecttypes import ObjectTypesConfigurat
 
 class ObjectTypesConfigurationStep(BaseConfigurationStep):
     """
-    Configure references to objecttypes in the Objecttypes API.
+    Configure references to objecttypes in Open Object.
 
-    .. note:: Note that these objecttypes references should match instances in the Objecttypes API. Currently
-            there is no configuration step to do this automatically, so these have to be configured
-            manually or by loading fixtures.
+    .. note:: This step was previously used to preconfigure objecttypes from a separate Objecttypes API,
+        since 4.0.0 Objecttypes and Objects have been merged into one, and this step is only for preloading of objecttype names & uuids.
     """
 
     config_model = ObjectTypesConfigurationModel

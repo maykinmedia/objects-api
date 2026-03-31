@@ -9,7 +9,7 @@ Dump data
 
 Met het script ``dump_data.sh`` kan de data van alle componenten (core) worden geëxporteerd naar een sql of csv bestand(en).
 
-Dit script is niet bedoeld voor een data migratie naar een andere Objects Api of Objecttypes Api instantie.
+Dit script is niet bedoeld voor een data migratie naar een andere Open Object instantie.
 
 Standaard wordt het volledige schema en data in twee sql bestanden gegenereerd. dit kan worden aangepast via de flags ``--data-only``, ``--schema-only`` & ``--combined``
 waardoor een bestand wordt gegenereerd. De data dump bevat standaard alle core data.

@@ -7,11 +7,11 @@ API Usage
 In this section, we'll show how to get started with your first object type, and create an object
 for this object type.
 
-Objecttypes API
-===============
-Before continuing, make sure you have an API token to access the Objecttypes API.
+Objecttypes
+===========
+Before continuing, make sure you have an API token.
 :ref:`admin_authentication` document describes how to do it in details.
-In the examples below we use the API token for the Objecttypes API with the value ``1234``.
+In the examples below we use the API token with the value ``1234``.
 
 Let's start with creating an object type. For example, you want to store data
 about trees (Bomen) in your town. First, you need to decide which attributes your data
@@ -76,16 +76,16 @@ Create an object type
 
 Now we need to create an object type which will include this JSON schema. The object type consists
 of metadata of the object type and (a version of) the JSON schema. This separation
-exists because the Objecttypes API supports versioning of the JSON schemas. If you want to change the
+exists because the API supports versioning of the JSON schemas. If you want to change the
 JSON schema in the objecttype, a new version will be created. Therefore you don't need to worry
-that a new version of the Object type schema would not match the exising objects in Objects API since
+that a new version of the Object type schema would not match the exising objects since
 these objects refer to the previous version.
 
 So let's create the object type metadata:
 
 .. code-block:: http
 
-    POST /api/v1/objecttypes HTTP/1.1
+    POST /api/v2/objecttypes HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -111,7 +111,7 @@ a list of versions of the JSON schema, which is initially empty.
     HTTP/1.1 201 Created
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "name": "boom",
         "namePlural": "bomen",
         "description": "Bomen in de publieke ruimte.",
@@ -134,7 +134,7 @@ Now we can add our JSON schema to the created object type as its version:
 
 .. code-block:: http
 
-    POST /api/v1/objecttypes/<object-type-uuid>/versions HTTP/1.1
+    POST /api/v2/objecttypes/<object-type-uuid>/versions HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -153,9 +153,9 @@ The response contains the url of the created version of the object type.
     HTTP/1.1 201 OK
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>/versions/1",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>/versions/1",
         "version": 1,
-        "objectType": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "objectType": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "status": "draft",
         "jsonSchema": {
             "$schema": "http://json-schema.org/draft-07/schema",
@@ -174,12 +174,12 @@ it anymore, unless you create a new version.
 Publish an object type version
 ------------------------------
 
-Let's publish our object type version. In the Objecttypes API you can do it with a
+Let's publish our object type version. In the API you can do it with a
 PATCH request:
 
 .. code-block:: http
 
-    PATCH /api/v1/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
+    PATCH /api/v2/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -193,9 +193,9 @@ In the response you can see that ``publishedAt`` attribute now contains the curr
     HTTP/1.1 200 OK
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>/versions/1",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>/versions/1",
         "version": 1,
-        "objectType": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "objectType": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "status": "published",
         "jsonSchema": {
             "$schema": "http://json-schema.org/draft-07/schema",
@@ -213,7 +213,7 @@ For example:
 
 .. code-block:: http
 
-    PATCH /api/v1/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
+    PATCH /api/v2/objecttypes/<object-type-uuid>/versions/1 HTTP/1.1
     Authorization: Token 1234
 
     {
@@ -245,13 +245,13 @@ Once the object type is created it can always be retrieved by its url:
 
 .. code-block:: http
 
-    GET /api/v1/objecttypes/<object-type-uuid> HTTP/1.1
+    GET /api/v2/objecttypes/<object-type-uuid> HTTP/1.1
     Authorization: Token 1234
 
     HTTP/1.1 200 OK
 
     {
-        "url": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "name": "boom",
         "namePlural": "bomen",
         "description": "Bomen in de publieke ruimte.",
@@ -268,7 +268,7 @@ Once the object type is created it can always be retrieved by its url:
         "createdAt": "2021-03-03",
         "modifiedAt": "2021-03-03",
         "versions": [
-            "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>/versions/1"
+            "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>/versions/1"
         ]
     }
 
@@ -276,19 +276,18 @@ You can see that ``versions`` attribute includes a list of urls to all the versi
 object type.
 
 
-Objects API
-===========
+Objects
+=======
 
 Now we have an object type containing a JSON schema for tree objects and we are ready to
 create objects. Before going further please, make sure that you configured the proper
 authentication and authorizations in the admin:
 
-* The Objects API can access the Objecttypes API
-* The API token (in the Objects API) has write permissions for the object type "Boom".
+* The API token has write permissions for the object type "Boom".
 
 :ref:`admin_authentication` and :ref:`admin_authorization` document how to do it in details.
 
-In the examples below we use the API token for the Objects API with the value ``5678``.
+In the examples below we use the API token with the value ``5678``.
 
 Create an object
 ----------------
@@ -313,12 +312,12 @@ system you are using.
 
 .. code-block:: http
 
-    POST /api/v1/objects HTTP/1.1
+    POST /api/v2/objects HTTP/1.1
     Authorization: Token 5678
     Content-Crs: EPSG:4326
 
     {
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "typeVersion": 1,
             "startAt": "2021-01-01",
@@ -344,8 +343,8 @@ initial version. The response contains the URL of the object:
     HTTP/1.1 201 Created
 
     {
-        "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "index": 1,
             "typeVersion": 1,
@@ -378,12 +377,12 @@ For example, let's try to create the following object:
 
 .. code-block:: http
 
-    POST /api/v1/objects HTTP/1.1
+    POST /api/v2/objects HTTP/1.1
     Authorization: Token 5678
     Content-Crs: EPSG:4326
 
     {
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "typeVersion": 1,
             "startAt": "2021-03-03",
@@ -416,14 +415,14 @@ Once the object is created, it can always be retrieved by its URL:
 
 .. code-block:: http
 
-    GET /api/v1/objects/<object-uuid> HTTP/1.1
+    GET /api/v2/objects/<object-uuid> HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
 
     {
-        "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-        "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+        "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+        "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
         "record": {
             "index": 1,
             "typeVersion": 1,
@@ -451,7 +450,7 @@ Once the object is created, it can always be retrieved by its URL:
 Retrieve objects of certain object type
 ---------------------------------------
 
-The Objects API supports different filter and search options.
+The API supports different filter and search options.
 You can filter objects by:
 
 * object type
@@ -462,15 +461,15 @@ To filter the list by a particular object type you can use the ``type`` query pa
 
 .. code-block:: http
 
-    GET /api/v1/objects?type=http://<object-type-host>/api/v1/objecttypes/<object-type-uuid> HTTP/1.1
+    GET /api/v2/objects?type=http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid> HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
 
     [
         {
-            "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-            "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+            "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+            "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
             "record": {
                 "index": 1,
                 "typeVersion": 1,
@@ -498,12 +497,12 @@ To filter the list by a particular object type you can use the ``type`` query pa
 
 Retrieve the history of an object
 ---------------------------------
-The Objects API supports versioning, i.e. when an object is updated, its previous states
+The API supports versioning, i.e. when an object is updated, its previous states
 can also be retrieved. In the API these are called ``records``.
 
 .. code-block:: http
 
-    GET /api/v1/objects/<object-uuid>/history HTTP/1.1
+    GET /api/v2/objects/<object-uuid>/history HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
@@ -540,7 +539,7 @@ Retrieve an object (record) for a particular date
 -------------------------------------------------
 
 Since there could be a difference between the real date of
-the object change and its registration in the system, the Objects API support both
+the object change and its registration in the system, the API support both
 material and formal history. The material history describes the history as it should
 be (stored in the ``startAt`` and ``endAt`` attributes). The formal history describes the
 history as it was administratively processed (stored in the ``registeredAt``
@@ -554,15 +553,15 @@ First, let's do it from the material history perspective:
 
 .. code-block:: http
 
-    GET /api/v1/objects?date=2021-02-02 HTTP/1.1
+    GET /api/v2/objects?date=2021-02-02 HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
 
     [
         {
-            "url": "http://<object-host>/api/v1/objects/<object-uuid>",
-            "type": "http://<object-type-host>/api/v1/objecttypes/<object-type-uuid>",
+            "url": "http://<open-objecten-host>/api/v2/objects/<object-uuid>",
+            "type": "http://<open-objecten-host>/api/v2/objecttypes/<object-type-uuid>",
             "record": {
                 "index": 1,
                 "typeVersion": 1,
@@ -595,7 +594,7 @@ Now let's do the same but from a formal history perspective:
 
 .. code-block:: http
 
-    GET /api/v1/objects?registrationDate=2021-02-02 HTTP/1.1
+    GET /api/v2/objects?registrationDate=2021-02-02 HTTP/1.1
     Authorization: Token 5678
 
     HTTP/1.1 200 OK
@@ -603,4 +602,4 @@ Now let's do the same but from a formal history perspective:
     []
 
 Our tree object was created at 2021-03-03 (``registrationAt``), so it didn't exist
-(administratively speaking) at 2021-02-02 yet. Hence, the Objects API response is an empty list.
+(administratively speaking) at 2021-02-02 yet. Hence, the response is an empty list.

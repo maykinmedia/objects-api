@@ -18,7 +18,7 @@ Configuring the Open Telemetry sink
 ===================================
 
 Enabling Open Telemetry (enabled by default) requires you to have a "sink" to push the
-telemetry data to. Objects API only supports the Open Telemetry Protocol (OTLP). You can
+telemetry data to. Open Object only supports the Open Telemetry Protocol (OTLP). You can
 use any vendor that supports this protocol (over gRPC or HTTP/protobuf).
 
 .. tip:: We recommend the usage of the Open Telemetry

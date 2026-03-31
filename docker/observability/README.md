@@ -6,7 +6,7 @@ a reference for a potential observability stack.
 **Disclaimer**
 
 The chosen vendors/technologies here merely serve as an example - it's simply a stack we're somewhat
-comfortable with. Objects API itself is vendor agnostic and the principles demonstrated apply to
+comfortable with. Open Object itself is vendor agnostic and the principles demonstrated apply to
 competing vendors too.
 
 ## Bringing up the services

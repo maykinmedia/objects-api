@@ -8,56 +8,33 @@ While :ref:`admin_authentication` is a process of verifying who a client is, aut
 is the process of verifying what they have access to. Authorization is usually
 done after successful authentication.
 
-Objecttypes API
-===============
-
-The Objecttypes API doesn't have a particular authorization model, i.e. every
-authenticated client has access to all object types.
-
-Objects API
+Objecttypes
 ===========
 
-In the Objects API, clients have explicit access to objects based on their
+For Objecttypes there is no a particular authorization model, i.e. every
+authenticated client has access to all object types.
+
+Objects
+=======
+
+For Objects, clients have explicit access to objects based on their
 object types. Permissions for particular object types can be configured in the
 admin. In the example below we will create a permission to modify tree objects, i.e.
 objects of "Boom" object type.
 
-Access to Objecttypes API
--------------------------
-Since the access to objects is based on their object types, the Objects API should have
-credentials to communicate with the Objecttypes API.
-
-.. image:: _assets/img/authorization_objects_main_service.png
-    :alt: Click on the "add" button for "Services"
-
-In the admin page of the Objects API click on the "add" button for "Services"
-resource.
-
-.. image:: _assets/img/authorization_objects_service.png
-    :alt: Fill in the form and click on "save" button
-
-Fill in the form with the information about the Objecttypes API and put the Objecttypes API
-created in the :ref:`admin_authentication` section of this document into "Header value" field.
-If you use NLX you can configure it in the "NLX url" field. After the form is submitted
-the Objects API can access the Objecttypes API since it now has a security token for it.
-
 Add an object type
 ------------------
 
-Now we can add an object type to the Objects API, to define permissions.
+Now we can add an object type to define permissions.
 
 .. image:: _assets/img/authorization_objects_main_objecttype.png
     :alt: Click on the "add" button for "Object type"
 
-In the admin page of the Objects API click on the "add" button for "Object types"
+In the admin page click on the "add" button for "Object types"
 resource.
 
 .. image:: _assets/img/authorization_objects_objecttype.png
     :alt: Fill in the form and click on "save" button
-
-Choose the service created in the previous step and fill in the uuid of the "Boom" object type.
-After the form is submitted the object type name will be retrieved automatically from
-the Objecttypes API.
 
 
 Add a permission
@@ -68,7 +45,7 @@ Finally, it's time to create a permission to access objects with "boom" object t
 .. image:: _assets/img/authorization_objects_main_permission.png
     :alt: Click on the "add" button for "Permission"
 
-In the admin page of the Objects API click on the "Add" button for "Permission"
+In the admin page click on the "Add" button for "Permission"
 resource.
 
 .. image:: _assets/img/authorization_objects_permission.png
@@ -87,16 +64,16 @@ fields you can submit the form.
 
 Now the client who has this token can access the objects with the "Boom" object type.
 
-If you want to know how to use Objects API you can follow :ref:`api_usage`
+If you want to know how to use the API you can follow :ref:`api_usage`
 
 
 Superuser permissions
 ----------------------
 
-It's possible to set up superuser permissions in Objects API. A client with such permissions
-is able to request objects for all objecttypes.
+It's possible to set up superuser permissions in the API. A client with such permissions
+is able to perform any operation on any object or objecttype.
 
-In the admin page of the Objects API go to the "Token authorizations" resource and click on
+In the admin page go to the "Token authorizations" resource and click on
 a token, which should have superuser permissions. Check "is superuser" field. Now this token
 has read and write permissions for all objects.
 

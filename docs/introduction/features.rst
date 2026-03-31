@@ -1,14 +1,11 @@
 Features
 ========
 
-Below is a list of the high level features of the APIs.
-
-Objecttypes API
----------------
+Below is a list of the high level features of the API.
 
 * **JSON-schema validation**
 
-  When creating a new objecttype, the JSON-schema is validated. Only valid 
+  When creating a new objecttype, the JSON-schema is validated. Only valid
   JSON-schemas are allowed in the objecttype.
 
 * **Versioning**
@@ -18,11 +15,8 @@ Objecttypes API
 
 * **Admin interface**
 
-  You can create and inspect objecttypes via a user interface, meant for 
+  You can create and inspect objecttypes via a user interface, meant for
   administrators.
-
-Objects API
------------
 
 * **Objecttype validation**
 
@@ -31,7 +25,7 @@ Objects API
 
 * **Formal and administrative history**
 
-  The history of each object is recorded on two axes: The formal (formele) 
+  The history of each object is recorded on two axes: The formal (formele)
   history and the material (materiële) history.
 
 * **Geographic search**
@@ -41,8 +35,8 @@ Objects API
 
 * **Arbitrary attribute filtering**
 
-  Since the Objects API contains many different objects of different 
-  objecttypes, the attributes are different for each objecttype. The Objects
+  Since the API contains many different objects of different
+  objecttypes, the attributes are different for each objecttype. The
   API supports filtering on any attribute.
 
 * **Authorizations**

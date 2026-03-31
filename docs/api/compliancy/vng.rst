@@ -4,7 +4,7 @@
 VNG compliancy
 ==============
 
-The Objects and Objecttypes API specifications are proposed by the `municipality
+The API specifications are proposed by the `municipality
 of Utrecht`_ and submitted to the `VNG`_ for to become a Dutch national
 standard. The VNG (Vereniging van Nederlandse Gemeenten) is the Association of
 Dutch Municipalities.

@@ -3,7 +3,7 @@
 Versioning policy
 =================
 
-New version releases for Objects API and Objecttypes API are done every two months, at the start of the month.
+New version releases for Open Object are done every two months, at the start of the month.
 Major releases occur every two years.
 
 Each major version is supported until 24 months after the release of the next major version.
@@ -18,8 +18,24 @@ is actively maintained and under active development. Older versions only receive
 The table below shows each major and minor version and until what date they can receive
 patches.
 
+Open Object
+-----------
+
++-------+---------+---------------+--------------------------+
+| Major | Minor   | Release date  | Supported until          |
++=======+=========+===============+==========================+
+| 4.x   |         |               |                          |
++-------+---------+---------------+--------------------------+
+|       | 4.0.x   | TBD           | TBD                      |
++-------+---------+---------------+--------------------------+
+
 Objects API
-===========
+-----------
+
+.. note::
+
+    Before version 4.0, the application was named Objects API and required a separate
+    instance of Objecttypes API.
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |
@@ -61,9 +77,12 @@ Objects API
 |       | 1.0.x   | 2021-01-13    | 2021-07-13               |
 +-------+---------+---------------+--------------------------+
 
-
 Objecttypes API
-===============
+---------------
+
+.. note:: Objects API was changed to Open Object in 4.0.0 which includes the Objecttypes API.
+    Active development for the standalone Objecttypes API application has stopped since version 3.4.
+    Patches can still be applied if needed.
 
 +-------+---------+---------------+--------------------------+
 | Major | Minor   | Release date  | Supported until          |

@@ -93,7 +93,7 @@ RUN python src/manage.py collectstatic --noinput
 LABEL org.label-schema.vcs-ref=$COMMIT_HASH \
       org.label-schema.vcs-url="https://github.com/maykinmedia/objects-api" \
       org.label-schema.version=$RELEASE \
-      org.label-schema.name="objects API"
+      org.label-schema.name="Open Object"
 
 EXPOSE 8000
 CMD ["/start.sh"]

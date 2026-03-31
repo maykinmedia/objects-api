@@ -18,17 +18,13 @@ class TokenAuthConfigurationStep(
     BaseConfigurationStep[TokenAuthGroupConfigurationModel]
 ):
     """
-    Configure tokens with permissions for other applications to access Objects API
-
-    .. note:: To ensure the proper functioning of the tokens, it is essential to first
-        configure the ``objecttypes``. Then, the token configuration must be completed
-        to guarantee the correct configuration of the ``Permissions``.
+    Configure tokens with permissions for other applications to access Open Object
     """
 
     namespace = "tokenauth"
     enable_setting = "tokenauth_config_enable"
 
-    verbose_name = "Configuration to set up authentication tokens for objects"
+    verbose_name = "Configuration to set up authentication tokens"
     config_model = TokenAuthGroupConfigurationModel
 
     def _full_clean(self, instance: object) -> None:

@@ -3,10 +3,10 @@
 Admin interface
 ===============
 
-Both the Objects API and the Objecttypes API have an admin interface that
-allows you to configure the APIs and to manage objects and related object types.
+Open Object has an admin interface that allows you to configure
+the API and to manage objects and related object types.
 
-Below, you can find tutorials how to use the admin interface to manage the APIs.
+Below, you can find tutorials how to use the admin interface to manage the API.
 
 .. toctree::
    :maxdepth: 1
