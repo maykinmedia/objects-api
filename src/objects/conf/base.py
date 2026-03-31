@@ -73,7 +73,7 @@ TIME_ZONE = "Europe/Amsterdam"
 #
 # Custom settings
 #
-PROJECT_NAME = "Objects"
+PROJECT_NAME = "Open Object"
 SITE_TITLE = "Starting point"
 SHOW_ALERT = True
 
