@@ -3,7 +3,7 @@
 Open-source
 ===========
 
-Open Objecten is open-source and available
+Open Object is open-source and available
 under the `EUPL license`_.
 
 In addition, this project makes use of various open-source `Python libraries`_

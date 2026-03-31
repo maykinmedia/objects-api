@@ -1,7 +1,7 @@
-Who's behind the Open Objecten API?
+Who's behind the Open Object API?
 ===================================
 
-The Open Objecten API project was initiated by six organizations to
+The Open Object API project was initiated by six organizations to
 standardize common "other" objects that are currently not exposed via an API.
 
 In alphabetical order, they are:

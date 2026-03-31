@@ -1,7 +1,7 @@
 {% extends "open_api_framework/env_config.rst" %}
 
 {% block intro %}
-Open Objecten can be run as a Docker container or a VPS / dedicated server.
+Open Object can be run as a Docker container or a VPS / dedicated server.
 It relies on other services, such as database and cache backends, which can be configured through environment variables.
 {% endblock %}
 
@@ -10,7 +10,7 @@ It relies on other services, such as database and cache backends, which can be c
 Initial superuser creation (Docker only)
 ----------------------------------------
 
-A clean installation of Open Objecten comes without pre-installed or pre-configured admin
+A clean installation of Open Object comes without pre-installed or pre-configured admin
 user by default.
 
 Users can opt-in to provision an initial superuser via environment
@@ -27,7 +27,7 @@ variables. The user will only be created if it doesn't exist yet.
 Initial configuration
 ---------------------
 
-Open Objecten supports the `setup_configuration` management command,
+Open Object supports the `setup_configuration` management command,
 which allows configuration via environment variables.
 All these environment variables are described at :ref:`command line <installation_config_cli>`.
 

@@ -1,13 +1,13 @@
 Documentation
 =============
 
-The Open Objecten API consists of two main resources: :ref:`Objecttypes` & :ref:`Objects`.
+The Open Object API consists of two main resources: :ref:`Objecttypes` & :ref:`Objects`.
 Objecttypes contains the object definitions and Objects the instances of these Objecttypes.
 
 Designed in line with the `Common Ground`_ model, they can be used by other APIs that need
 to store object specific data.
 
-Open Objecten is and only uses :ref:`introduction_open-source`.
+Open Object is and only uses :ref:`introduction_open-source`.
 
 .. _`Common Ground`: https://commonground.nl/
 

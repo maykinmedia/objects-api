@@ -4,7 +4,7 @@ Installation
 ============
 
 In addition to making its source code available publicly, the reference
-implementation for Open Objecten is also maintained and
+implementation for Open Object is also maintained and
 works out-of-the-box for most use cases.
 
 For the sake of simplicity, we have chosen to use Docker and Docker Compose for

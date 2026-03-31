@@ -35,7 +35,7 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = "Objects and Objecttypes API"
+project = "Open Object"
 copyright = "2020, Maykin Media"
 author = objects.__author__
 

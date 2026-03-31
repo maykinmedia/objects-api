@@ -1,5 +1,5 @@
 =============
-Open Objecten
+Open Object
 =============
 
 :Version: 3.6.0
@@ -17,7 +17,7 @@ Ontwikkeld door `Maykin Media B.V.`_ in opdracht van de gemeente Utrecht.
 Introductie
 ===========
 
-Open Objecten heeft als doel om uiteenlopende typen objecten op een dynamische wijze te standaardiseren en om te voorkomen dat
+Open Object heeft als doel om uiteenlopende typen objecten op een dynamische wijze te standaardiseren en om te voorkomen dat
 voor elk (eenvoudig) object een volledige API wordt opgezet. instanties van objecten kunnen eenvouding worden geregistreerd en
 ontsloten in een gestandaardiseerd formaat. De Objecten API kan door elke organisatie ingezet worden om de voor haar interessante objecten te
 beheren. Ook kan een organisatie er voor kiezen een Objecten API in te zetten voor Open Data, waarbij de geregistreerde objecten publiekelijk toegankelijk
@@ -126,7 +126,7 @@ goed getest en beschikbaar als Docker image.
 Quickstart
 ----------
 
-1. Download en start Open Objecten:
+1. Download en start Open Object:
 
    .. code:: bash
 

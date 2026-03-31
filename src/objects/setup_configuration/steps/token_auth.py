@@ -18,7 +18,7 @@ class TokenAuthConfigurationStep(
     BaseConfigurationStep[TokenAuthGroupConfigurationModel]
 ):
     """
-    Configure tokens with permissions for other applications to access Open Objecten
+    Configure tokens with permissions for other applications to access Open Object
     """
 
     namespace = "tokenauth"

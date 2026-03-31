@@ -6,7 +6,7 @@ Security policy
 The development team is strongly committed to responsible reporting and
 disclosure of security-related issues. As such, we’ve adopted and follow a set
 of policies which conform to that ideal and are geared toward allowing us to
-deliver timely security updates to the official distribution of Open Objecten.
+deliver timely security updates to the official distribution of Open Object.
 
 Reporting security issues
 -------------------------
@@ -14,7 +14,7 @@ Reporting security issues
 **Short version: please report security issues by emailing
 security@maykinmedia.nl.**
 
-If you discover security issues in Open Objecten or related
+If you discover security issues in Open Object or related
 projects under the same organization, we request you to disclose these in a
 *responsible* way by mailing to security@maykinmedia.nl.
 
@@ -32,7 +32,7 @@ action to be taken, you may receive further followup emails.
 Timeline of the process
 -----------------------
 
-Open Objecten community support is provided by `Maykin`_.
+Open Object community support is provided by `Maykin`_.
 The community support team is responsible for the handling of security issues.
 
 1. The recipients of the report first validate if there is indeed a (possible)

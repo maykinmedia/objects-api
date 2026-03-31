@@ -6,13 +6,13 @@ Logging
 
 Logging is the practice of emitting log messages that describe what is happening in the
 system, or "events" in short. Log events can have varying degrees of severity, such as
-``debug``, ``info``, ``warning``, ``error`` or even ``critical``. By default, Open Objecten
+``debug``, ``info``, ``warning``, ``error`` or even ``critical``. By default, Open Object
 emits logs with level ``info`` and higher.
 
 A collection of log events with a correlation ID (like a request or trace ID) allow one
 to reconstruct the chain of events that took place which lead to a particular outcome.
 
-Open Objecten emits structured logs in JSON format (unless explicitly configured otherwise),
+Open Object emits structured logs in JSON format (unless explicitly configured otherwise),
 which should make log aggregation and analysis easier.
 
 We try to keep a consistent log message structure, where the following keys
@@ -40,7 +40,7 @@ Other keys that frequently occur are:
 ``request_id``
     Present for application logs emitted during an HTTP request, makes it possible to
     correlate multiple log entries for a single request. Not available in logs emitted
-    by background tasks or logs emitted before/after the Open Objecten app.
+    by background tasks or logs emitted before/after the Open Object app.
 
 .. tip:: Certain log aggregation solutions require you to configure "labels" to extract
    for efficient querying. You can use the above summary of log context keys to configure
@@ -59,7 +59,7 @@ Logging
 Format Objects
 --------------
 
-Open Objecten emits structured logs (using `structlog <https://www.structlog.org/en/stable/>`_).
+Open Object emits structured logs (using `structlog <https://www.structlog.org/en/stable/>`_).
 A log line can be formatted like this:
 
 .. code-block:: json

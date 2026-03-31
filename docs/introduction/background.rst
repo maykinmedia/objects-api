@@ -15,7 +15,7 @@ and create a standard on a message exchange level, in the form of JSON schema.
 Related initiatives
 -------------------
 
-The Open Objecten API idea is not unique but combines international
+The Open Object API idea is not unique but combines international
 standards, ideas and existing applications and data models. There are several
 projects that are related or similar to this project.
 

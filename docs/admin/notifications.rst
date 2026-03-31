@@ -37,7 +37,7 @@ On the "add service" page, fill in the following information:
 1. **Label**: the name of the **Service**, i.e. ``Notificaties API``
 2. **Type**: ``NRC (Notifications``
 3. **Api root url**: the same URL as in the "Notificatiescomponentconfiguratie"
-4. **Client ID**: a valid client ID to identify the Open Objecten API (registered in Autorisaties API)
+4. **Client ID**: a valid client ID to identify the Open Object API (registered in Autorisaties API)
 5. **Secret**: a secret corresponding to the client ID (registered in Autorisaties API)
 6. **Authorization type**: ``ZGW client_id + secret``
 7. **Header key** / **Header value**: leave empty

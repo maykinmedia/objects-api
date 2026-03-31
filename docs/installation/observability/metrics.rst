@@ -4,7 +4,7 @@
 Metrics
 =======
 
-Open Objecten API produces application metrics (using Open Telemetry).
+Open Object API produces application metrics (using Open Telemetry).
 
 .. note:: The exact metric names that show up may be transformed, e.g. Prometheus replaces
    periods with underscores, and processing pipelines may add prefixes or suffixes.
@@ -24,7 +24,7 @@ Open Objecten API produces application metrics (using Open Telemetry).
 
    .. code-block:: promql
 
-       avg by (type) (otel_openobjecten_auth_user_count{scope="global"})
+       avg by (type) (otel_openobject_auth_user_count{scope="global"})
 
 Generic
 =======
@@ -43,7 +43,7 @@ Application specific
 Accounts
 --------
 
-``openobjecten.auth.user_count``
+``openobject.auth.user_count``
     Reports the number of users in the database. This is a global metric, you must take
     care in de-duplicating results. Additional attributes are:
 
@@ -55,18 +55,18 @@ Accounts
     .. code-block:: promql
 
         max by (type) (last_over_time(
-          otel_openobjecten_auth_user_count{scope="global"}
+          otel_openobject_auth_user_count{scope="global"}
           [1m]
         ))
 
-``openobjecten.auth.login_failures``
+``openobject.auth.login_failures``
     A counter incremented every time a user login fails (typically because of invalid
     credentials). Does not include the second factor, if enabled. Additional attributes:
 
     - ``http_target`` - the request path where the login failure occurred, if this
       happened in a request context.
 
-``openobjecten.auth.user_lockouts``
+``openobject.auth.user_lockouts``
     A counter incremented every time a user is locked out because they reached the
     maximum number of failed attempts. Additional attributes:
 
@@ -74,14 +74,14 @@ Accounts
       happened in a request context.
     - ``username`` - username of the user trying to log in.
 
-``openobjecten.auth.logins``
+``openobject.auth.logins``
     Counter incrementing on every successful login by a user. Additional attributes:
 
     - ``http_target`` - the request path where the login failure occurred, if this
       happened in a request context.
     - ``username`` - username of the user trying to log in.
 
-``openobjecten.auth.logouts``
+``openobject.auth.logouts``
     Counter incrementing every time a user logs out. Additional attributes:
 
     - ``username`` - username of the user who logged out.
@@ -89,25 +89,25 @@ Accounts
 Objects
 -------
 
-``openobjecten.object.creates``
+``openobject.object.creates``
     Reports the number of objects created via the API.
 
-``openobjecten.object.updates``
+``openobject.object.updates``
     Reports the number of objects updated via the API.
 
-``openobjecten.object.deletes``
+``openobject.object.deletes``
     Reports the number of objects deleted via the API.
 
 Objecttypes
 -----------
 
-``openobjecten.objecttype.creates``
+``openobject.objecttype.creates``
     Reports the number of objecttypes created via the API.
 
-``openobjecten.objecttype.updates``
+``openobject.objecttype.updates``
     Reports the number of objecttypes updated via the API.
 
-``openobjecten.objecttype.deletes``
+``openobject.objecttype.deletes``
     Reports the number of objecttypes deleted via the API.
 
 The metrics show how many entities are created, updated, or deleted via the API,
@@ -117,4 +117,4 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_openobjecten_object_updates_total)
+        sum by (otel_scope_name) (otel_openobject_object_updates_total)

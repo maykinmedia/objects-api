@@ -3,7 +3,7 @@
 ObjectTypes API migration
 =========================
 
-In version 4.0.0 the ObjectTypes API will be merged into the Objects API so that only one application is needed (Open Objecten).
+In version 4.0.0 the ObjectTypes API will be merged into the Objects API so that only one application is needed (Open Object).
 This means that from version 4.0.0 onwards only objecttypes that exist in the database are supported, and no external objecttypes can be used.
 
 Version flow

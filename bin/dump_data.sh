@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Dump component data
-# This script is not intended for a data migration to another Objects Api instance.
+# This script is not intended for a data migration to another Open Object instance.
 # Run this script from the root of the repository
 #
 # Note that postgres 17 requires postgres-client-17

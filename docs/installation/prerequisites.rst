@@ -3,8 +3,8 @@
 Prerequisites
 =============
 
-Open Objecten is most often deployed as a Docker container. While the
-`Objects API container images <https://hub.docker.com/r/maykinmedia/objects-api/>`_ contain all the
+Open Object is most often deployed as a Docker container. While the
+`Open Object container images <https://hub.docker.com/r/maykinmedia/objects-api/>`_ contain all the
 necessary dependencies, it requires extra services to deploy the full stack.
 These dependencies and their supported versions are documented here.
 
@@ -14,7 +14,7 @@ repository also describes these dependencies.
 PostgreSQL with Postgis
 -----------------------
 
-Open Objecten currently only supports PostgreSQL as datastore and is is geo-capable,
+Open Object currently only supports PostgreSQL as datastore and is is geo-capable,
 which requires the postgis_ extension to be enabled.
 
 The supported versions in the table below are tested in the CI pipeline.

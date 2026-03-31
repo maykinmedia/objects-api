@@ -13,7 +13,7 @@ started quickly and these should never be used for anything besides testing:
 
 With the above remarks in mind, let's go:
 
-Open Objecten
+Open Object
 -------------
 
 1. Create a project folder:
@@ -59,12 +59,12 @@ Open Objecten
       $ docker compose exec web src/manage.py createsuperuser
 
 
-6. Retrieve an object via the Open Objecten API in your webbrowser:
+6. Retrieve an object via the Open Object API in your webbrowser:
 
    .. code::
 
       http://localhost:8000/api/v2/objects/
 
 
-After you have Open Objecten running you can configure
+After you have Open Object running you can configure
 :ref:`admin_authentication`, :ref:`admin_authorization` and use the API's.

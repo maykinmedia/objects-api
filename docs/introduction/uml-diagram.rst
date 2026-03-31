@@ -10,7 +10,7 @@ This section contains UML diagrams for resources per components.
     These are the underlying data models and this shows the relationships between the resources,
     but not all attributes are the exact same as in the API.
 
-Open Objecten
+Open Object
 -------------
 .. uml_images::
     :apps: core

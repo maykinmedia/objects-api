@@ -4,11 +4,11 @@
 Authentication
 ==============
 
-Open Objecten supports token authentication (or bearer
+Open Object supports token authentication (or bearer
 authentication), which means that everyone who has the security token can access the API.
 Tokens are configured in the admin.
 
-In this section we will create a security token for Open Objecten and use it in
+In this section we will create a security token for Open Object and use it in
 the HTTP request.
 
 

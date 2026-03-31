@@ -3,7 +3,7 @@
 Deployment
 ==========
 
-Open Objecten is an containerized application and can be
+Open Object is an containerized application and can be
 deployed to a `Kubernetes`_ cluster using a `Helm`_ chart.
 
 The documentation includes installation process and the reference configuration.

@@ -13,9 +13,9 @@ Tracing, which provide insight in:
 * performance of the system
 * how the system is used
 
-Open Objecten operates in distributed environments, and being able to fully trace a
+Open Object operates in distributed environments, and being able to fully trace a
 customer request from start to end, observability tools are crucial. Below we provide
-some additional context for infastructure teams that wish to integrate Open Objecten in
+some additional context for infastructure teams that wish to integrate Open Object in
 their observability stack.
 
 .. toctree::

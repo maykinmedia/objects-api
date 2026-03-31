@@ -20,7 +20,7 @@ has 3 trees. That means there are 3 *objects* of *objecttype* ``tree``:
 #. ``height``: 5.1m, ``type``: oak
 #. ``height``: 5.0m, ``type``: pine tree
 
-Open Objecten API
+Open Object API
 -----------------
 
 - retrieve, filter, search, write, update or delete *objects* & *objecttypes*.
