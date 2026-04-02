@@ -44,7 +44,7 @@ development machine.
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/objects-api.git
+       $ git clone git@github.com:maykinmedia/open-object.git
        $ cd objects-api
 
 3. Install all required (backend) libraries.
@@ -165,7 +165,7 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/objects-api.git
+       $ git clone git@github.com:maykinmedia/open-object.git
        Cloning into 'objects'...
        ...
 

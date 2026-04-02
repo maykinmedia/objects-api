@@ -11,7 +11,7 @@ from .utils import reverse
 
 
 class JsonSchemaTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
-    """GH issue - https://github.com/maykinmedia/objects-api/issues/330"""
+    """GH issue - https://github.com/maykinmedia/open-object/issues/330"""
 
     @classmethod
     def setUpTestData(cls):

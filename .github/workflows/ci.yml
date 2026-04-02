@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  IMAGE_NAME: maykinmedia/objects-api
+  IMAGE_NAME: maykinmedia/open-object
 
 jobs:
   tests:

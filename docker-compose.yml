@@ -17,7 +17,7 @@ services:
       - objects-dev
 
   web:
-    image: maykinmedia/objects-api:${TAG:-latest}
+    image: maykinmedia/open-object:${TAG:-latest}
     build:
       context: .
     environment: &web_env
@@ -73,7 +73,7 @@ services:
       service: web
 
   web-init:
-    image: maykinmedia/objects-api:${TAG:-latest}
+    image: maykinmedia/open-object:${TAG:-latest}
     environment:
       <<: *web_env
       #
@@ -89,7 +89,7 @@ services:
       - objects-dev
 
   celery:
-    image: maykinmedia/objects-api:${TAG:-latest}
+    image: maykinmedia/open-object:${TAG:-latest}
     environment: *web_env
     command: /celery_worker.sh
     healthcheck:
@@ -106,7 +106,7 @@ services:
       - objects-dev
 
   celery-flower:
-    image: maykinmedia/objects-api:${TAG:-latest}
+    image: maykinmedia/open-object:${TAG:-latest}
     environment: *web_env
     command: /celery_flower.sh
     ports:
