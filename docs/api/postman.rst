@@ -1,3 +1,5 @@
+.. _postman_collections:
+
 ===================
 Postman collections
 ===================

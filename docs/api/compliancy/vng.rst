@@ -22,7 +22,7 @@ for both APIs. This checklist is only available in Dutch.
    2;Er is een beschrijving die ontwikkelaars op weg helpt om te starten met implementatie van de API-standaard.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/>`__;
    3;Er is uitleg en installatie-instructies van de referentieimplementaties;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/quickstart.html>`__;
    4;Er is uitleg over hoe mee ontwikkeld kan worden aan de referentieimplementatie(s), inclusief gebruik van relevante tooling.;`Yes <https://github.com/maykinmedia/open-object/blob/master/CONTRIBUTING.md>`__;
-   5;Er zijn Postman-scripts met voorbeelden zodat consumers snel kunnen leren hoe ze de API moeten aanroepen.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/postman.html>`__;
+   5;Er zijn Postman-scripts met voorbeelden zodat consumers snel kunnen leren hoe ze de API moeten aanroepen.;:ref:`Yes <postman_collections>`;
    6;VNG-site, API-ontwikkelagenda;Yes;No link available.
 
 .. csv-table:: 2. Informatiemodel
@@ -44,7 +44,7 @@ for both APIs. This checklist is only available in Dutch.
    1;Modellen zijn gemodelleerd in Archi (Archimate 3.x) conform conventies GEMMA;No;Unclear
    2;Modellen zijn opgeslagen op GitLab / Github en ingericht voor samenwerking (main/develop branches);No;
    3;De stakeholders van de API-standaard zijn beschreven;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/introduction/team.html>`__;
-   4;Interactiepatronen zijn gemodelleerd;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/introduction/visualization.html>`__;
+   4;Interactiepatronen zijn gemodelleerd;No;
    5;Positie van de API-standaard in de GEMMA informatiearchitectuur is gemodelleerd;No;Unclear
    6;Verwacht gedrag van een API is gemodelleerd als applicatieproces;No;Unclear
    7;De referentiecomponenten die het koppelvlak moeten realiseren zijn beschreven;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/index.html>`__;
