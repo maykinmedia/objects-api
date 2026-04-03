@@ -22,5 +22,6 @@ See the repository for the latest and previous versions.
    :caption: Further reading
 
    usage
+   postman
    compliancy/api-strategy
    compliancy/vng
