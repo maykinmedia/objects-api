@@ -37,6 +37,7 @@ services:
       SUBPATH: ${SUBPATH}
       DB_CONN_MAX_AGE: "0"
       DB_POOL_ENABLED: True
+      SITE_DOMAIN: web:8000
 
       # Enabling Open Telemetry requires the services in docker/docker-compose.observability.yaml
       # to be up and running.
