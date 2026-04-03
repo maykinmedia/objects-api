@@ -31,13 +31,13 @@ Open Object
 
          .. code:: shell
 
-            $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
+            $ wget https://raw.githubusercontent.com/maykinmedia/open-object/master/docker-compose.yml
 
       .. tab:: Windows Powershell 3
 
          .. code:: shell
 
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
+            PS> wget https://raw.githubusercontent.com/maykinmedia/open-object/master/docker-compose.yml
 
 3. Start the Docker containers:
 

@@ -183,7 +183,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
 
     def test_create_object_with_empty_data_valid(self):
         """
-        regression test for https://github.com/maykinmedia/objects-api/issues/371
+        regression test for https://github.com/maykinmedia/open-object/issues/371
         """
         version = ObjectTypeVersionFactory.create(object_type=self.object_type)
         version.json_schema["required"] = []
@@ -207,7 +207,7 @@ class ObjectTypeValidationTests(TokenAuthMixin, ClearCachesMixin, APITestCase):
         self,
     ):
         """
-        regression test for https://github.com/maykinmedia/objects-api/issues/371
+        regression test for https://github.com/maykinmedia/open-object/issues/371
         """
         ObjectTypeVersionFactory.create(object_type=self.object_type)
 

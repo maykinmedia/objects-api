@@ -9,7 +9,7 @@ AUTH_HEADERS = {"Authorization": "Token secret"}
 @pytest.mark.benchmark(max_time=60, min_rounds=5)
 def test_objects_api_list_large_page_size_page_1(benchmark, benchmark_assertions):
     """
-    Regression test for maykinmedia/objects-api#538
+    Regression test for maykinmedia/open-object#538
     """
     params = {
         "pageSize": 1000,
@@ -32,7 +32,7 @@ def test_objects_api_list_large_page_size_page_1(benchmark, benchmark_assertions
 @pytest.mark.benchmark(max_time=60, min_rounds=5)
 def test_objects_api_list_large_page_size_page_5(benchmark, benchmark_assertions):
     """
-    Regression test for maykinmedia/objects-api#538
+    Regression test for maykinmedia/open-object#538
     """
     params = {
         "pageSize": 1000,
@@ -56,7 +56,7 @@ def test_objects_api_list_large_page_size_page_5(benchmark, benchmark_assertions
 @pytest.mark.benchmark(max_time=60, min_rounds=5)
 def test_objects_api_list_small_page_size_page_20(benchmark, benchmark_assertions):
     """
-    Regression test for maykinmedia/objects-api#538
+    Regression test for maykinmedia/open-object#538
     """
     params = {
         "pageSize": 20,
@@ -80,7 +80,7 @@ def test_objects_api_list_small_page_size_page_20(benchmark, benchmark_assertion
 @pytest.mark.benchmark(max_time=60, min_rounds=5)
 def test_objects_api_list_filter_one_result(benchmark, benchmark_assertions):
     """
-    Regression test for maykinmedia/objects-api#538
+    Regression test for maykinmedia/open-object#538
     """
     params = {
         "pageSize": 1,
@@ -103,7 +103,7 @@ def test_objects_api_list_filter_one_result(benchmark, benchmark_assertions):
 @pytest.mark.benchmark(max_time=60, min_rounds=5)
 def test_objects_api_list_filter_by_object_type(benchmark, benchmark_assertions):
     """
-    Regression test for maykinmedia/objects-api#677
+    Regression test for maykinmedia/open-object#677
     """
     params = {
         "pageSize": 100,

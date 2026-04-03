@@ -94,7 +94,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": description,
     "SERVE_INCLUDE_SCHEMA": False,
     "CONTACT": {
-        "url": "https://github.com/maykinmedia/objects-api",
+        "url": "https://github.com/maykinmedia/open-object",
         "email": "support@maykinmedia.nl",
         "name": "Maykin Media",
     },
