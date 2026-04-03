@@ -35,7 +35,7 @@ def setup_env():
             RuntimeWarning,
             stacklevel=2,
         )
-        os.environ.setdefault("OTEL_SERVICE_NAME", "objects")
+        os.environ.setdefault("OTEL_SERVICE_NAME", "openobject")
 
     setup_otel()
 
