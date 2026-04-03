@@ -7,6 +7,7 @@ import os
 from open_api_framework.conf.utils import mute_logging
 
 os.environ.setdefault("SECRET_KEY", "dummy")
+os.environ.setdefault("SITE_DOMAIN", "localhost:8000")
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("ENVIRONMENT", "ci")
 os.environ.setdefault("OTEL_SDK_DISABLED", "true")

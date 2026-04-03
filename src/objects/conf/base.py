@@ -241,3 +241,12 @@ if LOG_REQUESTS:
         MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware") + 1,
         "django_structlog.middlewares.RequestMiddleware",
     )
+
+#
+# OPEN-API-FRAMEWORK
+#
+# Override because SITE_DOMAIN has become required in 4.0.0
+SITE_DOMAIN = config(
+    "SITE_DOMAIN",
+    help_text=("Defines the primary domain where the application is hosted."),
+)
