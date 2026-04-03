@@ -7,10 +7,11 @@ import os
 from open_api_framework.conf.utils import mute_logging
 
 os.environ.setdefault("SECRET_KEY", "dummy")
+os.environ.setdefault("SITE_DOMAIN", "localhost:8000")
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("ENVIRONMENT", "ci")
 os.environ.setdefault("OTEL_SDK_DISABLED", "true")
-os.environ.setdefault("OTEL_SERVICE_NAME", "objects-ci")
+os.environ.setdefault("OTEL_SERVICE_NAME", "openobject-ci")
 
 os.environ.setdefault("DB_USER", "postgres")
 os.environ.setdefault("DB_PASSWORD", "postgres")

@@ -3,7 +3,7 @@
 set -e
 
 # Set defaults for OTEL
-export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-objects-flower}"
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openobject-flower}"
 
 # 100x less than the defaults
 export FLOWER_MAX_TASKS="${FLOWER_MAX_TASKS:-1000}"

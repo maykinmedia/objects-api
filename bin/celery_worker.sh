@@ -15,7 +15,7 @@ if [[ "$ENABLE_COVERAGE" ]]; then
 fi
 
 # Set defaults for OTEL
-export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-objects-worker-"${QUEUE}"}"
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openobject-worker-"${QUEUE}"}"
 
 echo "Starting celery worker $WORKER_NAME with queue $QUEUE"
 # unset this if NOT using a process pool
