@@ -29,7 +29,7 @@ boltons==21.0.0
     # via
     #   face
     #   glom
-cbor2==5.8.0
+cbor2==5.9.0
     # via webauthn
 celery==5.5.3
     # via
@@ -64,13 +64,13 @@ commonground-api-common==2.11.0
     # via
     #   -r requirements/base.in
     #   open-api-framework
-cryptography==46.0.5
+cryptography==46.0.6
     # via
     #   django-simple-certmanager
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
-django==5.2.12
+django==5.2.13
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -391,7 +391,7 @@ qrcode==6.1
     # via django-two-factor-auth
 redis==6.4.0
     # via django-redis
-requests==2.32.4
+requests==2.33.1
     # via
     #   ape-pie
     #   commonground-api-common
