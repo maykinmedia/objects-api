@@ -86,6 +86,7 @@ ENV RELEASE=${RELEASE}
 ENV DJANGO_SETTINGS_MODULE=objects.conf.docker
 
 ARG SECRET_KEY=dummy
+ARG SITE_DOMAIN=dummy
 
 # Run collectstatic, so the result is already included in the image
 RUN python src/manage.py collectstatic --noinput

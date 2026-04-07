@@ -58,7 +58,7 @@ boltons==21.0.0
     #   -r requirements/base.txt
     #   face
     #   glom
-cbor2==5.8.0
+cbor2==5.9.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -122,7 +122,7 @@ coverage==7.10.1
     # via
     #   -r requirements/test-tools.in
     #   codecov
-cryptography==46.0.5
+cryptography==46.0.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -132,7 +132,7 @@ cryptography==46.0.5
     #   webauthn
 cssselect==1.1.0
     # via pyquery
-django==5.2.12
+django==5.2.13
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -661,7 +661,7 @@ pydantic-settings==2.6.1
     #   django-setup-configuration
 pyee==13.0.1
     # via playwright
-pygments==2.18.0
+pygments==2.20.0
     # via
     #   sphinx
     #   sphinx-tabs
@@ -745,7 +745,7 @@ redis==6.4.0
     #   django-redis
 referencing==0.37.0
     # via jsonschema-specifications
-requests==2.32.4
+requests==2.33.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

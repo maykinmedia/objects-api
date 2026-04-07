@@ -13,8 +13,6 @@ from maykin_common.accounts.views import PasswordResetView
 from mozilla_django_oidc_db.views import AdminLoginFailure
 from rest_framework.settings import api_settings
 
-from objects.accounts.views import QRGeneratorView
-
 handler500 = "maykin_common.views.server_error"
 admin.site.site_header = "Objects admin"
 admin.site.site_title = "Objects admin"
@@ -35,11 +33,6 @@ urlpatterns = [
         name="password_reset_done",
     ),
     path("admin/login/failure/", AdminLoginFailure.as_view(), name="admin-oidc-error"),
-    # See https://github.com/maykinmedia/open-api-framework/issues/40
-    # and https://github.com/maykinmedia/open-api-framework/issues/59
-    # Temporary workaround to remove the dependency on `django.contrib.sites` when
-    # generating the app label for 2FA. This should be removed once `sites` are removed
-    path("admin/mfa/qrcode/", QRGeneratorView.as_view(), name="qr"),
     path("admin/", include((maykin_2fa_urlpatterns, "maykin_2fa"))),
     path("admin/", include((webauthn_urlpatterns, "two_factor"))),
     path("admin/", admin.site.urls),

@@ -12,7 +12,7 @@ os.environ["_USE_STRUCTLOG"] = "True"
 from django.core.exceptions import ImproperlyConfigured
 
 from open_api_framework.conf.base import *  # noqa
-from open_api_framework.conf.utils import config
+from open_api_framework.conf.utils import ENVVAR_REGISTRY, config
 
 from .api import *  # noqa
 
@@ -38,10 +38,6 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "capture_tag",
     # Optional applications.
     "django.contrib.gis",
-    # `django.contrib.sites` added at the project level because it has been removed at the packages level.
-    # This component is deprecated and should be completely removed.
-    # To determine the project's domain, use the `SITE_DOMAIN` environment variable.
-    "django.contrib.sites",
     # External applications.
     "rest_framework_gis",
     "jsonsuit.apps.JSONSuitConfig",
@@ -128,6 +124,18 @@ NOTIFICATIONS_SOURCE = config(
 if ENABLE_CLOUD_EVENTS and not NOTIFICATIONS_SOURCE:
     raise ImproperlyConfigured("NOTIFICATIONS_SOURCE is REQUIRED for CloudEvents")
 
+#
+# CELERY
+#
+# TODO: this is an override because `open-api-framework` incorrectly uses the
+# `CELERY_RESULT_BACKEND` envvar for the `CELERY_BROKER_URL` setting. This should be
+# moved to OAF once all projects have made this breaking change
+CELERY_BROKER_URL = config(
+    "CELERY_BROKER_URL",
+    "redis://localhost:6379/1",
+    group="Celery",
+    help_text="the URL of the broker that will be used by Celery to send the notifications",
+)
 CELERY_RESULT_EXPIRES = config(
     "CELERY_RESULT_EXPIRES",
     3600,
@@ -153,7 +161,6 @@ CELERY_TASK_TIME_LIMIT = config(
 # Django setup configuration
 #
 SETUP_CONFIGURATION_STEPS = (
-    "django_setup_configuration.contrib.sites.steps.SitesConfigurationStep",
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
@@ -187,3 +194,59 @@ UPGRADE_CHECK_PATHS: UpgradePaths = {
         code_checks=[CommandCheck("check_for_external_objecttypes")],
     ),
 }
+
+#
+# DJANGO-LOG-OUTGOING-REQUESTS
+#
+# XXX: Overrides to bring envvars in line with Open Forms, this is currently defined in
+# open-api-framework using `LOG_REQUESTS`
+LOG_OUTGOING_REQUESTS = config(
+    "LOG_OUTGOING_REQUESTS",
+    default=False,
+    help_text=(
+        "enable logging of the outgoing requests. "
+        "This must be enabled along with `LOG_OUTGOING_REQUESTS_DB_SAVE` to save outgoing request logs in the database."
+    ),
+    group="Logging",
+)
+LOGGING["loggers"]["log_outgoing_requests"]["handlers"] = (
+    ["log_outgoing_requests", "save_outgoing_requests"] if LOG_OUTGOING_REQUESTS else []
+)
+
+#
+# DJANGO-STRUCTLOG
+#
+# Make sure the old envvar no longer shows up in the documentation
+for i, var in enumerate(ENVVAR_REGISTRY):
+    if var.name == "ENABLE_STRUCTLOG_REQUESTS":
+        ENVVAR_REGISTRY.pop(i)
+
+# XXX: Overrides to bring envvars in line with Open Forms, this is currently defined in
+# open-api-framework using `ENABLE_STRUCTLOG_REQUESTS`
+LOG_REQUESTS = config(
+    "LOG_REQUESTS",
+    default=True,
+    help_text=("enable structured logging of requests"),
+    group="Logging",
+)
+
+LOGGING["loggers"]["django.server"]["level"] = "WARNING" if LOG_REQUESTS else "INFO"
+
+# If the old envvar `ENABLE_STRUCTLOG_REQUESTS` was used, avoid duplicate middleware
+if "django_structlog.middlewares.RequestMiddleware" in MIDDLEWARE:
+    MIDDLEWARE.remove("django_structlog.middlewares.RequestMiddleware")
+
+if LOG_REQUESTS:
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware") + 1,
+        "django_structlog.middlewares.RequestMiddleware",
+    )
+
+#
+# OPEN-API-FRAMEWORK
+#
+# Override because SITE_DOMAIN has become required in 4.0.0
+SITE_DOMAIN = config(
+    "SITE_DOMAIN",
+    help_text=("Defines the primary domain where the application is hosted."),
+)

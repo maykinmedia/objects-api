@@ -6,7 +6,7 @@
 set -e
 
 # Set defaults for OTEL
-export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-objects-setup-configuration}"
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openobject-setup-configuration}"
 
 if [[ "${RUN_SETUP_CONFIG,,}" =~ ^(true|1|yes)$ ]]; then
     # wait for required services

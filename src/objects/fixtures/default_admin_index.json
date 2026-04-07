@@ -45,10 +45,6 @@
                 "notificationsconfig"
             ],
             [
-                "sites",
-                "site"
-            ],
-            [
                 "zgw_consumers",
                 "service"
             ],

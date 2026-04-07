@@ -7,6 +7,7 @@ os.environ.setdefault("ALLOWED_HOSTS", "*")
 os.environ.setdefault(
     "SECRET_KEY", "2(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg"
 )
+os.environ.setdefault("SITE_DOMAIN", "localhost:8000")
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("RELEASE", "dev")
 os.environ.setdefault("ENVIRONMENT", "development")
