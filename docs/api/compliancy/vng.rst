@@ -19,8 +19,8 @@ for both APIs. This checklist is only available in Dutch.
    :delim: ;
 
    1;De voor de stakeholders relevante onderdelen van de standaard (informatiemodel, API-specificaties, functionele specificatie, architectuurmodellen, referentieimplementatie(s) en testgevallen) zijn gepubliceerd op de VNG Realisatie Github of GEMMAonline omgeving.;No [1]_;
-   2;Er is een beschrijving die ontwikkelaars op weg helpt om te starten met implementatie van de API-standaard.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/>`__;
-   3;Er is uitleg en installatie-instructies van de referentieimplementaties;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/quickstart.html>`__;
+   2;Er is een beschrijving die ontwikkelaars op weg helpt om te starten met implementatie van de API-standaard.;`Yes <https://open-object.readthedocs.io/en/latest/>`__;
+   3;Er is uitleg en installatie-instructies van de referentieimplementaties;`Yes <https://open-object.readthedocs.io/en/latest/installation/quickstart.html>`__;
    4;Er is uitleg over hoe mee ontwikkeld kan worden aan de referentieimplementatie(s), inclusief gebruik van relevante tooling.;`Yes <https://github.com/maykinmedia/open-object/blob/master/CONTRIBUTING.md>`__;
    5;Er zijn Postman-scripts met voorbeelden zodat consumers snel kunnen leren hoe ze de API moeten aanroepen.;:ref:`Yes <postman_collections>`;
    6;VNG-site, API-ontwikkelagenda;Yes;No link available.
@@ -30,7 +30,7 @@ for both APIs. This checklist is only available in Dutch.
    :widths: 5, 55, 15, 25
    :delim: ;
 
-   1;Indien gemeentelijke bron dan opleveren informatiemodel (semantisch informatiemodel);`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/introduction/information-model.html>`__;
+   1;Indien gemeentelijke bron dan opleveren informatiemodel (semantisch informatiemodel);`Yes <https://open-object.readthedocs.io/en/latest/introduction/information-model.html>`__;
    2;Altijd een uitwisselingsgegevensmodel;No;
    3;Modellering van het semantisch informatiemodel conform laatst vastgestelde versie Metamodel Informatiemodellen (MIM);Yes;See 2.1.
    4;Informatiemodel gemodelleerd in Enterprise Architect conform de daarvoor geldende best practices;Yes;See 2.1.
@@ -43,22 +43,22 @@ for both APIs. This checklist is only available in Dutch.
 
    1;Modellen zijn gemodelleerd in Archi (Archimate 3.x) conform conventies GEMMA;No;Unclear
    2;Modellen zijn opgeslagen op GitLab / Github en ingericht voor samenwerking (main/develop branches);No;
-   3;De stakeholders van de API-standaard zijn beschreven;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/introduction/team.html>`__;
+   3;De stakeholders van de API-standaard zijn beschreven;`Yes <https://open-object.readthedocs.io/en/latest/introduction/team.html>`__;
    4;Interactiepatronen zijn gemodelleerd;No;
    5;Positie van de API-standaard in de GEMMA informatiearchitectuur is gemodelleerd;No;Unclear
    6;Verwacht gedrag van een API is gemodelleerd als applicatieproces;No;Unclear
-   7;De referentiecomponenten die het koppelvlak moeten realiseren zijn beschreven;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/index.html>`__;
-   8;Per referentiecomponent is beschreven welke verplicht dan wel optioneel te leveren (provider) of te gebruiken (consumer) services en operaties geïmplementeerd moeten zijn om compliant aan de standaard te zijn.;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/index.html>`__;
+   7;De referentiecomponenten die het koppelvlak moeten realiseren zijn beschreven;`Yes <https://open-object.readthedocs.io/en/latest/api/index.html>`__;
+   8;Per referentiecomponent is beschreven welke verplicht dan wel optioneel te leveren (provider) of te gebruiken (consumer) services en operaties geïmplementeerd moeten zijn om compliant aan de standaard te zijn.;`Yes <https://open-object.readthedocs.io/en/latest/api/index.html>`__;
 
 .. csv-table:: 4. API-specificaties
    :header: "#"; "Description"; "Answer"; "Remarks"
    :widths: 5, 55, 15, 25
    :delim: ;
 
-   1;Opgesteld in Open API Specification 3.x;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/index.html>`__;
+   1;Opgesteld in Open API Specification 3.x;`Yes <https://open-object.readthedocs.io/en/latest/api/index.html>`__;
    2;Gepubliceerd op VNG-Realisatie Github omgeving en beschikbaar via Redoc en Swagger;No [1]_;
    3;Ontwerpbeslissing zijn vertaald naar (aanvullende) specificaties;`Yes <https://github.com/maykinmedia/open-object/issues>`_;
-   4;Voldoet aan landelijke API strategie, in het bijzonder de core design rules;`Yes <https://objects-and-objecttypes-api.readthedocs.io/en/latest/api/compliancy/api-strategy.html>`__;
+   4;Voldoet aan landelijke API strategie, in het bijzonder de core design rules;`Yes <https://open-object.readthedocs.io/en/latest/api/compliancy/api-strategy.html>`__;
    5;Informatiebeveiliging en privacy best practices (IBD) worden gevolgd;No;Unclear
    6;Aanvullende specificaties die het gedrag van de API specificeren voor de provider.;No;TODO
    7;De OAS3-specificatie is getest voor toepasbaarheid in de mainstream code-generatoren;Yes (`1 <https://github.com/maykinmedia/open-object/actions?query=workflow%3Agenerate-sdks>`__, `2 <https://github.com/maykinmedia/objecttypes-api/actions?query=workflow%3Agenerate-sdks>`__);

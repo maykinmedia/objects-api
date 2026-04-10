@@ -140,7 +140,7 @@ Quickstart
 References
 ==========
 
-* `Documentation <https://objects-and-objecttypes-api.readthedocs.io/>`_
+* `Documentation <https://open-object.readthedocs.io/>`_
 * `Docker image <https://hub.docker.com/r/maykinmedia/open-object>`_
 * `Issues <https://github.com/maykinmedia/open-object/issues>`_
 * `Code <https://github.com/maykinmedia/open-object>`_
@@ -165,8 +165,8 @@ Licensed under the EUPL_
     :alt: Build status
     :target: https://github.com/maykinmedia/open-object/actions?query=workflow%3Aci
 
-.. |docs| image:: https://readthedocs.org/projects/objects-and-objecttypes-api/badge/?version=latest
-    :target: https://objects-and-objecttypes-api.readthedocs.io/
+.. |docs| image:: https://readthedocs.org/projects/open-object/badge/?version=latest
+    :target: https://open-object.readthedocs.io/
     :alt: Documentation Status
 
 .. |coverage| image:: https://codecov.io/github/maykinmedia/open-object/branch/master/graphs/badge.svg?branch=master

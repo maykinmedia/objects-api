@@ -20,8 +20,8 @@ Open Object
 
    .. code:: shell
 
-      $ mkdir objects-api
-      $ cd objects-api
+      $ mkdir open-object
+      $ cd open-object
 
 2. Download the ``docker-compose`` file:
 

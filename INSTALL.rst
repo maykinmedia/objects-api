@@ -45,7 +45,7 @@ development machine.
    .. code-block:: bash
 
        $ git clone git@github.com:maykinmedia/open-object.git
-       $ cd objects-api
+       $ cd open-object
 
 3. Install all required (backend) libraries.
 
@@ -176,8 +176,8 @@ The easiest way to get the project started is by using `Docker Compose`_.
    .. code-block:: bash
 
        $ docker-compose up -d
-       Starting objects-api_db_1 ... done
-       Starting objects-api_web_1 ... done
+       Starting open-object_db_1 ... done
+       Starting open-object_web_1 ... done
 
    It can take a while before everything is done. Even after starting the web
    container, the database might still be migrating. You can always check the
@@ -185,19 +185,19 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ docker logs -f objects-api_web_1
+       $ docker logs -f open-object_web_1
 
 3. Create an admin user and load initial data. If different container names
    are shown above, use the container name ending with ``_web_1``:
 
    .. code-block:: bash
 
-       $ docker exec -it objects-api_web_1 /app/src/manage.py createsuperuser
+       $ docker exec -it open-object_web_1 /app/src/manage.py createsuperuser
        Username: admin
        ...
        Superuser created successfully.
 
-       $ docker exec -it objects-api_web_1 /app/src/manage.py loaddata admin_index groups
+       $ docker exec -it open-object_web_1 /app/src/manage.py loaddata admin_index groups
        Installed 5 object(s) from 2 fixture(s)
 
 4. Point your browser to ``http://localhost:8000/`` to access the project's

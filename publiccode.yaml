@@ -25,7 +25,7 @@ developmentStatus: beta
 description:
   nl:
     shortDescription: API voor het beheren van objecttypen en objecten
-    documentation: 'https://objects-and-objecttypes-api.readthedocs.io/'
+    documentation: 'https://open-object.readthedocs.io/'
     apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/open-object/master/src/objects/api/v2/openapi.yaml'
     features:
       - Objecten API
@@ -42,7 +42,7 @@ description:
 
   en:
     shortDescription: API to manage objecttypes and objects
-    documentation: 'https://objects-and-objecttypes-api.readthedocs.io/'
+    documentation: 'https://open-object.readthedocs.io/'
     apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/open-object/master/src/objects/api/v2/openapi.yaml'
     features:
       - Objects API

@@ -100,7 +100,7 @@ SPECTACULAR_SETTINGS = {
     },
     "LICENSE": {"name": "EUPL-1.2"},
     "EXTERNAL_DOCS": {
-        "url": "https://objects-and-objecttypes-api.readthedocs.io/",
+        "url": "https://open-object.readthedocs.io/",
     },
     "VERSION": API_VERSION,
     "COMPONENT_NO_READ_ONLY_REQUIRED": True,
