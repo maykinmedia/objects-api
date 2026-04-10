@@ -1,7 +1,7 @@
 [project]
 requires-python = "~= 3.12.12"
 version = "3.6.0"
-name= "objects-api"
+name= "open-object"
 
 # Bumpversion configuration
 

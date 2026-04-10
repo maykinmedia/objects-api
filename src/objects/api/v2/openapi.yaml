@@ -69,7 +69,7 @@ info:
     these operations are published to the configured Notifications API in the
     `objecten` channel.
   contact:
-    url: https://github.com/maykinmedia/objects-api
+    url: https://github.com/maykinmedia/open-object
     email: support@maykinmedia.nl
     name: Maykin Media
   license:
@@ -2284,4 +2284,4 @@ tags:
 - name: objecttypes
 - name: permissions
 externalDocs:
-  url: https://objects-and-objecttypes-api.readthedocs.io/
+  url: https://open-object.readthedocs.io/

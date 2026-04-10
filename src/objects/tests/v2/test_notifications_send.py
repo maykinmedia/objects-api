@@ -226,7 +226,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True,
         ENABLE_CLOUD_EVENTS=True,
-        NOTIFICATIONS_SOURCE="objects-api-test",
+        NOTIFICATIONS_SOURCE="open-object-test",
     )
     def test_send_cloudevent_adding_zaak(self, mock_notification, mock_event):
         url = reverse("object-list")
@@ -270,7 +270,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
         mock_notification.assert_called_once_with(
             {
                 "kanaal": "objecten",
-                "source": "objects-api-test",
+                "source": "open-object-test",
                 "hoofdObject": data["url"],
                 "resource": "object",
                 "resourceUrl": data["url"],
@@ -287,7 +287,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True,
         ENABLE_CLOUD_EVENTS=True,
-        NOTIFICATIONS_SOURCE="objects-api-test",
+        NOTIFICATIONS_SOURCE="open-object-test",
     )
     def test_send_cloudevents_changing_zaak(self, mock_notification, mock_event):
         obj = ObjectFactory.create(object_type=self.object_type)
@@ -367,7 +367,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "kenmerken": {
                     "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
-                "source": "objects-api-test",
+                "source": "open-object-test",
             },
         )
 
@@ -376,7 +376,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True,
         ENABLE_CLOUD_EVENTS=True,
-        NOTIFICATIONS_SOURCE="objects-api-test",
+        NOTIFICATIONS_SOURCE="open-object-test",
     )
     def test_send_cloudevents_deleting_object(self, mock_notification, mock_event):
         obj = ObjectFactory.create(object_type=self.object_type)
@@ -424,7 +424,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "kenmerken": {
                     "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
-                "source": "objects-api-test",
+                "source": "open-object-test",
             },
         )
 
@@ -433,7 +433,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True,
         ENABLE_CLOUD_EVENTS=True,
-        NOTIFICATIONS_SOURCE="objects-api-test",
+        NOTIFICATIONS_SOURCE="open-object-test",
     )
     def test_send_cloudevents_deleting_object_archiving_only_zaak(
         self, mock_notification, mock_event
@@ -483,7 +483,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "kenmerken": {
                     "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
-                "source": "objects-api-test",
+                "source": "open-object-test",
             },
         )
 
@@ -492,7 +492,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
     @override_settings(
         CELERY_TASK_ALWAYS_EAGER=True,
         ENABLE_CLOUD_EVENTS=True,
-        NOTIFICATIONS_SOURCE="objects-api-test",
+        NOTIFICATIONS_SOURCE="open-object-test",
     )
     def test_send_cloudevents_deleting_object_archiving_a_zaak(
         self, mock_notification, mock_event
@@ -544,7 +544,7 @@ class SendNotifTestCase(TokenAuthMixin, APITestCase):
                 "kenmerken": {
                     "objectType": f"http://testserver{reverse('objecttype-detail', args=[self.object_type.uuid])}",
                 },
-                "source": "objects-api-test",
+                "source": "open-object-test",
             },
         )
 

@@ -94,13 +94,13 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": description,
     "SERVE_INCLUDE_SCHEMA": False,
     "CONTACT": {
-        "url": "https://github.com/maykinmedia/objects-api",
+        "url": "https://github.com/maykinmedia/open-object",
         "email": "support@maykinmedia.nl",
         "name": "Maykin Media",
     },
     "LICENSE": {"name": "EUPL-1.2"},
     "EXTERNAL_DOCS": {
-        "url": "https://objects-and-objecttypes-api.readthedocs.io/",
+        "url": "https://open-object.readthedocs.io/",
     },
     "VERSION": API_VERSION,
     "COMPONENT_NO_READ_ONLY_REQUIRED": True,

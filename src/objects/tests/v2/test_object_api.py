@@ -408,7 +408,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             },
         )
 
-    # In the ticket https://github.com/maykinmedia/objects-api/issues/282 we discovered that updating an object \
+    # In the ticket https://github.com/maykinmedia/open-object/issues/282 we discovered that updating an object \
     # where the startAt value has been modified with an earlier date causes an 500 response.
     def test_updating_object_after_changing_the_startAt_value_returns_200(self):
         object_uuid = uuid.uuid4()
@@ -463,7 +463,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
             status.HTTP_200_OK,
         )
 
-    # regression test for https://github.com/maykinmedia/objects-api/issues/268
+    # regression test for https://github.com/maykinmedia/open-object/issues/268
     def test_update_object_correctionFor(self):
         initial_record = ObjectRecordFactory.create(
             object__object_type=self.object_type, version=1
@@ -675,7 +675,7 @@ class ObjectApiTests(TokenAuthMixin, APITestCase):
 @freeze_time("2024-08-31")
 class ObjectsAvailableRecordsTests(TokenAuthMixin, APITestCase):
     """
-    tests for https://github.com/maykinmedia/objects-api/issues/324
+    tests for https://github.com/maykinmedia/open-object/issues/324
 
     today = 31.08
 
