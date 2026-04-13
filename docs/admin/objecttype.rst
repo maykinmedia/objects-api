@@ -129,6 +129,7 @@ if you click on the "history" button in the top right corner of the object type 
 
 You can see all the versions, their statuses, the creation dates and the related JSON shemas.
 
+.. _import_export_objecttypes:
 
 Export and import object types
 ------------------------------

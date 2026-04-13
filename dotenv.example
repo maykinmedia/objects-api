@@ -9,4 +9,4 @@ DB_PASSWORD=""
 DB_HOST=""
 DB_PORT=""
 
-OTEL_SERVICE_NAME=objects
+OTEL_SERVICE_NAME=openobject

@@ -7,8 +7,8 @@ publiccodeYmlVersion: '0.2'
 name: Open Object
 url: 'http://github.com/maykinmedia/open-object.git'
 softwareType: standalone/backend
-softwareVersion: 3.6.0
-releaseDate: '2026-02-06'
+softwareVersion: 4.0.0
+releaseDate: '2026-04-13'
 logo: 'https://github.com/maykinmedia/open-object/blob/master/docs/logo.png'
 platforms:
   - web
