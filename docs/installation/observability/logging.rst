@@ -168,6 +168,13 @@ Data migrations
 * ``missing_service_for_objecttype``: while migrating, a ``Service`` object is missing for an ``ObjectType``. Additional context: ``object``, ``objecttype``.
 * ``invalid_objecttype``: while migrating, the ``ObjectType`` is not valid, because it was not possible to parse a UUID from it. Additional context: ``object``, ``objecttype``.
 
+Migration checks
+----------------
+
+* ``unimported_objecttypes``: when upgrading from Objects API 3.6.0 to Open Object 4.0.0,
+  objecttypes where found that have not been imported with the ``import_objecttypes`` command (see :ref:`objecttype_migration`).
+  Additional context: ``uuids``.
+
 Third party library events
 --------------------------
 

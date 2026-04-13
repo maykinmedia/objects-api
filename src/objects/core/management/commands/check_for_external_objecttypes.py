@@ -1,6 +1,10 @@
 from django.core.management import BaseCommand, CommandError
 
+import structlog
+
 from objects.core.models import ObjectType
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class Command(BaseCommand):
@@ -23,6 +27,7 @@ class Command(BaseCommand):
                 external_uuids.add(str(objecttype.uuid))
 
         if external_object_count > 0:
+            logger.warning("unimported_objecttypes", uuids=external_uuids)
             raise CommandError(
                 f"{external_object_count} objectype(s) have not been imported: {', '.join(external_uuids)}"
             )
