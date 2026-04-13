@@ -91,7 +91,7 @@ ARG SECRET_KEY=dummy
 RUN python src/manage.py collectstatic --noinput
 
 LABEL org.label-schema.vcs-ref=$COMMIT_HASH \
-      org.label-schema.vcs-url="https://github.com/maykinmedia/objects-api" \
+      org.label-schema.vcs-url="https://github.com/maykinmedia/open-object" \
       org.label-schema.version=$RELEASE \
       org.label-schema.name="Open Object"
 

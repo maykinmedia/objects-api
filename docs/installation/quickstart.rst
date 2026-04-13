@@ -20,8 +20,8 @@ Open Object
 
    .. code:: shell
 
-      $ mkdir objects-api
-      $ cd objects-api
+      $ mkdir open-object
+      $ cd open-object
 
 2. Download the ``docker-compose`` file:
 
@@ -31,13 +31,13 @@ Open Object
 
          .. code:: shell
 
-            $ wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
+            $ wget https://raw.githubusercontent.com/maykinmedia/open-object/master/docker-compose.yml
 
       .. tab:: Windows Powershell 3
 
          .. code:: shell
 
-            PS> wget https://raw.githubusercontent.com/maykinmedia/objects-api/master/docker-compose.yml
+            PS> wget https://raw.githubusercontent.com/maykinmedia/open-object/master/docker-compose.yml
 
 3. Start the Docker containers:
 

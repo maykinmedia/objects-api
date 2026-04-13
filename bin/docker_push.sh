@@ -17,7 +17,7 @@ echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 # Echo script commands
 set -x
 
-REPO=maykinmedia/objects-api
+REPO=maykinmedia/open-object
 TAG=${1:-latest}
 
 # Build the image

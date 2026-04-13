@@ -70,7 +70,7 @@ class ObjectTypeVersionAPITests(TokenAuthMixin, APITestCase):
 
     def test_get_versions_incorrect_format_uuid(self):
         """
-        Regression test for https://github.com/maykinmedia/objects-api/issues/361
+        Regression test for https://github.com/maykinmedia/open-object/issues/361
         """
         url = reverse("objecttypeversion-list", args=["aaa"])
 

@@ -37,7 +37,7 @@ In the Grafana menu, navigate to "Explore" to create ad-hoc queries.
 **Web service logs**
 
 ```logql
-{job="docker", app="objects-api"} | json | __error__ = ""
+{job="docker", app="open-object"} | json | __error__ = ""
 ```
 
 This ignores logs that cannot be parsed as JSON (such as container/server startup logs).
@@ -47,7 +47,7 @@ This ignores logs that cannot be parsed as JSON (such as container/server startu
 You can filter application logs based on a request ID:
 
 ```logql
-{job="docker", app="objects-api"} | json | __error__ = "" | request_id=`1e9e1b9d-4d34-4657-99e4-88673d824724`
+{job="docker", app="open-object"} | json | __error__ = "" | request_id=`1e9e1b9d-4d34-4657-99e4-88673d824724`
 ```
 
 ## Metrics

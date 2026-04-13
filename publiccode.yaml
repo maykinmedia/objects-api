@@ -5,11 +5,11 @@
 publiccodeYmlVersion: '0.2'
 
 name: Open Object
-url: 'http://github.com/maykinmedia/objects-api.git'
+url: 'http://github.com/maykinmedia/open-object.git'
 softwareType: standalone/backend
 softwareVersion: 3.6.0
 releaseDate: '2026-02-06'
-logo: 'https://github.com/maykinmedia/objects-api/blob/master/docs/logo.png'
+logo: 'https://github.com/maykinmedia/open-object/blob/master/docs/logo.png'
 platforms:
   - web
   - linux
@@ -25,8 +25,8 @@ developmentStatus: beta
 description:
   nl:
     shortDescription: API voor het beheren van objecttypen en objecten
-    documentation: 'https://objects-and-objecttypes-api.readthedocs.io/'
-    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml'
+    documentation: 'https://open-object.readthedocs.io/'
+    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/open-object/master/src/objects/api/v2/openapi.yaml'
     features:
       - Objecten API
       - Minimalistische objecten beheerinterface
@@ -42,8 +42,8 @@ description:
 
   en:
     shortDescription: API to manage objecttypes and objects
-    documentation: 'https://objects-and-objecttypes-api.readthedocs.io/'
-    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/objects-api/master/src/objects/api/v2/openapi.yaml'
+    documentation: 'https://open-object.readthedocs.io/'
+    apiDocumentation: 'https://raw.githubusercontent.com/maykinmedia/open-object/master/src/objects/api/v2/openapi.yaml'
     features:
       - Objects API
       - Minimalistic object management interface

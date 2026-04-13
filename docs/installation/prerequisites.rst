@@ -4,7 +4,7 @@ Prerequisites
 =============
 
 Open Object is most often deployed as a Docker container. While the
-`Open Object container images <https://hub.docker.com/r/maykinmedia/objects-api/>`_ contain all the
+`Open Object container images <https://hub.docker.com/r/maykinmedia/open-object/>`_ contain all the
 necessary dependencies, it requires extra services to deploy the full stack.
 These dependencies and their supported versions are documented here.
 

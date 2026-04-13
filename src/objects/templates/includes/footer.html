@@ -2,7 +2,7 @@
 {% load static i18n capture_tags %}
 
 {% block footer %}
-    {% capture as issues_link silent %}<a class="link link--muted" href="https://github.com/maykinmedia/objects-api/issues">issues</a>{% endcapture %}
+    {% capture as issues_link silent %}<a class="link link--muted" href="https://github.com/maykinmedia/open-object/issues">issues</a>{% endcapture %}
 
     {% with issues_link=issues_link client_link='<a class="link" href="https://www.utrecht.nl">Municipality of Utrecht</a>' %}
         {{ block.super }}
@@ -12,7 +12,7 @@
 
 {% block links %}
     <li>
-        <a class="link link--muted" href="https://objects-and-objecttypes-api.readthedocs.io/">
+        <a class="link link--muted" href="https://open-object.readthedocs.io/">
             {% trans "Documentation" %}
         </a>
     </li>
@@ -22,12 +22,12 @@
         </a>
     </li>
     <li>
-        <a class="link link--muted" href="https://hub.docker.com/r/maykinmedia/objects-api">
+        <a class="link link--muted" href="https://hub.docker.com/r/maykinmedia/open-object">
             {% trans "Docker image" %}
         </a>
     </li>
     <li>
-        <a class="link link--muted" href="https://github.com/maykinmedia/objects-api">
+        <a class="link link--muted" href="https://github.com/maykinmedia/open-object">
             {% trans "Code on Github" %}
         </a>
     </li>

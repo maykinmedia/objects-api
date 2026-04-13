@@ -77,7 +77,7 @@ PROJECT_NAME = "Open Object"
 SITE_TITLE = "Starting point"
 SHOW_ALERT = True
 
-# TODO remove this once https://github.com/maykinmedia/objects-api/issues/621 is fixed
+# TODO remove this once https://github.com/maykinmedia/open-object/issues/621 is fixed
 OBJECTS_ADMIN_SEARCH_DISABLED = config(
     "OBJECTS_ADMIN_SEARCH_DISABLED",
     help_text=(

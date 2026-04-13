@@ -7,10 +7,10 @@ Change history
 
 **New features**
 
-* [:objects-api:`564`] Add ObjectType fields & ObjectTypeVersion model
-* [:objects-api:`564`] Add command to import objecttypes from API for 4.0.0 migration (see :ref:`objecttype_migration` for more information)
-* [:objects-api:`712`] Ensure token authorization display name is unique identifier in admin
-* [:objects-api:`708`] Support Open Archiefbeheer destruction in objects api
+* [:open-object:`564`] Add ObjectType fields & ObjectTypeVersion model
+* [:open-object:`564`] Add command to import objecttypes from API for 4.0.0 migration (see :ref:`objecttype_migration` for more information)
+* [:open-object:`712`] Ensure token authorization display name is unique identifier in admin
+* [:open-object:`708`] Support Open Archiefbeheer destruction in objects api
 
     * Add ``references`` field to ObjectRecord to link objecten to zaken
     * Emit ``zaak-gekoppeld`` and ``zaak-ontkoppeld`` cloud events when an object is linked
@@ -23,7 +23,7 @@ Change history
     in production yet.
 
 
-* [:objects-api:`724`] Remove ``linkable_to_zaken`` from ObjectType
+* [:open-object:`724`] Remove ``linkable_to_zaken`` from ObjectType
 
 **Maintenance**
 
@@ -48,7 +48,7 @@ Change history
 
 **Documentation**
 
-* [:objects-api:`171`] Add connection pooling changelog warning
+* [:open-object:`171`] Add connection pooling changelog warning
 
 3.5.0 (2025-12-01)
 ------------------
@@ -109,7 +109,7 @@ Change history
     All available metrics and details can be found in the :ref:`Observability documentation <installation_observability_index>`.
 
 * [:open-api-framework:`188`] Add CSV option to ``dump_data.sh`` script (see :ref:`scripts` for more information)
-* [:objects-api:`621`] Improve admin search bar for JSON data using key-value patterns, see :ref:`admin_objects_search`
+* [:open-object:`621`] Improve admin search bar for JSON data using key-value patterns, see :ref:`admin_objects_search`
 
 **Bugfixes**
 
@@ -134,8 +134,8 @@ Change history
 
 **Documentation**
 
-* [:objects-api:`689`] Fix resource reference in notification documentation.
-* [:objects-api:`694`] Add minimum postgres database requirements to documentation.
+* [:open-object:`689`] Fix resource reference in notification documentation.
+* [:open-object:`694`] Add minimum postgres database requirements to documentation.
 
 
 3.4.0 (2025-10-28)
@@ -166,7 +166,7 @@ Change history
 **Project maintenance**
 
 * [:open-api-framework:`163`] Integrate ``maykin-common`` to make uses of shared views/templates
-* [:objects-api:`663`] Upload performance tests results to bencher
+* [:open-object:`663`] Upload performance tests results to bencher
 * [:open-api-workflows:`30`] Run API Design Rules linter on OpenAPI specification in CI
 
 3.3.1 (2025-10-16)
@@ -174,7 +174,7 @@ Change history
 
 **Bugfixes/QOL**
 
-* [:objects-api:`621`] Add environment variable ``OBJECTS_ADMIN_SEARCH_DISABLED``
+* [:open-object:`621`] Add environment variable ``OBJECTS_ADMIN_SEARCH_DISABLED``
   (default: ``False``) to disable the search bar in the Objects admin list view
 
 3.3.0 (2025-10-06)
@@ -182,7 +182,7 @@ Change history
 
 **New features**
 
-* [:objects-api:`653`] Add ``created_on`` & ``modified_on`` to ``Object`` & ``ObjectRecord`` models to
+* [:open-object:`653`] Add ``created_on`` & ``modified_on`` to ``Object`` & ``ObjectRecord`` models to
   allow sorting and filtering in the admin UI
 * [:open-api-framework:`175`] Changes to logging of handled and unhandled exceptions (see :ref:`manual_logging_exceptions`)
 
@@ -222,7 +222,7 @@ Change history
 
 **Features**
 
-* [:objects-api:`661`] Add GINIndex on ObjectRecord.data to improve performance when filtering on ``data_attrs``
+* [:open-object:`661`] Add GINIndex on ObjectRecord.data to improve performance when filtering on ``data_attrs``
 
 **Project maintenance**
 
@@ -299,11 +299,11 @@ Change history
 
 **Bugfixes**
 
-* [:objects-api:`619`] Fix unstructured logs still being emitted by the Celery container
+* [:open-object:`619`] Fix unstructured logs still being emitted by the Celery container
 
 **Project maintenance**
 
-* [:objects-api:`587`] Add rule to disallow direct ``logging`` imports
+* [:open-object:`587`] Add rule to disallow direct ``logging`` imports
 * [:open-api-framework:`151`] Move ``ruff`` and ``bump-my-version`` configurations into ``pyproject.toml``
 * [:open-api-framework:`149`] Add dark/light theme toggle to the admin interface
 * [:open-api-framework:`139`] Integrate ``django-upgrade-check`` to ensure that all required versions are correctly handled during instance upgrades
@@ -322,7 +322,7 @@ Change history
 
 **Performance optimizations**
 
-* [:objects-api:`615`] Improve admin ``listview`` search performance and usability
+* [:open-object:`615`] Improve admin ``listview`` search performance and usability
 
 
 3.1.0 (2025-05-26)
@@ -335,21 +335,21 @@ Change history
   The logging format has been changed from unstructured to structured with `structlog <https://www.structlog.org/en/stable/>`_.
   For more information on the available log events and their context, see :ref:`manual_logging`.
 
-* [:objects-api:`586`] Add log events for creation/updating of objects via the API
+* [:open-object:`586`] Add log events for creation/updating of objects via the API
 
 **Performance optimizations**
 
-* [:objects-api:`538`] Apply caching to ``reverse`` calls in ``ObjectUrlField`` to avoid additional overhead
-* [:objects-api:`538`] Avoid doing more queries than necessary for ``/objects`` endpoint
+* [:open-object:`538`] Apply caching to ``reverse`` calls in ``ObjectUrlField`` to avoid additional overhead
+* [:open-object:`538`] Avoid doing more queries than necessary for ``/objects`` endpoint
 
 **Bugfixes and QOL**
 
-* [:objects-api:`576`] Add missing ``type: object`` property to ``ObjectRecord`` in OAS
+* [:open-object:`576`] Add missing ``type: object`` property to ``ObjectRecord`` in OAS
 * Do not use ``save_outgoing_requests`` log handler if ``LOG_REQUESTS`` is set to false
 
 **Project maintenance**
 
-* [:objects-api:`562`] Fix security issues by upgrading packages in Dockerfile
+* [:open-object:`562`] Fix security issues by upgrading packages in Dockerfile
 * Upgrade dependencies:
 
   * ``tornado`` to 6.5.0 to fix security issues
@@ -373,8 +373,8 @@ Change history
 
 **Bugfixes and QOL**
 
-* [:objects-api:`570`] Removed broken ObjectRecord geometry map widget.
-* [:objects-api:`374`] Fixed empty token auth field when creating Permission for Token authorization.
+* [:open-object:`570`] Removed broken ObjectRecord geometry map widget.
+* [:open-object:`374`] Fixed empty token auth field when creating Permission for Token authorization.
 
 **Project maintenance**
 
@@ -393,9 +393,9 @@ Change history
 
 * Upgrade npm packages to fix vulnerabilities
 * Fixed admin logout button
-* [:objects-api:`550`] Implement cache for objecttypes
-* [:objects-api:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable (see `documentation for environment variables for caching <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html>`_)
-* [:objects-api:`572`] Add db connection pooling environment variables (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
+* [:open-object:`550`] Implement cache for objecttypes
+* [:open-object:`550`] add OBJECTTYPE_VERSION_CACHE_TIMEOUT environment variable (see `documentation for environment variables for caching <https://open-object.readthedocs.io/en/latest/installation/config.html>`_)
+* [:open-object:`572`] Add db connection pooling environment variables (see `documentation for environment variables for database <https://open-object.readthedocs.io/en/latest/installation/config.html#database>`_)
 
   * DB_POOL_ENABLED
   * DB_POOL_MIN_SIZE
@@ -414,7 +414,7 @@ Change history
     Use this feature cautiously and test thoroughly before deployment.
     See the :ref:`documentation <database_connections>` for details.
 
-* [:objects-api:`566`] Add DB_CONN_MAX_AGE environment variable (see `documentation for environment variables for database <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html#database>`_)
+* [:open-object:`566`] Add DB_CONN_MAX_AGE environment variable (see `documentation for environment variables for database <https://open-object.readthedocs.io/en/latest/installation/config.html#database>`_)
 
 .. warning::
 
@@ -454,41 +454,41 @@ Change history
 
 **Bugfixes and QOL**
 
-* [:objects-api:`538`] Optimize objects list performance
-* [:objects-api:`523`] Added help text in Permission admin view to explain that authorization fields are
+* [:open-object:`538`] Optimize objects list performance
+* [:open-object:`523`] Added help text in Permission admin view to explain that authorization fields are
   reset when the Object type is changed
 
 **Project maintenance**
 
 * Upgrade dependencies:
 
-  * [:objects-api:`541`] Upgrade kombu to 5.4.2, this should fix the issue that caused Celery workers
+  * [:open-object:`541`] Upgrade kombu to 5.4.2, this should fix the issue that caused Celery workers
     to not be able to reestablish connections with Redis
   * Upgrade Django to 4.2.20
   * Upgrade jinja2 to 3.1.6 to fix security issue
 
-* [:objects-api:`538`] Add performance test for objects API list
-* [:objects-api:`538`] Add django-silk for performance profiling in development environment
+* [:open-object:`538`] Add performance test for objects API list
+* [:open-object:`538`] Add django-silk for performance profiling in development environment
 
 3.0.1 (2025-03-04)
 ------------------
 
 **Bugfixes and QOL**
 
-* [:objects-api:`464`] improved performance of the permission page in the Admin :zap:
+* [:open-object:`464`] improved performance of the permission page in the Admin :zap:
 * [:open-api-framework:`79`] disabled admin nav sidebar
 
 **Project maintenance**
 
 * bumped python dependencies: open-api-framework to 0.9.3, commonground-api-common to 2.5.0, django to 4.2.19, cryptography to 44.0.1
-* [:objects-api:`529`] added bump-my-version to dev dependencies
+* [:open-object:`529`] added bump-my-version to dev dependencies
 * [:open-api-framework:`44`] added workflow to CI to auto-update open-api-framework
-* [:objects-api:`509`, :open-api-framework:`104`] updated quick-start workflow to test docker-compose.yml
+* [:open-object:`509`, :open-api-framework:`104`] updated quick-start workflow to test docker-compose.yml
 * [:charts:`165`] remove unused celery worker command line args
 
 **Documentation**
 
-* [:objects-api:`521`] updated documentation for ``django-setup-configuration`` steps with YAML example directive
+* [:open-object:`521`] updated documentation for ``django-setup-configuration`` steps with YAML example directive
 
 3.0.0 (2025-01-22)
 ------------------
@@ -607,7 +607,7 @@ Change history
 **New features**
 
 * updated open-api-framework to 0.8.0, which includes adding CSRF, CSP and HSTS settings (#438).
-  All new environment variables are added to the `documentation <https://objects-and-objecttypes-api.readthedocs.io/en/latest/installation/config.html>`_
+  All new environment variables are added to the `documentation <https://open-object.readthedocs.io/en/latest/installation/config.html>`_
 
 .. warning::
 

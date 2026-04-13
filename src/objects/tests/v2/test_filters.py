@@ -785,7 +785,7 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
 
     def test_filter_icontains_string_with_comma(self):
         """
-        regression test for https://github.com/maykinmedia/objects-api/issues/472
+        regression test for https://github.com/maykinmedia/open-object/issues/472
         """
         ObjectRecordFactory.create(
             data={"name": "Something important"}, object__object_type=self.object_type
@@ -811,7 +811,7 @@ class FilterDataAttrTests(TokenAuthMixin, APITestCase):
 
     def test_filter_two_icontains_with_comma(self):
         """
-        regression test for https://github.com/maykinmedia/objects-api/issues/472
+        regression test for https://github.com/maykinmedia/open-object/issues/472
         """
         ObjectRecordFactory.create(
             data={"name": "Something important"}, object__object_type=self.object_type
